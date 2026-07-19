@@ -3,7 +3,7 @@ import Icon from '@/Components/Icons';
 import BlockRenderer from '@/Components/BlockRenderer';
 import CertLogo from '@/Components/CertLogo';
 import Select from '@/Components/Select';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 
 const ALLOWED_TYPES = ['heading', 'paragraph', 'list', 'callout', 'key_terms', 'steps', 'comparison', 'example', 'code', 'summary'];
@@ -113,16 +113,102 @@ function stripFences(raw) {
     return s.trim();
 }
 
+/**
+ * Extract the first top-level JSON array [...] from arbitrary text.
+ * Tracks bracket depth, ignoring brackets inside strings and escaped chars.
+ * ChatGPT often appends prose, footnotes ([1]: https://…), or explanations
+ * after the JSON — those are cut off here.
+ */
+function extractTopLevelArray(raw) {
+    const s = stripFences(raw);
+    const start = s.indexOf('[');
+    if (start < 0) return s; // fall through, will throw on parse
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (let i = start; i < s.length; i++) {
+        const ch = s[i];
+        if (escape) { escape = false; continue; }
+        if (ch === '\\') { escape = true; continue; }
+        if (ch === '"') { inString = !inString; continue; }
+        if (inString) continue;
+        if (ch === '[') depth++;
+        else if (ch === ']') {
+            depth--;
+            if (depth === 0) return s.slice(start, i + 1);
+        }
+    }
+    return s.slice(start); // unclosed — let JSON.parse report a proper error
+}
+
+function repairUnescapedJsonInStrings(raw) {
+    let out = '';
+    let i = 0;
+    let repairs = 0;
+    const n = raw.length;
+    const keyRe = /^("[a-z_][a-z_0-9]*"\s*:\s*")(\{|\[)/i;
+
+    while (i < n) {
+        const m = raw.slice(i).match(keyRe);
+        if (m) {
+            const prefix = m[1];
+            const opener = m[2];
+            const closer = opener === '{' ? '}' : ']';
+            const openerPos = i + m[1].length;
+            const afterOpener = openerPos + 1;
+
+            let depth = 1;
+            let j = afterOpener;
+            let sawInnerQuote = false;
+
+            while (j < n && depth > 0) {
+                const ch = raw[j];
+                if (ch === opener) depth++;
+                else if (ch === closer) depth--;
+                else if (ch === '"') sawInnerQuote = true;
+                j++;
+            }
+
+            if (depth === 0 && j < n && raw[j] === '"' && sawInnerQuote) {
+                const inner = raw.slice(openerPos, j);
+                const escaped = inner.replace(/"/g, '\\"');
+                out += prefix + escaped;
+                i = j;
+                repairs++;
+                continue;
+            }
+        }
+        out += raw[i];
+        i++;
+    }
+
+    return { repaired: out, count: repairs };
+}
+
 function analyze(payload) {
-    if (!payload.trim()) return { status: 'empty', count: 0, blocks: [], error: null, stats: {} };
+    if (!payload.trim()) return { status: 'empty', count: 0, blocks: [], error: null, stats: {}, repaired: null, cleanedPayload: null };
+    const extracted = extractTopLevelArray(payload);
     let parsed;
+    let repaired = null;
+    let cleanedPayload = extracted;
     try {
-        parsed = JSON.parse(stripFences(payload));
-    } catch (e) {
-        return { status: 'error', count: 0, blocks: [], error: e.message || 'JSON invalide', stats: {} };
+        parsed = JSON.parse(extracted);
+    } catch (initialError) {
+        const attempt = repairUnescapedJsonInStrings(extracted);
+        if (attempt.count > 0) {
+            try {
+                parsed = JSON.parse(attempt.repaired);
+                repaired = attempt.count;
+                cleanedPayload = attempt.repaired;
+            } catch {
+                return { status: 'error', count: 0, blocks: [], error: initialError.message || 'JSON invalide', stats: {}, repaired: null, cleanedPayload: null };
+            }
+        } else {
+            return { status: 'error', count: 0, blocks: [], error: initialError.message || 'JSON invalide', stats: {}, repaired: null, cleanedPayload: null };
+        }
     }
     if (!Array.isArray(parsed)) {
-        return { status: 'error', count: 0, blocks: [], error: 'La racine doit être un tableau [...]', stats: {} };
+        return { status: 'error', count: 0, blocks: [], error: 'La racine doit être un tableau [...]', stats: {}, repaired: null, cleanedPayload: null };
     }
     const stats = {};
     const warnings = [];
@@ -143,6 +229,8 @@ function analyze(payload) {
         blocks: parsed,
         error: warnings.length ? warnings.slice(0, 5).join(' · ') : null,
         stats,
+        repaired,
+        cleanedPayload,
     };
 }
 
@@ -169,6 +257,7 @@ function StepHeader({ n, title, subtitle }) {
 
 export default function CourseImport({ certifications, default_certification_id }) {
     const [copied, setCopied] = useState(false);
+    const [processing, setProcessing] = useState(false);
 
     const form = useForm({
         certification_id: default_certification_id || (certifications[0]?.id ?? ''),
@@ -191,16 +280,29 @@ export default function CourseImport({ certifications, default_certification_id 
 
     const submit = (e) => {
         e.preventDefault();
-        form.post(route('admin.certifications.course-import.store'), {
-            preserveScroll: (page) => Object.keys(page.props.errors).length > 0,
-        });
+        setProcessing(true);
+        form.clearErrors();
+        router.post(
+            route('admin.certifications.course-import.store'),
+            {
+                certification_id: form.data.certification_id,
+                payload: analysis.cleanedPayload || form.data.payload,
+            },
+            {
+                preserveScroll: (page) => Object.keys(page.props.errors).length > 0,
+                onError: (errs) => {
+                    Object.entries(errs).forEach(([k, v]) => form.setError(k, v));
+                },
+                onFinish: () => setProcessing(false),
+            }
+        );
     };
 
     const canSubmit = form.data.certification_id
         && analysis.status !== 'empty'
         && analysis.status !== 'error'
         && analysis.count >= 5
-        && !form.processing;
+        && !processing;
 
     return (
         <AppLayout ambient={false}>
@@ -357,8 +459,8 @@ export default function CourseImport({ certifications, default_certification_id 
                                     : 'cursor-not-allowed bg-ink-200 text-ink-500 dark:bg-ink-800 dark:text-ink-500'
                             }`}
                         >
-                            {form.processing ? 'Import en cours…' : `Importer ${analysis.count || 0} blocs`}
-                            {!form.processing && <Icon.ArrowRight className="h-4 w-4" />}
+                            {processing ? 'Import en cours…' : `Importer ${analysis.count || 0} blocs`}
+                            {!processing && <Icon.ArrowRight className="h-4 w-4" />}
                         </button>
                         {analysis.count > 0 && analysis.count < 5 && (
                             <span className="font-mono text-[11px] uppercase tracking-widest text-amber-600">
@@ -394,6 +496,11 @@ function PreviewPanel({ analysis }) {
                 {analysis.status === 'empty' && <span>En attente</span>}
             </div>
             <div className="h-[calc(100%-33px)] overflow-y-auto px-6 py-4">
+                {analysis.repaired > 0 && (
+                    <div className="mb-3 rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-3 py-2 text-[11px] text-emerald-700 dark:text-emerald-300">
+                        <span className="font-semibold">Auto-corrigé :</span> {analysis.repaired} valeur{analysis.repaired > 1 ? 's' : ''} avec guillemets internes non échappés. La version corrigée sera importée.
+                    </div>
+                )}
                 {analysis.status === 'empty' && (
                     <div className="flex h-full items-center justify-center text-center text-sm text-ink-500">
                         Colle le JSON à gauche pour voir le rendu.
@@ -402,8 +509,12 @@ function PreviewPanel({ analysis }) {
                 {analysis.status === 'error' && (
                     <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 font-mono text-[11px] leading-relaxed text-rose-600 dark:text-rose-300">
                         {analysis.error}
-                        <div className="mt-2 text-ink-500">
-                            Astuce : ChatGPT a peut-être ajouté ```json au début ou du texte parasite. Ne colle que le tableau.
+                        <div className="mt-3 space-y-1.5 text-ink-500">
+                            <div className="text-[10px] font-semibold uppercase tracking-widest">Causes fréquentes</div>
+                            <div>· ChatGPT ajoute parfois <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">```json</span>, du texte d'intro ou des références <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">[1]: https://…</span>. Le parser les ignore automatiquement, sauf si le JSON lui-même est mal formé.</div>
+                            <div>· Un bloc contient du code ou du JSON dont les guillemets internes ne sont pas échappés. Il faut <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">{'\\"'}</span> à l'intérieur des strings.</div>
+                            <div>· Crochet non refermé, virgule oubliée, apostrophe typographique <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">’</span> au lieu de <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">'</span>.</div>
+                            <div className="pt-1 text-ink-400 normal-case">Cherche la ligne indiquée dans le message et corrige à la main, ou renvoie à ChatGPT « corrige le JSON, échappe les guillemets internes, renvoie uniquement le tableau ».</div>
                         </div>
                     </div>
                 )}

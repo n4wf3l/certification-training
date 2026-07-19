@@ -2,7 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import CertLogo from '@/Components/CertLogo';
 import Select from '@/Components/Select';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 
 function buildPrompt(certTitle, count, existing = []) {
@@ -93,6 +93,7 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
 10. **Diversité des compétences testées** : sur les ${count} questions, aucune paire ne doit tester exactement le même concept ou la même distinction. Vise la couverture maximale du syllabus. Si un thème manque de variété, privilégie des scénarios originaux plutôt que d'empiler des questions de définition.
 11. **Répartition selon le blueprint** : si l'organisme publie les poids des domaines (ex. Cisco publie le % de chaque domaine dans CCNA), respecte cette proportion sur les ${count} questions.
 12. **Cohérence version** : n'utilise que les concepts, termes et pratiques de la **version actuellement en vigueur** identifiée à l'étape de recherche. Pas de mélange avec des versions retirées.
+13. **Échappement JSON** : si une string contient un guillemet double, une accolade JSON, un extrait de code ou une commande CLI, tu **échappes chaque guillemet interne** avec un antislash (\`\\"\`). Exemple valide : \`"text": "{\\"key\\": \\"value\\"}"\`. Une string mal échappée casse tout le tableau — vérifie mentalement chaque \`text\`, \`question\` et \`scenario\` avant de renvoyer le JSON.
 
 # TYPES À DISTRIBUER ÉQUITABLEMENT
 
@@ -151,19 +152,104 @@ function stripFences(raw) {
     return s.trim();
 }
 
+/** Trouve le premier tableau JSON de haut niveau et ignore tout ce qui suit (footnotes, prose, refs [1]: …). */
+function extractTopLevelArray(raw) {
+    const s = stripFences(raw);
+    const start = s.indexOf('[');
+    if (start < 0) return s;
+    let depth = 0, inString = false, escape = false;
+    for (let i = start; i < s.length; i++) {
+        const ch = s[i];
+        if (escape) { escape = false; continue; }
+        if (ch === '\\') { escape = true; continue; }
+        if (ch === '"') { inString = !inString; continue; }
+        if (inString) continue;
+        if (ch === '[') depth++;
+        else if (ch === ']') {
+            depth--;
+            if (depth === 0) return s.slice(start, i + 1);
+        }
+    }
+    return s.slice(start);
+}
+
+/**
+ * Cas ChatGPT courant : une valeur "text": "{"key":"value"}" contient un objet JSON
+ * dont les guillemets internes n'ont pas été échappés. Cette fonction détecte ce cas
+ * (pattern "clé": "{ ou "clé": "[) et échappe les guillemets internes.
+ */
+function repairUnescapedJsonInStrings(raw) {
+    let out = '';
+    let i = 0;
+    let repairs = 0;
+    const n = raw.length;
+    const keyRe = /^("[a-z_][a-z_0-9]*"\s*:\s*")(\{|\[)/i;
+
+    while (i < n) {
+        const m = raw.slice(i).match(keyRe);
+        if (m) {
+            const prefix = m[1];
+            const opener = m[2];
+            const closer = opener === '{' ? '}' : ']';
+            const openerPos = i + m[1].length; // position of the opener char
+            const afterOpener = openerPos + 1;
+
+            let depth = 1;
+            let j = afterOpener;
+            let sawInnerQuote = false;
+
+            while (j < n && depth > 0) {
+                const ch = raw[j];
+                if (ch === opener) depth++;
+                else if (ch === closer) depth--;
+                else if (ch === '"') sawInnerQuote = true;
+                j++;
+            }
+            // j is now just past the matching closer
+
+            if (depth === 0 && j < n && raw[j] === '"' && sawInnerQuote) {
+                const inner = raw.slice(openerPos, j); // from opener to closer inclusive
+                const escaped = inner.replace(/"/g, '\\"');
+                out += prefix + escaped;
+                i = j; // continue from the closing string quote
+                repairs++;
+                continue;
+            }
+        }
+        out += raw[i];
+        i++;
+    }
+
+    return { repaired: out, count: repairs };
+}
+
 function analyze(payload) {
     if (!payload.trim()) {
-        return { status: 'empty', count: 0, items: [], error: null };
+        return { status: 'empty', count: 0, items: [], error: null, repaired: null, cleanedPayload: null };
     }
+    const extracted = extractTopLevelArray(payload);
     let parsed;
+    let repaired = null;
+    let cleanedPayload = extracted;
     try {
-        parsed = JSON.parse(stripFences(payload));
-    } catch (e) {
-        const msg = e.message || 'JSON invalide';
-        return { status: 'error', count: 0, items: [], error: msg };
+        parsed = JSON.parse(extracted);
+    } catch (initialError) {
+        // Try auto-repair for unescaped inner quotes in JSON string values
+        const attempt = repairUnescapedJsonInStrings(extracted);
+        if (attempt.count > 0) {
+            try {
+                parsed = JSON.parse(attempt.repaired);
+                repaired = attempt.count;
+                cleanedPayload = attempt.repaired;
+            } catch {
+                return { status: 'error', count: 0, items: [], error: initialError.message || 'JSON invalide', repaired: null, cleanedPayload: null };
+            }
+        } else {
+            return { status: 'error', count: 0, items: [], error: initialError.message || 'JSON invalide', repaired: null, cleanedPayload: null };
+        }
     }
     if (!Array.isArray(parsed)) {
-        return { status: 'error', count: 0, items: [], error: 'La racine doit être un tableau [...]' };
+        return { status: 'error', count: 0, items: [], error: 'La racine doit être un tableau [...]', repaired: null, cleanedPayload: null };
     }
     const items = parsed.map((q, i) => {
         const warnings = [];
@@ -190,6 +276,8 @@ function analyze(payload) {
         count: items.length,
         items,
         error: null,
+        repaired,
+        cleanedPayload,
     };
 }
 
@@ -220,6 +308,7 @@ export default function Import({ certifications, default_certification_id, exist
     const [count, setCount] = useState(20);
     const [copied, setCopied] = useState(false);
     const [showExisting, setShowExisting] = useState(false);
+    const [processing, setProcessing] = useState(false);
 
     const form = useForm({
         certification_id: default_certification_id || (certifications[0]?.id ?? ''),
@@ -253,9 +342,23 @@ export default function Import({ certifications, default_certification_id, exist
 
     const submit = (e) => {
         e.preventDefault();
-        form.post(route('admin.questions.import.store'), {
-            preserveScroll: (page) => Object.keys(page.props.errors).length > 0,
-        });
+        // Use router.post directly with the (possibly auto-repaired) payload.
+        setProcessing(true);
+        form.clearErrors();
+        router.post(
+            route('admin.questions.import.store'),
+            {
+                certification_id: form.data.certification_id,
+                payload: analysis.cleanedPayload || form.data.payload,
+            },
+            {
+                preserveScroll: (page) => Object.keys(page.props.errors).length > 0,
+                onError: (errs) => {
+                    Object.entries(errs).forEach(([k, v]) => form.setError(k, v));
+                },
+                onFinish: () => setProcessing(false),
+            }
+        );
     };
 
     const canSubmit = form.data.certification_id
@@ -263,7 +366,7 @@ export default function Import({ certifications, default_certification_id, exist
         && analysis.status !== 'error'
         && analysis.count > 0
         && !analysis.items.some((it) => it.warnings.length > 0)
-        && !form.processing;
+        && !processing;
 
     return (
         <AppLayout ambient={false}>
@@ -489,8 +592,8 @@ export default function Import({ certifications, default_certification_id, exist
                                     : 'cursor-not-allowed bg-ink-200 text-ink-500 dark:bg-ink-800 dark:text-ink-500'
                             }`}
                         >
-                            {form.processing ? 'Import en cours…' : `Importer ${analysis.count || 0} question${analysis.count > 1 ? 's' : ''}`}
-                            {!form.processing && <Icon.ArrowRight className="h-4 w-4" />}
+                            {processing ? 'Import en cours…' : `Importer ${analysis.count || 0} question${analysis.count > 1 ? 's' : ''}`}
+                            {!processing && <Icon.ArrowRight className="h-4 w-4" />}
                         </button>
                         {analysis.status === 'warnings' && (
                             <span className="font-mono text-[11px] uppercase tracking-widest text-amber-600">
@@ -529,6 +632,11 @@ function PreviewPanel({ analysis }) {
                 {analysis.status === 'empty' && <span>En attente</span>}
             </div>
             <div className="h-[calc(100%-33px)] overflow-y-auto p-3 text-xs">
+                {analysis.repaired > 0 && (
+                    <div className="mb-3 rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-3 py-2 text-[11px] text-emerald-700 dark:text-emerald-300">
+                        <span className="font-semibold">Auto-corrigé :</span> {analysis.repaired} valeur{analysis.repaired > 1 ? 's' : ''} avec guillemets internes non échappés. La version corrigée sera importée.
+                    </div>
+                )}
                 {analysis.status === 'empty' && (
                     <div className="flex h-full items-center justify-center text-center text-ink-500">
                         Colle le JSON de ChatGPT dans la zone à gauche.
@@ -537,8 +645,12 @@ function PreviewPanel({ analysis }) {
                 {analysis.status === 'error' && (
                     <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 font-mono text-[11px] leading-relaxed text-rose-600 dark:text-rose-300">
                         {analysis.error}
-                        <div className="mt-2 text-ink-500">
-                            Astuce : ChatGPT a peut-être ajouté ```json au début ou du texte avant/après. Ne colle que le tableau JSON.
+                        <div className="mt-3 space-y-1.5 text-ink-500">
+                            <div className="text-[10px] font-semibold uppercase tracking-widest">Causes fréquentes</div>
+                            <div>· ChatGPT a ajouté <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">```json</span> au début ou du texte hors du tableau.</div>
+                            <div>· Une réponse contient un objet JSON / code dont les guillemets internes ne sont pas échappés. Il faut <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">{'"{\\"key\\":\\"value\\"}"'}</span> et non <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">{'"{"key":"value"}"'}</span>.</div>
+                            <div>· Une apostrophe typographique <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">’</span> au lieu de l'apostrophe droite <span className="rounded bg-ink-200 px-1 dark:bg-ink-800">'</span>.</div>
+                            <div className="pt-1 text-ink-400 normal-case">Cherche la ligne indiquée dans le message et corrige à la main, ou renvoie à ChatGPT « corrige le JSON, échappe les guillemets internes, renvoie uniquement le tableau ».</div>
                         </div>
                     </div>
                 )}

@@ -27,6 +27,9 @@ class HandleInertiaRequests extends Middleware
                     'email' => $user->email,
                     'role' => $user->role,
                     'is_admin' => $user->isAdmin(),
+                    'has_attempts' => \App\Models\Attempt::where('user_id', $user->id)
+                        ->whereNotNull('completed_at')
+                        ->exists(),
                 ] : null,
             ],
             'settings' => fn () => [

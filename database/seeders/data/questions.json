@@ -1,0 +1,4768 @@
+{
+    "ccna-200-301": [
+        {
+            "position": 1,
+            "topic": "Rôle des composants réseau",
+            "scenario": "Un point d’accès Wi-Fi monté au plafond doit recevoir à la fois les données et son alimentation sans prise électrique locale.",
+            "question_text": "Quelle fonction du commutateur répond directement à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le routage inter-VLAN",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Power over Ethernet (PoE)",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "L’agrégation de liens LACP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La traduction d’adresses NAT",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 2,
+            "topic": "Architectures de topologie réseau",
+            "scenario": "Un centre de données exige une latence prévisible entre serveurs et plusieurs chemins de coût égal entre chaque baie.",
+            "question_text": "Quelle architecture répond le mieux à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Trois niveaux avec cœur, distribution et accès",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Spine-leaf",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "SOHO avec routeur intégré",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "WAN en étoile avec un site central",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 3,
+            "topic": "Types d’interfaces et de câblage",
+            "scenario": "Deux bâtiments distants de plusieurs kilomètres doivent être reliés par fibre, avec une atténuation minimale et un seul mode de propagation lumineuse.",
+            "question_text": "Quel média physique faut-il choisir ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Fibre multimode",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Fibre monomode",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Cuivre à paires torsadées",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Ethernet sur média partagé",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 4,
+            "topic": "Problèmes d’interface et de câble",
+            "scenario": "Une interface affiche de nombreuses collisions tardives et un faible débit. Un côté du lien est configuré en full-duplex et l’autre en half-duplex.",
+            "question_text": "Quelle est la cause la plus probable ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une discordance de duplex",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une discordance de VLAN natif",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un MTU IPv6 trop faible",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une adresse MAC vieillie",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 5,
+            "topic": "TCP et UDP",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit correctement une différence entre TCP et UDP ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "UDP établit une session par échange en trois étapes avant de transmettre",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "TCP fournit séquencement, acquittements et retransmissions",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "TCP ne peut pas effectuer de contrôle de flux",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "UDP garantit la livraison dans l’ordre",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 6,
+            "topic": "Adressage et sous-réseaux IPv4",
+            "scenario": "Le réseau 192.0.2.0/24 doit être subdivisé en sous-réseaux offrant chacun au moins 30 adresses hôtes utilisables.",
+            "question_text": "Quel préfixe est le plus long qui satisfait l’exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "/25",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "/26",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "/27",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "/28",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 7,
+            "topic": "Adressage IPv4 privé",
+            "scenario": null,
+            "question_text": "Quelle adresse appartient à une plage IPv4 privée définie pour les réseaux internes ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "172.20.14.9",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "172.32.14.9",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "192.0.2.9",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "198.51.100.9",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 8,
+            "topic": "Types d’adresses IPv6",
+            "scenario": "Un routeur doit communiquer avec un voisin IPv6 directement connecté avant qu’un préfixe global ne soit configuré.",
+            "question_text": "Quel type d’adresse source peut-il utiliser sur ce lien ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Unicast globale",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Unique locale",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Link-local",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Anycast globale",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 9,
+            "topic": "Principes sans fil",
+            "scenario": "Trois points d’accès 2,4 GHz proches doivent être configurés afin de réduire au minimum le chevauchement de canaux.",
+            "question_text": "Quel ensemble de canaux est approprié dans un domaine réglementaire utilisant les canaux 1 à 11 ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "1, 5 et 9",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "1, 6 et 11",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "2, 7 et 10",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "3, 6 et 9",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 10,
+            "topic": "Concepts de commutation",
+            "scenario": "Un commutateur reçoit une trame unicast dont l’adresse MAC source est inconnue et l’adresse MAC de destination n’existe pas dans sa table.",
+            "question_text": "Quel comportement est attendu ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Il apprend l’adresse source sur le port d’entrée puis inonde la trame sur les autres ports du VLAN",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Il apprend l’adresse de destination sur le port d’entrée puis abandonne la trame",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Il diffuse la trame sur tous les VLAN et n’apprend aucune adresse",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Il envoie la trame uniquement vers la passerelle par défaut",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 11,
+            "topic": "VLANs",
+            "scenario": "Un téléphone IP et un poste de travail partagent le même port de commutateur. La voix doit être placée dans le VLAN 20 et les données dans le VLAN 10.",
+            "question_text": "Quelle configuration de port répond à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Configurer le port en trunk avec le VLAN natif 20 uniquement",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Configurer le VLAN d’accès 10 et le VLAN voix 20",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Configurer deux ports routés sur la même interface physique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Configurer le VLAN d’accès 20 et désactiver CDP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 12,
+            "topic": "Connectivité intercommutateurs",
+            "scenario": "Deux commutateurs reliés par un trunk 802.1Q utilisent respectivement les VLAN natifs 10 et 20.",
+            "question_text": "Quel effet est le plus directement associé à cette discordance ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les trames non étiquetées peuvent être placées dans des VLAN différents aux deux extrémités",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "LACP désactive automatiquement tous les liens membres",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les adresses MAC ne vieillissent plus",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le routage OSPF élit un nouveau DR",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 13,
+            "topic": "Connectivité inter-VLAN",
+            "scenario": "Des hôtes des VLAN 10 et 20 doivent communiquer par l’intermédiaire d’un commutateur de couche 3.",
+            "question_text": "Quelle action est nécessaire sur ce commutateur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Créer des interfaces VLAN avec des adresses IP et activer le routage IP",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Configurer uniquement un trunk vers chaque hôte",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Placer les deux VLAN dans le même domaine de diffusion",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Désactiver l’apprentissage MAC sur les ports d’accès",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 14,
+            "topic": "Protocoles de découverte de couche 2",
+            "scenario": null,
+            "question_text": "Quelle affirmation compare correctement Cisco Discovery Protocol et LLDP ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les deux sont des protocoles Cisco propriétaires",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "LLDP est normalisé, tandis que Cisco Discovery Protocol est propriétaire Cisco",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Cisco Discovery Protocol fonctionne uniquement entre routeurs et LLDP uniquement entre commutateurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "LLDP chiffre les annonces de voisinage, contrairement à Cisco Discovery Protocol",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 15,
+            "topic": "EtherChannel LACP",
+            "scenario": "Deux liens doivent former un EtherChannel avec LACP. Un côté est configuré en mode active.",
+            "question_text": "Quel mode distant permet la formation du canal sans forcer statiquement l’agrégation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "On",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Auto",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Passive",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Desirable",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 16,
+            "topic": "Rapid PVST+",
+            "scenario": "Pour le VLAN 30, SW1 a une priorité 24576 et une adresse MAC 00AA.AAAA.AAAA. SW2 a une priorité 24576 et une adresse MAC 0099.9999.9999.",
+            "question_text": "Quel commutateur devient le pont racine si aucun autre commutateur n’a un Bridge ID inférieur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "SW1, car son adresse MAC est plus élevée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "SW1, car la priorité identique favorise le premier configuré",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "SW2, car son adresse MAC est plus faible",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "SW2, car Rapid PVST+ choisit toujours le commutateur le plus récent",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 17,
+            "topic": "Rapid PVST+",
+            "scenario": "Un port d’accès relié à un poste utilisateur est configuré avec PortFast. L’administrateur veut placer immédiatement le port en err-disabled si une BPDU y est reçue.",
+            "question_text": "Quelle fonction faut-il ajouter ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Root guard",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Loop guard",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "BPDU guard",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "BPDU filter",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 18,
+            "topic": "Architectures sans fil Cisco et modes AP",
+            "scenario": "Un point d’accès léger perd sa connectivité avec le contrôleur, mais doit continuer à commuter localement le trafic des clients d’un site distant.",
+            "question_text": "Quel mode AP est conçu pour ce scénario ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Monitor",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Sniffer",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "FlexConnect",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Rogue detector",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 19,
+            "topic": "Connexions d’infrastructure WLAN",
+            "scenario": "Un WLC central transporte plusieurs VLAN clients vers un commutateur par une seule connexion logique composée de plusieurs liens physiques.",
+            "question_text": "Quelle combinaison décrit le mieux cette connexion ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Port d’accès et PortFast",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Trunk 802.1Q et LAG",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Lien routé et HSRP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Port console et EtherChannel de couche 3 vers les AP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 20,
+            "topic": "Accès de gestion des équipements réseau",
+            "scenario": "Un administrateur doit gérer un commutateur à distance en protégeant les identifiants et les commandes contre l’écoute.",
+            "question_text": "Quel protocole est le choix le plus approprié ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Telnet",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "HTTP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "SSH",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "TFTP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 21,
+            "topic": "Composants de la table de routage",
+            "scenario": null,
+            "question_text": "Dans une entrée de routage, quel champ indique la préférence de la source de route par rapport à d’autres sources apprenant le même préfixe ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La métrique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La distance administrative",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le prochain saut",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le masque réseau",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 22,
+            "topic": "Décision de transfert du routeur",
+            "scenario": "La table contient 10.0.0.0/8 via R1, 10.20.0.0/16 via R2 et 10.20.30.0/24 via R3.",
+            "question_text": "Vers quel prochain saut un paquet destiné à 10.20.30.77 est-il envoyé ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "R1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "R2",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "R3",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La passerelle de dernier recours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 23,
+            "topic": "Décision de transfert du routeur",
+            "scenario": "Un routeur apprend 192.168.50.0/24 par OSPF avec une distance administrative de 110 et par une route statique avec une distance administrative de 1.",
+            "question_text": "Quelle route est installée par défaut dans la table de routage ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La route OSPF, car sa métrique est dynamique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La route statique, car sa distance administrative est inférieure",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les deux routes, car le préfixe est identique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Aucune, car les sources sont en conflit",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 24,
+            "topic": "Décision de transfert du routeur",
+            "scenario": "Deux routes OSPF vers le même préfixe ont la même longueur de préfixe et la même distance administrative, mais des coûts OSPF différents.",
+            "question_text": "Quel critère départage ces routes ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "L’adresse IP du prochain saut la plus élevée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La métrique OSPF",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le numéro de système autonome",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La priorité STP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 25,
+            "topic": "Routage statique IPv4 et IPv6",
+            "scenario": null,
+            "question_text": "Quelle route IPv4 correspond à une route par défaut ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "ip route 0.0.0.0 0.0.0.0 192.0.2.1",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "ip route 0.0.0.0 255.255.255.255 192.0.2.1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "ip route 192.0.2.0 0.0.0.0 198.51.100.1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "ip default-gateway 0.0.0.0 192.0.2.1",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 26,
+            "topic": "Routage statique IPv4 et IPv6",
+            "scenario": "Un administrateur veut créer une route IPv4 correspondant à une seule destination, 203.0.113.45.",
+            "question_text": "Quel masque doit être utilisé pour cette route hôte ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "255.255.255.0",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "255.255.255.252",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "255.255.255.254",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "255.255.255.255",
+                    "is_correct": true
+                }
+            ]
+        },
+        {
+            "position": 27,
+            "topic": "Routage statique IPv4 et IPv6",
+            "scenario": "OSPF fournit la route principale vers 198.51.100.0/24. Une route statique ne doit être utilisée que si la route OSPF disparaît.",
+            "question_text": "Quelle caractéristique doit avoir la route statique flottante ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une distance administrative supérieure à celle d’OSPF",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une métrique inférieure à celle d’OSPF",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un préfixe moins spécifique que /24 uniquement",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une adresse de prochain saut multicast",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 28,
+            "topic": "Routage statique IPv4 et IPv6",
+            "scenario": null,
+            "question_text": "Quelle commande configure une route IPv6 par défaut via le prochain saut 2001:db8:1::1 ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "ipv6 route ::/0 2001:db8:1::1",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "ip route ::/0 2001:db8:1::1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "ipv6 default-route 2001:db8:1::1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "ipv6 route 0.0.0.0/0 2001:db8:1::1",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 29,
+            "topic": "OSPFv2 à zone unique",
+            "scenario": "Deux routeurs OSPFv2 directement connectés ne deviennent pas voisins. Leurs adresses appartiennent au même sous-réseau et leurs interfaces sont actives, mais l’un est en zone 0 et l’autre en zone 1.",
+            "question_text": "Quelle correction est nécessaire ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Attribuer le même Router ID aux deux routeurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Placer les interfaces voisines dans la même zone OSPF",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Configurer une route statique flottante",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Élire manuellement le même DR sur les deux routeurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 30,
+            "topic": "OSPFv2 à zone unique",
+            "scenario": "Deux routeurs sont reliés par un lien Ethernet dédié sans autre équipement de couche 3 sur le segment.",
+            "question_text": "Quel type de réseau OSPF évite une élection DR/BDR sur ce lien ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Broadcast",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Point-to-point",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Nonbroadcast multiaccess",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Passive-interface",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 31,
+            "topic": "OSPFv2 à zone unique",
+            "scenario": "Sur un réseau broadcast, R1 a une priorité OSPF 100, R2 une priorité 50 et R3 une priorité 0. Aucun DR ou BDR n’a encore été élu.",
+            "question_text": "Quel routeur est éligible et devient DR ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "R1",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "R2",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "R3",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "R3 devient DR et R1 devient BDR",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 32,
+            "topic": "OSPFv2 à zone unique",
+            "scenario": "Aucun Router ID OSPF n’est configuré manuellement. Le routeur possède les loopbacks 10.10.10.10/32 et 10.20.20.20/32, ainsi qu’une interface physique 192.0.2.1/24.",
+            "question_text": "Quel Router ID OSPF est sélectionné au démarrage du processus ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "192.0.2.1",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "10.10.10.10",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "10.20.20.20",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "0.0.0.0",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 33,
+            "topic": "Protocoles de redondance de premier saut",
+            "scenario": "Deux routeurs fournissent une passerelle redondante à un même VLAN utilisateur.",
+            "question_text": "Quel élément les hôtes utilisent-ils afin de conserver une passerelle par défaut stable lors de la panne d’un routeur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une adresse IP virtuelle",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le Router ID OSPF du routeur actif",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une adresse link-local apprise par CDP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le VLAN natif du trunk",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 34,
+            "topic": "NAT source interne",
+            "scenario": "Un serveur interne 10.10.10.20 doit toujours être accessible depuis l’extérieur au moyen de l’adresse publique 203.0.113.20.",
+            "question_text": "Quel type de traduction répond à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "NAT statique source interne",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "NAT dynamique avec un pool sans réservation",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "DHCP relay",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "PAT uniquement basé sur l’adresse de l’interface",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 35,
+            "topic": "NTP client et serveur",
+            "scenario": "R1 doit obtenir l’heure de R2, tandis que R2 est synchronisé sur une source de temps fiable.",
+            "question_text": "Quel rôle NTP R1 exerce-t-il par rapport à R2 ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Serveur NTP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Client NTP",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Maître DNS",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Agent SNMP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 36,
+            "topic": "Client et relais DHCP",
+            "scenario": "Les clients d’un VLAN ne reçoivent aucune adresse. Le serveur DHCP se trouve dans un autre sous-réseau, et le routeur ne transfère pas les broadcasts DHCP.",
+            "question_text": "Quelle configuration doit être ajoutée sur l’interface de passerelle du VLAN client ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une adresse ip helper-address pointant vers le serveur DHCP",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une route statique hôte vers chaque client",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une commande ntp server pointant vers le serveur DHCP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une ACL standard qui refuse UDP",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 37,
+            "topic": "Comportement PHB pour la QoS",
+            "scenario": "Un opérateur veut limiter un flux à un débit contractuel et supprimer immédiatement les paquets excédentaires plutôt que de les mettre temporairement en mémoire.",
+            "question_text": "Quel mécanisme QoS correspond à ce comportement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Shaping",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Policing",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Queuing",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Classification",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 38,
+            "topic": "Accès distant SSH",
+            "scenario": "Un commutateur possède une adresse IP de gestion. Les clés RSA sont générées, mais la ligne VTY accepte encore Telnet et n’utilise pas la base locale.",
+            "question_text": "Quelle combinaison finalise un accès SSH utilisant les comptes locaux ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "login local et transport input ssh",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "login et transport output telnet",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "no login et transport input all",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "aaa authorization exec default et transport input http",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 39,
+            "topic": "Concepts clés de sécurité",
+            "scenario": null,
+            "question_text": "Quel terme désigne une faiblesse susceptible d’être exploitée dans un système ou une configuration ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Menace",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Vulnérabilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Exploit",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Technique de mitigation",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 40,
+            "topic": "Protocoles de sécurité sans fil",
+            "scenario": "Une entreprise remplace un ancien WLAN utilisant WPA par une solution moderne offrant une meilleure protection contre les attaques par dictionnaire hors ligne et une authentification plus robuste.",
+            "question_text": "Quel protocole sans fil répond le mieux à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "WPA avec TKIP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "WPA2 avec WEP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "WPA3",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Un SSID masqué sans chiffrement",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 41,
+            "topic": "Politiques de mot de passe",
+            "scenario": "L’entreprise veut qu’un mot de passe volé ne suffise pas à ouvrir une session d’administration.",
+            "question_text": "Quelle mesure répond le mieux à cette exigence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Augmenter uniquement la longueur minimale du mot de passe",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Activer une authentification multifacteur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Réduire la durée de vieillissement des adresses MAC",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Utiliser Telnet avec un mot de passe chiffré",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 42,
+            "topic": "VPN IPsec",
+            "scenario": "Deux agences doivent protéger en permanence le trafic IP échangé entre leurs réseaux privés à travers Internet, sans action individuelle des utilisateurs.",
+            "question_text": "Quel type de VPN est le plus approprié ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "VPN IPsec site à site",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "VPN IPsec d’accès distant par utilisateur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Tunnel CAPWAP entre AP et WLC",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Trunk 802.1Q chiffré",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 43,
+            "topic": "Listes de contrôle d’accès",
+            "scenario": "Une ACL étendue doit autoriser les hôtes du réseau 10.10.10.0/24 à accéder en HTTPS au serveur 192.0.2.50, puis refuser les autres accès à ce serveur.",
+            "question_text": "Quelle entrée d’autorisation est correcte ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "permit tcp 10.10.10.0 0.0.0.255 host 192.0.2.50 eq 443",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "permit udp host 10.10.10.0 255.255.255.0 192.0.2.50 eq 443",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "permit ip 10.10.10.0 255.255.255.0 any eq 443",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "permit tcp any 192.0.2.50 0.0.0.255 eq 22",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 44,
+            "topic": "Sécurité de couche 2",
+            "scenario": "Un commutateur doit bloquer les réponses ARP falsifiées en vérifiant les associations IP-MAC apprises par DHCP snooping.",
+            "question_text": "Quelle fonction faut-il activer ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Port security",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Dynamic ARP Inspection",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "BPDU filter",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Root guard",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 45,
+            "topic": "Authentification, autorisation et comptabilité",
+            "scenario": "Un serveur central vérifie d’abord l’identité d’un administrateur, détermine ensuite les commandes qu’il peut exécuter, puis journalise ces commandes.",
+            "question_text": "Quel ordre AAA est décrit ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Autorisation, authentification, comptabilité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Authentification, comptabilité, autorisation",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Authentification, autorisation, comptabilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Comptabilité, autorisation, authentification",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 46,
+            "topic": "Impact de l’automatisation",
+            "scenario": "Une équipe remplace des modifications manuelles répétitives par des modèles validés appliqués automatiquement à des centaines d’équipements.",
+            "question_text": "Quel bénéfice est le plus directement attendu ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une réduction des incohérences de configuration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La suppression de tout besoin de contrôle des changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La disparition des plans de contrôle et de données",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "L’élimination de toutes les pannes matérielles",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 47,
+            "topic": "Architecture contrôlée par logiciel",
+            "scenario": null,
+            "question_text": "Dans une architecture basée sur contrôleur, quelle interface relie généralement le contrôleur aux équipements de l’infrastructure ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "API northbound",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "API southbound",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "API utilisateur graphique uniquement",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "API de plan de données vers l’application métier",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 48,
+            "topic": "IA et machine learning",
+            "scenario": "Une plateforme analyse des séries temporelles de télémétrie pour prévoir une saturation de lien avant qu’elle ne se produise.",
+            "question_text": "Quelle catégorie décrit le mieux cette utilisation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "IA générative produisant une configuration à partir d’un texte",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "IA prédictive fondée sur un modèle de machine learning",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Simple NAT statique sans apprentissage",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Encapsulation d’overlay sans analyse",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 49,
+            "topic": "API REST",
+            "scenario": "Une application doit modifier partiellement une ressource existante via une API REST sans remplacer nécessairement toute sa représentation.",
+            "question_text": "Quel verbe HTTP est le plus approprié ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "GET",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "POST",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "PATCH",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "DELETE",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 50,
+            "topic": "Gestion de configuration",
+            "scenario": "Une équipe veut décrire un état d’infrastructure souhaité, prévisualiser les changements nécessaires, puis créer ou modifier les ressources de manière déclarative.",
+            "question_text": "Quel mécanisme du syllabus correspond le mieux à ce besoin ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Terraform",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Syslog",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Cisco Discovery Protocol",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "TFTP",
+                    "is_correct": false
+                }
+            ]
+        }
+    ],
+    "comptia-a-plus": [],
+    "aws-cloud-practitioner": [],
+    "itil-foundation-v5": [
+        {
+            "position": 1,
+            "topic": "Résultat vs sortie",
+            "scenario": "Une équipe informatique livre une nouvelle application dans les délais et respecte toutes les spécifications. Pourtant, les utilisateurs mettent davantage de temps à accomplir leur travail qu’avec l’ancienne application.",
+            "question_text": "Quelle affirmation est la plus correcte ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La valeur a été créée puisque toutes les spécifications ont été respectées",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une sortie a été livrée, mais le résultat attendu n’a probablement pas été atteint",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le résultat a été atteint, mais la garantie est insuffisante",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le produit doit automatiquement être considéré comme défectueux",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 2,
+            "topic": "Valeur et parties prenantes",
+            "scenario": "Une entreprise réduit le prix d’un service, mais augmente fortement les délais de résolution. Certains clients restent satisfaits, tandis que d’autres considèrent le service inutilisable.",
+            "question_text": "Que montre principalement cette situation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La valeur est identique pour toutes les parties prenantes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La valeur dépend uniquement du prix du service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La valeur est perçue différemment selon les parties prenantes et leur contexte",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La valeur ne peut être mesurée qu’après la fin du contrat",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 3,
+            "topic": "Co-création de valeur",
+            "scenario": "Un fournisseur met à disposition une plateforme cloud, tandis que le client reste responsable de la configuration des comptes utilisateurs et de la sécurité de ses données.",
+            "question_text": "Quel concept cette situation illustre-t-elle le mieux ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La valeur est créée uniquement par le fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le consommateur participe également à la création de valeur et à la gestion des risques",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Tous les risques doivent être transférés au fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le client n’a aucune responsabilité lorsqu’il utilise un service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 4,
+            "topic": "Principe — Commencer là où vous êtes",
+            "scenario": "Une organisation prévoit de remplacer son outil de gestion des tickets. Avant de le faire, elle analyse l’outil actuel et découvre que la plupart des problèmes viennent d’une mauvaise configuration.",
+            "question_text": "Quel principe directeur est principalement appliqué ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Privilégier la valeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Collaborer et promouvoir la visibilité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 5,
+            "topic": "Principe — Optimiser et automatiser",
+            "scenario": "Une équipe automatise un processus comportant douze validations. Le processus automatisé reste lent, car dix validations n’apportent aucune valeur.",
+            "question_text": "Quelle approche aurait été la plus appropriée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Automatiser d’abord, puis analyser le processus après plusieurs années",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Optimiser le processus avant de l’automatiser",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Ajouter davantage de validations automatisées",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Transférer le processus à une autre équipe",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 6,
+            "topic": "Principe — Penser et travailler de manière holistique",
+            "scenario": "Une amélioration réduit le temps de traitement du service desk, mais augmente considérablement la charge des équipes réseau et sécurité.",
+            "question_text": "Quel principe directeur a principalement été négligé ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Penser et travailler de manière holistique",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 7,
+            "topic": "Principe — Progresser par itérations",
+            "scenario": "Un projet de six mois est divisé en livraisons de deux semaines. Après chaque livraison, les utilisateurs donnent leur avis et les priorités sont ajustées.",
+            "question_text": "Quel principe est principalement appliqué ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Privilégier la valeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Optimiser et automatiser",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 8,
+            "topic": "Principe — Faire simple et pratique",
+            "scenario": "Une équipe produit chaque semaine un rapport de 80 pages. Seules deux pages sont réellement utilisées pour prendre des décisions.",
+            "question_text": "Quelle action correspond le mieux au principe « Faire simple et pratique » ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Ajouter davantage de données au rapport",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Supprimer le rapport sans consulter les utilisateurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Conserver les informations utiles et supprimer la complexité inutile",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Automatiser la production des 80 pages sans modifier leur contenu",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 9,
+            "topic": "Principe — Collaborer et promouvoir la visibilité",
+            "scenario": "Une organisation veut améliorer l’onboarding informatique. Elle réunit les ressources humaines, le service desk, la sécurité et les managers afin de rendre visibles les dépendances et responsabilités.",
+            "question_text": "Quel principe est principalement appliqué ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Collaborer et promouvoir la visibilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Optimiser et automatiser",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 10,
+            "topic": "Principe — Privilégier la valeur",
+            "scenario": "Avant de modifier un service, une équipe demande : « Quel bénéfice concret les utilisateurs et l’organisation doivent-ils obtenir ? »",
+            "question_text": "Quel principe applique-t-elle principalement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Penser et travailler de manière holistique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Privilégier la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 11,
+            "topic": "Dimension — Organisations et personnes",
+            "scenario": "Une entreprise étudie les compétences requises, les responsabilités, la culture et la résistance au changement avant de déployer un nouvel outil.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 12,
+            "topic": "Dimension — Information et technologie",
+            "scenario": "Une organisation évalue la qualité des données, les intégrations, les infrastructures et la cybersécurité d’une solution.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Information et technologie",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 13,
+            "topic": "Dimension — Flux de valeur et processus",
+            "scenario": "Une entreprise analyse les activités, transferts, délais d’attente et blocages nécessaires pour répondre à une demande utilisateur.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 14,
+            "topic": "Dimension — Partenaires et fournisseurs",
+            "scenario": "Une organisation compare l’internalisation d’un service avec son externalisation auprès d’un prestataire spécialisé.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 15,
+            "topic": "Approche holistique des dimensions",
+            "scenario": null,
+            "question_text": "Pourquoi les quatre dimensions doivent-elles être considérées ensemble ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce qu’une faiblesse dans une dimension peut affecter l’ensemble du service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce que chaque dimension doit disposer du même budget",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce que les quatre dimensions sont toujours gérées par la même équipe",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce qu’elles remplacent toutes les pratiques ITIL",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 16,
+            "topic": "Facteurs externes (PESTLE)",
+            "scenario": "Une nouvelle réglementation impose des exigences supplémentaires concernant la conservation des données.",
+            "question_text": "De quel type de facteur externe s’agit-il principalement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Technologique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Économique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Légal",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Environnemental",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 17,
+            "topic": "Facteurs externes — impact multi-dimensions",
+            "scenario": "Une pénurie mondiale de composants augmente les prix et ralentit les livraisons de matériel.",
+            "question_text": "Pourquoi cette situation doit-elle être prise en compte ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce que les facteurs externes peuvent influencer plusieurs dimensions du service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce que seules les équipes financières sont concernées",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce qu’ITIL exige de changer immédiatement de fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce que les facteurs externes ne peuvent pas être gérés",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 18,
+            "topic": "Système de valeur ITIL",
+            "scenario": null,
+            "question_text": "Quel est l’objectif principal du système de valeur ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Décrire uniquement les activités du service desk",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Montrer comment les composants et activités fonctionnent ensemble pour créer de la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Remplacer tous les processus existants par des procédures standard",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Séparer strictement les fournisseurs des consommateurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 19,
+            "topic": "Gouvernance",
+            "scenario": "Le conseil de direction examine les résultats, fixe les orientations et vérifie que l’organisation respecte ses objectifs.",
+            "question_text": "Quel élément du système de valeur est décrit ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gouvernance",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Chaîne de valeur des services",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Amélioration continue",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pratiques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 20,
+            "topic": "Gouvernance — activités",
+            "scenario": null,
+            "question_text": "Quelles sont les trois activités fondamentales de la gouvernance ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Planifier, construire et soutenir",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Évaluer, diriger et surveiller",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Engager, obtenir et livrer",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Concevoir, tester et déployer",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 21,
+            "topic": "Pratiques ITIL",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux une pratique ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une procédure obligatoire appliquée de manière identique partout",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Un ensemble de ressources organisationnelles conçu pour accomplir un travail ou atteindre un objectif",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une activité réalisée uniquement par les équipes techniques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Un document décrivant les étapes d’un processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 22,
+            "topic": "Amélioration continue — culture",
+            "scenario": "Une organisation crée une équipe spécialisée dans l’amélioration continue. Les autres équipes considèrent désormais que les améliorations ne relèvent plus de leur responsabilité.",
+            "question_text": "Quel est le principal problème ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "L’amélioration continue doit être intégrée dans toute l’organisation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une équipe spécialisée est interdite par ITIL",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les améliorations ne doivent concerner que la direction",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Toutes les améliorations doivent être réalisées par des fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 23,
+            "topic": "Modèle d’amélioration continue",
+            "scenario": null,
+            "question_text": "Quelle est la première question du modèle d’amélioration continue ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Où en sommes-nous actuellement ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Où voulons-nous être ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Quelle est la vision ?",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Comment y parvenir ?",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 24,
+            "topic": "Modèle d’amélioration continue",
+            "scenario": "Une équipe définit un objectif d’amélioration sans mesurer les performances actuelles.",
+            "question_text": "Quelle difficulté cela crée-t-il principalement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Il sera difficile d’évaluer précisément les progrès réalisés",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "L’amélioration deviendra nécessairement trop coûteuse",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Aucun changement ne pourra être implémenté",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La vision devra être abandonnée",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 25,
+            "topic": "Amélioration continue — boucle",
+            "scenario": "Une équipe met en œuvre une amélioration et constate qu’elle n’a pas produit les résultats attendus.",
+            "question_text": "Quelle est la meilleure action ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Déclarer l’amélioration réussie puisque le changement a été déployé",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Analyser les résultats, apprendre et ajuster l’approche",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Supprimer toutes les mesures de performance",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Revenir automatiquement à l’état initial",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 26,
+            "topic": "Flux de valeur — définition",
+            "scenario": null,
+            "question_text": "Qu’est-ce qu’un flux de valeur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une liste des technologies utilisées par l’organisation",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une série d’étapes permettant de créer et fournir de la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un contrat conclu avec un fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une mesure du coût total d’un service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 27,
+            "topic": "Cartographie du flux de valeur",
+            "scenario": null,
+            "question_text": "Pourquoi cartographier un flux de valeur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Pour identifier les activités, délais, blocages et opportunités d’amélioration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Pour donner un titre officiel à chaque activité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pour rendre toutes les équipes indépendantes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pour supprimer automatiquement les risques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 28,
+            "topic": "Flux de valeur — goulots",
+            "scenario": "Une demande de création de compte passe par huit équipes et reste plusieurs jours entre chaque transfert.",
+            "question_text": "Quel élément doit être examiné en priorité ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les transferts et temps d’attente dans le flux de valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le nombre de logiciels utilisés par le demandeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le budget annuel de chaque équipe",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "L’ancienneté des employés",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 29,
+            "topic": "Cycle de vie — Découverte",
+            "scenario": null,
+            "question_text": "Lors de la phase de découverte, quelle activité est la plus appropriée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Comprendre les besoins, problèmes et opportunités",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Déployer immédiatement une solution complète",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Fermer les incidents liés au service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Renouveler tous les contrats fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 30,
+            "topic": "Cycle de vie — Conception",
+            "scenario": null,
+            "question_text": "Quel est le principal objectif de la conception d’un produit ou service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Définir une solution répondant aux besoins et contraintes identifiés",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Garantir qu’aucun changement ne sera nécessaire",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Réduire le nombre de parties prenantes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Choisir systématiquement la technologie la moins chère",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 31,
+            "topic": "Cycle de vie — Transition / Support",
+            "scenario": null,
+            "question_text": "Pourquoi les équipes de support doivent-elles être impliquées avant le lancement d’un nouveau service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Pour s’assurer que le service peut être exploité et soutenu efficacement",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Pour empêcher les développeurs de modifier le produit",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pour transférer tous les risques au service desk",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pour éliminer la nécessité de documentation",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 32,
+            "topic": "Cycle de vie — Exploitation",
+            "scenario": "Un produit est techniquement performant, mais aucun processus n’existe pour gérer les accès, les incidents ou les mises à jour.",
+            "question_text": "Quel est le principal risque ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le produit pourrait être difficile à exploiter et à soutenir durant son cycle de vie",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le produit sera automatiquement considéré comme gratuit",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La technologie cessera immédiatement de fonctionner",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les utilisateurs ne pourront jamais recevoir de formation",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 33,
+            "topic": "Cycle de vie complet",
+            "scenario": null,
+            "question_text": "Pourquoi faut-il considérer l’ensemble du cycle de vie d’un produit ou service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Pour tenir compte des impacts à long terme, de l’exploitation jusqu’au retrait",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Pour empêcher toute modification après la conception",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pour garantir que le même fournisseur soit toujours utilisé",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pour éviter de recueillir les retours des utilisateurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 34,
+            "topic": "Mesures — indicateurs pertinents",
+            "scenario": "L’objectif est de permettre aux nouveaux employés d’être productifs dès leur premier jour.",
+            "question_text": "Quel indicateur est le plus directement lié à cet objectif ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Nombre d’ordinateurs préparés chaque mois",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Nombre d’heures prestées par les techniciens",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pourcentage de nouveaux employés disposant de leurs accès et outils au début du premier jour",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Nombre total de tickets créés par les ressources humaines",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 35,
+            "topic": "Mesures — qualité vs volume",
+            "scenario": "Un service desk ferme rapidement les incidents, mais de nombreux tickets sont rouverts.",
+            "question_text": "Quel indicateur apporterait le plus de valeur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Nombre d’incidents fermés par agent",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Taux de résolution durable ou taux de réouverture",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Nombre d’e-mails envoyés aux utilisateurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Temps de connexion quotidien des agents",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 36,
+            "topic": "Pratique — Gestion des demandes de service",
+            "scenario": "Un utilisateur demande l’installation d’un logiciel standard déjà approuvé.",
+            "question_text": "Comment cette demande doit-elle généralement être considérée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Comme une demande de service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comme un problème",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Comme un incident majeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Comme un événement de sécurité",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 37,
+            "topic": "Pratique — Gestion des problèmes",
+            "scenario": "Plusieurs incidents similaires se produisent régulièrement. Les incidents sont résolus temporairement, mais la cause reste inconnue.",
+            "question_text": "Quelle pratique devrait principalement être utilisée pour réduire la probabilité de récurrence ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion des demandes de service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des problèmes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des niveaux de service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion des fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 38,
+            "topic": "Pratique — Gestion des incidents",
+            "scenario": "Un service critique devient indisponible. L’objectif immédiat est de restaurer son fonctionnement aussi rapidement que possible.",
+            "question_text": "Quelle pratique est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion des incidents",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des problèmes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des actifs informatiques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion des relations",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 39,
+            "topic": "Automatisation et IA",
+            "scenario": "Une organisation souhaite utiliser l’intelligence artificielle pour traiter automatiquement des demandes sensibles.",
+            "question_text": "Quelle approche est la plus conforme à ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Automatiser immédiatement toutes les décisions afin de maximiser la vitesse",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Évaluer la valeur, les risques, les contrôles et l’expérience, puis déployer progressivement",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Remplacer toutes les interventions humaines dès le premier jour",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Utiliser l’IA uniquement parce que les concurrents le font",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 40,
+            "topic": "Mesures — résultat vs contrat",
+            "scenario": "Un fournisseur respecte tous ses objectifs contractuels, mais les utilisateurs restent insatisfaits parce que le service ne soutient pas correctement leurs activités.",
+            "question_text": "Quelle conclusion est la plus appropriée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le service est réussi puisque les objectifs contractuels sont atteints",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les mesures utilisées ne reflètent probablement pas suffisamment les résultats et la valeur attendus",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La satisfaction des utilisateurs n’est pas pertinente",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les objectifs contractuels doivent toujours être supprimés",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 41,
+            "topic": "Co-création de valeur",
+            "scenario": null,
+            "question_text": "Quel énoncé décrit le mieux la co-création de valeur ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le fournisseur produit seul la valeur avant de livrer le service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La valeur résulte de la collaboration entre plusieurs parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le consommateur détermine seul la valeur financière du service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La valeur existe automatiquement dès qu’un produit est livré",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 42,
+            "topic": "Résultat — définition",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux un résultat ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Un élément tangible ou intangible produit par une activité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Un avantage obtenu par une partie prenante grâce à une ou plusieurs sorties",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une ressource configurée par le fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une mesure interne du travail accompli",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 43,
+            "topic": "Sortie vs résultat — cas déploiement",
+            "scenario": "Une équipe déploie 300 ordinateurs dans les délais. Toutefois, la moitié des utilisateurs ne dispose pas des accès nécessaires pour travailler.",
+            "question_text": "Lequel constitue une sortie ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les utilisateurs sont productifs dès leur arrivée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les 300 ordinateurs ont été déployés",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "L’expérience utilisateur s’est améliorée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les risques opérationnels ont été réduits",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 44,
+            "topic": "Sortie vs résultat — cas déploiement",
+            "scenario": "Une équipe déploie 300 ordinateurs dans les délais. Toutefois, la moitié des utilisateurs ne dispose pas des accès nécessaires pour travailler.",
+            "question_text": "Dans la même situation, lequel représente le résultat attendu ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les cartons des ordinateurs ont été recyclés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les appareils ont été enregistrés dans l’inventaire",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les utilisateurs peuvent travailler avec tous leurs outils et accès",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Trois techniciens ont participé au déploiement",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 45,
+            "topic": "Valeur — composantes",
+            "scenario": null,
+            "question_text": "Quelle affirmation concernant la valeur est correcte ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Elle est déterminée uniquement par le coût",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Elle est toujours identique pour toutes les parties prenantes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Elle dépend notamment des résultats, coûts, risques et expériences",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Elle ne peut être évaluée qu’à la fin d’un contrat",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 46,
+            "topic": "Risque — définition",
+            "scenario": null,
+            "question_text": "Quel élément désigne un événement possible qui pourrait causer une perte ou rendre plus difficile l’atteinte d’un objectif ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une sortie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Un risque",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une garantie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une demande",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 47,
+            "topic": "Produit — définition",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux un produit ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une configuration de ressources conçue pour offrir de la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une interaction unique entre un utilisateur et le service desk",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un résultat nécessairement financier",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une procédure utilisée pour résoudre les incidents",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 48,
+            "topic": "Responsabilités partagées",
+            "scenario": "Une entreprise fournit un téléphone professionnel à un employé, mais celui-ci doit respecter les règles de sécurité et signaler rapidement toute perte.",
+            "question_text": "Que démontre principalement cet exemple ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le consommateur ne participe jamais à la gestion des risques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La responsabilité du service appartient uniquement au fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Fournisseur et consommateur ont chacun des responsabilités",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Tous les risques sont automatiquement supprimés par le contrat",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 49,
+            "topic": "Principe — Commencer là où vous êtes",
+            "scenario": "Une organisation doit améliorer un portail existant. Elle commence par analyser les fonctions actuellement appréciées des utilisateurs.",
+            "question_text": "Quel principe directeur est principalement appliqué ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Optimiser et automatiser",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Collaborer et promouvoir la visibilité",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 50,
+            "topic": "Principe — Privilégier la valeur",
+            "scenario": "Une équipe propose une solution techniquement impressionnante, mais personne n’a vérifié qu’elle répond à un besoin réel.",
+            "question_text": "Quel principe doit être appliqué en priorité ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Privilégier la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Optimiser et automatiser",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 51,
+            "topic": "Principe — Progresser par itérations",
+            "scenario": "Une entreprise déploie d’abord une nouvelle procédure auprès d’un petit groupe, analyse les retours, puis l’ajuste avant le déploiement général.",
+            "question_text": "Quel principe applique-t-elle principalement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Penser et travailler de manière holistique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 52,
+            "topic": "Principe — Collaborer et promouvoir la visibilité",
+            "scenario": "Des équipes publient un tableau de bord commun montrant les progrès, risques et blocages d’un programme.",
+            "question_text": "Quel principe est principalement appliqué ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Collaborer et promouvoir la visibilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Optimiser et automatiser",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Privilégier la valeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 53,
+            "topic": "Principe — Penser et travailler de manière holistique",
+            "scenario": "Une équipe améliore une application sans tenir compte de ses dépendances avec l’authentification, le réseau et le support.",
+            "question_text": "Quel principe a surtout été négligé ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Commencer là où vous êtes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Faire simple et pratique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Penser et travailler de manière holistique",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Progresser par itérations avec des retours",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 54,
+            "topic": "Principe — Faire simple et pratique",
+            "scenario": "Un formulaire contient 35 champs, mais seulement 10 sont nécessaires au traitement de la demande.",
+            "question_text": "Quelle est la meilleure action ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Automatiser immédiatement les 35 champs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Conserver uniquement les informations réellement nécessaires",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Ajouter une validation pour chaque champ",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Remplacer le formulaire par un document de 20 pages",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 55,
+            "topic": "Principe — Optimiser et automatiser",
+            "scenario": null,
+            "question_text": "Quel énoncé décrit le mieux le principe Optimiser et automatiser ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Toute activité humaine doit être supprimée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Il faut automatiser chaque processus avant de le comprendre",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Il faut optimiser le travail, puis automatiser lorsque cela apporte de la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "L’automatisation est toujours préférable à la collaboration",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 56,
+            "topic": "Principes directeurs — usage combiné",
+            "scenario": null,
+            "question_text": "Pourquoi les principes directeurs ne doivent-ils pas être utilisés isolément ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce qu’ils doivent être considérés ensemble selon la situation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce qu’un seul principe est applicable dans chaque organisation",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce qu’ils concernent uniquement la direction",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce qu’ils sont remplacés par les pratiques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 57,
+            "topic": "Dimension — Organisations et personnes",
+            "scenario": null,
+            "question_text": "Quelle dimension comprend principalement les compétences, les rôles, la culture et les structures organisationnelles ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 58,
+            "topic": "Dimension — Information et technologie",
+            "scenario": "Une organisation analyse les bases de données, les applications, les intégrations et les exigences de sécurité.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Information et technologie",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 59,
+            "topic": "Dimension — Partenaires et fournisseurs",
+            "scenario": "Une entreprise examine les performances de son fournisseur télécom et les obligations prévues dans le contrat.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 60,
+            "topic": "Dimension — Flux de valeur et processus",
+            "scenario": "Une équipe cartographie toutes les étapes depuis l’arrivée d’une demande jusqu’à sa réalisation.",
+            "question_text": "Quelle dimension est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Information et technologie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Flux de valeur et processus",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Organisations et personnes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Partenaires et fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 61,
+            "topic": "Quatre dimensions — équilibre",
+            "scenario": null,
+            "question_text": "Pourquoi faut-il équilibrer les quatre dimensions ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce qu’une décision dans une dimension peut avoir des conséquences sur les autres",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce que chaque dimension doit obligatoirement avoir le même responsable",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce que chaque dimension utilise exactement les mêmes ressources",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce que les dimensions ne sont pas influencées par l’environnement externe",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 62,
+            "topic": "Facteurs externes — Légal",
+            "scenario": "Une nouvelle loi impose des restrictions sur le traitement des données personnelles.",
+            "question_text": "Quel facteur externe est principalement concerné ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Social",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Technologique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Légal",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Environnemental",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 63,
+            "topic": "Facteurs externes — Technologique",
+            "scenario": "De nouvelles technologies rendent possible l’automatisation de tâches auparavant manuelles.",
+            "question_text": "Quel facteur externe est principalement concerné ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Politique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Technologique",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Légal",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Économique",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 64,
+            "topic": "Système de valeur ITIL — objectif",
+            "scenario": null,
+            "question_text": "Quel est le principal objectif du système de valeur ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Garantir que tous les services utilisent les mêmes outils",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Faciliter la création de valeur grâce à un ensemble intégré de composants et d’activités",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Remplacer la stratégie de l’organisation",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Décrire exclusivement le traitement des incidents",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 65,
+            "topic": "Système de valeur ITIL — composants",
+            "scenario": null,
+            "question_text": "Lequel des éléments suivants appartient au système de valeur ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les principes directeurs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le modèle TCP/IP",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La structure comptable",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le cycle de développement en cascade uniquement",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 66,
+            "topic": "Gouvernance — rôle",
+            "scenario": null,
+            "question_text": "Quel est le rôle principal de la gouvernance ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Résoudre les incidents techniques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Évaluer, diriger et surveiller l’organisation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Automatiser les demandes courantes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Développer les applications internes",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 67,
+            "topic": "Gouvernance — Surveiller",
+            "scenario": "La direction vérifie que les investissements numériques soutiennent bien la stratégie globale.",
+            "question_text": "À quelle activité de gouvernance cela correspond-il principalement ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Surveiller",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Livrer",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Soutenir",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Obtenir",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 68,
+            "topic": "Pratique — définition",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux une pratique ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une procédure détaillée et obligatoire",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Un ensemble de ressources organisationnelles conçu pour accomplir un travail ou atteindre un objectif",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un outil utilisé uniquement par le service desk",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une activité qui appartient exclusivement au fournisseur",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 69,
+            "topic": "Modèle CIM — Vision",
+            "scenario": null,
+            "question_text": "Quelle question vient en premier dans le modèle d’amélioration continue ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Où voulons-nous être ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comment y parvenir ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Quelle est la vision ?",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Avons-nous atteint notre objectif ?",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 70,
+            "topic": "Modèle CIM — état actuel",
+            "scenario": null,
+            "question_text": "Après avoir compris la vision, quelle question doit normalement être examinée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Où en sommes-nous actuellement ?",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comment maintenir la dynamique ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Avons-nous atteint notre objectif ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Quelle technologie devons-nous acheter ?",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 71,
+            "topic": "Modèle CIM — référentiel",
+            "scenario": null,
+            "question_text": "Pourquoi faut-il comprendre l’état actuel ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Pour disposer d’une référence permettant d’évaluer l’amélioration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Pour empêcher toute modification importante",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pour garantir que la vision est inutile",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pour remplacer les mesures de résultat",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 72,
+            "topic": "Modèle CIM — évaluation",
+            "scenario": null,
+            "question_text": "Une amélioration a été mise en œuvre. Quelle question aide principalement à déterminer si elle a fonctionné ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Quelle est la vision ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Où en sommes-nous actuellement ?",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Avons-nous atteint notre objectif ?",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Qui a proposé le changement ?",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 73,
+            "topic": "Modèle CIM — maintenir la dynamique",
+            "scenario": null,
+            "question_text": "Quel est l’objectif de l’étape « Comment maintenir la dynamique ? »",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Éviter toute nouvelle amélioration",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Consolider les résultats et poursuivre l’amélioration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Revenir systématiquement à la situation initiale",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Supprimer les indicateurs de performance",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 74,
+            "topic": "Pratique — Gestion des incidents",
+            "scenario": "Un utilisateur ne peut plus accéder à sa messagerie alors qu’elle fonctionnait normalement le matin.",
+            "question_text": "Comment cette situation doit-elle principalement être classée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une demande de service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Un incident",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Un problème connu",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une demande de changement stratégique",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 75,
+            "topic": "Pratique — Gestion des problèmes",
+            "scenario": "Plusieurs utilisateurs rencontrent régulièrement la même panne. L’équipe cherche désormais la cause sous-jacente.",
+            "question_text": "Quelle pratique est principalement concernée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion des incidents",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des problèmes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion des relations",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 76,
+            "topic": "Pratique — Gestion des incidents — objectif",
+            "scenario": null,
+            "question_text": "Quel est l’objectif principal de la gestion des incidents ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Identifier toutes les causes profondes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Restaurer le fonctionnement normal du service aussi rapidement que possible",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Autoriser tous les changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Renégocier les contrats fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 77,
+            "topic": "Pratique — Gestion des demandes de service",
+            "scenario": "Un utilisateur demande un nouvel écran parmi les équipements standard déjà approuvés.",
+            "question_text": "Comment cette demande doit-elle généralement être traitée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Comme une demande de service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comme un incident majeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Comme un problème",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Comme une défaillance de sécurité",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 78,
+            "topic": "Pratique — Contrôle des changements",
+            "scenario": "Un changement est évalué afin de déterminer ses bénéfices, ses risques et ses impacts avant son autorisation.",
+            "question_text": "Quel est l’objectif principal de cette évaluation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Éliminer complètement tous les changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Maximiser le nombre de validations",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Permettre des changements réussis en évaluant correctement les risques",
+                    "is_correct": true
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Transférer toutes les décisions au fournisseur",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 79,
+            "topic": "Mesures — contrat vs résultat",
+            "scenario": "Un fournisseur atteint les délais prévus au contrat, mais les utilisateurs ne peuvent toujours pas atteindre leurs objectifs professionnels.",
+            "question_text": "Quelle est la meilleure conclusion ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le service crée nécessairement de la valeur puisque le contrat est respecté",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les mesures contractuelles ne reflètent probablement pas suffisamment les résultats recherchés",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les résultats des utilisateurs ne sont pas liés au service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les mesures de performance sont toujours inutiles",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 80,
+            "topic": "Automatisation — approche progressive",
+            "scenario": "Une organisation veut automatiser la réinitialisation des mots de passe.",
+            "question_text": "Quelle est la meilleure approche ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Automatiser immédiatement, même si le processus actuel comporte des failles de sécurité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comprendre et optimiser le processus, évaluer les risques, puis automatiser progressivement",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Supprimer toute vérification d’identité pour gagner du temps",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Refuser toute automatisation parce qu’elle comporte toujours des risques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 81,
+            "topic": "Catalogue de services",
+            "scenario": "Une équipe reçoit de nombreuses demandes identiques par e-mail. Les utilisateurs ne savent pas toujours quelles prestations sont disponibles.",
+            "question_text": "Quelle action améliorerait le plus l'expérience utilisateur selon ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Créer un catalogue de services avec les demandes disponibles",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Demander aux utilisateurs de contacter uniquement leur responsable",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Traiter uniquement les demandes urgentes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Créer un nouveau SLA",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 82,
+            "topic": "Engagement",
+            "scenario": null,
+            "question_text": "Quel est l'objectif principal de l'activité de chaîne de valeur « Engager » ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Concevoir de nouveaux services",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Maintenir une bonne compréhension des besoins des parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Déployer les mises en production",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Mesurer les performances financières",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 83,
+            "topic": "Planification",
+            "scenario": null,
+            "question_text": "Quel est le principal objectif de l'activité de chaîne de valeur « Planifier » ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Coordonner une vision commune de l'organisation et de son orientation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Résoudre les incidents critiques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Créer automatiquement les changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Approuver les demandes de service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 84,
+            "topic": "Amélioration",
+            "scenario": "Une équipe termine un projet avec succès mais ne documente aucun retour d'expérience.",
+            "question_text": "Quel risque est le plus important ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les futurs changements seront automatiquement refusés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les opportunités d'amélioration risquent d'être perdues",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les SLA deviennent invalides",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les utilisateurs perdent l'accès au service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 85,
+            "topic": "Fournir et soutenir",
+            "scenario": null,
+            "question_text": "Quelle activité de la chaîne de valeur est principalement responsable de la livraison et du support continu des services ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Obtenir ou construire",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Fournir et soutenir",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Engager",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Planifier",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 86,
+            "topic": "Contrôle des changements",
+            "scenario": "Une mise à jour de sécurité critique doit être appliquée immédiatement afin de limiter un risque important.",
+            "question_text": "Comment ce changement doit-il être traité ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Comme un changement standard",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Comme un changement d'urgence selon la procédure définie",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Comme une demande de service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Comme un problème",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 87,
+            "topic": "Service Desk",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux le rôle du Service Desk ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gérer exclusivement les infrastructures techniques",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Servir de point de contact entre les utilisateurs et le fournisseur de services",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Approuver tous les changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Définir les objectifs stratégiques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 88,
+            "topic": "Disponibilité",
+            "scenario": "Un service respecte son temps de réponse prévu mais est inaccessible plusieurs heures chaque semaine.",
+            "question_text": "Quelle pratique devrait être principalement concernée par cette situation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion de la disponibilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des demandes de service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des connaissances",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion financière",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 89,
+            "topic": "Connaissances",
+            "scenario": null,
+            "question_text": "Quel est l'objectif principal de la gestion des connaissances ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Garantir que les bonnes informations soient disponibles au bon moment",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Créer davantage de documentation technique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Réduire le nombre de fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Automatiser tous les processus",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 90,
+            "topic": "Disponibilité",
+            "scenario": null,
+            "question_text": "Quelle mesure reflète le mieux la disponibilité d'un service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le nombre de changements approuvés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le pourcentage de temps où le service est utilisable",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le coût du service",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le nombre d'utilisateurs enregistrés",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 91,
+            "topic": "Relations",
+            "scenario": "Un fournisseur modifie régulièrement son offre sans prévenir l'organisation.",
+            "question_text": "Quelle pratique aiderait principalement à éviter ce type de situation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion des relations",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des fournisseurs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des actifs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion des configurations",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 92,
+            "topic": "Actifs",
+            "scenario": null,
+            "question_text": "Quel est l'objectif principal de la gestion des actifs informatiques ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Optimiser la valeur, les coûts et les risques liés aux actifs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Résoudre les incidents complexes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Concevoir les nouveaux services",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Créer les SLA",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 93,
+            "topic": "Configuration",
+            "scenario": "Deux équipes disposent de listes différentes des serveurs de production, ce qui provoque des erreurs lors des changements.",
+            "question_text": "Quelle pratique devrait être renforcée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Gestion des configurations de service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Gestion des incidents",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Gestion des demandes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Gestion financière",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 94,
+            "topic": "Mesure",
+            "scenario": null,
+            "question_text": "Pourquoi les mesures doivent-elles être définies avant de lancer une amélioration ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Pour pouvoir évaluer objectivement les résultats obtenus",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Pour réduire le nombre de fournisseurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Pour supprimer les changements d'urgence",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Pour éviter les demandes de service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 95,
+            "topic": "Obtenir ou construire",
+            "scenario": null,
+            "question_text": "Quel est l'objectif principal de l'activité « Obtenir ou construire » ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "S'assurer que les composants des services sont disponibles lorsqu'ils sont nécessaires",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Mesurer la satisfaction client",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Traiter les incidents",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Définir la gouvernance",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 96,
+            "topic": "Conception",
+            "scenario": "Une nouvelle fonctionnalité répond parfaitement au besoin métier mais les équipes d'exploitation ne peuvent pas la maintenir.",
+            "question_text": "Quel aspect a été le plus négligé ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La prise en compte de l'exploitabilité du service",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le budget marketing",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La fréquence des audits",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La gestion financière",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 97,
+            "topic": "Satisfaction",
+            "scenario": null,
+            "question_text": "Quel indicateur est le plus approprié pour mesurer la perception des utilisateurs ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le taux de satisfaction des utilisateurs",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le nombre de serveurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le volume de changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le nombre de fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 98,
+            "topic": "Risque",
+            "scenario": "Une équipe refuse toute évolution afin d'éviter les incidents.",
+            "question_text": "Quelle est la principale conséquence de cette approche ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les opportunités de création de valeur peuvent être perdues",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Tous les SLA seront automatiquement respectés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les utilisateurs feront moins de demandes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les fournisseurs deviendront inutiles",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 99,
+            "topic": "Amélioration continue",
+            "scenario": "Plusieurs équipes proposent chacune leurs propres améliorations sans coordination.",
+            "question_text": "Quelle action est la plus conforme à ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Créer et maintenir un registre commun des opportunités d'amélioration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Laisser chaque équipe décider seule",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Suspendre toutes les améliorations",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Confier uniquement les améliorations au Service Desk",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 100,
+            "topic": "Chaîne de valeur",
+            "scenario": null,
+            "question_text": "Quelle affirmation décrit le mieux les activités de la chaîne de valeur des services ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Elles peuvent être combinées de différentes façons selon le flux de valeur concerné",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Elles doivent toujours être exécutées dans le même ordre",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Elles remplacent les pratiques ITIL",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Elles ne concernent que les équipes techniques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 101,
+            "topic": "Consommateur de service",
+            "scenario": null,
+            "question_text": "Quel rôle est principalement responsable de la définition des exigences et de la justification de la consommation d'un service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le sponsor",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "L'utilisateur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le service desk",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 102,
+            "topic": "Consommateur de service",
+            "scenario": null,
+            "question_text": "Quel rôle utilise directement un service pour réaliser des activités métier ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le sponsor",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "L'utilisateur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le fournisseur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le propriétaire du produit",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 103,
+            "topic": "Garanties",
+            "scenario": "Un service répond à toutes les fonctionnalités attendues mais devient indisponible plusieurs heures chaque semaine.",
+            "question_text": "Quel aspect du service est principalement insuffisant ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "L'utilité",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "La garantie",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La co-création de valeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le flux de valeur",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 104,
+            "topic": "Utilité",
+            "scenario": "Une nouvelle fonctionnalité permet enfin aux équipes de réaliser une tâche auparavant impossible.",
+            "question_text": "Quel concept est principalement illustré ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La garantie",
+                    "is_correct": false
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "L'utilité",
+                    "is_correct": true
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La gouvernance",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La disponibilité",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 105,
+            "topic": "Demandes",
+            "scenario": "Un utilisateur souhaite obtenir un accès à une application récemment approuvée pour son équipe.",
+            "question_text": "Quel élément doit principalement déterminer la manière dont cette demande sera traitée ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Les procédures prédéfinies de l'organisation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "L'ancienneté du demandeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le coût du matériel informatique",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le fournisseur réseau",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 106,
+            "topic": "Contrôle des changements",
+            "scenario": "Deux changements sont planifiés simultanément sur la même infrastructure critique.",
+            "question_text": "Quel risque doit être évalué en priorité ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le conflit potentiel entre les changements",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le nombre de techniciens disponibles",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le nombre d'utilisateurs enregistrés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La durée des contrats fournisseurs",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 107,
+            "topic": "Relations",
+            "scenario": null,
+            "question_text": "Quel est l'objectif principal de la gestion des relations ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Établir et maintenir une compréhension des besoins des parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Approuver tous les changements",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Résoudre tous les incidents",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Créer les accords de niveau de service",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 108,
+            "topic": "Fournisseurs",
+            "scenario": "Une organisation dépend fortement d'un prestataire unique pour un service critique.",
+            "question_text": "Quelle préoccupation est la plus pertinente ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le risque lié à la dépendance vis-à-vis du fournisseur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le nombre de tickets utilisateurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La structure des équipes RH",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le catalogue de services",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 109,
+            "topic": "Amélioration",
+            "scenario": null,
+            "question_text": "Quelle caractéristique décrit le mieux une amélioration réussie selon ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Elle apporte une valeur mesurable aux parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Elle automatise toutes les activités",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Elle réduit toujours les coûts",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Elle supprime tous les risques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 110,
+            "topic": "Service Desk",
+            "scenario": "Une équipe technique souhaite que le service desk transmette systématiquement tous les tickets sans effectuer de diagnostic initial.",
+            "question_text": "Quelle réponse est la plus conforme aux bonnes pratiques ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le service desk doit fournir un point de contact et effectuer un premier traitement lorsque cela est approprié",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le service desk ne doit jamais analyser un incident",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le service desk doit uniquement créer des tickets",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le service desk doit toujours résoudre seul tous les incidents",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 111,
+            "topic": "Disponibilité",
+            "scenario": "Une interruption est planifiée afin d'effectuer une maintenance approuvée.",
+            "question_text": "Comment cette interruption influence-t-elle généralement la mesure de disponibilité ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Selon les règles de mesure définies par l'organisation",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Elle est toujours ignorée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Elle est toujours comptabilisée comme un incident majeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Elle supprime automatiquement les SLA",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 112,
+            "topic": "Connaissances",
+            "scenario": "Une équipe résout régulièrement le même incident mais ne documente jamais la solution.",
+            "question_text": "Quelle conséquence est la plus probable ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Une perte d'efficacité lors des futurs traitements",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Une amélioration automatique des délais",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Une réduction du nombre d'utilisateurs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Une meilleure gouvernance",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 113,
+            "topic": "Incidents majeurs",
+            "scenario": "Une panne affecte simultanément plusieurs services essentiels de l'entreprise.",
+            "question_text": "Quel objectif doit guider les décisions immédiates ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Restaurer le service le plus rapidement possible tout en coordonnant les parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Identifier immédiatement toutes les causes profondes",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Attendre la prochaine réunion de gouvernance",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Créer un nouveau catalogue de services",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 114,
+            "topic": "Expérience",
+            "scenario": null,
+            "question_text": "Pourquoi l'expérience des parties prenantes est-elle importante dans l'évaluation d'un service ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce qu'elle influence la perception de la valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce qu'elle remplace les SLA",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce qu'elle détermine automatiquement le budget",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce qu'elle supprime les risques",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 115,
+            "topic": "Coûts",
+            "scenario": "Une amélioration apporte des bénéfices importants mais augmente également les coûts d'exploitation.",
+            "question_text": "Quelle approche est la plus conforme à ITIL ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Évaluer l'équilibre global entre coûts, risques et valeur",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Refuser toute augmentation de coût",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Ignorer les bénéfices obtenus",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Mesurer uniquement la satisfaction",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 116,
+            "topic": "Valeur",
+            "scenario": "Deux clients utilisent le même service mais poursuivent des objectifs métiers différents.",
+            "question_text": "Quelle conclusion est la plus pertinente ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Le même service peut créer une valeur différente selon le contexte",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Les deux clients recevront exactement la même valeur",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Le fournisseur décide seul de la valeur créée",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "La valeur dépend uniquement du contrat",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 117,
+            "topic": "Pratiques",
+            "scenario": null,
+            "question_text": "Pourquoi les pratiques ITIL doivent-elles être adaptées au contexte de chaque organisation ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Parce qu'ITIL fournit des recommandations et non des procédures universelles",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Parce que chaque pratique possède une seule implémentation officielle",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Parce que les pratiques remplacent les objectifs métier",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Parce que les fournisseurs imposent leur utilisation",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 118,
+            "topic": "Parties prenantes",
+            "scenario": "Une équipe améliore un service sans consulter les utilisateurs concernés.",
+            "question_text": "Quel risque est le plus probable ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "L'amélioration pourrait ne pas répondre aux besoins réels",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le service deviendra automatiquement indisponible",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les contrats fournisseurs seront résiliés",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les incidents disparaîtront complètement",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 119,
+            "topic": "Décisions",
+            "scenario": null,
+            "question_text": "Quel élément doit principalement guider les décisions concernant la gestion des services ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "La création de valeur pour les parties prenantes",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Le nombre d'équipes impliquées",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "La complexité des outils",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Le nombre de procédures existantes",
+                    "is_correct": false
+                }
+            ]
+        },
+        {
+            "position": 120,
+            "topic": "Amélioration continue",
+            "scenario": "Après plusieurs améliorations réussies, une équipe cesse de mesurer les performances du service.",
+            "question_text": "Quelle est la principale conséquence potentielle ?",
+            "answers": [
+                {
+                    "letter": "A",
+                    "answer_text": "Il deviendra plus difficile d'identifier de nouvelles opportunités d'amélioration",
+                    "is_correct": true
+                },
+                {
+                    "letter": "B",
+                    "answer_text": "Tous les services respecteront automatiquement les objectifs",
+                    "is_correct": false
+                },
+                {
+                    "letter": "C",
+                    "answer_text": "Les changements ne seront plus nécessaires",
+                    "is_correct": false
+                },
+                {
+                    "letter": "D",
+                    "answer_text": "Les incidents seront automatiquement éliminés",
+                    "is_correct": false
+                }
+            ]
+        }
+    ]
+}

@@ -8,6 +8,8 @@ use Inertia\Response;
 
 class StatsController extends Controller
 {
+    private const EVOLUTION_MIN_ATTEMPTS = 5;
+
     public function index(): Response
     {
         $userId = auth()->id();
@@ -44,9 +46,51 @@ class StatsController extends Controller
                 : 0,
         ];
 
+        // Build per-certification evolution series (only when >= EVOLUTION_MIN_ATTEMPTS)
+        $evolutions = $attempts
+            ->groupBy('certification.id')
+            ->filter(fn ($group) => $group->count() >= self::EVOLUTION_MIN_ATTEMPTS)
+            ->map(function ($group) {
+                // Series must be chronological (oldest → newest)
+                $ordered = $group->sortBy('completed_at')->values();
+                $first = $ordered->first();
+                $last = $ordered->last();
+                $percentages = $ordered->pluck('percentage');
+                $requiredPct = $first['total_questions'] > 0
+                    ? (int) round(($first['passing_score'] / $first['total_questions']) * 100)
+                    : 0;
+
+                return [
+                    'certification' => $first['certification'],
+                    'passing_percentage' => $requiredPct,
+                    'points' => $ordered->map(fn ($a, $i) => [
+                        'index' => $i + 1,
+                        'attempt_id' => $a['id'],
+                        'percentage' => $a['percentage'],
+                        'passed' => $a['passed'],
+                        'duration_seconds' => $a['duration_seconds'],
+                        'completed_at' => $a['completed_at'],
+                    ])->values(),
+                    'stats' => [
+                        'total' => $ordered->count(),
+                        'passed' => $ordered->where('passed', true)->count(),
+                        'best' => (int) $percentages->max(),
+                        'worst' => (int) $percentages->min(),
+                        'average' => (int) round($percentages->avg()),
+                        'first' => (int) $first['percentage'],
+                        'last' => (int) $last['percentage'],
+                        'delta' => (int) ($last['percentage'] - $first['percentage']),
+                        'best_time_seconds' => $ordered->whereNotNull('duration_seconds')->min('duration_seconds'),
+                    ],
+                ];
+            })
+            ->values();
+
         return Inertia::render('Stats/Index', [
             'attempts' => $attempts,
             'summary' => $summary,
+            'evolutions' => $evolutions,
+            'evolution_min_attempts' => self::EVOLUTION_MIN_ATTEMPTS,
         ]);
     }
 }

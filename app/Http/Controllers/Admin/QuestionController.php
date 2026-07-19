@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ExtractsJsonArray;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\Certification;
@@ -15,6 +16,8 @@ use Inertia\Response;
 
 class QuestionController extends Controller
 {
+    use ExtractsJsonArray;
+
     public function index(Request $request): Response
     {
         $certificationId = $request->integer('certification_id');
@@ -174,10 +177,8 @@ class QuestionController extends Controller
             'payload' => 'required|string',
         ]);
 
-        $raw = trim($validated['payload']);
-        $raw = preg_replace('/^```(?:json|js|javascript)?\s*\n?/i', '', $raw);
-        $raw = preg_replace('/\n?```\s*$/i', '', $raw);
-        $decoded = json_decode(trim($raw), true);
+        $raw = $this->extractTopLevelArray($validated['payload']);
+        $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
             throw ValidationException::withMessages([
                 'payload' => "Le JSON n'est pas valide. Vérifie qu'il commence par [ et se termine par ].",

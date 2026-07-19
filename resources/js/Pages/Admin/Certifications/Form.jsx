@@ -25,6 +25,7 @@ export default function Form({ certification }) {
             : '',
         is_active: certification?.is_active ?? true,
         logo: null,
+        remove_course: false,
         _method: editing ? 'put' : 'post',
     });
 
@@ -225,6 +226,72 @@ export default function Form({ certification }) {
                             </Field>
                         </div>
                     </section>
+
+                    {/* Course status */}
+                    {editing && (
+                        <section className="card p-6">
+                            <SectionHeader
+                                title="Cours importé"
+                                description="Contenu pédagogique lié à cette certification (importé via ChatGPT depuis /admin/certifications/course-import)."
+                            />
+                            <div className="mt-4">
+                                {certification.course_blocks_count > 0 ? (
+                                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+                                        <div className="flex items-center gap-3">
+                                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-300">
+                                                <Icon.Book className="h-5 w-5" />
+                                            </span>
+                                            <div>
+                                                <div className="font-semibold text-ink-900 dark:text-white">
+                                                    {certification.course_blocks_count} blocs de contenu publiés
+                                                </div>
+                                                {certification.course_updated_at && (
+                                                    <div className="text-xs text-ink-500">
+                                                        Mis à jour le {new Date(certification.course_updated_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <label
+                                            className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${
+                                                data.remove_course
+                                                    ? 'border-rose-500 bg-rose-500 text-white'
+                                                    : 'border-rose-500/40 text-rose-600 hover:bg-rose-500/10 dark:text-rose-300'
+                                            }`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="sr-only"
+                                                checked={!!data.remove_course}
+                                                onChange={(e) => setData('remove_course', e.target.checked)}
+                                            />
+                                            <Icon.Close className="h-3.5 w-3.5" />
+                                            {data.remove_course ? 'Sera vidé à l\'enregistrement' : 'Vider le cours'}
+                                        </label>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-dashed border-ink-300 bg-ink-50 p-4 dark:border-ink-700 dark:bg-ink-900/40">
+                                        <div className="flex items-center gap-3 text-sm text-ink-500">
+                                            <Icon.Book className="h-4 w-4" />
+                                            Aucun cours importé pour cette certification.
+                                        </div>
+                                        <Link
+                                            href={`${route('admin.certifications.course-import')}?certification_id=${certification.id}`}
+                                            className="btn-secondary !py-1.5 !text-xs"
+                                        >
+                                            <Icon.Bolt className="h-3.5 w-3.5" />
+                                            Importer un cours
+                                        </Link>
+                                    </div>
+                                )}
+                                {data.remove_course && certification.course_blocks_count > 0 && (
+                                    <p className="mt-2 text-xs text-rose-500">
+                                        Attention : cette action est irréversible. Le contenu sera perdu, tu devras le réimporter.
+                                    </p>
+                                )}
+                            </div>
+                        </section>
+                    )}
 
                     {/* Visuals + visibility */}
                     <section className="card p-6">

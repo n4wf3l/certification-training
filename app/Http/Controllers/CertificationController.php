@@ -36,6 +36,8 @@ class CertificationController extends Controller
                 'validity_note' => $certification->validity_note,
                 'version_retires_at' => $certification->version_retires_at?->toDateString(),
                 'available_questions' => $availableQuestions,
+                'has_course' => is_array($certification->course_blocks) && count($certification->course_blocks) > 0,
+                'course_updated_at' => $certification->course_updated_at?->toIso8601String(),
             ],
             'mastery' => $mastery,
         ]);

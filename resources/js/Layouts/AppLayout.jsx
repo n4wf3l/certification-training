@@ -98,14 +98,16 @@ function UserMenu({ user, isAdmin }) {
                             <Icon.User className="h-4 w-4 text-ink-500" />
                             Mon profil
                         </Link>
-                        <Link
-                            href={route('stats.index')}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
-                        >
-                            <Icon.Chart className="h-4 w-4 text-ink-500" />
-                            Mes statistiques
-                        </Link>
+                        {user.has_attempts && (
+                            <Link
+                                href={route('stats.index')}
+                                onClick={() => setOpen(false)}
+                                className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
+                            >
+                                <Icon.Chart className="h-4 w-4 text-ink-500" />
+                                Mes statistiques
+                            </Link>
+                        )}
                         {isAdmin && (
                             <Link
                                 href={route('admin.dashboard')}
@@ -143,8 +145,8 @@ export default function AppLayout({ header, children, full = false, ambient = tr
     useFlashToasts();
 
     const nav = [
-        { href: route('home'), label: 'Examens', icon: Icon.Book, active: route().current('home') },
-        ...(user ? [{ href: route('stats.index'), label: 'Mes stats', icon: Icon.Chart, active: route().current('stats.*') }] : []),
+        { href: route('home'), label: 'Certifications', icon: Icon.Book, active: route().current('home') },
+        ...(user && user.has_attempts ? [{ href: route('stats.index'), label: 'Mes stats', icon: Icon.Chart, active: route().current('stats.*') }] : []),
         ...(isAdmin ? [{ href: route('admin.dashboard'), label: 'Dashboard', icon: Icon.Shield, active: route().current('admin.*'), accent: true }] : []),
     ];
 
@@ -341,10 +343,10 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 <li>
                                     <Link href={route('home')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                         <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                        Examens
+                                        Certifications
                                     </Link>
                                 </li>
-                                {user && (
+                                {user && user.has_attempts && (
                                     <li>
                                         <Link href={route('stats.index')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                             <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
@@ -419,10 +421,16 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                     Lance ton premier examen blanc en moins de 30 secondes.
                                 </p>
                                 <Link
-                                    href={user ? route('stats.index') : route('register')}
+                                    href={
+                                        user
+                                            ? (user.has_attempts ? route('stats.index') : route('home'))
+                                            : route('register')
+                                    }
                                     className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 transition hover:gap-2 dark:text-brand-300"
                                 >
-                                    {user ? 'Voir mes stats' : 'Commencer'}
+                                    {user
+                                        ? (user.has_attempts ? 'Voir mes stats' : 'Choisir une certification')
+                                        : 'Commencer'}
                                     <Icon.ArrowRight className="h-3 w-3" />
                                 </Link>
                             </div>

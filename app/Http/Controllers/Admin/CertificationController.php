@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ExtractsJsonArray;
 use App\Http\Controllers\Controller;
 use App\Models\Certification;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +15,8 @@ use Inertia\Response;
 
 class CertificationController extends Controller
 {
+    use ExtractsJsonArray;
+
     public function index(): Response
     {
         $certifications = Certification::withCount('questions')
@@ -61,6 +64,7 @@ class CertificationController extends Controller
     {
         $payload = $certification->toArray();
         $payload['target_roles_text'] = collect($certification->target_roles ?? [])->implode("\n");
+        $payload['course_blocks_count'] = is_array($certification->course_blocks) ? count($certification->course_blocks) : 0;
         return Inertia::render('Admin/Certifications/Form', [
             'certification' => $payload,
         ]);
@@ -71,7 +75,8 @@ class CertificationController extends Controller
         $data = $this->validated($request, $certification->id);
         $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
         $data['target_roles'] = $this->parseRoles($data['target_roles_text'] ?? null);
-        unset($data['target_roles_text']);
+        $removeCourse = ! empty($data['remove_course']);
+        unset($data['target_roles_text'], $data['remove_course']);
 
         if ($request->hasFile('logo')) {
             if ($certification->logo_path) {
@@ -82,9 +87,16 @@ class CertificationController extends Controller
             unset($data['logo_path']);
         }
 
+        if ($removeCourse) {
+            $data['course_blocks'] = null;
+            $data['course_updated_at'] = null;
+        }
+
         $certification->update($data);
 
-        return redirect()->route('admin.certifications.index')->with('success', 'Certification mise à jour.');
+        return redirect()->route('admin.certifications.index')->with('success', $removeCourse
+            ? 'Certification mise à jour — cours retiré.'
+            : 'Certification mise à jour.');
     }
 
     public function destroy(Certification $certification): RedirectResponse
@@ -175,10 +187,8 @@ class CertificationController extends Controller
             'payload' => 'required|string',
         ]);
 
-        $raw = trim($validated['payload']);
-        $raw = preg_replace('/^```(?:json|js|javascript)?\s*\n?/i', '', $raw);
-        $raw = preg_replace('/\n?```\s*$/i', '', $raw);
-        $decoded = json_decode(trim($raw), true);
+        $raw = $this->extractTopLevelArray($validated['payload']);
+        $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
             throw ValidationException::withMessages([
                 'payload' => "Le JSON n'est pas valide. Vérifie qu'il commence par [ et se termine par ].",
@@ -236,6 +246,7 @@ class CertificationController extends Controller
             'version_retires_at' => 'nullable|date',
             'is_active' => 'boolean',
             'logo' => 'nullable|image|max:2048',
+            'remove_course' => 'nullable|boolean',
         ]);
     }
 

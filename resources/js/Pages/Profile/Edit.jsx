@@ -16,7 +16,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                 {/* Header */}
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-xs text-ink-500">
-                        <Link href={route('home')} className="hover:text-brand-500">Examens</Link>
+                        <Link href={route('home')} className="hover:text-brand-500">Certifications</Link>
                         <span>/</span>
                         <span className="text-ink-700 dark:text-ink-300">Profil</span>
                     </div>

@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 
 function formatDuration(seconds) {
     if (!seconds) return '—';
@@ -242,6 +243,10 @@ function Chip({ color, label, value }) {
 
 export default function Result({ attempt, certification, details, mastery, comparison }) {
     const passed = attempt.passed;
+    const wrong = details.filter((d) => !d.is_correct);
+    const rightCount = details.length - wrong.length;
+    const [showAll, setShowAll] = useState(wrong.length === 0);
+    const shownDetails = showAll ? details : wrong;
 
     return (
         <AppLayout>
@@ -311,21 +316,60 @@ export default function Result({ attempt, certification, details, mastery, compa
 
                 {/* Correction */}
                 <div className="card p-6">
-                    <div className="mb-5 flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-ink-900 dark:text-white">Correction détaillée</h2>
-                        <div className="flex gap-2 text-xs">
-                            <span className="badge-success">
-                                {details.filter((d) => d.is_correct).length} correctes
-                            </span>
-                            <span className="badge-danger">
-                                {details.filter((d) => !d.is_correct).length} incorrectes
-                            </span>
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h2 className="text-xl font-bold text-ink-900 dark:text-white">
+                                {showAll ? 'Correction complète' : 'Tes erreurs à revoir'}
+                            </h2>
+                            <p className="mt-0.5 text-xs text-ink-500">
+                                {showAll
+                                    ? 'Toutes les questions, dans l\'ordre de passage.'
+                                    : wrong.length === 0
+                                        ? 'Aucune erreur — tu as tout bon.'
+                                        : `${wrong.length} question${wrong.length > 1 ? 's' : ''} à revoir en priorité.`}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="flex gap-2 text-xs">
+                                <span className="badge-success">
+                                    {rightCount} correctes
+                                </span>
+                                <span className="badge-danger">
+                                    {wrong.length} incorrectes
+                                </span>
+                            </div>
+                            {wrong.length > 0 && (
+                                <button
+                                    onClick={() => setShowAll((v) => !v)}
+                                    className="btn-secondary !py-1.5 !text-xs"
+                                >
+                                    {showAll ? 'Erreurs seulement' : 'Voir tout'}
+                                </button>
+                            )}
                         </div>
                     </div>
+
+                    {wrong.length === 0 && !showAll && (
+                        <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300">
+                                <Icon.Check className="h-5 w-5" />
+                            </span>
+                            <div>
+                                <div className="font-semibold text-emerald-700 dark:text-emerald-200">
+                                    Sans-faute
+                                </div>
+                                <div className="text-sm text-emerald-700/80 dark:text-emerald-300/80">
+                                    Toutes les questions ont la bonne réponse — bravo. Recommence l'examen pour tomber sur d'autres questions du pool.
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="space-y-3">
-                        {details.map((d) => (
+                        {shownDetails.map((d) => (
                             <details
                                 key={d.position}
+                                open={!showAll && !d.is_correct}
                                 className={`group rounded-xl border ${
                                     d.is_correct
                                         ? 'border-emerald-500/20 bg-emerald-500/5'

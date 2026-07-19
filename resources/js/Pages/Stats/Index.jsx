@@ -1,4 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
+import EvolutionChart from '@/Components/EvolutionChart';
+import Icon from '@/Components/Icons';
 import { Head, Link } from '@inertiajs/react';
 
 function formatDate(iso) {
@@ -38,7 +40,72 @@ function KPI({ label, value, sub, accent = 'brand' }) {
     );
 }
 
-export default function Index({ attempts, summary }) {
+function EvolutionCard({ evolution }) {
+    const { certification, points, passing_percentage, stats } = evolution;
+    const trend = stats.delta;
+
+    return (
+        <div className="card overflow-hidden">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink-200/60 px-5 py-4 dark:border-ink-800/60">
+                <div className="flex items-center gap-3">
+                    {certification.logo_path ? (
+                        <img src={`/storage/${certification.logo_path}`} alt="" className="h-10 w-10 object-contain" />
+                    ) : (
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 text-xs font-bold text-white">
+                            {certification.title.slice(0, 2).toUpperCase()}
+                        </div>
+                    )}
+                    <div>
+                        <div className="text-sm font-semibold text-ink-900 dark:text-white">{certification.title}</div>
+                        <div className="text-xs text-ink-500">
+                            {stats.total} tentatives · meilleur <span className="font-mono font-semibold text-emerald-500">{stats.best}%</span>
+                            {' · '}moyenne <span className="font-mono">{stats.average}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className={`flex items-center gap-1 rounded-lg px-3 py-1 text-xs font-semibold ${
+                        trend > 0
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300'
+                            : trend < 0
+                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-300'
+                            : 'bg-ink-100 text-ink-500 dark:bg-ink-800 dark:text-ink-400'
+                    }`}
+                >
+                    {trend > 0 ? <Icon.ArrowUp className="h-3 w-3" /> : trend < 0 ? <Icon.ArrowDown className="h-3 w-3" /> : <Icon.Equal className="h-3 w-3" />}
+                    <span className="font-mono">
+                        {trend > 0 ? '+' : ''}{trend}%
+                    </span>
+                    <span className="hidden sm:inline text-ink-500 font-normal">depuis la 1re</span>
+                </div>
+            </div>
+            <div className="p-4 text-ink-900 dark:text-ink-100">
+                <EvolutionChart points={points} passingPercentage={passing_percentage} />
+            </div>
+            <div className="grid grid-cols-4 gap-2 border-t border-ink-200/60 p-3 text-center text-xs dark:border-ink-800/60">
+                <MiniStat label="Meilleur" value={`${stats.best}%`} tone="emerald" />
+                <MiniStat label="Moyenne" value={`${stats.average}%`} />
+                <MiniStat label="Réussies" value={`${stats.passed}/${stats.total}`} />
+                <MiniStat label="Meilleur temps" value={stats.best_time_seconds ? formatDuration(stats.best_time_seconds) : '—'} />
+            </div>
+        </div>
+    );
+}
+
+function MiniStat({ label, value, tone = 'default' }) {
+    const tones = {
+        default: 'text-ink-900 dark:text-white',
+        emerald: 'text-emerald-600 dark:text-emerald-300',
+    };
+    return (
+        <div>
+            <div className={`font-mono text-sm font-bold ${tones[tone]}`}>{value}</div>
+            <div className="mt-0.5 text-[10px] uppercase tracking-wider text-ink-500">{label}</div>
+        </div>
+    );
+}
+
+export default function Index({ attempts, summary, evolutions = [], evolution_min_attempts = 5 }) {
     return (
         <AppLayout>
             <Head title="Mes statistiques" />
@@ -62,6 +129,27 @@ export default function Index({ attempts, summary }) {
                     <KPI label="Meilleur score" value={`${summary.best_percentage}%`} accent="amber" />
                     <KPI label="Moyenne" value={`${summary.average_percentage}%`} accent="rose" />
                 </div>
+
+                {/* Evolution charts (only for certs with >= 5 completed attempts) */}
+                {evolutions.length > 0 && (
+                    <section>
+                        <div className="mb-4 flex items-baseline justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold text-ink-900 dark:text-white">
+                                    Ton évolution par certification
+                                </h2>
+                                <p className="mt-0.5 text-sm text-ink-500">
+                                    Débloquée à partir de {evolution_min_attempts} tentatives sur un même examen.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="grid gap-6 xl:grid-cols-2">
+                            {evolutions.map((ev) => (
+                                <EvolutionCard key={ev.certification.id} evolution={ev} />
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 <div className="card overflow-hidden">
                     <div className="border-b border-ink-200/60 px-5 py-4 dark:border-ink-800/60">

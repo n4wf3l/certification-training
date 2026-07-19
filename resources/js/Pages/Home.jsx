@@ -1,5 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
-import { Head, Link } from '@inertiajs/react';
+import HeroQuizTeaser from '@/Components/HeroQuizTeaser';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 function Logo({ certification }) {
     if (certification.logo_path) {
@@ -119,9 +120,44 @@ function SectionLabel({ children }) {
     );
 }
 
-export default function Home({ certifications }) {
+function LogoCarousel({ certifications }) {
+    // Uniquement les certifs qui ont un vrai fichier logo uploadé
+    const withLogo = certifications.filter((c) => c.logo_path);
+    if (withLogo.length === 0) return null;
+
+    // Duplique la liste pour un défilement infini fluide
+    const loop = [...withLogo, ...withLogo];
+    // Vitesse : ~5s par logo, défilement doux
+    const duration = Math.max(24, withLogo.length * 5);
+
+    return (
+        <div className="marquee-mask-v marquee-pause relative h-[420px] overflow-hidden xl:h-[480px]">
+            <div className="marquee-v" style={{ '--marquee-duration': `${duration}s` }}>
+                {loop.map((c, i) => (
+                    <div
+                        key={`${c.id}-${i}`}
+                        className="flex h-24 shrink-0 items-center justify-center px-4"
+                        title={c.title}
+                        aria-label={c.title}
+                    >
+                        <img
+                            src={`/storage/${c.logo_path}`}
+                            alt=""
+                            className="max-h-14 w-auto max-w-[220px] object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                            loading="lazy"
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+export default function Home({ certifications, teaser_questions = null }) {
+    const user = usePage().props.auth?.user;
     const ready = certifications.filter((c) => c.ready);
     const soon = certifications.filter((c) => !c.ready);
+    const showTeaser = !user && teaser_questions && teaser_questions.length > 0;
     const totalQuestions = certifications.reduce((sum, c) => sum + (c.available_questions || 0), 0);
     const lastUpdate = certifications
         .map((c) => c.questions_updated_at)
@@ -135,67 +171,80 @@ export default function Home({ certifications }) {
 
             {/* HERO */}
             <section className="border-b border-ink-200 pb-16 pt-6 dark:border-ink-800 sm:pt-10">
-                <SectionLabel>Méthode — Répétition adaptative</SectionLabel>
-
-                <h1 className="mt-8 max-w-4xl text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
-                    Prépare l'examen<br />
-                    <span className="text-ink-400 dark:text-ink-500">comme ceux qui</span> l'ont eu.
-                </h1>
-
-                <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
-                    Cours structurés et examens blancs rédigés à partir de l'expérience réelle
-                    des candidats. Un moteur d'entraînement qui insiste sur tes erreurs — jusqu'à
-                    ce qu'elles n'en soient plus.
-                </p>
-
-                <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">
+                <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
                     <div>
-                        <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                            {ready.length}
+                        <SectionLabel>Méthode — Répétition adaptative</SectionLabel>
+
+                        <h1 className="mt-8 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
+                            Prépare l'examen<br />
+                            <span className="text-ink-400 dark:text-ink-500">comme ceux qui</span> l'ont eu.
+                        </h1>
+
+                        <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
+                            Cours structurés et examens blancs rédigés à partir de l'expérience réelle
+                            des candidats. Un moteur d'entraînement qui insiste sur tes erreurs — jusqu'à
+                            ce qu'elles n'en soient plus.
+                        </p>
+
+                        <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">
+                            <div>
+                                <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
+                                    {ready.length}
+                                </div>
+                                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
+                                    certifications
+                                </div>
+                            </div>
+                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div>
+                                <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
+                                    {totalQuestions}
+                                </div>
+                                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
+                                    questions
+                                </div>
+                            </div>
+                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div>
+                                <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
+                                    {lastUpdate ? new Date(lastUpdate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) : '—'}
+                                </div>
+                                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
+                                    dernière mise à jour
+                                </div>
+                            </div>
+                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div>
+                                <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
+                                    Gratuit
+                                </div>
+                                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
+                                    sans carte, sans pub
+                                </div>
+                            </div>
                         </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                            certifications
+
+                        <div className="mt-12">
+                            <a
+                                href="#certifications"
+                                className="inline-flex items-center gap-2 border-b border-ink-900 pb-1 text-sm font-medium text-ink-900 transition hover:gap-3 dark:border-white dark:text-white"
+                            >
+                                Voir la liste des certifications
+                                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </a>
                         </div>
                     </div>
-                    <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
-                    <div>
-                        <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                            {totalQuestions}
-                        </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                            questions
-                        </div>
-                    </div>
-                    <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
-                    <div>
-                        <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                            {lastUpdate ? new Date(lastUpdate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) : '—'}
-                        </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                            dernière mise à jour
-                        </div>
-                    </div>
-                    <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
-                    <div>
-                        <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                            Gratuit
-                        </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                            sans carte, sans pub
-                        </div>
-                    </div>
-                </div>
 
-                <div className="mt-12">
-                    <a
-                        href="#certifications"
-                        className="inline-flex items-center gap-2 border-b border-ink-900 pb-1 text-sm font-medium text-ink-900 transition hover:gap-3 dark:border-white dark:text-white"
-                    >
-                        Voir la liste des certifications
-                        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </a>
+                    {/* Colonne droite : teaser Q/R (guest) ou carrousel logos (user connecté) */}
+                    <div className="hidden lg:block">
+                        {showTeaser ? (
+                            <HeroQuizTeaser questions={teaser_questions} />
+                        ) : (
+                            <LogoCarousel certifications={certifications} />
+                        )}
+                    </div>
                 </div>
             </section>
 

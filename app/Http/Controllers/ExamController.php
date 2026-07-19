@@ -165,7 +165,7 @@ class ExamController extends Controller
                 'completed_at' => now(),
                 'passed' => $score >= $attempt->passing_score,
                 'duration_seconds' => $attempt->started_at
-                    ? now()->diffInSeconds($attempt->started_at)
+                    ? (int) $attempt->started_at->diffInSeconds(now())
                     : null,
             ]);
         });

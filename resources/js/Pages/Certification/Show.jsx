@@ -358,12 +358,22 @@ export default function Show({ certification, mastery }) {
                             <ModeCard
                                 href={route('certifications.course', certification.slug)}
                                 accent="amber"
-                                badge="Bientôt"
-                                disabled
+                                badge={certification.has_course ? null : 'Bientôt'}
+                                disabled={!certification.has_course}
                                 IconComp={Icon.Book}
                                 title="Cours"
-                                description="Résumés théoriques, schémas et exemples pour comprendre les concepts avant de te tester."
-                                meta="Modules progressifs"
+                                description={
+                                    certification.has_course
+                                        ? "Résumés théoriques structurés, schémas et exemples pour comprendre avant de te tester."
+                                        : "Résumés théoriques, schémas et exemples pour comprendre les concepts avant de te tester."
+                                }
+                                meta={
+                                    certification.has_course
+                                        ? (certification.course_updated_at
+                                            ? `Mis à jour le ${new Date(certification.course_updated_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}`
+                                            : 'Prêt à lire')
+                                        : 'Modules progressifs'
+                                }
                             />
                         </div>
                         <div className="animate-stagger-in" style={{ animationDelay: '80ms' }}>
