@@ -29,6 +29,10 @@ class HandleInertiaRequests extends Middleware
                     'is_admin' => $user->isAdmin(),
                 ] : null,
             ],
+            'settings' => fn () => [
+                'brand_name' => \App\Models\Setting::get('brand_name') ?: 'CertifLoop',
+                'brand_logo_path' => \App\Models\Setting::get('brand_logo_path'),
+            ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

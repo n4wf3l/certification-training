@@ -199,6 +199,8 @@ class ExamController extends Controller
             ];
         });
 
+        $comparison = $this->buildComparison($attempt);
+
         return Inertia::render('Exam/Result', [
             'attempt' => [
                 'id' => $attempt->id,
@@ -219,7 +221,74 @@ class ExamController extends Controller
             ],
             'details' => $details,
             'mastery' => $this->masterySummary($attempt->user_id, $attempt->certification),
+            'comparison' => $comparison,
         ]);
+    }
+
+    /**
+     * Compare cette tentative aux précédentes du même user sur le même examen.
+     *  - attempt_number (n° de tentative)
+     *  - previous_attempt (temps + score de la précédente)
+     *  - best_time (meilleur temps précédent)
+     *  - best_score (meilleur score précédent)
+     *  - delta_seconds (négatif = plus rapide)
+     *  - delta_score (positif = mieux)
+     */
+    private function buildComparison(Attempt $attempt): ?array
+    {
+        $previousAttempts = Attempt::query()
+            ->where('user_id', $attempt->user_id)
+            ->where('certification_id', $attempt->certification_id)
+            ->where('id', '<>', $attempt->id)
+            ->whereNotNull('completed_at')
+            ->orderBy('completed_at')
+            ->get();
+
+        $attemptNumber = $previousAttempts->count() + 1;
+
+        if ($previousAttempts->isEmpty()) {
+            return [
+                'attempt_number' => $attemptNumber,
+                'previous' => null,
+                'best_time_before' => null,
+                'best_score_before' => null,
+                'delta_seconds' => null,
+                'delta_score' => null,
+                'delta_percentage' => null,
+                'is_new_best_time' => false,
+                'is_new_best_score' => false,
+            ];
+        }
+
+        $previous = $previousAttempts->last();
+        $bestTimeBefore = $previousAttempts->whereNotNull('duration_seconds')->min('duration_seconds');
+        $bestScoreBefore = $previousAttempts->max('score');
+
+        $deltaSeconds = null;
+        if ($attempt->duration_seconds !== null && $previous->duration_seconds !== null) {
+            $deltaSeconds = $attempt->duration_seconds - $previous->duration_seconds;
+        }
+        $deltaScore = $attempt->score - $previous->score;
+        $deltaPercentage = $attempt->percentage() - $previous->percentage();
+
+        return [
+            'attempt_number' => $attemptNumber,
+            'previous' => [
+                'id' => $previous->id,
+                'score' => $previous->score,
+                'total' => $previous->total_questions,
+                'percentage' => $previous->percentage(),
+                'duration_seconds' => $previous->duration_seconds,
+                'completed_at' => $previous->completed_at,
+            ],
+            'best_time_before' => $bestTimeBefore,
+            'best_score_before' => $bestScoreBefore,
+            'delta_seconds' => $deltaSeconds,
+            'delta_score' => $deltaScore,
+            'delta_percentage' => $deltaPercentage,
+            'is_new_best_time' => $bestTimeBefore !== null && $attempt->duration_seconds !== null && $attempt->duration_seconds < $bestTimeBefore,
+            'is_new_best_score' => $bestScoreBefore !== null && $attempt->score > $bestScoreBefore,
+        ];
     }
 
     private function authorizeAttempt(Attempt $attempt): void

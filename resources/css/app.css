@@ -1,3 +1,93 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: dark;
+    }
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: smooth;
+    }
+    body {
+        font-feature-settings: 'ss01', 'cv11';
+    }
+    h1, h2, h3, h4 {
+        letter-spacing: -0.02em;
+    }
+    /* Décale les ancres pour ne pas passer sous la navbar sticky */
+    :target,
+    section[id],
+    div[id] {
+        scroll-margin-top: 6rem;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-ink-950 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+    .btn-primary {
+        @apply btn bg-gradient-to-r from-brand-500 to-iris-500 text-white shadow-glow hover:shadow-glow-lg hover:-translate-y-px active:translate-y-0;
+    }
+    .btn-secondary {
+        @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-100 dark:hover:bg-ink-800;
+    }
+    .btn-ghost {
+        @apply btn text-ink-600 hover:bg-ink-100 dark:text-ink-300 dark:hover:bg-ink-800;
+    }
+    .card {
+        @apply rounded-2xl border border-ink-200 bg-white shadow-sm dark:border-ink-800/60 dark:bg-ink-900/40 dark:backdrop-blur-xl;
+    }
+    .card-lift {
+        @apply card transition-all duration-200 hover:-translate-y-1 hover:shadow-xl dark:hover:border-ink-700;
+    }
+    .field-label {
+        @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink-500 dark:text-ink-400;
+    }
+    .field {
+        @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder-ink-400 shadow-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 dark:border-ink-800 dark:bg-ink-950/60 dark:text-ink-100 dark:placeholder-ink-500 dark:focus:border-brand-500;
+    }
+    .glass-nav {
+        @apply sticky top-0 z-40 border-b border-ink-200/60 bg-white/70 backdrop-blur-xl dark:border-ink-800/60 dark:bg-ink-950/60;
+    }
+    .badge {
+        @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium;
+    }
+    .badge-brand {
+        @apply badge border-brand-500/20 bg-brand-500/10 text-brand-600 dark:text-brand-300;
+    }
+    .badge-success {
+        @apply badge border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300;
+    }
+    .badge-warn {
+        @apply badge border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-300;
+    }
+    .badge-danger {
+        @apply badge border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-300;
+    }
+    .badge-muted {
+        @apply badge border-ink-200 bg-ink-100 text-ink-600 dark:border-ink-800 dark:bg-ink-800/60 dark:text-ink-300;
+    }
+    .gradient-text {
+        @apply bg-gradient-to-r from-brand-400 via-iris-500 to-brand-500 bg-clip-text text-transparent;
+        background-size: 200% 100%;
+        animation: shimmer 8s ease-in-out infinite;
+    }
+    .divider-dot {
+        @apply mx-3 h-1 w-1 rounded-full bg-ink-400/60;
+    }
+}
+
+/* Respecte les préférences utilisateur */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+

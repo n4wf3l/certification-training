@@ -12,17 +12,36 @@ class ItilFoundationSeeder extends Seeder
     public function run(): void
     {
         $cert = Certification::updateOrCreate(
-            ['slug' => 'itil-foundation-v4'],
+            ['slug' => 'itil-foundation-v5'],
             [
-                'title' => 'ITIL Foundation v4',
-                'description' => 'Framework ITIL 4 — principes directeurs, quatre dimensions, gouvernance, flux de valeur, pratiques.',
+                'title' => 'ITIL Foundation v5',
+                'description' => 'Le référentiel mondial de la gestion des services IT.',
+                'long_description' => "ITIL est le framework le plus adopté au monde pour structurer la gestion des services IT. La certification Foundation valide ta compréhension du système de valeur ITIL, des sept principes directeurs, des quatre dimensions, du modèle d'amélioration continue et des principales pratiques (gestion des incidents, des problèmes, des changements, des demandes, des niveaux de service). C'est le socle indispensable avant de viser ITIL Practitioner, Managing Professional ou Strategic Leader.",
+                'importance' => "Prérequis explicite ou implicite dans la majorité des offres d'encadrement ITSM en France, en Belgique et au Canada. On la retrouve dans les fiches de poste 'Service Manager', 'Change Manager', 'Problem Manager', 'Chef de projet SI' ou 'Product Owner IT'. Elle apparaît comme un critère de sélection dans les grilles RH des grands comptes (banques, telco, secteur public).",
+                'target_roles' => [
+                    'IT Service Manager',
+                    'Service Desk Manager',
+                    'Change Manager',
+                    'Problem Manager',
+                    'ITSM Analyst',
+                    'Chef de projet SI',
+                    'Product Owner IT',
+                    'Consultant ITSM',
+                ],
                 'logo_path' => null,
                 'duration_minutes' => 60,
                 'passing_score' => 26,
                 'total_questions' => 40,
+                'validity_months' => 36,
+                'validity_note' => "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
+                'version_retires_at' => null,
+                'questions_updated_at' => now(),
                 'is_active' => true,
             ]
         );
+
+        // Nettoyage : ancienne version si présente
+        Certification::where('slug', 'itil-foundation-v4')->delete();
 
         $cert->questions()->delete();
 

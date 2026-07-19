@@ -13,9 +13,18 @@ class Certification extends Model
         'slug',
         'logo_path',
         'description',
+        'long_description',
+        'course_blocks',
+        'course_updated_at',
+        'importance',
+        'target_roles',
+        'questions_updated_at',
         'duration_minutes',
         'passing_score',
         'total_questions',
+        'validity_months',
+        'validity_note',
+        'version_retires_at',
         'is_active',
     ];
 
@@ -24,6 +33,12 @@ class Certification extends Model
         'duration_minutes' => 'integer',
         'passing_score' => 'integer',
         'total_questions' => 'integer',
+        'validity_months' => 'integer',
+        'target_roles' => 'array',
+        'course_blocks' => 'array',
+        'course_updated_at' => 'datetime',
+        'questions_updated_at' => 'datetime',
+        'version_retires_at' => 'date',
     ];
 
     protected static function booted(): void

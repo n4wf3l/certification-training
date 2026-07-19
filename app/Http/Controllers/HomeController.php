@@ -25,6 +25,9 @@ class HomeController extends Controller
                 'passing_score' => $c->passing_score,
                 'total_questions' => $c->total_questions,
                 'available_questions' => $c->questions_count,
+                'questions_updated_at' => $c->questions_updated_at,
+                'validity_months' => $c->validity_months,
+                'version_retires_at' => $c->version_retires_at?->toDateString(),
                 'ready' => $c->questions_count > 0,
             ]);
 

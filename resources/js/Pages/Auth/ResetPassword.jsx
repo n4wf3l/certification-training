@@ -1,93 +1,70 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        token: token,
-        email: email,
+        token,
+        email,
         password: '',
         password_confirmation: '',
     });
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('password.store'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
-        <GuestLayout>
-            <Head title="Reset Password" />
+        <GuestLayout
+            title="Nouveau mot de passe"
+            subtitle="Choisis un mot de passe fort et unique."
+        >
+            <Head title="Nouveau mot de passe" />
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
+                    <label className="field-label" htmlFor="email">Email</label>
+                    <input
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
+                        className="field"
                     />
-
-                    <InputError message={errors.email} className="mt-2" />
+                    {errors.email && <p className="mt-1.5 text-xs text-rose-500">{errors.email}</p>}
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
+                <div>
+                    <label className="field-label" htmlFor="password">Mot de passe</label>
+                    <input
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        autoFocus
                         autoComplete="new-password"
-                        isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
+                        className="field"
+                        placeholder="8 caractères min."
                     />
-
-                    <InputError message={errors.password} className="mt-2" />
+                    {errors.password && <p className="mt-1.5 text-xs text-rose-500">{errors.password}</p>}
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
-                    <TextInput
-                        type="password"
+                <div>
+                    <label className="field-label" htmlFor="password_confirmation">Confirmation</label>
+                    <input
                         id="password_confirmation"
-                        name="password_confirmation"
+                        type="password"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                        className="field"
                     />
                 </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
-                    </PrimaryButton>
-                </div>
+                <button type="submit" disabled={processing} className="btn-primary w-full !py-3">
+                    {processing ? 'Réinitialisation…' : 'Réinitialiser'}
+                </button>
             </form>
         </GuestLayout>
     );
