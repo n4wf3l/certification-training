@@ -1,7 +1,7 @@
 [
     {
-        "title": "CCNA 200-301",
         "slug": "ccna-200-301",
+        "title": "CCNA 200-301",
         "logo_path": "logos/NCuRoldHqobcg51eJmOqGz4oGUi5ECmgRnBdbV9F.png",
         "description": "Cisco Certified Network Associate — routing, switching, sécurité, automatisation.",
         "long_description": "La CCNA (Cisco Certified Network Associate) est LA porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routing (statique, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port-security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS) et automatisation (Python, REST, JSON, Ansible). C'est la certification Cisco la plus reconnue au monde et le prérequis vers CCNP puis CCIE.",
@@ -26,8 +26,8 @@
         "is_active": true
     },
     {
-        "title": "CompTIA A+",
         "slug": "comptia-a-plus",
+        "title": "CompTIA A+",
         "logo_path": null,
         "description": "Certification vendor-neutral de référence pour débuter dans le support IT.",
         "long_description": "La CompTIA A+ valide l'ensemble des fondamentaux du support IT : matériel PC, systèmes d'exploitation (Windows, macOS, Linux, iOS, Android), réseaux, cybersécurité de base, résolution d'incidents et procédures opérationnelles. C'est la seule certification vendor-neutral (non liée à un constructeur) universellement acceptée pour un premier poste dans le support.",
@@ -51,8 +51,8 @@
         "is_active": true
     },
     {
-        "title": "AWS Cloud Practitioner",
         "slug": "aws-cloud-practitioner",
+        "title": "AWS Cloud Practitioner",
         "logo_path": null,
         "description": "Fondamentaux AWS : services, tarification, sécurité et modèle cloud.",
         "long_description": "L'AWS Cloud Practitioner (CLF-C02) est le point d'entrée officiel dans l'écosystème AWS. L'examen valide ta compréhension globale du cloud AWS : services principaux (EC2, S3, RDS, Lambda, VPC), modèles de tarification, modèle de responsabilité partagée, IAM, régions et zones de disponibilité, bonnes pratiques d'architecture Well-Architected. Elle ne demande pas de background technique lourd, mais une réelle compréhension du cloud.",
@@ -77,8 +77,8 @@
         "is_active": true
     },
     {
-        "title": "ITIL Foundation v5",
         "slug": "itil-foundation-v5",
+        "title": "ITIL Foundation v5",
         "logo_path": "logos/Te5KCbriCQWccBBGeWjxNjIXxz82RHCtWv6au1x5.svg",
         "description": "Le référentiel mondial de la gestion des services IT.",
         "long_description": "ITIL est le framework le plus adopté au monde pour structurer la gestion des services IT. La certification Foundation valide ta compréhension du système de valeur ITIL, des sept principes directeurs, des quatre dimensions, du modèle d'amélioration continue et des principales pratiques (gestion des incidents, des problèmes, des changements, des demandes, des niveaux de service). C'est le socle indispensable avant de viser ITIL Practitioner, Managing Professional ou Strategic Leader.",

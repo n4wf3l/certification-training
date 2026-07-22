@@ -11,6 +11,7 @@ class Answer extends Model
         'question_id',
         'letter',
         'answer_text',
+        'rationale',
         'is_correct',
     ];
 

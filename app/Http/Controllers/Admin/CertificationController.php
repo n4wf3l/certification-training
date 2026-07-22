@@ -140,12 +140,14 @@ class CertificationController extends Controller
                 'topic' => $q->topic,
                 'scenario' => $q->scenario,
                 'question' => $q->question_text,
+                'explanation' => $q->explanation,
                 'answers' => $q->answers
                     ->sortBy('letter')
                     ->values()
                     ->map(fn ($a) => [
                         'letter' => $a->letter,
                         'text' => $a->answer_text,
+                        'rationale' => $a->rationale,
                         'correct' => (bool) $a->is_correct,
                     ])
                     ->all(),

@@ -75,12 +75,14 @@ class CertificationSeeder extends Seeder
                     'topic' => $qData['topic'] ?? null,
                     'scenario' => $qData['scenario'] ?? null,
                     'question_text' => $qData['question_text'],
+                    'explanation' => $qData['explanation'] ?? null,
                 ]);
                 foreach ($qData['answers'] as $aData) {
                     Answer::create([
                         'question_id' => $question->id,
                         'letter' => $aData['letter'],
                         'answer_text' => $aData['answer_text'],
+                        'rationale' => $aData['rationale'] ?? null,
                         'is_correct' => (bool) $aData['is_correct'],
                     ]);
                 }

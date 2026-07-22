@@ -4,10 +4,10 @@ import Select from '@/Components/Select';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const DEFAULT_ANSWERS = [
-    { letter: 'A', answer_text: '' },
-    { letter: 'B', answer_text: '' },
-    { letter: 'C', answer_text: '' },
-    { letter: 'D', answer_text: '' },
+    { letter: 'A', answer_text: '', rationale: '' },
+    { letter: 'B', answer_text: '', rationale: '' },
+    { letter: 'C', answer_text: '', rationale: '' },
+    { letter: 'D', answer_text: '', rationale: '' },
 ];
 
 const relabel = (arr) =>
@@ -16,7 +16,11 @@ const relabel = (arr) =>
 export default function Form({ question, certifications, default_certification_id }) {
     const editing = !!question;
     const initialAnswers = question?.answers?.length
-        ? relabel(question.answers.map((a) => ({ letter: a.letter, answer_text: a.answer_text ?? '' })))
+        ? relabel(question.answers.map((a) => ({
+            letter: a.letter,
+            answer_text: a.answer_text ?? '',
+            rationale: a.rationale ?? '',
+        })))
         : DEFAULT_ANSWERS;
 
     const { data, setData, post, put, processing, errors } = useForm({
@@ -25,6 +29,7 @@ export default function Form({ question, certifications, default_certification_i
         topic: question?.topic ?? '',
         scenario: question?.scenario ?? '',
         question_text: question?.question_text ?? '',
+        explanation: question?.explanation ?? '',
         answers: initialAnswers,
         correct_index: question?.correct_index ?? 0,
     });
@@ -36,9 +41,14 @@ export default function Form({ question, certifications, default_certification_i
         setData('answers', next);
     };
 
+    const updateAnswerRationale = (idx, value) => {
+        const next = data.answers.map((a, i) => (i === idx ? { ...a, rationale: value } : a));
+        setData('answers', next);
+    };
+
     const addAnswer = () => {
         if (data.answers.length >= 6) return;
-        setData('answers', relabel([...data.answers, { letter: '', answer_text: '' }]));
+        setData('answers', relabel([...data.answers, { letter: '', answer_text: '', rationale: '' }]));
     };
 
     const removeAnswer = (idx) => {
@@ -170,6 +180,19 @@ export default function Form({ question, certifications, default_certification_i
                                     placeholder="Quel principe directeur est principalement appliqué ?"
                                 />
                             </Field>
+                            <Field
+                                label="Explication (pédagogie)"
+                                hint="Pourquoi la bonne réponse est la meilleure"
+                                error={errors.explanation}
+                            >
+                                <textarea
+                                    rows={3}
+                                    className="field resize-y"
+                                    value={data.explanation}
+                                    onChange={(e) => setData('explanation', e.target.value)}
+                                    placeholder="1 à 3 phrases qui ancrent la bonne réponse dans le concept exact du syllabus. C'est ce que le candidat lit après avoir répondu."
+                                />
+                            </Field>
                         </div>
                     </section>
 
@@ -269,6 +292,25 @@ export default function Form({ question, certifications, default_certification_i
                                                         {errors[`answers.${idx}.answer_text`]}
                                                     </div>
                                                 )}
+                                                <div className="mt-2">
+                                                    <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-ink-500">
+                                                        {isCorrect ? 'Justification (pourquoi c\'est la bonne)' : 'Faux ami (pourquoi ce distracteur trompe)'}
+                                                    </label>
+                                                    <textarea
+                                                        rows={2}
+                                                        className="field resize-y text-xs"
+                                                        value={a.rationale ?? ''}
+                                                        onChange={(e) => updateAnswerRationale(idx, e.target.value)}
+                                                        placeholder={isCorrect
+                                                            ? '1 phrase qui confirme brièvement pourquoi cette réponse l\'emporte.'
+                                                            : '1 phrase qui explique quelle notion voisine ce distracteur évoque et pourquoi ce n\'est pas la bonne réponse ici.'}
+                                                    />
+                                                    {errors[`answers.${idx}.rationale`] && (
+                                                        <div className="mt-1 text-xs text-rose-500">
+                                                            {errors[`answers.${idx}.rationale`]}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

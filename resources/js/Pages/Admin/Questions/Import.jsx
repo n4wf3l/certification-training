@@ -70,11 +70,12 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
     "topic": "Thème court en 1-4 mots",
     "scenario": null,
     "question": "Énoncé de la question",
+    "explanation": "1 à 3 phrases : pourquoi la bonne réponse est la bonne, quel concept du syllabus elle valide.",
     "answers": [
-      { "text": "Proposition A", "correct": false },
-      { "text": "Proposition B", "correct": true },
-      { "text": "Proposition C", "correct": false },
-      { "text": "Proposition D", "correct": false }
+      { "text": "Proposition A", "correct": false, "rationale": "Piège classique : décris précisément pourquoi cette réponse semble juste mais ne l'est pas (concept confondu, terminologie détournée, cas limite mal interprété)." },
+      { "text": "Proposition B", "correct": true, "rationale": "Confirme brièvement pourquoi c'est la bonne réponse — 1 phrase, ancrée dans le vocabulaire officiel." },
+      { "text": "Proposition C", "correct": false, "rationale": "Explique le distracteur : quelle notion voisine il évoque, pourquoi il n'est pas la bonne réponse dans ce contexte précis." },
+      { "text": "Proposition D", "correct": false, "rationale": "Idem — 1 phrase courte, ne recopie pas le texte de la proposition." }
     ]
   }
 ]
@@ -94,6 +95,8 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
 11. **Répartition selon le blueprint** : si l'organisme publie les poids des domaines (ex. Cisco publie le % de chaque domaine dans CCNA), respecte cette proportion sur les ${count} questions.
 12. **Cohérence version** : n'utilise que les concepts, termes et pratiques de la **version actuellement en vigueur** identifiée à l'étape de recherche. Pas de mélange avec des versions retirées.
 13. **Échappement JSON** : si une string contient un guillemet double, une accolade JSON, un extrait de code ou une commande CLI, tu **échappes chaque guillemet interne** avec un antislash (\`\\"\`). Exemple valide : \`"text": "{\\"key\\": \\"value\\"}"\`. Une string mal échappée casse tout le tableau — vérifie mentalement chaque \`text\`, \`question\` et \`scenario\` avant de renvoyer le JSON.
+14. **\`explanation\` obligatoire** — 1 à 3 phrases qui expliquent **pourquoi** la bonne réponse est la meilleure, avec référence au concept exact du syllabus. Ne recopie pas l'énoncé, ne dis pas juste "c'est la bonne réponse".
+15. **\`rationale\` obligatoire sur chaque proposition** — 1 phrase par distracteur qui explique **pourquoi ce n'est pas la bonne réponse** (concept voisin confondu, terminologie détournée, cas limite). Sur la bonne réponse, \`rationale\` confirme brièvement pourquoi elle l'emporte. C'est ce qui transforme le quiz en apprentissage réel.
 
 # TYPES À DISTRIBUER ÉQUITABLEMENT
 
@@ -108,22 +111,24 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
     "topic": "Principes directeurs",
     "scenario": null,
     "question": "Quel principe directeur ITIL recommande de ne pas repartir de zéro et de tirer parti de ce qui existe déjà ?",
+    "explanation": "Le principe 'Commencer là où vous êtes' invite à évaluer l'existant (processus, outils, capacités) avant toute transformation. Il évite l'effet 'table rase' qui gaspille des investissements passés et masque des points forts.",
     "answers": [
-      { "text": "Progresser par itération avec des retours", "correct": false },
-      { "text": "Se concentrer sur la valeur", "correct": false },
-      { "text": "Commencer là où vous êtes", "correct": true },
-      { "text": "Optimiser et automatiser", "correct": false }
+      { "text": "Progresser par itération avec des retours", "correct": false, "rationale": "Ce principe concerne le rythme du changement (petites étapes + feedback), pas la valorisation de l'existant." },
+      { "text": "Se concentrer sur la valeur", "correct": false, "rationale": "Ce principe cible la finalité (valeur pour le consommateur), pas la posture initiale d'analyse de l'état courant." },
+      { "text": "Commencer là où vous êtes", "correct": true, "rationale": "Formulation exacte du principe qui prône l'inventaire de l'existant avant toute refonte." },
+      { "text": "Optimiser et automatiser", "correct": false, "rationale": "Ce principe vient plus tard dans la démarche (optimiser puis automatiser), il ne parle pas du point de départ." }
     ]
   },
   {
     "topic": "Gestion des incidents",
     "scenario": "Un utilisateur signale que son application métier est très lente depuis 30 minutes. Plusieurs collègues du même service sont concernés.",
     "question": "Quelle pratique ITIL est la plus adaptée en priorité ?",
+    "explanation": "L'objectif immédiat est de restaurer le fonctionnement normal du service. C'est la définition exacte du but de la gestion des incidents — trouver la cause racine viendra ensuite via la gestion des problèmes.",
     "answers": [
-      { "text": "Gestion des changements", "correct": false },
-      { "text": "Gestion des incidents", "correct": true },
-      { "text": "Gestion des mises en production", "correct": false },
-      { "text": "Gestion des demandes de service", "correct": false }
+      { "text": "Gestion des changements", "correct": false, "rationale": "Pratique déclenchée pour introduire une modification contrôlée, pas pour réagir à une dégradation subie." },
+      { "text": "Gestion des incidents", "correct": true, "rationale": "Confirme : la restauration rapide du service en cas de dégradation est le cœur de cette pratique." },
+      { "text": "Gestion des mises en production", "correct": false, "rationale": "Cette pratique orchestre les déploiements — hors sujet quand il s'agit de rétablir un service existant." },
+      { "text": "Gestion des demandes de service", "correct": false, "rationale": "Elle traite des requêtes standard planifiées (nouveau compte, nouvel équipement), pas des incidents non planifiés." }
     ]
   }
 ]

@@ -14,6 +14,7 @@ class Question extends Model
         'topic',
         'scenario',
         'question_text',
+        'explanation',
     ];
 
     public function certification(): BelongsTo

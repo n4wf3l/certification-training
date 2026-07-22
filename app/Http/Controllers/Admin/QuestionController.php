@@ -38,6 +38,7 @@ class QuestionController extends Controller
                 'topic' => $q->topic,
                 'scenario' => $q->scenario,
                 'question_text' => $q->question_text,
+                'explanation' => $q->explanation,
                 'certification' => [
                     'id' => $q->certification->id,
                     'title' => $q->certification->title,
@@ -48,6 +49,7 @@ class QuestionController extends Controller
                 'answers' => $q->answers->map(fn ($a) => [
                     'letter' => $a->letter,
                     'text' => $a->answer_text,
+                    'rationale' => $a->rationale,
                     'is_correct' => $a->is_correct,
                 ]),
             ]),
@@ -76,6 +78,7 @@ class QuestionController extends Controller
                 'topic' => $data['topic'] ?? null,
                 'scenario' => $data['scenario'] ?? null,
                 'question_text' => $data['question_text'],
+                'explanation' => $data['explanation'] ?? null,
             ]);
 
             foreach ($data['answers'] as $index => $answer) {
@@ -83,6 +86,7 @@ class QuestionController extends Controller
                     'question_id' => $question->id,
                     'letter' => $answer['letter'],
                     'answer_text' => $answer['answer_text'],
+                    'rationale' => $answer['rationale'] ?? null,
                     'is_correct' => (int) $data['correct_index'] === $index,
                 ]);
             }
@@ -104,9 +108,11 @@ class QuestionController extends Controller
                 'topic' => $question->topic,
                 'scenario' => $question->scenario,
                 'question_text' => $question->question_text,
+                'explanation' => $question->explanation,
                 'answers' => $question->answers->map(fn ($a) => [
                     'letter' => $a->letter,
                     'answer_text' => $a->answer_text,
+                    'rationale' => $a->rationale,
                 ])->values(),
                 'correct_index' => $correctIndex === false ? 0 : $correctIndex,
             ],
@@ -126,6 +132,7 @@ class QuestionController extends Controller
                 'topic' => $data['topic'] ?? null,
                 'scenario' => $data['scenario'] ?? null,
                 'question_text' => $data['question_text'],
+                'explanation' => $data['explanation'] ?? null,
             ]);
 
             $question->answers()->delete();
@@ -134,6 +141,7 @@ class QuestionController extends Controller
                     'question_id' => $question->id,
                     'letter' => $answer['letter'],
                     'answer_text' => $answer['answer_text'],
+                    'rationale' => $answer['rationale'] ?? null,
                     'is_correct' => (int) $data['correct_index'] === $index,
                 ]);
             }
@@ -201,12 +209,15 @@ class QuestionController extends Controller
             foreach ($answers as $a) {
                 $text = trim((string) ($a['text'] ?? ''));
                 $correct = (bool) ($a['correct'] ?? false);
+                $rationale = isset($a['rationale']) && $a['rationale'] !== null && $a['rationale'] !== ''
+                    ? trim((string) $a['rationale'])
+                    : null;
                 if ($text === '') {
                     throw ValidationException::withMessages([
                         'payload' => "Question " . ($i + 1) . " : une réponse a un texte vide.",
                     ]);
                 }
-                $cleanAnswers[] = ['text' => $text, 'correct' => $correct];
+                $cleanAnswers[] = ['text' => $text, 'correct' => $correct, 'rationale' => $rationale];
                 if ($correct) $correctCount++;
             }
 
@@ -222,6 +233,9 @@ class QuestionController extends Controller
                     ? trim((string) $item['scenario'])
                     : null,
                 'question' => $questionText,
+                'explanation' => isset($item['explanation']) && $item['explanation'] !== null && $item['explanation'] !== ''
+                    ? trim((string) $item['explanation'])
+                    : null,
                 'answers' => $cleanAnswers,
             ];
         }
@@ -237,6 +251,7 @@ class QuestionController extends Controller
                     'topic' => $q['topic'] ?: null,
                     'scenario' => $q['scenario'],
                     'question_text' => $q['question'],
+                    'explanation' => $q['explanation'] ?? null,
                 ]);
 
                 foreach ($q['answers'] as $idx => $a) {
@@ -244,6 +259,7 @@ class QuestionController extends Controller
                         'question_id' => $question->id,
                         'letter' => chr(65 + $idx), // A, B, C, D, E, F
                         'answer_text' => $a['text'],
+                        'rationale' => $a['rationale'] ?? null,
                         'is_correct' => $a['correct'],
                     ]);
                 }
@@ -267,9 +283,11 @@ class QuestionController extends Controller
             'topic' => 'nullable|string|max:150',
             'scenario' => 'nullable|string',
             'question_text' => 'required|string',
+            'explanation' => 'nullable|string|max:2000',
             'answers' => 'required|array|min:2|max:6',
             'answers.*.letter' => 'required|string|max:2',
             'answers.*.answer_text' => 'required|string',
+            'answers.*.rationale' => 'nullable|string|max:1000',
             'correct_index' => 'required|integer|min:0',
         ]);
     }

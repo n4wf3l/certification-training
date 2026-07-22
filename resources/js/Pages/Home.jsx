@@ -167,23 +167,24 @@ export default function Home({ certifications, teaser_questions = null }) {
 
     return (
         <AppLayout ambient={false}>
-            <Head title="Examens" />
+            <Head title="Certifications" />
 
             {/* HERO */}
             <section className="border-b border-ink-200 pb-16 pt-6 dark:border-ink-800 sm:pt-10">
                 <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
                     <div>
-                        <SectionLabel>Méthode — Répétition adaptative</SectionLabel>
+                        <SectionLabel>Outil d'entraînement complémentaire</SectionLabel>
 
                         <h1 className="mt-8 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
-                            Prépare l'examen<br />
-                            <span className="text-ink-400 dark:text-ink-500">comme ceux qui</span> l'ont eu.
+                            Ancre le vocabulaire.<br />
+                            <span className="text-ink-400 dark:text-ink-500">Gère le temps.</span> Passe le jour J.
                         </h1>
 
                         <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
-                            Cours structurés et examens blancs rédigés à partir de l'expérience réelle
-                            des candidats. Un moteur d'entraînement qui insiste sur tes erreurs — jusqu'à
-                            ce qu'elles n'en soient plus.
+                            Idéal pour <span className="font-semibold text-ink-900 dark:text-white">tester la gestion du temps</span>
+                            {' '}et ancrer le vocabulaire officiel en <span className="font-semibold text-ink-900 dark:text-white">complément de la doc</span>
+                            {' '}(PeopleCert, Cisco, CompTIA, AWS). Chaque question vient avec son explication
+                            et le rationale des distracteurs — on t'aide à comprendre, pas juste à cocher.
                         </p>
 
                         <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">

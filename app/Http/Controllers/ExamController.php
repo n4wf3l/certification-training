@@ -187,14 +187,17 @@ class ExamController extends Controller
                 'question_text' => $aa->question->question_text,
                 'scenario' => $aa->question->scenario,
                 'topic' => $aa->question->topic,
+                'explanation' => $aa->question->explanation,
                 'is_correct' => $aa->is_correct,
                 'chosen' => $aa->answer ? [
                     'letter' => $aa->answer->letter,
                     'text' => $aa->answer->answer_text,
+                    'rationale' => $aa->answer->rationale,
                 ] : null,
                 'correct' => $correct ? [
                     'letter' => $correct->letter,
                     'text' => $correct->answer_text,
+                    'rationale' => $correct->rationale,
                 ] : null,
             ];
         });

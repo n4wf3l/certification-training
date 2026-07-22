@@ -405,15 +405,54 @@ export default function Result({ attempt, certification, details, mastery, compa
                                         </p>
                                     )}
                                     <p className="mb-3 text-sm font-medium text-ink-900 dark:text-white">{d.question_text}</p>
+
                                     <div className="space-y-2 text-sm">
-                                        <div className={`flex gap-2 ${d.is_correct ? 'text-emerald-600 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}`}>
-                                            <span className="font-semibold">Ta réponse :</span>
-                                            <span>{d.chosen ? `${d.chosen.letter}. ${d.chosen.text}` : 'Non répondue'}</span>
+                                        {/* Réponse choisie */}
+                                        <div className={`rounded-lg border p-3 ${
+                                            d.is_correct
+                                                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-200'
+                                                : 'border-rose-500/30 bg-rose-500/10 text-rose-800 dark:text-rose-200'
+                                        }`}>
+                                            <div className="text-[10px] font-semibold uppercase tracking-wider opacity-70">
+                                                Ta réponse
+                                            </div>
+                                            <div className="mt-1">
+                                                {d.chosen ? `${d.chosen.letter}. ${d.chosen.text}` : 'Non répondue'}
+                                            </div>
+                                            {d.chosen?.rationale && (
+                                                <div className="mt-2 text-xs italic opacity-90">
+                                                    {d.chosen.rationale}
+                                                </div>
+                                            )}
                                         </div>
+
+                                        {/* Bonne réponse (si tu t'es trompé) */}
                                         {!d.is_correct && d.correct && (
-                                            <div className="flex gap-2 text-emerald-600 dark:text-emerald-300">
-                                                <span className="font-semibold">Bonne réponse :</span>
-                                                <span>{d.correct.letter}. {d.correct.text}</span>
+                                            <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-emerald-800 dark:text-emerald-200">
+                                                <div className="text-[10px] font-semibold uppercase tracking-wider opacity-70">
+                                                    Bonne réponse
+                                                </div>
+                                                <div className="mt-1">
+                                                    {d.correct.letter}. {d.correct.text}
+                                                </div>
+                                                {d.correct.rationale && (
+                                                    <div className="mt-2 text-xs italic opacity-90">
+                                                        {d.correct.rationale}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Explication pédagogique globale */}
+                                        {d.explanation && (
+                                            <div className="rounded-lg border-l-4 border-brand-500 bg-brand-500/5 p-3">
+                                                <div className="mb-1 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-300">
+                                                    <Icon.Sparkles className="h-3 w-3" />
+                                                    Pédagogie
+                                                </div>
+                                                <p className="text-sm text-ink-700 dark:text-ink-200">
+                                                    {d.explanation}
+                                                </p>
                                             </div>
                                         )}
                                     </div>
