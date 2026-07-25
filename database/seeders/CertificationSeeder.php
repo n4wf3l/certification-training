@@ -18,7 +18,7 @@ class CertificationSeeder extends Seeder
         $questionsFile = $dataDir . '/questions.json';
 
         if (! File::exists($certsFile) || ! File::exists($questionsFile)) {
-            $this->command?->warn('Aucun snapshot database/seeders/data — seeder ignoré.');
+            $this->command?->warn('Aucun snapshot database/seeders/data - seeder ignoré.');
             return;
         }
 
@@ -56,7 +56,9 @@ class CertificationSeeder extends Seeder
                     'questions_updated_at' => $data['questions_updated_at'] ?? null,
                     'course_blocks' => $data['course_blocks'] ?? null,
                     'course_updated_at' => $data['course_updated_at'] ?? null,
+                    'syllabus_blueprint' => $data['syllabus_blueprint'] ?? null,
                     'is_active' => $data['is_active'] ?? true,
+                    'available_languages' => $data['available_languages'] ?? ['fr'],
                 ]
             );
 
@@ -66,13 +68,16 @@ class CertificationSeeder extends Seeder
                 continue;
             }
 
-            // Purge puis réinsère — évite d'accumuler des doublons quand on re-seed
+            // Purge puis réinsère - évite d'accumuler des doublons quand on re-seed
             $cert->questions()->delete();
             foreach ($snapshot as $qData) {
                 $question = Question::create([
                     'certification_id' => $cert->id,
                     'position' => $qData['position'] ?? 1,
                     'topic' => $qData['topic'] ?? null,
+                    'concept_group_key' => $qData['concept_group_key'] ?? null,
+                    'syllabus_domain' => $qData['syllabus_domain'] ?? null,
+                    'learning_objective' => $qData['learning_objective'] ?? null,
                     'scenario' => $qData['scenario'] ?? null,
                     'question_text' => $qData['question_text'],
                     'explanation' => $qData['explanation'] ?? null,

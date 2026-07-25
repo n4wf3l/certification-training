@@ -1,17 +1,19 @@
 import GuestLayout from '@/Layouts/GuestLayout';
+import { useT } from '@/lib/i18n';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-const DEMO_ACCOUNTS = [
-    { role: 'Admin', email: 'admin@example.com', password: 'password', badge: 'brand' },
-    { role: 'Utilisateur', email: 'user@example.com', password: 'password', badge: 'muted' },
-];
-
 export default function Login({ status, canResetPassword, redirect_to }) {
+    const t = useT();
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
     });
+
+    const demoAccounts = [
+        { role: t('auth.demo_role_admin'), email: 'admin@example.com', password: 'password', badge: 'brand' },
+        { role: t('auth.demo_role_user'), email: 'user@example.com', password: 'password', badge: 'muted' },
+    ];
 
     const fill = (account) => {
         setData({ ...data, email: account.email, password: account.password });
@@ -30,10 +32,10 @@ export default function Login({ status, canResetPassword, redirect_to }) {
 
     return (
         <GuestLayout
-            title="Content de te revoir"
-            subtitle="Reprends là où tu t'étais arrêté et continue à progresser."
+            title={t('auth.login_title')}
+            subtitle={t('auth.login_subtitle')}
         >
-            <Head title="Connexion" />
+            <Head title={t('auth.login_page_title')} />
 
             {status && (
                 <div className="mb-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-700 dark:text-emerald-300">
@@ -43,7 +45,7 @@ export default function Login({ status, canResetPassword, redirect_to }) {
 
             <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <label className="field-label" htmlFor="email">Email</label>
+                    <label className="field-label" htmlFor="email">{t('auth.field_email')}</label>
                     <input
                         id="email"
                         type="email"
@@ -53,20 +55,20 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                         autoFocus
                         onChange={(e) => setData('email', e.target.value)}
                         className="field"
-                        placeholder="toi@exemple.com"
+                        placeholder={t('auth.field_email_placeholder')}
                     />
                     {errors.email && <p className="mt-1.5 text-xs text-rose-500">{errors.email}</p>}
                 </div>
 
                 <div>
                     <div className="mb-1.5 flex items-center justify-between">
-                        <label className="field-label !mb-0" htmlFor="password">Mot de passe</label>
+                        <label className="field-label !mb-0" htmlFor="password">{t('auth.field_password')}</label>
                         {canResetPassword && (
                             <Link
                                 href={route('password.request')}
                                 className="text-xs font-medium text-brand-500 hover:text-brand-400"
                             >
-                                Oublié ?
+                                {t('auth.forgot_link_short')}
                             </Link>
                         )}
                     </div>
@@ -78,7 +80,7 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                         className="field"
-                        placeholder="••••••••"
+                        placeholder={t('auth.field_password_placeholder')}
                     />
                     {errors.password && <p className="mt-1.5 text-xs text-rose-500">{errors.password}</p>}
                 </div>
@@ -90,11 +92,11 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                         onChange={(e) => setData('remember', e.target.checked)}
                         className="h-4 w-4 rounded border-ink-300 bg-white text-brand-500 focus:ring-brand-500 dark:border-ink-700 dark:bg-ink-900"
                     />
-                    Se souvenir de moi
+                    {t('auth.field_remember')}
                 </label>
 
                 <button type="submit" disabled={processing} className="btn-primary w-full !py-3 text-base">
-                    {processing ? 'Connexion…' : 'Se connecter'}
+                    {processing ? t('auth.submit_login_loading') : t('auth.submit_login')}
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                         <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -106,22 +108,22 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                     </div>
                     <div className="relative flex justify-center">
                         <span className="bg-white px-3 text-xs uppercase tracking-wider text-ink-400 dark:bg-ink-950">
-                            ou
+                            {t('auth.divider_or')}
                         </span>
                     </div>
                 </div>
 
                 <Link href={registerHref} className="btn-secondary w-full !py-3">
-                    Commencer
+                    {t('auth.cta_get_started')}
                 </Link>
 
                 <p className="text-center text-xs text-ink-500 dark:text-ink-400">
-                    Aucune carte bancaire requise.
+                    {t('auth.no_card_required')}
                 </p>
             </form>
 
             <p className="mt-6 text-center text-xs text-ink-500 dark:text-ink-500">
-                En te connectant tu acceptes que tes réponses soient utilisées pour améliorer ton parcours.
+                {t('auth.terms_notice')}
             </p>
 
             {/* Dev-only : comptes de test */}
@@ -129,12 +131,12 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                 <div className="mb-3 flex items-center gap-2">
                     <span className="badge-brand">
                         <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                        Environnement de dev
+                        {t('auth.dev_env_badge')}
                     </span>
-                    <span className="text-xs text-ink-500">Clique pour remplir le formulaire</span>
+                    <span className="text-xs text-ink-500">{t('auth.dev_env_hint')}</span>
                 </div>
                 <div className="space-y-2">
-                    {DEMO_ACCOUNTS.map((acc) => (
+                    {demoAccounts.map((acc) => (
                         <button
                             key={acc.email}
                             type="button"
@@ -153,7 +155,7 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                                     </span>
                                     <span className="text-ink-400">·</span>
                                     <span className="font-mono text-ink-500">
-                                        mdp : <span className="text-ink-700 dark:text-ink-200">{acc.password}</span>
+                                        {t('auth.demo_password_label')} <span className="text-ink-700 dark:text-ink-200">{acc.password}</span>
                                     </span>
                                 </div>
                             </div>

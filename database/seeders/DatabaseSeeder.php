@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             SettingSeeder::class,
             CertificationSeeder::class,
+            CertificationTranslationsSeeder::class,
+            QuestionTranslationsSeeder::class,
         ]);
     }
 }

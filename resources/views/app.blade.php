@@ -3,7 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#0b0f17">
+        <meta name="theme-color" content="#12ccb0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="{{ $brandName ?? 'CertifLoop' }}">
+        <link rel="apple-touch-icon" href="/pwa-icon-192.svg">
 
         <title inertia>{{ $brandName ?? 'CertifLoop' }}</title>
         <script>window.__BRAND_NAME__ = @json($brandName ?? 'CertifLoop');</script>

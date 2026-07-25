@@ -1,5 +1,10 @@
 import Toaster, { useFlashToasts } from '@/Components/Toaster';
 import Icon from '@/Components/Icons';
+import GamificationBadge from '@/Components/GamificationBadge';
+import OfflineIndicator from '@/Components/OfflineIndicator';
+import PwaInstallPrompt from '@/Components/PwaInstallPrompt';
+import LocaleSwitcher from '@/Components/LocaleSwitcher';
+import { useT, useLocale } from '@/lib/i18n';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -41,6 +46,7 @@ function BrandMark({ size = 'sm', settings }) {
 }
 
 function UserMenu({ user, isAdmin }) {
+    const t = useT();
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
@@ -74,7 +80,7 @@ function UserMenu({ user, isAdmin }) {
                 <span className="hidden font-semibold text-ink-700 dark:text-ink-200 sm:inline">{user.name}</span>
                 {isAdmin && (
                     <span className="hidden rounded-full border border-brand-500/30 bg-brand-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-300 sm:inline">
-                        Admin
+                        {t('nav.admin_badge')}
                     </span>
                 )}
                 <Icon.ChevronDown className={`h-3.5 w-3.5 text-ink-500 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -96,7 +102,7 @@ function UserMenu({ user, isAdmin }) {
                             className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
                         >
                             <Icon.User className="h-4 w-4 text-ink-500" />
-                            Mon profil
+                            {t('user_menu.my_profile')}
                         </Link>
                         {user.has_attempts && (
                             <Link
@@ -105,9 +111,17 @@ function UserMenu({ user, isAdmin }) {
                                 className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
                             >
                                 <Icon.Chart className="h-4 w-4 text-ink-500" />
-                                Mes statistiques
+                                {t('user_menu.my_stats')}
                             </Link>
                         )}
+                        <Link
+                            href={route('study-plans.index')}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
+                        >
+                            <Icon.Timer className="h-4 w-4 text-ink-500" />
+                            {t('user_menu.my_plans')}
+                        </Link>
                         {isAdmin && (
                             <Link
                                 href={route('admin.dashboard')}
@@ -115,7 +129,7 @@ function UserMenu({ user, isAdmin }) {
                                 className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-brand-600 transition hover:bg-brand-500/10 dark:text-brand-300"
                             >
                                 <Icon.Shield className="h-4 w-4" />
-                                Dashboard admin
+                                {t('user_menu.admin_dashboard')}
                             </Link>
                         )}
                     </div>
@@ -127,7 +141,7 @@ function UserMenu({ user, isAdmin }) {
                             className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-300"
                         >
                             <Icon.LogOut className="h-4 w-4" />
-                            Déconnexion
+                            {t('user_menu.log_out')}
                         </Link>
                     </div>
                 </div>
@@ -142,12 +156,14 @@ export default function AppLayout({ header, children, full = false, ambient = tr
     const user = auth?.user;
     const isAdmin = user?.is_admin;
     const [mobileOpen, setMobileOpen] = useState(false);
+    const t = useT();
+    const locale = useLocale();
     useFlashToasts();
 
     const nav = [
-        { href: route('home'), label: 'Certifications', icon: Icon.Book, active: route().current('home') },
-        ...(user && user.has_attempts ? [{ href: route('stats.index'), label: 'Mes stats', icon: Icon.Chart, active: route().current('stats.*') }] : []),
-        ...(isAdmin ? [{ href: route('admin.dashboard'), label: 'Dashboard', icon: Icon.Shield, active: route().current('admin.*'), accent: true }] : []),
+        { href: route('home'), label: t('nav.certifications'), icon: Icon.Book, active: route().current('home') },
+        ...(user && user.has_attempts ? [{ href: route('stats.index'), label: t('nav.my_stats'), icon: Icon.Chart, active: route().current('stats.*') }] : []),
+        ...(isAdmin ? [{ href: route('admin.dashboard'), label: t('nav.dashboard'), icon: Icon.Shield, active: route().current('admin.*'), accent: true }] : []),
     ];
 
     const year = new Date().getFullYear();
@@ -196,21 +212,25 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                     </div>
 
                     <div className="hidden items-center gap-3 md:flex">
+                        <LocaleSwitcher />
                         {user ? (
-                            <UserMenu user={user} isAdmin={isAdmin} />
+                            <>
+                                <GamificationBadge />
+                                <UserMenu user={user} isAdmin={isAdmin} />
+                            </>
                         ) : (
                             <>
                                 <Link
                                     href={route('login')}
                                     className="rounded-lg px-3 py-1.5 text-sm font-medium text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white"
                                 >
-                                    Connexion
+                                    {t('nav.log_in')}
                                 </Link>
                                 <Link
                                     href={route('register')}
                                     className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-brand-500 to-iris-500 px-4 py-1.5 text-sm font-semibold text-white shadow-glow transition hover:shadow-glow-lg hover:-translate-y-px"
                                 >
-                                    Commencer
+                                    {t('nav.get_started')}
                                     <Icon.ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                                 </Link>
                             </>
@@ -220,7 +240,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                     <button
                         className="rounded-lg p-2 text-ink-500 hover:bg-ink-100 md:hidden dark:hover:bg-ink-800"
                         onClick={() => setMobileOpen((v) => !v)}
-                        aria-label="menu"
+                        aria-label={t('nav.menu')}
                     >
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 7h16M4 12h16M4 17h16'} />
@@ -264,24 +284,27 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 </div>
                                 <Link href={route('profile.edit')} onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm hover:bg-ink-100 dark:hover:bg-ink-800/60">
                                     <Icon.User className="h-4 w-4 text-ink-500" />
-                                    Mon profil
+                                    {t('user_menu.my_profile')}
                                 </Link>
                                 <Link href={route('logout')} method="post" as="button" className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm text-rose-600 hover:bg-rose-500/10 dark:text-rose-300">
                                     <Icon.LogOut className="h-4 w-4" />
-                                    Déconnexion
+                                    {t('user_menu.log_out')}
                                 </Link>
                             </div>
                         ) : (
                             <div className="flex flex-col gap-2">
                                 <Link href={route('login')} onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-ink-100 dark:hover:bg-ink-800/60">
-                                    Connexion
+                                    {t('nav.log_in')}
                                 </Link>
                                 <Link href={route('register')} onClick={() => setMobileOpen(false)} className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-brand-500 to-iris-500 px-4 py-2.5 text-sm font-semibold text-white shadow-glow">
-                                    Commencer
+                                    {t('nav.get_started')}
                                     <Icon.ArrowRight className="h-3.5 w-3.5" />
                                 </Link>
                             </div>
                         )}
+                        <div className="mt-4 flex justify-center">
+                            <LocaleSwitcher variant="inline" />
+                        </div>
                     </div>
                 )}
             </nav>
@@ -300,6 +323,8 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             </main>
 
             <Toaster />
+            <OfflineIndicator />
+            <PwaInstallPrompt />
 
             {/* FOOTER */}
             <footer className="relative mt-24 overflow-hidden border-t border-ink-200/60 dark:border-ink-800/60">
@@ -317,7 +342,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                         <div className="md:col-span-5">
                             <BrandMark size="lg" settings={settings} />
                             <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-500 dark:text-ink-400">
-                                Entraînement adaptatif aux certifications IT. Vos erreurs reviennent en priorité, jusqu'à maîtrise complète.
+                                {t('footer.tagline')}
                             </p>
                             <div className="mt-5 flex flex-wrap items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-300">
@@ -325,56 +350,53 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                                     </span>
-                                    Tous systèmes opérationnels
+                                    {t('footer.status_operational')}
                                 </span>
-                                <span className="inline-flex items-center gap-1 rounded-full border border-ink-200 bg-white/50 px-2.5 py-1 text-xs text-ink-500 dark:border-ink-800 dark:bg-ink-900/50 dark:text-ink-400">
-                                    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" /></svg>
-                                    Français
-                                </span>
+                                <LocaleSwitcher variant="inline" />
                             </div>
                         </div>
 
-                        {/* Plateforme */}
+                        {/* Platform */}
                         <div className="md:col-span-3">
                             <div className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">
-                                Plateforme
+                                {t('footer.section_platform')}
                             </div>
                             <ul className="mt-4 space-y-3 text-sm">
                                 <li>
                                     <Link href={route('home')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                         <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                        Certifications
+                                        {t('footer.link_certifications')}
                                     </Link>
                                 </li>
                                 {user && user.has_attempts && (
                                     <li>
                                         <Link href={route('stats.index')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                             <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                            Mes statistiques
+                                            {t('footer.link_my_stats')}
                                         </Link>
                                     </li>
                                 )}
                                 <li>
                                     <a href="#comment-ca-marche" className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                         <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                        Comment ça marche
+                                        {t('footer.link_how_it_works')}
                                     </a>
                                 </li>
                                 {isAdmin && (
                                     <li>
                                         <Link href={route('admin.dashboard')} className="group inline-flex items-center gap-1.5 text-brand-600 transition hover:text-brand-500 dark:text-brand-300">
                                             <span className="h-1 w-1 rounded-full bg-brand-500 transition group-hover:w-3" />
-                                            Dashboard admin
+                                            {t('footer.link_admin_dashboard')}
                                         </Link>
                                     </li>
                                 )}
                             </ul>
                         </div>
 
-                        {/* Compte */}
+                        {/* Account */}
                         <div className="md:col-span-2">
                             <div className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">
-                                Compte
+                                {t('footer.section_account')}
                             </div>
                             <ul className="mt-4 space-y-3 text-sm">
                                 {user ? (
@@ -382,13 +404,13 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                         <li>
                                             <Link href={route('profile.edit')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                                 <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                                Mon profil
+                                                {t('footer.link_my_profile')}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link href={route('logout')} method="post" as="button" className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                                 <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                                Déconnexion
+                                                {t('footer.link_log_out')}
                                             </Link>
                                         </li>
                                     </>
@@ -397,13 +419,13 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                         <li>
                                             <Link href={route('login')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                                 <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                                Connexion
+                                                {t('footer.link_log_in')}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link href={route('register')} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                                 <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                                Commencer
+                                                {t('footer.link_get_started')}
                                             </Link>
                                         </li>
                                     </>
@@ -414,11 +436,11 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                         {/* CTA card */}
                         <div className="md:col-span-2">
                             <div className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">
-                                Prêt à démarrer ?
+                                {t('footer.section_cta')}
                             </div>
                             <div className="mt-4 rounded-2xl border border-ink-200 bg-gradient-to-br from-brand-500/5 to-iris-500/5 p-4 dark:border-ink-800">
                                 <p className="text-xs leading-relaxed text-ink-600 dark:text-ink-300">
-                                    Lance ton premier examen blanc en moins de 30 secondes.
+                                    {t('footer.cta_body')}
                                 </p>
                                 <Link
                                     href={
@@ -429,8 +451,8 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                     className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 transition hover:gap-2 dark:text-brand-300"
                                 >
                                     {user
-                                        ? (user.has_attempts ? 'Voir mes stats' : 'Choisir une certification')
-                                        : 'Commencer'}
+                                        ? (user.has_attempts ? t('footer.cta_view_stats') : t('footer.cta_pick_cert'))
+                                        : t('footer.cta_get_started')}
                                     <Icon.ArrowRight className="h-3 w-3" />
                                 </Link>
                             </div>
@@ -441,13 +463,13 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                     <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-ink-200/60 pt-6 text-xs text-ink-500 dark:border-ink-800/60 dark:text-ink-400 sm:flex-row">
                         <div className="flex items-center gap-2">
                             <span>© {year} {settings?.brand_name || 'CertifLoop'}.</span>
-                            <span>Tous droits réservés.</span>
+                            <span>{t('footer.rights')}</span>
                         </div>
                         <div className="flex items-center gap-4">
                             <span className="inline-flex items-center gap-1.5">
-                                Fait avec
+                                {t('footer.made_with')}
                                 <Icon.Heart className="h-3 w-3 text-rose-500" />
-                                pour les futurs certifiés
+                                {t('footer.made_for')}
                             </span>
                             <span className="hidden h-3 w-px bg-ink-300 dark:bg-ink-700 sm:inline-block" />
                             <span className="hidden font-mono text-[11px] text-ink-400 sm:inline-block dark:text-ink-500">

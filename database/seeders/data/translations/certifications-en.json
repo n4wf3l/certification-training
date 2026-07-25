@@ -1,0 +1,43 @@
+{
+    "meta": {
+        "locale": "en",
+        "canonical_from": "fr",
+        "translated_at": "2026-07-26",
+        "translator": "Claude Opus 4.7",
+        "notes": "English translations of certification metadata (title, description, long_description, importance, validity_note). Applied by CertificationTranslationsSeeder."
+    },
+    "certifications": {
+        "ccna-200-301": {
+            "title": "CCNA 200-301",
+            "description": "Cisco Certified Network Associate - routing, switching, security, automation.",
+            "long_description": "The CCNA (Cisco Certified Network Associate) is THE gateway to networking careers. The 200-301 exam covers the fundamentals: routing (static, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, security (ACL, port-security, basic VPN), wireless infrastructure, IP services (NAT, DHCP, QoS), and automation (Python, REST, JSON, Ansible). It's the most recognised Cisco certification in the world and the prerequisite to CCNP and then CCIE.",
+            "importance": "The CCNA is explicitly required in most 'Network Engineer', 'NOC Analyst', or 'Systems and Networks Engineer' job postings, both in the US and internationally. It validates a technical foundation recruiters take seriously and unlocks the junior-to-mid salary brackets.",
+            "validity_note": "Valid for 3 years. The official exam uses a scaled score of about 825/1000 (≈ 82.5%) - Cisco keeps the exact threshold confidential. Renewal: retake the exam, pass a higher-level Cisco exam (CCNP, CCIE), or accumulate 30 CE credits. No grace period.",
+            "target_roles": ["Junior Network Engineer", "Network Support N1/N2", "Infrastructure Administrator", "Network Technician", "NOC Analyst", "Versatile SysAdmin"]
+        },
+        "comptia-a-plus": {
+            "title": "CompTIA A+",
+            "description": "The reference vendor-neutral certification for starting a career in IT support.",
+            "long_description": "CompTIA A+ validates the full set of IT support fundamentals: PC hardware, operating systems (Windows, macOS, Linux, iOS, Android), networking, basic cybersecurity, incident resolution, and operational procedures. It's the only vendor-neutral certification (not tied to a specific manufacturer) universally accepted for a first support role.",
+            "importance": "Often required for a first helpdesk job at major companies (Dell, HP, IBM, as well as in the US public sector and increasingly in Europe). It reassures recruiters about your ability to work on a heterogeneous fleet from day one.",
+            "validity_note": "CompTIA A+ = two mandatory exams (Core 1: 220-1101, threshold 675/900 = 75% · Core 2: 220-1102, threshold 700/900 = 77.7%). Each core lasts 90 min for 90 questions. Values shown here are for Core 2. Valid for 3 years, renewable via 20 CEUs (Continuing Education Units) or a higher CompTIA cert. 30-day grace period after expiration to upload your CEUs.",
+            "target_roles": ["Helpdesk Technician", "IT Support Tier 1", "Field Technician", "IT Support Specialist", "Desktop Support Technician"]
+        },
+        "aws-cloud-practitioner": {
+            "title": "AWS Cloud Practitioner",
+            "description": "AWS fundamentals: services, pricing, security, and the cloud model.",
+            "long_description": "The AWS Cloud Practitioner (CLF-C02) is the official entry point into the AWS ecosystem. The exam validates your overall understanding of the AWS cloud: core services (EC2, S3, RDS, Lambda, VPC), pricing models, the shared responsibility model, IAM, regions and availability zones, Well-Architected best practices. It does not require deep technical background, but a real understanding of the cloud.",
+            "importance": "High commercial value certification: it proves you understand AWS without necessarily being a developer. Strongly recommended for project managers, product managers, pre-sales, and consultants who interact with cloud teams. It's also the ideal prerequisite before Solutions Architect Associate.",
+            "validity_note": "Valid for 3 years. The official exam uses a scaled score of 700/1000 (≈ 70%), shown here as raw equivalent over 65 questions (of which 15 are unscored by AWS). Renewal by retaking the exam, via an AWS Associate/Pro/Specialty cert, or via AWS Cloud Quest (available within 6 months before expiration).",
+            "target_roles": ["Project Manager", "Product Manager", "Pre-Sales Consultant", "IT Consultant", "Business Analyst", "Non-technical Cloud Stakeholder"]
+        },
+        "itil-foundation-v5": {
+            "title": "ITIL Foundation v5",
+            "description": "The worldwide reference framework for IT service management.",
+            "long_description": "ITIL is the most widely adopted framework in the world for structuring IT service management. The Foundation certification validates your understanding of the ITIL Service Value System, the seven guiding principles, the four dimensions, the continual improvement model, and the main practices (incident, problem, change, service request, service level management). It's the essential foundation before targeting ITIL Practitioner, Managing Professional, or Strategic Leader.",
+            "importance": "Explicit or implicit prerequisite in most ITSM management job postings in the US, UK, and Canada. Found in 'Service Manager', 'Change Manager', 'Problem Manager', 'IT Project Manager', or 'IT Product Owner' job descriptions. It appears as a selection criterion in HR grids at major companies (banking, telco, public sector).",
+            "validity_note": "Since PeopleCert updated its renewal policy, ITIL Foundation v5 is valid for 3 years from the pass date. To keep it active, three options before expiration: accumulate CPD points via PeopleCert Plus over 3 years, pass another ITIL certification, or retake the same exam. Official badges issued in 2026 carry an expiration date in 2029, confirming the 3-year duration.",
+            "target_roles": ["IT Service Manager", "Service Desk Manager", "Change Manager", "Problem Manager", "ITSM Analyst", "IT Project Manager", "IT Product Owner", "ITSM Consultant"]
+        }
+    }
+}

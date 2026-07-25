@@ -11,6 +11,11 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
+        // Locale UI courante (resolue par SetLocale). Sert a piocher les traductions
+        // stockees dans Certification::translations quand elle differe de la
+        // default_language de la certif.
+        $locale = app()->getLocale();
+
         $certifications = Certification::query()
             ->where('is_active', true)
             ->withCount('questions')
@@ -18,9 +23,9 @@ class HomeController extends Controller
             ->get()
             ->map(fn ($c) => [
                 'id' => $c->id,
-                'title' => $c->title,
+                'title' => $c->localized($locale, 'title'),
                 'slug' => $c->slug,
-                'description' => $c->description,
+                'description' => $c->localized($locale, 'description'),
                 'logo_path' => $c->logo_path,
                 'duration_minutes' => $c->duration_minutes,
                 'passing_score' => $c->passing_score,

@@ -1,9 +1,9 @@
 [
     {
-        "slug": "ccna-200-301",
         "title": "CCNA 200-301",
+        "slug": "ccna-200-301",
         "logo_path": "logos/NCuRoldHqobcg51eJmOqGz4oGUi5ECmgRnBdbV9F.png",
-        "description": "Cisco Certified Network Associate — routing, switching, sécurité, automatisation.",
+        "description": "Cisco Certified Network Associate - routing, switching, sécurité, automatisation.",
         "long_description": "La CCNA (Cisco Certified Network Associate) est LA porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routing (statique, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port-security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS) et automatisation (Python, REST, JSON, Ansible). C'est la certification Cisco la plus reconnue au monde et le prérequis vers CCNP puis CCIE.",
         "importance": "La CCNA est explicitement demandée dans la majorité des offres 'Network Engineer', 'NOC Analyst' ou 'Ingénieur systèmes et réseaux' en France comme à l'international. Elle valide un socle technique que les recruteurs prennent au sérieux et débloque les grilles de salaire junior→confirmé.",
         "target_roles": [
@@ -18,16 +18,18 @@
         "passing_score": 82,
         "total_questions": 100,
         "validity_months": 36,
-        "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 825/1000 environ (≈ 82,5 %) — Cisco garde le seuil exact confidentiel. Renouvellement : repasser l'examen, réussir un exam Cisco de niveau supérieur (CCNP, CCIE), ou cumuler 30 CE credits. Aucune période de grâce.",
+        "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 825/1000 environ (≈ 82,5 %) - Cisco garde le seuil exact confidentiel. Renouvellement : repasser l'examen, réussir un exam Cisco de niveau supérieur (CCNP, CCIE), ou cumuler 30 CE credits. Aucune période de grâce.",
         "version_retires_at": null,
         "questions_updated_at": "2026-07-19T21:39:30+00:00",
         "course_blocks": null,
         "course_updated_at": null,
-        "is_active": true
+        "syllabus_blueprint": null,
+        "is_active": true,
+        "available_languages": ["fr"]
     },
     {
-        "slug": "comptia-a-plus",
         "title": "CompTIA A+",
+        "slug": "comptia-a-plus",
         "logo_path": null,
         "description": "Certification vendor-neutral de référence pour débuter dans le support IT.",
         "long_description": "La CompTIA A+ valide l'ensemble des fondamentaux du support IT : matériel PC, systèmes d'exploitation (Windows, macOS, Linux, iOS, Android), réseaux, cybersécurité de base, résolution d'incidents et procédures opérationnelles. C'est la seule certification vendor-neutral (non liée à un constructeur) universellement acceptée pour un premier poste dans le support.",
@@ -48,11 +50,13 @@
         "questions_updated_at": "2026-07-19T19:35:50+00:00",
         "course_blocks": null,
         "course_updated_at": null,
-        "is_active": true
+        "syllabus_blueprint": null,
+        "is_active": true,
+        "available_languages": ["fr"]
     },
     {
-        "slug": "aws-cloud-practitioner",
         "title": "AWS Cloud Practitioner",
+        "slug": "aws-cloud-practitioner",
         "logo_path": null,
         "description": "Fondamentaux AWS : services, tarification, sécurité et modèle cloud.",
         "long_description": "L'AWS Cloud Practitioner (CLF-C02) est le point d'entrée officiel dans l'écosystème AWS. L'examen valide ta compréhension globale du cloud AWS : services principaux (EC2, S3, RDS, Lambda, VPC), modèles de tarification, modèle de responsabilité partagée, IAM, régions et zones de disponibilité, bonnes pratiques d'architecture Well-Architected. Elle ne demande pas de background technique lourd, mais une réelle compréhension du cloud.",
@@ -74,11 +78,13 @@
         "questions_updated_at": "2026-07-19T19:35:00+00:00",
         "course_blocks": null,
         "course_updated_at": null,
-        "is_active": true
+        "syllabus_blueprint": null,
+        "is_active": true,
+        "available_languages": ["fr"]
     },
     {
-        "slug": "itil-foundation-v5",
         "title": "ITIL Foundation v5",
+        "slug": "itil-foundation-v5",
         "logo_path": "logos/Te5KCbriCQWccBBGeWjxNjIXxz82RHCtWv6au1x5.svg",
         "description": "Le référentiel mondial de la gestion des services IT.",
         "long_description": "ITIL est le framework le plus adopté au monde pour structurer la gestion des services IT. La certification Foundation valide ta compréhension du système de valeur ITIL, des sept principes directeurs, des quatre dimensions, du modèle d'amélioration continue et des principales pratiques (gestion des incidents, des problèmes, des changements, des demandes, des niveaux de service). C'est le socle indispensable avant de viser ITIL Practitioner, Managing Professional ou Strategic Leader.",
@@ -99,7 +105,7 @@
         "validity_months": 36,
         "validity_note": "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-07-19T12:57:55+00:00",
+        "questions_updated_at": "2026-07-25T16:39:16+00:00",
         "course_blocks": [
             {
                 "type": "heading",
@@ -1718,6 +1724,17 @@
             }
         ],
         "course_updated_at": "2026-07-19T20:55:14+00:00",
-        "is_active": true
+        "syllabus_blueprint": {
+            "foundations": 15,
+            "guiding-principles": 15,
+            "four-dimensions": 10,
+            "itil-value-system": 10,
+            "lifecycle-activities": 15,
+            "practices": 20,
+            "continual-improvement": 5,
+            "digital-ai-innovation": 10
+        },
+        "is_active": true,
+        "available_languages": ["en", "fr", "de", "es", "it", "ja", "pl", "pt", "zh"]
     }
 ]

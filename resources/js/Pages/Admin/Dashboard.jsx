@@ -1,50 +1,62 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import { useT } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
 
 export default function Dashboard({ stats }) {
+    const t = useT();
+    const pendingReports = stats.pending_reports > 0;
+    const reportsTitle = pendingReports
+        ? t('admin.dashboard.action_reports_title_pending', { count: stats.pending_reports })
+        : t('admin.dashboard.action_reports_title');
+    const reportsDesc = pendingReports
+        ? (stats.pending_reports > 1
+            ? t('admin.dashboard.action_reports_desc_pending_plural', { count: stats.pending_reports })
+            : t('admin.dashboard.action_reports_desc_pending_singular', { count: stats.pending_reports }))
+        : t('admin.dashboard.action_reports_desc_empty');
+
     return (
         <AppLayout>
-            <Head title="Dashboard admin" />
+            <Head title={t('admin.dashboard.head_title')} />
             <div className="mx-auto max-w-7xl space-y-8">
                 {/* Header */}
                 <div>
                     <div className="badge-brand">
                         <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                        Console d'administration
+                        {t('admin.dashboard.badge')}
                     </div>
                     <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink-900 dark:text-white">
-                        Dashboard
+                        {t('admin.dashboard.title')}
                     </h1>
                     <p className="mt-1 text-sm text-ink-500">
-                        Vue d'ensemble de la plateforme et raccourcis vers les principales actions.
+                        {t('admin.dashboard.subtitle')}
                     </p>
                 </div>
 
                 {/* KPIs */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     <Kpi
-                        label="Certifications"
+                        label={t('admin.dashboard.kpi_certifications')}
                         value={stats.certifications}
                         IconComp={Icon.Book}
                         accent="brand"
                         href={route('admin.certifications.index')}
                     />
                     <Kpi
-                        label="Questions"
+                        label={t('admin.dashboard.kpi_questions')}
                         value={stats.questions}
                         IconComp={Icon.Cards}
                         accent="emerald"
                         href={route('admin.questions.index')}
                     />
                     <Kpi
-                        label="Utilisateurs"
+                        label={t('admin.dashboard.kpi_users')}
                         value={stats.users}
                         IconComp={Icon.User}
                         accent="amber"
                     />
                     <Kpi
-                        label="Tentatives"
+                        label={t('admin.dashboard.kpi_attempts')}
                         value={stats.attempts}
                         IconComp={Icon.Chart}
                         accent="rose"
@@ -54,43 +66,50 @@ export default function Dashboard({ stats }) {
                 {/* Quick actions */}
                 <div>
                     <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-500">
-                        Actions rapides
+                        {t('admin.dashboard.quick_actions')}
                     </h2>
                     <div className="grid gap-4 md:grid-cols-2">
                         <ActionCard
                             href={route('admin.certifications.index')}
                             IconComp={Icon.Book}
                             accent="brand"
-                            title="Gérer les certifications"
-                            description="Créer, éditer, uploader un logo, fixer le score requis et la validité."
+                            title={t('admin.dashboard.action_certs_title')}
+                            description={t('admin.dashboard.action_certs_desc')}
                         />
                         <ActionCard
                             href={route('admin.questions.index')}
                             IconComp={Icon.Cards}
                             accent="emerald"
-                            title="Gérer les Q/R"
-                            description="Ajouter des questions, corriger les réponses, réviser le contenu."
+                            title={t('admin.dashboard.action_questions_title')}
+                            description={t('admin.dashboard.action_questions_desc')}
                         />
                         <ActionCard
                             href={route('admin.questions.import')}
                             IconComp={Icon.Bolt}
                             accent="brand"
-                            title="Import Q/R via ChatGPT"
-                            description="Prompt prêt à l'emploi, colle le JSON, importe des dizaines de Q/R d'un coup."
+                            title={t('admin.dashboard.action_import_questions_title')}
+                            description={t('admin.dashboard.action_import_questions_desc')}
                         />
                         <ActionCard
                             href={route('admin.certifications.course-import')}
                             IconComp={Icon.Book}
                             accent="emerald"
-                            title="Import cours via ChatGPT"
-                            description="Recherche web à jour, blocs JSON structurés, cours complet publié en un import."
+                            title={t('admin.dashboard.action_import_course_title')}
+                            description={t('admin.dashboard.action_import_course_desc')}
                         />
                         <ActionCard
                             href={route('admin.settings.edit')}
                             IconComp={Icon.Shield}
                             accent="brand"
-                            title="Paramètres plateforme"
-                            description="Change le nom et le logo de la marque affichés dans toute l'application."
+                            title={t('admin.dashboard.action_settings_title')}
+                            description={t('admin.dashboard.action_settings_desc')}
+                        />
+                        <ActionCard
+                            href={route('admin.reports.index')}
+                            IconComp={Icon.Close}
+                            accent="brand"
+                            title={reportsTitle}
+                            description={reportsDesc}
                         />
                     </div>
                 </div>
@@ -100,6 +119,7 @@ export default function Dashboard({ stats }) {
 }
 
 function Kpi({ label, value, IconComp, accent, href }) {
+    const t = useT();
     const accents = {
         brand: 'from-brand-500 to-iris-500',
         emerald: 'from-emerald-500 to-teal-500',
@@ -124,7 +144,7 @@ function Kpi({ label, value, IconComp, accent, href }) {
             </div>
             {href && (
                 <div className="relative mt-4 flex items-center gap-1 text-xs font-medium text-brand-500 opacity-0 transition group-hover:opacity-100">
-                    Ouvrir <Icon.ArrowRight className="h-3 w-3" />
+                    {t('admin.dashboard.open')} <Icon.ArrowRight className="h-3 w-3" />
                 </div>
             )}
         </div>

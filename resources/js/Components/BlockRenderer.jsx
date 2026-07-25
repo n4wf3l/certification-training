@@ -1,6 +1,7 @@
 import Icon from '@/Components/Icons';
+import { useT } from '@/lib/i18n';
 
-// Inline text renderer — supports **bold**, *italic*, `code`, [text](url)
+// Inline text renderer - supports **bold**, *italic*, `code`, [text](url)
 function renderInline(text) {
     if (typeof text !== 'string') return text;
     const parts = [];
@@ -106,16 +107,17 @@ const CALLOUT_STYLES = {
 };
 
 function Callout({ variant = 'info', title, body }) {
+    const t = useT();
     const s = CALLOUT_STYLES[variant] || CALLOUT_STYLES.info;
     const I = s.icon;
     return (
         <div className={`mt-6 rounded-2xl border ${s.border} ${s.bg} p-5`}>
             <div className={`flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] ${s.text}`}>
                 <I className="h-3.5 w-3.5" />
-                {variant === 'info' && 'À retenir'}
-                {variant === 'success' && 'Bonne pratique'}
-                {variant === 'warn' && 'Attention'}
-                {variant === 'danger' && 'Piège fréquent'}
+                {variant === 'info' && t('block_renderer.callout_info')}
+                {variant === 'success' && t('block_renderer.callout_success')}
+                {variant === 'warn' && t('block_renderer.callout_warn')}
+                {variant === 'danger' && t('block_renderer.callout_danger')}
             </div>
             {title && (
                 <div className={`mt-2 text-base font-semibold ${s.label}`}>

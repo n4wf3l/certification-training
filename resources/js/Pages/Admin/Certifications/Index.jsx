@@ -1,9 +1,12 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import { useT } from '@/lib/i18n';
 import { Head, Link, router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Index({ certifications }) {
+    const t = useT();
     const [query, setQuery] = useState('');
     const [confirmDelete, setConfirmDelete] = useState(null);
 
@@ -29,34 +32,34 @@ export default function Index({ certifications }) {
 
     return (
         <AppLayout>
-            <Head title="Admin — Certifications" />
+            <Head title={t('admin.certs_index.head_title')} />
 
             <div className="mx-auto max-w-7xl space-y-6">
                 {/* Breadcrumb + Header */}
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-xs text-ink-500">
                         <Link href={route('admin.dashboard')} className="hover:text-brand-500">
-                            Dashboard
+                            {t('admin.common.dashboard_breadcrumb')}
                         </Link>
                         <span>/</span>
-                        <span className="text-ink-700 dark:text-ink-300">Certifications</span>
+                        <span className="text-ink-700 dark:text-ink-300">{t('admin.certs_index.title')}</span>
                     </div>
                     <div className="flex flex-wrap items-end justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
-                                Certifications
+                                {t('admin.certs_index.title')}
                             </h1>
                             <p className="mt-1 text-sm text-ink-500">
-                                <span className="font-mono font-semibold text-ink-900 dark:text-white">{totals.total}</span> au total
+                                <span className="font-mono font-semibold text-ink-900 dark:text-white">{totals.total}</span> {t('admin.certs_index.totals_total')}
                                 <span className="mx-2 text-ink-300">·</span>
-                                <span className="font-mono font-semibold text-emerald-500">{totals.active}</span> actives
+                                <span className="font-mono font-semibold text-emerald-500">{totals.active}</span> {t('admin.certs_index.totals_active')}
                                 <span className="mx-2 text-ink-300">·</span>
-                                <span className="font-mono font-semibold text-brand-500">{totals.questions}</span> questions
+                                <span className="font-mono font-semibold text-brand-500">{totals.questions}</span> {t('admin.certs_index.totals_questions')}
                             </p>
                         </div>
                         <Link href={route('admin.certifications.create')} className="btn-primary">
                             <Icon.Sparkles className="h-4 w-4" />
-                            Nouvelle certification
+                            {t('admin.certs_index.new_cta')}
                         </Link>
                     </div>
                 </div>
@@ -72,7 +75,7 @@ export default function Index({ certifications }) {
                             type="search"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Rechercher par titre ou slug…"
+                            placeholder={t('admin.certs_index.search_placeholder')}
                             className="field pl-9"
                         />
                     </div>
@@ -84,14 +87,14 @@ export default function Index({ certifications }) {
                         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-100 text-ink-400 dark:bg-ink-800">
                             <Icon.Book className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-semibold text-ink-900 dark:text-white">Aucune certification</h3>
+                        <h3 className="text-lg font-semibold text-ink-900 dark:text-white">{t('admin.certs_index.empty_title')}</h3>
                         <p className="mt-1 text-sm text-ink-500">
-                            {query ? 'Aucun résultat pour cette recherche.' : 'Commence par en créer une.'}
+                            {query ? t('admin.certs_index.empty_no_result') : t('admin.certs_index.empty_start')}
                         </p>
                         {!query && (
                             <Link href={route('admin.certifications.create')} className="btn-primary mt-4 !inline-flex">
                                 <Icon.Sparkles className="h-4 w-4" />
-                                Nouvelle certification
+                                {t('admin.certs_index.new_cta')}
                             </Link>
                         )}
                     </div>
@@ -108,9 +111,9 @@ export default function Index({ certifications }) {
                 )}
             </div>
 
-            {confirmDelete && (
+            {confirmDelete && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
                     onClick={() => setConfirmDelete(null)}
                 >
                     <div
@@ -123,10 +126,10 @@ export default function Index({ certifications }) {
                             </div>
                             <div>
                                 <h3 className="text-lg font-bold text-ink-900 dark:text-white">
-                                    Supprimer cette certification ?
+                                    {t('admin.certs_index.delete_confirm_title')}
                                 </h3>
                                 <p className="text-xs text-ink-500">
-                                    Toutes les questions liées seront aussi supprimées.
+                                    {t('admin.certs_index.delete_confirm_desc')}
                                 </p>
                             </div>
                         </div>
@@ -135,31 +138,37 @@ export default function Index({ certifications }) {
                                 {confirmDelete.title}
                             </div>
                             <div className="text-xs text-ink-500">
-                                {confirmDelete.questions_count} questions ·{' '}
-                                {confirmDelete.duration_minutes} min · slug{' '}
+                                {t(
+                                    confirmDelete.questions_count > 1
+                                        ? 'admin.certs_index.delete_meta_plural'
+                                        : 'admin.certs_index.delete_meta_singular',
+                                    { count: confirmDelete.questions_count, duration: confirmDelete.duration_minutes }
+                                )}
                                 <span className="font-mono">{confirmDelete.slug}</span>
                             </div>
                         </div>
                         <div className="mt-5 flex justify-end gap-2">
                             <button onClick={() => setConfirmDelete(null)} className="btn-secondary">
-                                Annuler
+                                {t('admin.common.cancel')}
                             </button>
                             <button
                                 onClick={() => doDelete(confirmDelete.id)}
                                 className="btn bg-rose-500 text-white hover:bg-rose-600"
                             >
                                 <IconTrash className="h-4 w-4" />
-                                Supprimer
+                                {t('admin.common.delete')}
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </AppLayout>
     );
 }
 
 function CertCard({ certification: c, onDelete }) {
+    const t = useT();
     const readiness = c.total_questions > 0 ? Math.min(100, Math.round((c.questions_count / c.total_questions) * 100)) : 0;
 
     return (
@@ -190,10 +199,10 @@ function CertCard({ certification: c, onDelete }) {
                         {c.is_active ? (
                             <span className="badge-success !py-0 text-[10px]">
                                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                Actif
+                                {t('admin.certs_index.active_badge')}
                             </span>
                         ) : (
-                            <span className="badge-muted !py-0 text-[10px]">Masqué</span>
+                            <span className="badge-muted !py-0 text-[10px]">{t('admin.certs_index.hidden_badge')}</span>
                         )}
                     </div>
                     <h3 className="mt-1 truncate text-base font-bold tracking-tight text-ink-900 dark:text-white">
@@ -205,15 +214,15 @@ function CertCard({ certification: c, onDelete }) {
 
             {/* Stats */}
             <div className="relative grid grid-cols-3 gap-2 border-t border-ink-200/60 px-5 py-3 dark:border-ink-800/60">
-                <Stat label="Questions" value={`${c.questions_count}/${c.total_questions}`} />
-                <Stat label="Durée" value={`${c.duration_minutes}min`} />
-                <Stat label="Requis" value={c.passing_score} />
+                <Stat label={t('admin.certs_index.stat_questions')} value={`${c.questions_count}/${c.total_questions}`} />
+                <Stat label={t('admin.certs_index.stat_duration')} value={`${c.duration_minutes}min`} />
+                <Stat label={t('admin.certs_index.stat_required')} value={c.passing_score} />
             </div>
 
             {/* Progress */}
             <div className="relative px-5 pb-3">
                 <div className="mb-1 flex items-center justify-between text-[10px]">
-                    <span className="uppercase tracking-wider text-ink-500">Prêt à publier</span>
+                    <span className="uppercase tracking-wider text-ink-500">{t('admin.certs_index.ready_label')}</span>
                     <span className="font-mono font-bold text-ink-700 dark:text-ink-300">{readiness}%</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
@@ -235,32 +244,32 @@ function CertCard({ certification: c, onDelete }) {
                 <Link
                     href={`${route('admin.questions.index')}?certification_id=${c.id}`}
                     className="btn-ghost !px-3 !py-1.5 !text-xs"
-                    title="Voir les questions"
+                    title={t('admin.certs_index.questions_title')}
                 >
                     <IconList className="h-3.5 w-3.5" />
-                    Questions
+                    {t('admin.certs_index.questions_action')}
                 </Link>
                 <a
                     href={route('admin.certifications.export', c.id)}
                     download
                     className="btn-ghost !px-3 !py-1.5 !text-xs"
-                    title="Exporter toutes les Q&A en JSON"
+                    title={t('admin.certs_index.export_title')}
                 >
                     <IconDownload className="h-3.5 w-3.5" />
-                    Export JSON
+                    {t('admin.certs_index.export_json')}
                 </a>
                 <div className="flex-1" />
                 <Link
                     href={route('admin.certifications.edit', c.id)}
                     className="rounded-lg p-2 text-ink-400 transition hover:bg-brand-500/10 hover:text-brand-500"
-                    title="Éditer"
+                    title={t('admin.certs_index.edit_title')}
                 >
                     <IconPencil className="h-4 w-4" />
                 </Link>
                 <button
                     onClick={onDelete}
                     className="rounded-lg p-2 text-ink-400 transition hover:bg-rose-500/10 hover:text-rose-500"
-                    title="Supprimer"
+                    title={t('admin.certs_index.delete_title')}
                 >
                     <IconTrash className="h-4 w-4" />
                 </button>

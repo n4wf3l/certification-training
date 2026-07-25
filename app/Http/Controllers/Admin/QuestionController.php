@@ -92,7 +92,7 @@ class QuestionController extends Controller
             }
         });
 
-        return redirect()->route('admin.questions.index')->with('success', 'Question ajoutée.');
+        return redirect()->route('admin.questions.index')->with('success', __('flash.question_added'));
     }
 
     public function edit(Question $question): Response
@@ -147,13 +147,13 @@ class QuestionController extends Controller
             }
         });
 
-        return redirect()->route('admin.questions.index')->with('success', 'Question mise à jour.');
+        return redirect()->route('admin.questions.index')->with('success', __('flash.question_updated'));
     }
 
     public function destroy(Question $question): RedirectResponse
     {
         $question->delete();
-        return redirect()->route('admin.questions.index')->with('success', 'Question supprimée.');
+        return redirect()->route('admin.questions.index')->with('success', __('flash.question_deleted'));
     }
 
     public function importForm(Request $request): Response
@@ -172,7 +172,14 @@ class QuestionController extends Controller
             ->all();
 
         return Inertia::render('Admin/Questions/Import', [
-            'certifications' => Certification::orderBy('title')->get(['id', 'title', 'logo_path']),
+            'certifications' => Certification::orderBy('title')
+                ->get(['id', 'title', 'logo_path', 'available_languages'])
+                ->map(fn (Certification $c) => [
+                    'id' => $c->id,
+                    'title' => $c->title,
+                    'logo_path' => $c->logo_path,
+                    'available_languages' => $c->available_languages ?: ['fr'],
+                ]),
             'default_certification_id' => $request->integer('certification_id') ?: null,
             'existing_by_cert' => $existingByCert,
         ]);
@@ -189,7 +196,7 @@ class QuestionController extends Controller
         $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
             throw ValidationException::withMessages([
-                'payload' => "Le JSON n'est pas valide. Vérifie qu'il commence par [ et se termine par ].",
+                'payload' => __('flash.questions_invalid_json'),
             ]);
         }
 
@@ -200,7 +207,7 @@ class QuestionController extends Controller
 
             if ($questionText === '' || !is_array($answers) || count($answers) < 2 || count($answers) > 6) {
                 throw ValidationException::withMessages([
-                    'payload' => "Question " . ($i + 1) . " : énoncé manquant ou nombre de réponses invalide (2 à 6 attendues).",
+                    'payload' => __('flash.questions_row_bad_shape', ['n' => $i + 1]),
                 ]);
             }
 
@@ -214,7 +221,7 @@ class QuestionController extends Controller
                     : null;
                 if ($text === '') {
                     throw ValidationException::withMessages([
-                        'payload' => "Question " . ($i + 1) . " : une réponse a un texte vide.",
+                        'payload' => __('flash.questions_row_empty_answer', ['n' => $i + 1]),
                     ]);
                 }
                 $cleanAnswers[] = ['text' => $text, 'correct' => $correct, 'rationale' => $rationale];
@@ -223,7 +230,7 @@ class QuestionController extends Controller
 
             if ($correctCount !== 1) {
                 throw ValidationException::withMessages([
-                    'payload' => "Question " . ($i + 1) . " : une seule réponse correcte attendue, {$correctCount} trouvée(s).",
+                    'payload' => __('flash.questions_row_wrong_correct_count', ['n' => $i + 1, 'count' => $correctCount]),
                 ]);
             }
 
@@ -272,7 +279,7 @@ class QuestionController extends Controller
         $count = count($normalized);
         return redirect()
             ->route('admin.questions.index', ['certification_id' => $validated['certification_id']])
-            ->with('success', "{$count} question" . ($count > 1 ? 's' : '') . ' importée' . ($count > 1 ? 's' : '') . ' avec succès.');
+            ->with('success', trans_choice('flash.questions_imported', $count, ['count' => $count]));
     }
 
     private function validated(Request $request): array

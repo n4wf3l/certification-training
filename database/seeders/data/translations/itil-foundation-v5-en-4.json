@@ -1,0 +1,577 @@
+{
+    "meta": {
+        "certification_slug": "itil-foundation-v5",
+        "locale": "en",
+        "canonical_from": "fr",
+        "translated_at": "2026-07-25",
+        "translator": "Claude Opus 4.7",
+        "notes": "Batch 5 of ITIL 4/5 Foundation EN translations. Adds 47 more questions bringing coverage to 237/264.",
+        "coverage": { "questions_in_this_file": 47, "cumulative_translated": 237, "questions_total": 264 }
+    },
+    "questions": {
+        "157": {
+            "topic": "Applying value streams",
+            "scenario": "A team applies a very detailed procedure to an unprecedented incident involving several suppliers and unpredictable behaviours. The procedure slows the response and hides new information.",
+            "question_text": "Which ITIL approach would be the most appropriate?",
+            "explanation": "Complex thinking recognises that some situations exhibit many interactions, uncertainty, and emergent behaviours. The team should experiment, learn, and adapt its approach rather than assume that a detailed procedure can anticipate everything.",
+            "answers": {
+                "A": { "text": "Use complex thinking and adapt the approach to the level of uncertainty", "rationale": "The unprecedented incident and unpredictable interactions call for an adaptive response." },
+                "B": { "text": "Add more mandatory steps to the existing procedure", "rationale": "Additional prescription can make things worse when cause-and-effect relationships are not predictable." },
+                "C": { "text": "Remove all coordination between suppliers", "rationale": "Complexity requires more information sharing, not isolation of participants." },
+                "D": { "text": "Treat the incident as an enabling value stream without further analysis", "rationale": "Classifying the stream does not resolve the uncertainty or the need to adapt the method." }
+            }
+        },
+        "158": {
+            "topic": "Purpose of value stream mapping and management",
+            "scenario": "An organisation maps its release value stream once, fixes two bottlenecks, and then does not review it again for three years.",
+            "question_text": "Which conclusion best fits ITIL?",
+            "explanation": "Mapping produces a useful representation of the stream's state at a point in time. Value stream management, however, must be ongoing to track changes, measure performance, and identify new improvement opportunities.",
+            "answers": {
+                "A": { "text": "Move from one-off mapping to ongoing value stream management", "rationale": "A value stream evolves with the organisation's products, technologies, teams, and constraints." },
+                "B": { "text": "Keep the initial map as the definitive model", "rationale": "An old map may no longer represent how value actually flows." },
+                "C": { "text": "Replace the map with a hierarchical org chart", "rationale": "An org chart describes reporting structures, not the path of value creation." },
+                "D": { "text": "Only measure the number of steps removed", "rationale": "Reducing step count alone does not demonstrate an improvement in value or performance." }
+            }
+        },
+        "163": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "In which part of a practice guide are recommendations for the practice's successful automation mainly found?",
+            "explanation": "Recommendations about tools, data, and automations mainly belong to the \"information and technology\" dimension.",
+            "answers": {
+                "A": { "text": "Information and technology", "rationale": "This dimension addresses technologies and their use to support the practice." },
+                "B": { "text": "Organizations and people", "rationale": "This part deals mainly with roles, skills, structures, and human aspects." },
+                "C": { "text": "Partners and suppliers", "rationale": "This part examines external relationships and dependencies." },
+                "D": { "text": "Value streams and processes", "rationale": "This part mostly describes the activities, controls, and flow of work." }
+            }
+        },
+        "168": {
+            "topic": "Organization",
+            "scenario": null,
+            "question_text": "Which ITIL term denotes a person or group of persons with functions, responsibilities, authorities, and relationships of their own for achieving objectives?",
+            "explanation": "An organization can be a complete entity or an identifiable part of a larger entity. It is defined by its functions, responsibilities, authorities, and relationships.",
+            "answers": {
+                "A": { "text": "Organization", "rationale": "This definition matches the ITIL term \"organization\"." },
+                "B": { "text": "Management practice", "rationale": "A practice is a set of organisational resources designed for performing work." },
+                "C": { "text": "Value stream", "rationale": "A value stream is a series of steps used to create and deliver value." },
+                "D": { "text": "Service offering", "rationale": "An offering describes the services, goods, and access proposed to a group of consumers." }
+            }
+        },
+        "173": {
+            "topic": "Costs",
+            "scenario": "An outsourced payroll service removes the operating cost of an old server but adds subscription and migration fees.",
+            "question_text": "Which cost analysis best fits ITIL?",
+            "explanation": "A service can remove some costs from the consumer while imposing others. Evaluating value must consider both categories rather than only the sticker price.",
+            "answers": {
+                "A": { "text": "Compare the costs the service removes with the costs it imposes on the consumer", "rationale": "ITIL distinguishes costs removed and costs introduced by service consumption." },
+                "B": { "text": "Consider only the monthly subscription amount", "rationale": "That approach ignores the removed costs as well as other consumption costs." },
+                "C": { "text": "Consider that any cost transferred to the provider disappears for the consumer", "rationale": "The consumer may still bear those costs indirectly through the price or through other resources." },
+                "D": { "text": "Evaluate only the provider's internal costs", "rationale": "The consumer's value perception depends on its own costs and outcomes." }
+            }
+        },
+        "174": {
+            "topic": "Risks",
+            "scenario": "A cloud solution reduces the risk of a local hardware failure but introduces dependency on the internet connection and on the provider.",
+            "question_text": "Which conclusion is the most appropriate?",
+            "explanation": "Consuming a service can reduce some risks and introduce new ones. The decision must evaluate the whole risk profile rather than assume a service eliminates all uncertainty.",
+            "answers": {
+                "A": { "text": "The service removes some risks while potentially imposing others", "rationale": "This answer reflects the two possible effects of a service on the consumer's risks." },
+                "B": { "text": "Moving to the cloud eliminates every operational risk", "rationale": "The scenario specifically shows new dependencies appearing." },
+                "C": { "text": "The introduced risks become exclusively the provider's responsibility", "rationale": "Responsibilities and risks remain shared based on the relationship and agreements." },
+                "D": { "text": "Risk should only be assessed after an incident", "rationale": "Risk must be considered before and during service consumption." }
+            }
+        },
+        "175": {
+            "topic": "Warranty",
+            "scenario": null,
+            "question_text": "Which elements mainly contribute to determining whether a service is fit for use?",
+            "explanation": "Warranty concerns the assurance that a service will meet agreed conditions of use. It is generally associated with availability, capacity, continuity, and security.",
+            "answers": {
+                "A": { "text": "Availability, capacity, continuity, and security", "rationale": "These conditions are the main aspects used to assess warranty." },
+                "B": { "text": "Features, outcomes, outputs, and costs", "rationale": "Features mainly belong to utility, while the other terms are not the four warranty conditions." },
+                "C": { "text": "Culture, skills, suppliers, and processes", "rationale": "These elements belong to the four management dimensions." },
+                "D": { "text": "Discover, design, build, and deliver", "rationale": "These are lifecycle activities, not warranty conditions." }
+            }
+        },
+        "176": {
+            "topic": "Service quality",
+            "scenario": null,
+            "question_text": "Which proposition best represents the aspects that together influence a service's quality?",
+            "explanation": "Service quality is broader than a single technical measure. It can be assessed through the service's utility, warranty, experience, and sustainability.",
+            "answers": {
+                "A": { "text": "Utility, warranty, experience, and sustainability", "rationale": "These aspects together contribute to the service's ability to meet needs." },
+                "B": { "text": "Only availability and resolution time", "rationale": "These measures can be useful but do not cover all of quality." },
+                "C": { "text": "Only the provider's costs and risks", "rationale": "Quality is assessed relative to needs and experience, not just provider factors." },
+                "D": { "text": "The number of releases and changes performed", "rationale": "The volume of modifications does not demonstrate the quality achieved." }
+            }
+        },
+        "177": {
+            "topic": "Service actions",
+            "scenario": "A provider gradually replaces its technicians' manual interventions with self-service and controlled automations.",
+            "question_text": "Why can this shift be advantageous for a digital service?",
+            "explanation": "Reducing manual actions can improve scalability, speed, and consistency, provided the necessary controls and assistance remain in place. The goal is not to eliminate every useful interaction.",
+            "answers": {
+                "A": { "text": "It lets the provider serve more consumers with faster, more consistent execution", "rationale": "Automation and self-service reduce dependency on repetitive manual interventions." },
+                "B": { "text": "It guarantees that human support will never again be needed", "rationale": "Some complex or sensitive situations continue to require human intervention." },
+                "C": { "text": "It automatically turns every access to a resource into a goods transfer", "rationale": "The execution mode does not change the nature of the offering component." },
+                "D": { "text": "It removes the provider's responsibility for quality", "rationale": "The provider remains accountable for the agreed commitments and quality." }
+            }
+        },
+        "179": {
+            "topic": "Service relationships",
+            "scenario": "An initially standardised relationship evolves after several years towards a shared roadmap, joint investments, and shared risks.",
+            "question_text": "Which statement is the most correct?",
+            "explanation": "The service relationship type is not necessarily permanent. It can evolve as trust, interdependence, and the parties' strategic objectives change.",
+            "answers": {
+                "A": { "text": "The relationship can evolve from a basic relationship into a collaborative one", "rationale": "Joint investments and shared risks indicate a shift towards strategic collaboration." },
+                "B": { "text": "A basic relationship can never change category", "rationale": "Relationships can evolve depending on needs and the partnership's maturity." },
+                "C": { "text": "The relationship automatically becomes a service offering", "rationale": "An offering describes what is proposed, whereas the scenario concerns the nature of the relationship." },
+                "D": { "text": "The relationship stops being a service relationship as soon as risks are shared", "rationale": "Shared risks are on the contrary characteristic of a more collaborative relationship." }
+            }
+        },
+        "180": {
+            "topic": "Service levels",
+            "scenario": null,
+            "question_text": "Which statement best distinguishes a service level from overall service quality?",
+            "explanation": "A service level translates certain aspects of quality into defined metrics. Overall quality remains broader and also includes characteristics or perceptions not fully captured by those metrics.",
+            "answers": {
+                "A": { "text": "A service level measures agreed aspects of quality but does not necessarily represent all perceived quality", "rationale": "Service level metrics do not always cover the whole experience and set of needs." },
+                "B": { "text": "Service level and service quality are always strictly synonymous", "rationale": "Quality is broader than the set of metrics selected." },
+                "C": { "text": "Service quality is determined only by SLA penalties", "rationale": "Contractual penalties do not define a service's ability to meet needs." },
+                "D": { "text": "A service level cannot contain any technical measure", "rationale": "Technical measures can be included when they are relevant to the expected quality." }
+            }
+        },
+        "181": {
+            "topic": "Organizations and people",
+            "scenario": "A transformation creates new roles, but decision-making authorities remain unclear and teams use incompatible communication channels.",
+            "question_text": "Which aspect of the \"organizations and people\" dimension must be tackled as a priority?",
+            "explanation": "This dimension includes structures, authority systems, responsibilities, culture, and communication. Defining job titles alone is not enough to enable effective collaboration.",
+            "answers": {
+                "A": { "text": "Clarify responsibilities, authorities, and communication mechanisms", "rationale": "The difficulties described directly concern the organisation of work and decisions." },
+                "B": { "text": "Immediately buy a new monitoring tool", "rationale": "A tool alone does not resolve ambiguity around responsibilities and authority." },
+                "C": { "text": "Renegotiate every supplier contract", "rationale": "The scenario does not mainly point to supplier relationships." },
+                "D": { "text": "Add more steps to the workflow", "rationale": "Additional steps risk making the lack of clarity worse." }
+            }
+        },
+        "191": {
+            "topic": "ITIL Service Value System",
+            "scenario": null,
+            "question_text": "Which elements are respectively the main inputs and the output of the ITIL Service Value System?",
+            "explanation": "The Service Value System transforms opportunity and demand into value through its components and activities. Value is not a guaranteed input: it is co-created by the system's operation.",
+            "answers": {
+                "A": { "text": "Opportunity and demand are inputs; value is the output", "rationale": "This relationship describes the overall operation of the ITIL Service Value System." },
+                "B": { "text": "Value and outcomes are inputs; practices are the output", "rationale": "Practices are enabling components, while value is the desired output." },
+                "C": { "text": "Incidents are the inputs; changes are the output", "rationale": "These elements can appear in some flows but do not define the overall system." },
+                "D": { "text": "Governance is the input; the SLA is the output", "rationale": "Governance is a component of the system, and an SLA is not its overall output." }
+            }
+        },
+        "192": {
+            "topic": "ITIL Service Value System",
+            "scenario": "An organisation applies the guiding principles separately from its governance, practices, and value chain.",
+            "question_text": "Which risk does this approach mainly create?",
+            "explanation": "The Service Value System's components are designed to work together. Isolating them can cause inconsistent decisions and prevent the effective transformation of opportunity and demand into value.",
+            "answers": {
+                "A": { "text": "Fragmentation that prevents the components from supporting value creation together", "rationale": "The Service Value System depends on the interactions between its components." },
+                "B": { "text": "An automatic increase in availability", "rationale": "Isolating the components does not guarantee any operational improvement." },
+                "C": { "text": "The conversion of practices into lifecycle activities", "rationale": "Practices and activities remain distinct concepts even when they interact." },
+                "D": { "text": "The removal of any need for governance", "rationale": "Governance remains essential to evaluate, direct, and monitor." }
+            }
+        },
+        "196": {
+            "topic": "Incidents",
+            "scenario": "A monitoring tool detects a degradation before any user reports it.",
+            "question_text": "Which statement about recording this situation is correct?",
+            "explanation": "An incident can be detected and reported by a user, a technical team, a supplier, or a monitoring tool. The source of the report does not change the need to log and manage it as an incident when an interruption or degradation is present.",
+            "answers": {
+                "A": { "text": "The incident can be recorded even if it was detected automatically", "rationale": "Automatic detection is a valid source for reporting an incident." },
+                "B": { "text": "Only users can report an incident", "rationale": "Incidents can be detected by several people or technologies." },
+                "C": { "text": "Every monitoring signal must be logged as a problem", "rationale": "A problem is a cause or potential cause, not every detected degradation." },
+                "D": { "text": "The situation should only be recorded after a complaint is received", "rationale": "Waiting for a complaint would delay restoration while the degradation is already known." }
+            }
+        },
+        "197": {
+            "topic": "Collaborate and promote visibility",
+            "scenario": "A manager invites every person in the company to every meeting to demonstrate maximum collaboration.",
+            "question_text": "Which correction best fits the guiding principle?",
+            "explanation": "Effective collaboration involves the right people, at the right time, and at the appropriate level. It means neither universal participation nor a mandatory pursuit of full consensus.",
+            "answers": {
+                "A": { "text": "Involve relevant stakeholders based on the decision and the knowledge required", "rationale": "Collaboration must be targeted to produce better decisions without overload." },
+                "B": { "text": "Keep every participant, even when they do not contribute", "rationale": "Excessive participation can slow down work and reduce the quality of exchanges." },
+                "C": { "text": "Limit every decision to a single person", "rationale": "This approach risks excluding essential knowledge and perspectives." },
+                "D": { "text": "Require unanimity before any action", "rationale": "Collaboration does not always require full consensus." }
+            }
+        },
+        "198": {
+            "topic": "Collaborate and promote visibility",
+            "scenario": "A team publishes all its raw data to the whole organisation, but decision-makers cannot identify the relevant information.",
+            "question_text": "How should visibility be improved according to ITIL?",
+            "explanation": "Visibility must give stakeholders the relevant, understandable, and timely information they need. Making everything visible without context can create noise rather than support decisions.",
+            "answers": {
+                "A": { "text": "Present stakeholders with the relevant information in a format suitable for their decisions", "rationale": "Useful visibility depends on the audience, need, and context." },
+                "B": { "text": "Keep publishing every piece of data without explanation", "rationale": "A maximum volume of data does not guarantee sufficient understanding." },
+                "C": { "text": "Hide every difficulty until it is resolved", "rationale": "This approach prevents stakeholders from understanding risks and acting." },
+                "D": { "text": "Replace the data with unverified opinions", "rationale": "Visibility must remain grounded in reliable information." }
+            }
+        },
+        "199": {
+            "topic": "Errors",
+            "scenario": "An analysis reveals a weakness in a software component that could cause interruptions, but no complete diagnosis of the associated problem has yet been documented.",
+            "question_text": "Which term best describes the identified weakness?",
+            "explanation": "An error is a fault or vulnerability likely to cause incidents. A known error corresponds to a problem that has already been analysed but not yet resolved.",
+            "answers": {
+                "A": { "text": "An error", "rationale": "The technical weakness likely to cause incidents corresponds to an error." },
+                "B": { "text": "A known error", "rationale": "This term assumes that a problem has already been analysed and remains unresolved." },
+                "C": { "text": "A service request", "rationale": "No predefined user request is described." },
+                "D": { "text": "A service level", "rationale": "A service level is a set of quality metrics." }
+            }
+        },
+        "200": {
+            "topic": "Keep it simple and practical",
+            "scenario": "A process has few steps, but each step requires several validations with no effect on risk or value.",
+            "question_text": "Which conclusion best fits the \"keep it simple and practical\" principle?",
+            "explanation": "Simplicity is not measured only by the number of steps. Every activity, control, or piece of information should have an identifiable contribution to value, risk, or a necessary outcome.",
+            "answers": {
+                "A": { "text": "Examine and remove validations that contribute to no necessary outcome", "rationale": "The principle recommends the minimum elements required to achieve the objective." },
+                "B": { "text": "Keep every validation because the process already has few steps", "rationale": "A step can remain useless or excessively complex even in a short process." },
+                "C": { "text": "Add validations to make the process more complete", "rationale": "Additional complexity must be justified by a real contribution." },
+                "D": { "text": "Automate the validations before evaluating their usefulness", "rationale": "Automating a useless activity preserves the waste." }
+            }
+        },
+        "202": {
+            "topic": "Governance",
+            "scenario": "The governing body analyses current performance, stakeholder needs, and changes in the external environment.",
+            "question_text": "Which governance activity does this mainly correspond to?",
+            "explanation": "Evaluate consists of examining the organisation, its environment, its options, and stakeholder needs. This activity provides the understanding needed before setting direction.",
+            "answers": {
+                "A": { "text": "Evaluate", "rationale": "Analysing the context, performance, and needs corresponds to evaluation." },
+                "B": { "text": "Direct", "rationale": "Direct consists of setting orientation, priorities, and policies." },
+                "C": { "text": "Monitor", "rationale": "Monitor mainly checks execution and compliance with the direction given." },
+                "D": { "text": "Build", "rationale": "Build is a lifecycle activity, not a governance activity." }
+            }
+        },
+        "203": {
+            "topic": "Governance",
+            "scenario": "After reviewing several options, the board sets investment priorities, approves a risk policy, and communicates the direction to management.",
+            "question_text": "Which governance activity does this mainly correspond to?",
+            "explanation": "Direct consists of assigning the orientation, policies, and priorities that guide the organisation's management. This activity generally follows the evaluation of context and options.",
+            "answers": {
+                "A": { "text": "Direct", "rationale": "Setting priorities and policies corresponds to the direct activity." },
+                "B": { "text": "Evaluate", "rationale": "Evaluation analyses the options; the scenario describes the decision and direction chosen." },
+                "C": { "text": "Monitor", "rationale": "Monitoring checks results and compliance after execution." },
+                "D": { "text": "Discover", "rationale": "Discover concerns product or service needs and opportunities, not the governance direction." }
+            }
+        },
+        "206": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "What lets an organisation consistently execute its digital product and service management activities?",
+            "explanation": "Management practices bring together the organisational resources needed to perform work or achieve an objective. They contribute to lifecycle activities, the value chain, and value streams.",
+            "answers": {
+                "A": { "text": "The management practices", "rationale": "Practices provide the organisational capabilities that let the work be performed." },
+                "B": { "text": "The service levels", "rationale": "Service levels define quality metrics but are not the execution capabilities." },
+                "C": { "text": "The PESTLE factors", "rationale": "PESTLE describes external influences and not the organisation's management resources." },
+                "D": { "text": "The service offerings", "rationale": "Offerings describe what is proposed to consumers, not the full set of internal capabilities." }
+            }
+        },
+        "207": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "Which statement best distinguishes general management practices from product and service management practices?",
+            "explanation": "General practices support capabilities applicable across the whole organisation. Product and service management practices focus more directly on creating, delivering, operating, and improving those products and services.",
+            "answers": {
+                "A": { "text": "General practices support the organisation broadly; the others are directly oriented towards products and services", "rationale": "The distinction mainly relies on the scope and purpose of the capabilities." },
+                "B": { "text": "General practices are mandatory, while the others are optional", "rationale": "ITIL requires adapting every practice to context, without this mandatory/optional classification." },
+                "C": { "text": "General practices are always in-house and the others always outsourced", "rationale": "Both groups can mobilise internal and external resources." },
+                "D": { "text": "General practices never contribute to value streams", "rationale": "They can be essential to many flows and activities." }
+            }
+        },
+        "208": {
+            "topic": "Practice guides",
+            "scenario": "An organisation wants to clarify the roles, skills, team structures, and communication needs required for a practice.",
+            "question_text": "Which part of the practice guide should it mainly consult?",
+            "explanation": "The \"organizations and people\" chapter examines the roles, responsibilities, skills, structures, culture, and communication needed for the practice's success.",
+            "answers": {
+                "A": { "text": "Organizations and people", "rationale": "This part directly addresses the practice's human and organisational capabilities." },
+                "B": { "text": "Information and technology", "rationale": "This part mainly addresses information, tools, and automation possibilities." },
+                "C": { "text": "Partners and suppliers", "rationale": "This part examines contributions and relationships with third parties." },
+                "D": { "text": "Value streams and processes", "rationale": "This part describes the integration of the practice into value streams and its work processes." }
+            }
+        },
+        "210": {
+            "topic": "Continual improvement model",
+            "scenario": "A team has defined the vision, the current state, and the desired targets.",
+            "question_text": "What is the main objective of the \"How do we get there?\" step?",
+            "explanation": "This step selects and organises the initiatives needed to move from the current state to the target state. It includes defining a realistic plan, priorities, resources, and control measures.",
+            "answers": {
+                "A": { "text": "Develop an improvement approach and plan to reach the targets", "rationale": "The plan links the identified gap to the actions that will close it." },
+                "B": { "text": "Immediately declare the improvement successful", "rationale": "Success must be verified after implementation and after measuring the results." },
+                "C": { "text": "Redefine the existence of the organisation", "rationale": "The vision and context guide the plan, but this step does not aim to redefine the organisation." },
+                "D": { "text": "Replace every existing practice", "rationale": "The plan must be proportionate and can reuse capabilities that are already effective." }
+            }
+        },
+        "211": {
+            "topic": "Value stream mapping",
+            "scenario": "A map shows 20 minutes of actual processing and three days of waiting between two teams.",
+            "question_text": "What does this comparison mainly highlight?",
+            "explanation": "A value stream map distinguishes, among other things, processing time from waiting time. This distinction lets you identify delays that do not directly add value.",
+            "answers": {
+                "A": { "text": "Most of the delay comes from waiting rather than actual work", "rationale": "The map reveals a significant interruption of flow between steps." },
+                "B": { "text": "The actual processing must necessarily be automated", "rationale": "Automation is not automatically the best response to a waiting delay." },
+                "C": { "text": "The three days constitute a process output", "rationale": "Waiting is a delay in the flow, not a produced deliverable." },
+                "D": { "text": "The stream is core because it lasts more than three days", "rationale": "The core / enabling classification depends on the value delivered, not on duration." }
+            }
+        },
+        "217": {
+            "topic": "UX and CX",
+            "scenario": "A bank's mobile app is easy to use, but the customer then receives contradictory information from the call centre and the branch.",
+            "question_text": "Which conclusion correctly distinguishes user experience from customer experience?",
+            "explanation": "User experience mainly concerns interaction with a product or interface. Customer experience is broader and encompasses all the customer's interactions with the organisation.",
+            "answers": {
+                "A": { "text": "The app's UX can be good while the overall CX remains poor", "rationale": "A satisfying interface does not necessarily compensate for inconsistencies encountered in other interactions." },
+                "B": { "text": "A good UX automatically guarantees a good CX", "rationale": "CX covers more touchpoints than app usage." },
+                "C": { "text": "CX concerns only internal users", "rationale": "CX describes a customer's overall experience with an organisation." },
+                "D": { "text": "UX corresponds only to meeting service levels", "rationale": "UX notably includes usability and the user's perceptions and reactions." }
+            }
+        },
+        "218": {
+            "topic": "Trust",
+            "scenario": "A digital assistant generally provides accurate answers, but it never specifies which data it uses or how to contest an incorrect decision.",
+            "question_text": "Which experience factor is mainly at risk of being weakened?",
+            "explanation": "Trust depends notably on transparency, perceived reliability, protection of stakeholder interests, and the ability to obtain redress. High performance is not enough if operation appears uncontrollable.",
+            "answers": {
+                "A": { "text": "Stakeholder trust", "rationale": "The lack of transparency and recourse can reduce willingness to rely on the system." },
+                "B": { "text": "The infrastructure's technical capacity", "rationale": "The scenario describes no resource or capacity shortfall." },
+                "C": { "text": "Goods transfer", "rationale": "No resource ownership is transferred to the consumer." },
+                "D": { "text": "The value stream classification", "rationale": "The difficulty concerns the perception and governance of the assistant, not the stream type." }
+            }
+        },
+        "221": {
+            "topic": "Strategy",
+            "scenario": null,
+            "question_text": "Which statement best describes a strategy?",
+            "explanation": "A strategy provides a high-level approach for progressing towards long-term objectives in a given context. It orients choices and resource allocation without detailing every operational action.",
+            "answers": {
+                "A": { "text": "A high-level approach aimed at achieving long-term objectives", "rationale": "Strategy provides consistent direction for decisions and resource use." },
+                "B": { "text": "An exhaustive list of every employee's daily tasks", "rationale": "This description matches operational plans or procedures more than strategy." },
+                "C": { "text": "A single measure used to evaluate a service", "rationale": "A measure may track strategy implementation but does not constitute the strategy." },
+                "D": { "text": "An improvised reaction to every event encountered", "rationale": "A strategy creates coherent orientation rather than a sequence of isolated reactions." }
+            }
+        },
+        "223": {
+            "topic": "Mission",
+            "scenario": null,
+            "question_text": "Which statement best represents an organisation's mission?",
+            "explanation": "The mission describes what the organisation currently does and its reason for existing in the present. It differs from the vision, which describes a desired future state.",
+            "answers": {
+                "A": { "text": "We currently provide accessible financial services to small businesses", "rationale": "The statement describes current activity and the organisation's present function." },
+                "B": { "text": "Become Europe's most trusted digital financial provider within five years", "rationale": "This statement describes a future aspiration and matches a vision." },
+                "C": { "text": "Increase revenue by 8% next quarter", "rationale": "This is a measurable target rather than a mission statement." },
+                "D": { "text": "Deploy the new application before September", "rationale": "This proposition describes a short-term implementation objective." }
+            }
+        },
+        "224": {
+            "topic": "Vision",
+            "scenario": null,
+            "question_text": "Which proposition mainly constitutes a vision?",
+            "explanation": "A vision describes the ambitious future state the organisation wants to reach. It provides inspiring direction without being a detailed plan.",
+            "answers": {
+                "A": { "text": "Be recognised as the organisation that makes digital public services accessible to everyone", "rationale": "The proposition expresses an aspiration about the organisation's future identity." },
+                "B": { "text": "Currently operate an online public services platform", "rationale": "This statement describes present activity and matches a mission more than a vision." },
+                "C": { "text": "Reduce average response time by ten seconds", "rationale": "This is a precise operational target rather than an inspiring future state." },
+                "D": { "text": "Hold the governance meeting every month", "rationale": "This proposition describes a recurring activity and not a future direction." }
+            }
+        },
+        "225": {
+            "topic": "Purpose",
+            "scenario": null,
+            "question_text": "Which statement best describes an organisation's purpose?",
+            "explanation": "Purpose expresses what the organisation brings to its consumers and other stakeholders, as well as the fundamental reason for that contribution. It helps link choices to more lasting value.",
+            "answers": {
+                "A": { "text": "What the organisation brings to its stakeholders and why that contribution matters", "rationale": "Purpose explains the fundamental contribution and its significance." },
+                "B": { "text": "The detail of every procedure applied today", "rationale": "Procedures explain how the work is done, not why the organisation exists." },
+                "C": { "text": "A list of technologies that will be bought", "rationale": "Technologies are means and do not define the organisation's fundamental contribution." },
+                "D": { "text": "The result of the latest performance report", "rationale": "A measured result is not a durable statement of purpose." }
+            }
+        },
+        "226": {
+            "topic": "VUCA",
+            "scenario": "An organisation faces rapid market changes, results that are hard to predict, many dependencies, and information that can be interpreted in several ways.",
+            "question_text": "Which concept best describes this environment?",
+            "explanation": "VUCA stands for volatility, uncertainty, complexity, and ambiguity. It helps leaders recognise the different forms of difficulty encountered when making strategic decisions.",
+            "answers": {
+                "A": { "text": "A VUCA environment", "rationale": "The scenario combines the four characteristics covered by the acronym." },
+                "B": { "text": "An experience level agreement", "rationale": "An XLA measures experience and does not describe the conditions of the strategic environment." },
+                "C": { "text": "An enabling value stream", "rationale": "An enabling stream supports value creation but does not define an unstable, complex environment." },
+                "D": { "text": "A basic service relationship", "rationale": "The relationship type does not represent the four conditions described." }
+            }
+        },
+        "227": {
+            "topic": "Leadership",
+            "scenario": "During a transformation, a leader communicates a clear direction, acknowledges uncertainties, encourages learning, and adapts decisions when new evidence appears.",
+            "question_text": "Why is this behaviour particularly important?",
+            "explanation": "Leadership helps make sense of situations, mobilise people, and create the conditions that enable adaptation. In a complex environment it is not only about imposing fixed instructions.",
+            "answers": {
+                "A": { "text": "It combines direction, mobilisation, and adaptation in the face of uncertainty", "rationale": "These behaviours let teams progress without pretending that all answers are known." },
+                "B": { "text": "It transfers every decision responsibility to the teams", "rationale": "Autonomy can be encouraged, but leadership retains a direction-setting responsibility." },
+                "C": { "text": "It guarantees that the initial plan will never need to change", "rationale": "Adapting to new evidence is essential in an uncertain environment." },
+                "D": { "text": "It replaces the need for governance", "rationale": "Leadership and governance are complementary and fulfil different functions." }
+            }
+        },
+        "230": {
+            "topic": "Business as usual",
+            "scenario": "After a transformation initiative, the new responsibilities and methods are transferred to the permanent teams, who must use and improve them in their daily work.",
+            "question_text": "Which transition is mainly described?",
+            "explanation": "A transformation produces changes that must ultimately be embedded in ongoing activities, or business as usual. This embedding lets the benefits be sustained after the temporary initiative ends.",
+            "answers": {
+                "A": { "text": "The transition from transformation to business as usual", "rationale": "Permanent teams take over the new capabilities in daily operation." },
+                "B": { "text": "The transition from operation to discovery", "rationale": "The scenario concerns the durable embedding of a change and not the exploration of a new opportunity." },
+                "C": { "text": "Replacing governance with operational management", "rationale": "Governance continues to direct and monitor even after operational embedding." },
+                "D": { "text": "The conversion of a service into a good", "rationale": "No ownership transfer is described." }
+            }
+        },
+        "236": {
+            "topic": "Data and AI",
+            "scenario": "An incident prediction model is trained with incomplete, outdated data containing unnecessary personal information.",
+            "question_text": "Which action should be prioritised before extending its use?",
+            "explanation": "The quality of AI outputs strongly depends on suitable, accurate, and representative data. Governance must also limit personal data to what is necessary and protect it properly.",
+            "answers": {
+                "A": { "text": "Improve data quality and apply confidentiality and minimisation requirements", "rationale": "This action addresses both the model's reliability and the risks related to personal data." },
+                "B": { "text": "Add more data without checking its relevance", "rationale": "Greater volume can amplify quality defects and privacy risks." },
+                "C": { "text": "Only hide the model's name in the interface", "rationale": "This measure corrects neither the inadequate data nor its excessive use." },
+                "D": { "text": "Deploy the model and evaluate the data after several incidents", "rationale": "Risks must be addressed before extended and potentially harmful use." }
+            }
+        },
+        "237": {
+            "topic": "6C AI Capability Model",
+            "scenario": null,
+            "question_text": "What is the main purpose of the \"6C\" AI capability model?",
+            "explanation": "The 6C model classifies AI capabilities into creation, curation, clarification, cognition, communication, and coordination. This classification helps understand possible uses and associate each capability with relevant risks and controls.",
+            "answers": {
+                "A": { "text": "Classify AI capabilities to analyse uses, risks, and controls", "rationale": "The model provides a structured vocabulary for examining what AI can do." },
+                "B": { "text": "Entirely replace the ITIL Service Value System", "rationale": "The model complements ITIL and does not replace its fundamental components." },
+                "C": { "text": "Define six mandatory levels of organisational maturity", "rationale": "The six items are capability categories, not sequential levels." },
+                "D": { "text": "Guarantee that an AI system is automatically compliant", "rationale": "The classification supports analysis but does not constitute a compliance guarantee." }
+            }
+        },
+        "238": {
+            "topic": "AI capability and governance",
+            "scenario": "An organisation identifies that a system has creation and communication capabilities, and then concludes that no other control is needed.",
+            "question_text": "Why is this conclusion incorrect?",
+            "explanation": "The capability model describes what AI can do. Governance determines how its use must be evaluated, directed, and monitored based on risks and objectives.",
+            "answers": {
+                "A": { "text": "Identifying capabilities does not replace defining responsibilities, risks, and controls", "rationale": "The capability model and governance answer two different but complementary questions." },
+                "B": { "text": "Creation and communication capabilities can never be governed", "rationale": "Any capability may require controls adapted to its context and impact." },
+                "C": { "text": "Governance only serves to select the model's supplier", "rationale": "It more broadly covers direction, oversight, risk, and accountability." },
+                "D": { "text": "The 6C model is already a service level agreement", "rationale": "It classifies AI capabilities and does not define agreed quality metrics." }
+            }
+        },
+        "240": {
+            "topic": "Design metrics",
+            "scenario": "A team must choose a primary indicator to evaluate the design quality of a future service.",
+            "question_text": "Which indicator is the most complete according to ITIL?",
+            "explanation": "Design must prepare a product or service satisfying the expected utility, warranty, experience, and sustainability. A measure limited to functionality therefore does not cover the whole designed quality.",
+            "answers": {
+                "A": { "text": "The percentage of validated requirements covering utility, warranty, experience, and sustainability", "rationale": "This indicator verifies that the four essential aspects have been incorporated in the design." },
+                "B": { "text": "The total number of screens designed", "rationale": "Screen count does not demonstrate the service's overall fit." },
+                "C": { "text": "The number of developers assigned to the project", "rationale": "Team size does not measure design quality." },
+                "D": { "text": "The amount of storage already acquired", "rationale": "This measure concerns a specific resource and not the complete design." }
+            }
+        },
+        "241": {
+            "topic": "Acquisition metrics",
+            "scenario": "An organisation has just obtained the resources needed for a new service from several suppliers.",
+            "question_text": "Which indicator best measures the success of the \"acquire\" activity?",
+            "explanation": "Acquisition must supply the appropriate resources, at the necessary quality level, at the right time, and under the required conditions. Cost alone is insufficient when resources are inadequate or delivered too late.",
+            "answers": {
+                "A": { "text": "The proportion of resources obtained on time and matching the agreed requirements", "rationale": "This measure covers both the availability and the quality of the acquired resources." },
+                "B": { "text": "The number of suppliers contacted", "rationale": "A high number of contacts guarantees neither the quality nor the availability of the resources." },
+                "C": { "text": "The number of negotiation meetings", "rationale": "Activity performed is not necessarily a successful acquisition outcome." },
+                "D": { "text": "The number of defects found after production release", "rationale": "This late measure does not directly concern the resources' compliance at the time of acquisition." }
+            }
+        },
+        "242": {
+            "topic": "Build metrics",
+            "scenario": "A team finishes the implementation and integration of the components of a digital product.",
+            "question_text": "Which set of measures best evaluates the success of the \"build\" activity?",
+            "explanation": "Build must produce integrated components that comply with specifications and pass the necessary tests. Development speed is not enough if the resulting solution is defective or incomplete.",
+            "answers": {
+                "A": { "text": "Compliance with specifications and test pass rate", "rationale": "These measures verify that the built product matches the design and works as expected." },
+                "B": { "text": "The number of code changes and the number of developers", "rationale": "These volumes do not demonstrate the product's quality or compliance." },
+                "C": { "text": "Supplier satisfaction and licence cost", "rationale": "These items do not directly measure the built solution's quality." },
+                "D": { "text": "The number of users registered before the build", "rationale": "This measure says nothing about the technical outcome of the build." }
+            }
+        },
+        "247": {
+            "topic": "Digital management",
+            "scenario": null,
+            "question_text": "Which statement best describes the management of digital products and services?",
+            "explanation": "The management of digital products and services is a set of specialised organisational capabilities that let value be created through digital products and services. It concerns the organisation as a whole and is not limited to a technical team's work.",
+            "answers": {
+                "A": { "text": "A set of specialised organisational capabilities that enable value creation through digital products and services", "rationale": "This proposition reflects the organisational scope and value-creation objective of the concept." },
+                "B": { "text": "A method reserved for internal software development", "rationale": "The concept covers the full lifecycle of digital products and services, not just internal development." },
+                "C": { "text": "A practice intended only to automate the service desk", "rationale": "Automating support is only one possible use and does not define digital management overall." },
+                "D": { "text": "A procedure for transferring every risk to the supplier", "rationale": "Digital management organises value-creation capabilities and does not guarantee full risk transfer." }
+            }
+        },
+        "249": {
+            "topic": "Continual improvement",
+            "scenario": null,
+            "question_text": "Which statement best describes continual improvement as a fundamental concept?",
+            "explanation": "Continual improvement consists of continually aligning products, services, practices, and other management elements with changing needs. It relies on the repeated identification and delivery of improvements at every level.",
+            "answers": {
+                "A": { "text": "A recurring activity aimed at aligning products, services, and practices with changing needs", "rationale": "Continuity and alignment with changing needs are at the heart of the concept." },
+                "B": { "text": "An exceptional project executed only when performance becomes critical", "rationale": "Continual improvement is not limited to crises or to a one-off initiative." },
+                "C": { "text": "An annual review intended only to reduce costs", "rationale": "It can reduce costs, but more broadly it pursues value, quality, and adaptation." },
+                "D": { "text": "The exclusive responsibility of the improvement-specialist team", "rationale": "A team can coordinate the efforts, but improvement must be embedded across the whole organisation." }
+            }
+        },
+        "253": {
+            "topic": "Digital product provider",
+            "scenario": "A vendor produces a strong application, but its partners have difficulty integrating it into services that generate business outcomes.",
+            "question_text": "Which ITIL benefit is the most relevant for this digital product provider?",
+            "explanation": "ITIL helps the digital product provider link the product's capabilities, associated services, value streams, and stakeholder outcomes. Success is therefore not limited to the product's technical quality.",
+            "answers": {
+                "A": { "text": "Link the product's capabilities to services, value streams, and desired outcomes", "rationale": "This approach lets the product genuinely contribute to value creation in its ecosystem." },
+                "B": { "text": "Limit the provider's responsibility to delivering the code", "rationale": "Value also depends on integration, use, and associated services." },
+                "C": { "text": "Avoid any collaboration with integrators and service providers", "rationale": "Partners often help turn the product's capabilities into outcomes." },
+                "D": { "text": "Evaluate success only by the number of features", "rationale": "Feature volume does not prove that the desired outcomes are achieved." }
+            }
+        },
+        "257": {
+            "topic": "Artificial intelligence",
+            "scenario": null,
+            "question_text": "Which statement best describes artificial intelligence?",
+            "explanation": "Artificial intelligence refers to technologies capable of performing tasks normally associated with human intelligence, notably learning, reasoning, recognising patterns, or understanding language. It is not limited to following a fixed sequence of rules.",
+            "answers": {
+                "A": { "text": "Technologies capable of performing tasks normally associated with human intelligence", "rationale": "This answer covers the general scope of AI without reducing it to a particular type of model." },
+                "B": { "text": "Any automation running a fully predefined sequence of rules", "rationale": "A deterministic automation can operate without learning or reasoning capabilities." },
+                "C": { "text": "Only systems capable of generating text and images", "rationale": "Generative AI is one category of AI and not its full definition." },
+                "D": { "text": "Only physical robots capable of working without humans", "rationale": "AI can be purely software and retain various levels of human oversight." }
+            }
+        },
+        "258": {
+            "topic": "AI maturity",
+            "scenario": "Two companies use the same AI tool. The first runs a few isolated trials; the second has a strategy, reliable data, skills, controls, and uses embedded in operations.",
+            "question_text": "Which concept mainly explains their difference?",
+            "explanation": "AI maturity describes the extent to which an organisation can use AI effectively, responsibly, consistently, and in an integrated way to support its objectives. It depends notably on governance, data, skills, and processes.",
+            "answers": {
+                "A": { "text": "AI maturity", "rationale": "The difference concerns the organisational ability to adopt and govern AI sustainably." },
+                "B": { "text": "The model's compute power", "rationale": "The companies use the same tool; their difference comes from their organisational capabilities." },
+                "C": { "text": "The type of service relationship", "rationale": "The relationship with a supplier is not enough to explain the internal integration of AI." },
+                "D": { "text": "The number of outputs produced by the tool", "rationale": "Usage volume does not demonstrate effective, responsible, and consistent adoption." }
+            }
+        },
+        "259": {
+            "topic": "AI and the lifecycle",
+            "scenario": null,
+            "question_text": "Which pairing of a lifecycle activity with an AI use is the most appropriate?",
+            "explanation": "AI can support every lifecycle activity when it is used with appropriate controls. Uses must match the activity's objective rather than being applied without connection to the work performed.",
+            "answers": {
+                "A": { "text": "Discover: analyse needs trends; build: assist testing; operate: detect anomalies; support: suggest solutions", "rationale": "Each proposed use directly supports the objective of the corresponding activity." },
+                "B": { "text": "Discover: close incidents; build: negotiate SLAs; operate: define the mission; support: select the strategy", "rationale": "These uses do not match the objectives of the activities listed." },
+                "C": { "text": "Acquire: remove any supplier evaluation; transition: ignore impacts; deliver: avoid feedback", "rationale": "AI does not justify removing necessary controls and learning." },
+                "D": { "text": "Use AI only in the build activity, because other activities do not concern technology", "rationale": "AI can support analysis, design, operation, delivery, and support, among other activities." }
+            }
+        }
+    }
+}

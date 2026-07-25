@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import Select from '@/Components/Select';
+import { useT } from '@/lib/i18n';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const DEFAULT_ANSWERS = [
@@ -14,6 +15,7 @@ const relabel = (arr) =>
     arr.map((a, i) => ({ ...a, letter: String.fromCharCode(65 + i) }));
 
 export default function Form({ question, certifications, default_certification_id }) {
+    const t = useT();
     const editing = !!question;
     const initialAnswers = question?.answers?.length
         ? relabel(question.answers.map((a) => ({
@@ -77,28 +79,28 @@ export default function Form({ question, certifications, default_certification_i
 
     return (
         <AppLayout>
-            <Head title={editing ? 'Éditer une question' : 'Nouvelle question'} />
+            <Head title={editing ? t('admin.questions_form.head_title_edit') : t('admin.questions_form.head_title_new')} />
 
             <div className="mx-auto max-w-4xl space-y-6">
                 {/* Breadcrumb + Header */}
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-xs text-ink-500">
-                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">Dashboard</Link>
+                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">{t('admin.common.dashboard_breadcrumb')}</Link>
                         <span>/</span>
-                        <Link href={route('admin.questions.index')} className="hover:text-brand-500">Questions</Link>
+                        <Link href={route('admin.questions.index')} className="hover:text-brand-500">{t('admin.questions_index.title')}</Link>
                         <span>/</span>
                         <span className="text-ink-700 dark:text-ink-300">
-                            {editing ? `Q${question.position ?? ''}` : 'Nouvelle'}
+                            {editing ? `Q${question.position ?? ''}` : t('admin.questions_form.breadcrumb_new')}
                         </span>
                     </div>
                     <div className="flex flex-wrap items-end justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
-                                {editing ? 'Éditer la question' : 'Nouvelle question'}
+                                {editing ? t('admin.questions_form.title_edit') : t('admin.questions_form.title_new')}
                             </h1>
                             {cert && (
                                 <p className="mt-1 text-sm text-ink-500">
-                                    Pour <span className="font-semibold text-ink-800 dark:text-ink-200">{cert.title}</span>
+                                    {t('admin.questions_form.for')} <span className="font-semibold text-ink-800 dark:text-ink-200">{cert.title}</span>
                                 </p>
                             )}
                         </div>
@@ -107,7 +109,7 @@ export default function Form({ question, certifications, default_certification_i
                             className="btn-ghost !py-2"
                         >
                             <Icon.ArrowLeft className="h-4 w-4" />
-                            Retour
+                            {t('admin.common.back')}
                         </Link>
                     </div>
                 </div>
@@ -116,11 +118,11 @@ export default function Form({ question, certifications, default_certification_i
                     {/* Meta */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Contexte"
-                            description="À quelle certification cette question appartient et à quelle position dans le pool."
+                            title={t('admin.questions_form.section_meta')}
+                            description={t('admin.questions_form.section_meta_desc')}
                         />
                         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                            <Field label="Certification" error={errors.certification_id} className="sm:col-span-2">
+                            <Field label={t('admin.questions_form.field_cert')} error={errors.certification_id} className="sm:col-span-2">
                                 <Select
                                     value={data.certification_id}
                                     onChange={(v) => setData('certification_id', +v)}
@@ -129,27 +131,27 @@ export default function Form({ question, certifications, default_certification_i
                                         label: c.title,
                                         logo: c,
                                     }))}
-                                    placeholder="Choisir une certification…"
+                                    placeholder={t('admin.questions_form.cert_placeholder')}
                                 />
                             </Field>
-                            <Field label="Position" hint="Laisse vide = auto" error={errors.position}>
+                            <Field label={t('admin.questions_form.field_position')} hint={t('admin.questions_form.field_position_hint')} error={errors.position}>
                                 <input
                                     type="number"
                                     min="1"
                                     className="field"
                                     value={data.position}
                                     onChange={(e) => setData('position', e.target.value)}
-                                    placeholder="auto"
+                                    placeholder={t('admin.questions_form.field_position_placeholder')}
                                 />
                             </Field>
                         </div>
                         <div className="mt-4">
-                            <Field label="Thème / sujet (optionnel)" error={errors.topic}>
+                            <Field label={t('admin.questions_form.field_topic')} error={errors.topic}>
                                 <input
                                     className="field"
                                     value={data.topic}
                                     onChange={(e) => setData('topic', e.target.value)}
-                                    placeholder="Ex. Principe — Commencer là où vous êtes"
+                                    placeholder={t('admin.questions_form.field_topic_placeholder')}
                                 />
                             </Field>
                         </div>
@@ -158,31 +160,31 @@ export default function Form({ question, certifications, default_certification_i
                     {/* Question */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Énoncé"
-                            description="Le scénario est optionnel — utilise-le si la question a besoin d'un contexte narratif. L'énoncé est la question posée au candidat."
+                            title={t('admin.questions_form.section_question')}
+                            description={t('admin.questions_form.section_question_desc')}
                         />
                         <div className="mt-4 space-y-4">
-                            <Field label="Scénario / contexte (optionnel)" error={errors.scenario}>
+                            <Field label={t('admin.questions_form.field_scenario')} error={errors.scenario}>
                                 <textarea
                                     rows={4}
                                     className="field resize-y"
                                     value={data.scenario ?? ''}
                                     onChange={(e) => setData('scenario', e.target.value)}
-                                    placeholder="Une organisation… (description narrative de la situation)"
+                                    placeholder={t('admin.questions_form.field_scenario_placeholder')}
                                 />
                             </Field>
-                            <Field label="Question posée" error={errors.question_text} required>
+                            <Field label={t('admin.questions_form.field_question_text')} error={errors.question_text} required>
                                 <textarea
                                     rows={3}
                                     className="field resize-y"
                                     value={data.question_text}
                                     onChange={(e) => setData('question_text', e.target.value)}
-                                    placeholder="Quel principe directeur est principalement appliqué ?"
+                                    placeholder={t('admin.questions_form.field_question_text_placeholder')}
                                 />
                             </Field>
                             <Field
-                                label="Explication (pédagogie)"
-                                hint="Pourquoi la bonne réponse est la meilleure"
+                                label={t('admin.questions_form.field_explanation')}
+                                hint={t('admin.questions_form.field_explanation_hint')}
                                 error={errors.explanation}
                             >
                                 <textarea
@@ -190,7 +192,7 @@ export default function Form({ question, certifications, default_certification_i
                                     className="field resize-y"
                                     value={data.explanation}
                                     onChange={(e) => setData('explanation', e.target.value)}
-                                    placeholder="1 à 3 phrases qui ancrent la bonne réponse dans le concept exact du syllabus. C'est ce que le candidat lit après avoir répondu."
+                                    placeholder={t('admin.questions_form.field_explanation_placeholder')}
                                 />
                             </Field>
                         </div>
@@ -200,8 +202,8 @@ export default function Form({ question, certifications, default_certification_i
                     <section className="card p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                             <SectionHeader
-                                title="Réponses"
-                                description="Rédige de 2 à 6 réponses. Coche celle qui est correcte : elle sera comptée juste à l'examen."
+                                title={t('admin.questions_form.section_answers')}
+                                description={t('admin.questions_form.section_answers_desc')}
                             />
                             <button
                                 type="button"
@@ -210,7 +212,7 @@ export default function Form({ question, certifications, default_certification_i
                                 className="btn-secondary !py-1.5 !text-xs disabled:opacity-40"
                             >
                                 <Icon.Sparkles className="h-3.5 w-3.5" />
-                                Ajouter une réponse
+                                {t('admin.questions_form.add_answer')}
                             </button>
                         </div>
 
@@ -236,7 +238,7 @@ export default function Form({ question, certifications, default_certification_i
                                                         ? 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-glow'
                                                         : 'bg-ink-100 text-ink-700 hover:bg-emerald-500/20 hover:text-emerald-600 dark:bg-ink-800 dark:text-ink-200'
                                                 }`}
-                                                title={isCorrect ? 'Bonne réponse' : 'Cocher comme bonne réponse'}
+                                                title={isCorrect ? t('admin.questions_form.correct_mark_title') : t('admin.questions_form.correct_mark_untitle')}
                                             >
                                                 {isCorrect ? <Icon.Check className="h-5 w-5" /> : a.letter}
                                             </button>
@@ -245,9 +247,9 @@ export default function Form({ question, certifications, default_certification_i
                                             <div className="flex-1 min-w-0">
                                                 <div className="mb-1 flex items-center justify-between">
                                                     <label className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">
-                                                        Réponse {a.letter}
+                                                        {t('admin.questions_form.answer_label', { letter: a.letter })}
                                                         {isCorrect && (
-                                                            <span className="ml-2 text-emerald-500">· bonne réponse</span>
+                                                            <span className="ml-2 text-emerald-500">{t('admin.questions_form.correct_suffix')}</span>
                                                         )}
                                                     </label>
                                                     <div className="flex items-center gap-0.5">
@@ -256,7 +258,7 @@ export default function Form({ question, certifications, default_certification_i
                                                             onClick={() => moveAnswer(idx, -1)}
                                                             disabled={idx === 0}
                                                             className="rounded p-1 text-ink-400 transition hover:bg-ink-100 hover:text-ink-700 disabled:opacity-30 disabled:cursor-not-allowed dark:hover:bg-ink-800 dark:hover:text-white"
-                                                            title="Monter"
+                                                            title={t('admin.questions_form.move_up')}
                                                         >
                                                             <Icon.ArrowUp className="h-3.5 w-3.5" />
                                                         </button>
@@ -265,7 +267,7 @@ export default function Form({ question, certifications, default_certification_i
                                                             onClick={() => moveAnswer(idx, 1)}
                                                             disabled={idx === data.answers.length - 1}
                                                             className="rounded p-1 text-ink-400 transition hover:bg-ink-100 hover:text-ink-700 disabled:opacity-30 disabled:cursor-not-allowed dark:hover:bg-ink-800 dark:hover:text-white"
-                                                            title="Descendre"
+                                                            title={t('admin.questions_form.move_down')}
                                                         >
                                                             <Icon.ArrowDown className="h-3.5 w-3.5" />
                                                         </button>
@@ -274,7 +276,7 @@ export default function Form({ question, certifications, default_certification_i
                                                             onClick={() => removeAnswer(idx)}
                                                             disabled={data.answers.length <= 2}
                                                             className="rounded p-1 text-ink-400 transition hover:bg-rose-500/10 hover:text-rose-500 disabled:opacity-30 disabled:cursor-not-allowed"
-                                                            title="Retirer cette réponse"
+                                                            title={t('admin.questions_form.remove_answer')}
                                                         >
                                                             <Icon.Close className="h-3.5 w-3.5" />
                                                         </button>
@@ -285,7 +287,7 @@ export default function Form({ question, certifications, default_certification_i
                                                     className="field resize-y"
                                                     value={a.answer_text}
                                                     onChange={(e) => updateAnswerText(idx, e.target.value)}
-                                                    placeholder={`Texte de la réponse ${a.letter}…`}
+                                                    placeholder={t('admin.questions_form.answer_placeholder', { letter: a.letter })}
                                                 />
                                                 {errors[`answers.${idx}.answer_text`] && (
                                                     <div className="mt-1 text-xs text-rose-500">
@@ -294,7 +296,7 @@ export default function Form({ question, certifications, default_certification_i
                                                 )}
                                                 <div className="mt-2">
                                                     <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-ink-500">
-                                                        {isCorrect ? 'Justification (pourquoi c\'est la bonne)' : 'Faux ami (pourquoi ce distracteur trompe)'}
+                                                        {isCorrect ? t('admin.questions_form.rationale_correct_label') : t('admin.questions_form.rationale_wrong_label')}
                                                     </label>
                                                     <textarea
                                                         rows={2}
@@ -302,8 +304,8 @@ export default function Form({ question, certifications, default_certification_i
                                                         value={a.rationale ?? ''}
                                                         onChange={(e) => updateAnswerRationale(idx, e.target.value)}
                                                         placeholder={isCorrect
-                                                            ? '1 phrase qui confirme brièvement pourquoi cette réponse l\'emporte.'
-                                                            : '1 phrase qui explique quelle notion voisine ce distracteur évoque et pourquoi ce n\'est pas la bonne réponse ici.'}
+                                                            ? t('admin.questions_form.rationale_correct_placeholder')
+                                                            : t('admin.questions_form.rationale_wrong_placeholder')}
                                                     />
                                                     {errors[`answers.${idx}.rationale`] && (
                                                         <div className="mt-1 text-xs text-rose-500">
@@ -332,25 +334,29 @@ export default function Form({ question, certifications, default_certification_i
                     {/* Submit bar */}
                     <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-ink-200/60 bg-white/90 p-3 shadow-xl backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-900/90">
                         <div className="hidden text-xs text-ink-500 sm:block">
-                            {data.answers.length} réponses ·{' '}
+                            {data.answers.length} {t('admin.questions_form.summary_answers')}{' '}
                             <span className="font-semibold text-emerald-600 dark:text-emerald-300">
-                                {data.answers[data.correct_index]?.letter ?? '—'}
+                                {data.answers[data.correct_index]?.letter ?? '-'}
                             </span>{' '}
-                            marquée comme bonne
+                            {t('admin.questions_form.summary_marked')}
                         </div>
                         <div className="flex flex-1 items-center justify-end gap-2 sm:flex-none">
                             <Link
                                 href={route('admin.questions.index') + (data.certification_id ? `?certification_id=${data.certification_id}` : '')}
                                 className="btn-secondary"
                             >
-                                Annuler
+                                {t('admin.common.cancel')}
                             </Link>
                             <button
                                 type="submit"
                                 disabled={processing}
                                 className="btn-primary"
                             >
-                                {processing ? 'Enregistrement…' : editing ? 'Mettre à jour' : 'Créer la question'}
+                                {processing
+                                    ? t('admin.common.saving')
+                                    : editing
+                                        ? t('admin.questions_form.submit_update')
+                                        : t('admin.questions_form.submit_create')}
                             </button>
                         </div>
                     </div>

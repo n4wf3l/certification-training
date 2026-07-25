@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\Certification;
 use App\Models\Question;
+use App\Models\QuestionReport;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,6 +21,7 @@ class DashboardController extends Controller
                 'questions' => Question::count(),
                 'users' => User::count(),
                 'attempts' => Attempt::whereNotNull('completed_at')->count(),
+                'pending_reports' => QuestionReport::where('status', 'pending')->count(),
             ],
         ]);
     }

@@ -1,6 +1,8 @@
 import Toaster, { useFlashToasts } from '@/Components/Toaster';
 import { Link, usePage } from '@inertiajs/react';
 import Icon from '@/Components/Icons';
+import LocaleSwitcher from '@/Components/LocaleSwitcher';
+import { useT } from '@/lib/i18n';
 
 function BrandLogo({ settings, size = 'md', className = '' }) {
     const dims = size === 'lg' ? 'h-10 w-10' : 'h-9 w-9';
@@ -30,31 +32,19 @@ function BrandLogo({ settings, size = 'md', className = '' }) {
     );
 }
 
-const FEATURES = [
-    {
-        Icon: Icon.Refresh,
-        title: 'Répétition espacée',
-        desc: 'Tes erreurs reviennent en priorité, jusqu\'à maîtrise complète.',
-    },
-    {
-        Icon: Icon.Bolt,
-        title: 'Conditions réelles',
-        desc: 'Timer, barème officiel, tirage aléatoire dans un vrai pool.',
-    },
-    {
-        Icon: Icon.Target,
-        title: 'Progrès mesurables',
-        desc: 'Stats détaillées, correction complète, historique par examen.',
-    },
-];
-
 export default function GuestLayout({ children, title, subtitle }) {
     useFlashToasts();
     const settings = usePage().props.settings;
+    const t = useT();
+    const features = [
+        { Icon: Icon.Refresh, title: t('guest.feature_repetition_title'), desc: t('guest.feature_repetition_desc') },
+        { Icon: Icon.Bolt, title: t('guest.feature_real_title'), desc: t('guest.feature_real_desc') },
+        { Icon: Icon.Target, title: t('guest.feature_progress_title'), desc: t('guest.feature_progress_desc') },
+    ];
     return (
         <div className="min-h-screen bg-white text-ink-900 dark:bg-ink-950 dark:text-ink-100">
             <div className="grid min-h-screen lg:grid-cols-2">
-                {/* LEFT — Brand panel */}
+                {/* LEFT - Brand panel */}
                 <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-between lg:p-12">
                     {/* Background layers */}
                     <div className="absolute inset-0 bg-ink-950" />
@@ -80,17 +70,17 @@ export default function GuestLayout({ children, title, subtitle }) {
                     <div className="relative max-w-lg">
                         <div className="badge border-white/10 bg-white/5 text-white/70">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                            Plateforme d'entraînement adaptatif
+                            {t('guest.brand_kicker')}
                         </div>
                         <h1 className="mt-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-                            Prépare ta certif comme si tu <span className="gradient-text">passais l'examen</span>.
+                            {t('guest.brand_title_pre')} <span className="gradient-text">{t('guest.brand_title_highlight')}</span>.
                         </h1>
                         <p className="mt-4 text-lg leading-relaxed text-ink-300">
-                            ITIL, CCNA, CompTIA, AWS… Des questions ciblées, un algorithme qui insiste sur tes lacunes, un vrai résultat à la fin.
+                            {t('guest.brand_subtitle')}
                         </p>
 
                         <ul className="mt-10 space-y-4">
-                            {FEATURES.map((f) => (
+                            {features.map((f) => (
                                 <li key={f.title} className="flex items-start gap-3 text-white">
                                     <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-brand-300">
                                         <f.Icon className="h-4 w-4" />
@@ -105,17 +95,21 @@ export default function GuestLayout({ children, title, subtitle }) {
                     </div>
 
                     <div className="relative text-xs text-ink-400">
-                        Comptes de test : <span className="font-mono text-ink-200">admin@example.com</span> · <span className="font-mono text-ink-200">user@example.com</span> — mot de passe <span className="font-mono text-ink-200">password</span>
+                        {t('guest.test_accounts')} <span className="font-mono text-ink-200">admin@example.com</span> · <span className="font-mono text-ink-200">user@example.com</span> - {t('guest.test_accounts_password')} <span className="font-mono text-ink-200">password</span>
                     </div>
                 </div>
 
-                {/* RIGHT — Form panel */}
+                {/* RIGHT - Form panel */}
                 <div className="flex items-center justify-center p-6 sm:p-10">
                     <div className="w-full max-w-md">
-                        <div className="mb-8 lg:hidden">
+                        <div className="mb-8 flex items-center justify-between lg:hidden">
                             <Link href={route('home')}>
                                 <BrandLogo settings={settings} size="md" />
                             </Link>
+                            <LocaleSwitcher />
+                        </div>
+                        <div className="mb-6 hidden justify-end lg:flex">
+                            <LocaleSwitcher />
                         </div>
 
                         {(title || subtitle) && (

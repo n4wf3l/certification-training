@@ -17,6 +17,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'preferred_locale',
+        'current_streak',
+        'longest_streak',
+        'last_activity_date',
+        'total_xp',
     ];
 
     protected $hidden = [
@@ -29,6 +34,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_activity_date' => 'date',
+            'current_streak' => 'integer',
+            'longest_streak' => 'integer',
+            'total_xp' => 'integer',
         ];
     }
 
@@ -40,5 +49,15 @@ class User extends Authenticatable
     public function attempts(): HasMany
     {
         return $this->hasMany(Attempt::class);
+    }
+
+    public function badges(): HasMany
+    {
+        return $this->hasMany(UserBadge::class);
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(UserCertificate::class);
     }
 }

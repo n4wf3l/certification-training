@@ -1,5 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import HeroQuizTeaser from '@/Components/HeroQuizTeaser';
+import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 function Logo({ certification }) {
@@ -28,6 +29,7 @@ function Logo({ certification }) {
 }
 
 function CertificationRow({ certification, index }) {
+    const t = useT();
     const ready = certification.ready;
     const retire = certification.version_retires_at
         ? Math.ceil((new Date(certification.version_retires_at) - new Date()) / 86400000)
@@ -54,7 +56,7 @@ function CertificationRow({ certification, index }) {
                         </h3>
                         {!ready && (
                             <span className="font-mono text-[10px] uppercase tracking-widest text-ink-400">
-                                bientôt
+                                {t('home.soon_badge')}
                             </span>
                         )}
                     </div>
@@ -72,7 +74,7 @@ function CertificationRow({ certification, index }) {
                         {certification.available_questions}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-ink-400">
-                        questions
+                        {t('home.row_col_questions')}
                     </div>
                 </div>
                 <div>
@@ -81,7 +83,7 @@ function CertificationRow({ certification, index }) {
                         <span className="text-ink-400"> min</span>
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-ink-400">
-                        durée
+                        {t('home.row_col_duration')}
                     </div>
                 </div>
                 <div>
@@ -90,7 +92,7 @@ function CertificationRow({ certification, index }) {
                         <span className="text-ink-400">/{certification.total_questions}</span>
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-ink-400">
-                        seuil
+                        {t('home.row_col_threshold')}
                     </div>
                 </div>
             </div>
@@ -98,7 +100,7 @@ function CertificationRow({ certification, index }) {
             <div className="col-span-6 flex items-center justify-end gap-3 sm:col-span-2">
                 {retire !== null && retire < 540 && retire > 0 && (
                     <span className={`hidden font-mono text-[10px] uppercase tracking-widest sm:inline ${retire < 180 ? 'text-rose-500' : 'text-amber-500'}`}>
-                        retrait {retireYear}
+                        {t('home.row_retire', { year: retireYear })}
                     </span>
                 )}
                 <span className="text-ink-400 transition-transform group-hover:translate-x-1 group-hover:text-ink-900 dark:group-hover:text-white">
@@ -155,6 +157,8 @@ function LogoCarousel({ certifications }) {
 
 export default function Home({ certifications, teaser_questions = null }) {
     const user = usePage().props.auth?.user;
+    const t = useT();
+    const locale = useLocale();
     const ready = certifications.filter((c) => c.ready);
     const soon = certifications.filter((c) => !c.ready);
     const showTeaser = !user && teaser_questions && teaser_questions.length > 0;
@@ -164,27 +168,28 @@ export default function Home({ certifications, teaser_questions = null }) {
         .filter(Boolean)
         .sort()
         .pop();
+    // Format date selon la locale UI (en-US, fr-FR, etc.) pour "01 Aug" vs "1 août"
+    const dateLocaleTag = locale === 'fr' ? 'fr-FR' : 'en-US';
 
     return (
         <AppLayout ambient={false}>
-            <Head title="Certifications" />
+            <Head title={t('home.page_title')} />
 
             {/* HERO */}
             <section className="border-b border-ink-200 pb-16 pt-6 dark:border-ink-800 sm:pt-10">
                 <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
                     <div>
-                        <SectionLabel>Outil d'entraînement complémentaire</SectionLabel>
+                        <SectionLabel>{t('home.hero_kicker')}</SectionLabel>
 
                         <h1 className="mt-8 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
-                            Ancre le vocabulaire.<br />
-                            <span className="text-ink-400 dark:text-ink-500">Gère le temps.</span> Passe le jour J.
+                            {t('home.hero_title_1')}<br />
+                            <span className="text-ink-400 dark:text-ink-500">{t('home.hero_title_2')}</span> {t('home.hero_title_3')}
                         </h1>
 
                         <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
-                            Idéal pour <span className="font-semibold text-ink-900 dark:text-white">tester la gestion du temps</span>
-                            {' '}et ancrer le vocabulaire officiel en <span className="font-semibold text-ink-900 dark:text-white">complément de la doc</span>
-                            {' '}(PeopleCert, Cisco, CompTIA, AWS). Chaque question vient avec son explication
-                            et le rationale des distracteurs — on t'aide à comprendre, pas juste à cocher.
+                            {t('home.hero_subtitle_pre')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_1')}</span>
+                            {' '}{t('home.hero_subtitle_mid')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_2')}</span>
+                            {' '}{t('home.hero_subtitle_post')}
                         </p>
 
                         <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">
@@ -193,7 +198,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     {ready.length}
                                 </div>
                                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                                    certifications
+                                    {t('home.stat_certifications')}
                                 </div>
                             </div>
                             <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
@@ -202,25 +207,25 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     {totalQuestions}
                                 </div>
                                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                                    questions
+                                    {t('home.stat_questions')}
                                 </div>
                             </div>
                             <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                                    {lastUpdate ? new Date(lastUpdate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) : '—'}
+                                    {lastUpdate ? new Date(lastUpdate).toLocaleDateString(dateLocaleTag, { day: '2-digit', month: 'short' }) : '-'}
                                 </div>
                                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                                    dernière mise à jour
+                                    {t('home.stat_last_update')}
                                 </div>
                             </div>
                             <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
-                                    Gratuit
+                                    {t('home.stat_free')}
                                 </div>
                                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                                    sans carte bancaire
+                                    {t('home.stat_no_credit_card')}
                                 </div>
                             </div>
                         </div>
@@ -230,7 +235,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                 href="#certifications"
                                 className="inline-flex items-center gap-2 border-b border-ink-900 pb-1 text-sm font-medium text-ink-900 transition hover:gap-3 dark:border-white dark:text-white"
                             >
-                                Voir la liste des certifications
+                                {t('home.cta_see_list')}
                                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5">
                                     <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
@@ -251,9 +256,9 @@ export default function Home({ certifications, teaser_questions = null }) {
 
             {/* METHOD */}
             <section id="comment-ca-marche" className="border-b border-ink-200 py-20 dark:border-ink-800">
-                <SectionLabel>Comment ça marche</SectionLabel>
+                <SectionLabel>{t('home.method_kicker')}</SectionLabel>
                 <h2 className="mt-6 max-w-2xl text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
-                    Trois étapes. Pas de tunnel marketing. Pas d'essai limité.
+                    {t('home.method_title')}
                 </h2>
 
                 <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-3">
@@ -261,33 +266,30 @@ export default function Home({ certifications, teaser_questions = null }) {
                         <div className="font-mono text-xs font-medium text-ink-400">01</div>
                         <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
                         <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            Choisis ta certif.
+                            {t('home.step1_title')}
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            ITIL, CCNA, CompTIA A+, AWS Cloud Practitioner. Cours structuré,
-                            flashcards ou examen blanc — au choix, quand tu veux.
+                            {t('home.step1_body')}
                         </p>
                     </div>
                     <div>
                         <div className="font-mono text-xs font-medium text-ink-400">02</div>
                         <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
                         <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            Passe l'examen.
+                            {t('home.step2_title')}
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            Timer réel, barème officiel, tirage aléatoire. Correction complète
-                            question par question à la fin, avec les explications.
+                            {t('home.step2_body')}
                         </p>
                     </div>
                     <div>
                         <div className="font-mono text-xs font-medium text-ink-400">03</div>
                         <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
                         <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            Recommence sur tes erreurs.
+                            {t('home.step3_title')}
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            Les questions que tu rates reviennent en priorité — pondérées par
-                            la difficulté et le temps écoulé. Jusqu'à ce qu'elles cassent plus.
+                            {t('home.step3_body')}
                         </p>
                     </div>
                 </div>
@@ -297,22 +299,22 @@ export default function Home({ certifications, teaser_questions = null }) {
             <section id="certifications" className="py-20">
                 <div className="flex flex-wrap items-end justify-between gap-4">
                     <div>
-                        <SectionLabel>Certifications disponibles</SectionLabel>
+                        <SectionLabel>{t('home.list_kicker')}</SectionLabel>
                         <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
-                            {ready.length} en ligne
+                            {t('home.list_online', { n: ready.length })}
                             {soon.length > 0 && (
-                                <span className="text-ink-400"> · {soon.length} à venir</span>
+                                <span className="text-ink-400"> · {t('home.list_coming', { n: soon.length })}</span>
                             )}
                         </h2>
                     </div>
                     <div className="font-mono text-xs text-ink-400">
-                        Cliquer une ligne pour ouvrir le cours et l'examen.
+                        {t('home.list_hint')}
                     </div>
                 </div>
 
                 {certifications.length === 0 ? (
                     <div className="mt-10 border-y border-ink-200 py-16 text-center font-mono text-sm text-ink-500 dark:border-ink-800">
-                        Aucune certification disponible pour le moment.
+                        {t('home.list_empty')}
                     </div>
                 ) : (
                     <div className="mt-10 border-t border-ink-200 dark:border-ink-800">

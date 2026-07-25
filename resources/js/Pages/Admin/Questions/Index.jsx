@@ -1,8 +1,10 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import Select from '@/Components/Select';
+import { useT } from '@/lib/i18n';
 import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 function CertLogo({ certification, size = 'md' }) {
     const dims = {
@@ -49,6 +51,7 @@ function useLocalStorage(key, defaultValue) {
 }
 
 export default function Index({ certifications, selected_certification_id, questions }) {
+    const t = useT();
     const [query, setQuery] = useState('');
     const [expandedId, setExpandedId] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
@@ -93,15 +96,15 @@ export default function Index({ certifications, selected_certification_id, quest
 
     return (
         <AppLayout>
-            <Head title="Admin — Questions" />
+            <Head title={t('admin.questions_index.head_title')} />
 
             <div className="mx-auto max-w-7xl space-y-6">
                 {/* Breadcrumb + Header */}
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-xs text-ink-500">
-                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">Dashboard</Link>
+                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">{t('admin.common.dashboard_breadcrumb')}</Link>
                         <span>/</span>
-                        <span className="text-ink-700 dark:text-ink-300">Questions</span>
+                        <span className="text-ink-700 dark:text-ink-300">{t('admin.questions_index.title')}</span>
                         {selectedCert && (
                             <>
                                 <span>/</span>
@@ -115,20 +118,20 @@ export default function Index({ certifications, selected_certification_id, quest
                             <div>
                                 {selectedCert && (
                                     <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-500">
-                                        Questions & réponses
+                                        {t('admin.questions_index.kicker')}
                                     </div>
                                 )}
                                 <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
-                                    {selectedCert ? selectedCert.title : 'Questions & réponses'}
+                                    {selectedCert ? selectedCert.title : t('admin.questions_index.title')}
                                 </h1>
                                 <p className="mt-1 text-sm text-ink-500">
                                     <span className="font-mono font-semibold text-ink-900 dark:text-white">
                                         {questions.length}
                                     </span>
-                                    {' '}question{questions.length > 1 ? 's' : ''}
-                                    {!selectedCert && ' au total, toutes certifications confondues'}
+                                    {' '}{questions.length > 1 ? t('admin.questions_index.count_plural') : t('admin.questions_index.count_singular')}
+                                    {!selectedCert && ' ' + t('admin.questions_index.all_certs_suffix')}
                                     {query && filtered.length !== questions.length && (
-                                        <> — <span className="font-mono">{filtered.length}</span> après filtre</>
+                                        <>{t('admin.questions_index.filtered_suffix', { count: filtered.length })}</>
                                     )}
                                 </p>
                             </div>
@@ -139,10 +142,10 @@ export default function Index({ certifications, selected_certification_id, quest
                                     href={route('admin.certifications.export', selectedCert.id)}
                                     download
                                     className="btn-secondary"
-                                    title="Télécharger toutes les Q&A de cette certification en JSON"
+                                    title={t('admin.questions_index.export_title')}
                                 >
                                     <IconDownload className="h-4 w-4" />
-                                    Export JSON
+                                    {t('admin.questions_index.export_json')}
                                 </a>
                             )}
                             <Link
@@ -152,10 +155,10 @@ export default function Index({ certifications, selected_certification_id, quest
                                         : route('admin.questions.import')
                                 }
                                 className="btn-secondary"
-                                title="Générer des questions via ChatGPT et importer le JSON"
+                                title={t('admin.questions_index.import_title')}
                             >
                                 <Icon.Bolt className="h-4 w-4" />
-                                Import ChatGPT
+                                {t('admin.questions_index.import_chatgpt')}
                             </Link>
                             <Link
                                 href={
@@ -166,7 +169,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                 className="btn-primary"
                             >
                                 <Icon.Sparkles className="h-4 w-4" />
-                                Nouvelle question
+                                {t('admin.questions_index.new_cta')}
                             </Link>
                         </div>
                     </div>
@@ -184,7 +187,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                 type="search"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Rechercher dans les questions, thèmes, scénarios…"
+                                placeholder={t('admin.questions_index.search_placeholder')}
                                 className="field pl-9"
                             />
                         </div>
@@ -193,14 +196,14 @@ export default function Index({ certifications, selected_certification_id, quest
                                 value={selected_certification_id ?? ''}
                                 onChange={changeFilter}
                                 options={[
-                                    { value: '', label: 'Toutes les certifications' },
+                                    { value: '', label: t('admin.questions_index.filter_all') },
                                     ...certifications.map((c) => ({
                                         value: c.id,
                                         label: c.title,
                                         logo: c,
                                     })),
                                 ]}
-                                placeholder="Filtrer par certif…"
+                                placeholder={t('admin.questions_index.filter_placeholder')}
                             />
                         </div>
                         {(query || selectedCert) && (
@@ -212,7 +215,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                 className="btn-ghost !py-2"
                             >
                                 <Icon.Close className="h-4 w-4" />
-                                Réinitialiser
+                                {t('admin.questions_index.reset')}
                             </button>
                         )}
                     </div>
@@ -229,7 +232,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                         : 'text-ink-500 hover:text-ink-900 dark:hover:text-white'
                                 }`}
                             >
-                                Paginé
+                                {t('admin.questions_index.view_paginated')}
                             </button>
                             <button
                                 type="button"
@@ -240,13 +243,13 @@ export default function Index({ certifications, selected_certification_id, quest
                                         : 'text-ink-500 hover:text-ink-900 dark:hover:text-white'
                                 }`}
                             >
-                                Tout afficher
+                                {t('admin.questions_index.view_full')}
                             </button>
                         </div>
 
                         {viewMode === 'paginated' && (
                             <div className="inline-flex items-center gap-2">
-                                <span className="font-mono text-[10px] uppercase tracking-widest text-ink-500">Par page</span>
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-ink-500">{t('admin.questions_index.per_page')}</span>
                                 <div className="inline-flex overflow-hidden rounded-lg border border-ink-200 bg-white p-0.5 dark:border-ink-800 dark:bg-ink-900">
                                     {[25, 50, 100].map((n) => (
                                         <button
@@ -269,8 +272,8 @@ export default function Index({ certifications, selected_certification_id, quest
                         {filtered.length > 0 && (
                             <div className="ml-auto font-mono text-[11px] text-ink-500">
                                 {viewMode === 'full'
-                                    ? `Toutes les ${filtered.length} affichées`
-                                    : `${rangeStart}–${rangeEnd} sur ${filtered.length}`}
+                                    ? t('admin.questions_index.all_shown', { count: filtered.length })
+                                    : t('admin.questions_index.range_of', { start: rangeStart, end: rangeEnd, total: filtered.length })}
                             </div>
                         )}
                     </div>
@@ -328,7 +331,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                                         <span className="flex h-4 w-4 items-center justify-center rounded bg-emerald-500/20 font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-300">
                                                             {q.correct_letter ?? '?'}
                                                         </span>
-                                                        {q.answers_count} réponses
+                                                        {t('admin.questions_index.answers_count', { count: q.answers_count })}
                                                     </span>
                                                 </div>
                                                 <p className={`mt-1.5 text-sm text-ink-900 dark:text-ink-100 ${expanded ? '' : 'line-clamp-2'}`}>
@@ -342,14 +345,14 @@ export default function Index({ certifications, selected_certification_id, quest
                                                     type="button"
                                                     onClick={() => setExpandedId(expanded ? null : q.id)}
                                                     className="rounded-lg p-2 text-ink-400 transition hover:bg-ink-100 hover:text-ink-700 dark:hover:bg-ink-800 dark:hover:text-white"
-                                                    title={expanded ? 'Réduire' : 'Voir la question complète'}
+                                                    title={expanded ? t('admin.questions_index.reduce') : t('admin.questions_index.see_full')}
                                                 >
                                                     <Icon.ChevronDown className={`h-4 w-4 transition ${expanded ? 'rotate-180' : ''}`} />
                                                 </button>
                                                 <Link
                                                     href={route('admin.questions.edit', q.id)}
                                                     className="rounded-lg p-2 text-ink-400 transition hover:bg-brand-500/10 hover:text-brand-500"
-                                                    title="Éditer"
+                                                    title={t('admin.questions_index.edit_title')}
                                                 >
                                                     <IconPencil className="h-4 w-4" />
                                                 </Link>
@@ -357,7 +360,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                                     type="button"
                                                     onClick={() => setConfirmDelete(q)}
                                                     className="rounded-lg p-2 text-ink-400 transition hover:bg-rose-500/10 hover:text-rose-500"
-                                                    title="Supprimer"
+                                                    title={t('admin.questions_index.delete_title')}
                                                 >
                                                     <IconTrash className="h-4 w-4" />
                                                 </button>
@@ -370,7 +373,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                                 {q.scenario && (
                                                     <div className="mb-4 rounded-lg border-l-4 border-brand-500 bg-brand-500/5 p-3 text-sm text-ink-700 dark:text-ink-200">
                                                         <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-brand-500">
-                                                            Contexte
+                                                            {t('admin.questions_index.scenario_label')}
                                                         </div>
                                                         {q.scenario}
                                                     </div>
@@ -407,7 +410,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                                         className="btn-secondary !py-1.5 !text-xs"
                                                     >
                                                         <IconPencil className="h-3.5 w-3.5" />
-                                                        Éditer cette question
+                                                        {t('admin.questions_index.edit_this')}
                                                     </Link>
                                                 </div>
                                             </div>
@@ -427,10 +430,10 @@ export default function Index({ certifications, selected_certification_id, quest
                                 className="btn-secondary !py-1.5 !text-xs disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <Icon.ArrowLeft className="h-3.5 w-3.5" />
-                                Précédent
+                                {t('admin.questions_index.prev')}
                             </button>
                             <div className="font-mono text-xs text-ink-500">
-                                Page <span className="font-semibold text-ink-900 dark:text-white">{currentPage}</span> / {totalPages}
+                                {t('admin.questions_index.page_of', { current: currentPage, total: totalPages })}
                             </div>
                             <button
                                 type="button"
@@ -438,7 +441,7 @@ export default function Index({ certifications, selected_certification_id, quest
                                 disabled={currentPage >= totalPages}
                                 className="btn-secondary !py-1.5 !text-xs disabled:cursor-not-allowed disabled:opacity-40"
                             >
-                                Suivant
+                                {t('admin.questions_index.next')}
                                 <Icon.ArrowRight className="h-3.5 w-3.5" />
                             </button>
                         </div>
@@ -446,10 +449,10 @@ export default function Index({ certifications, selected_certification_id, quest
                 </div>
             </div>
 
-            {/* Custom delete confirm modal */}
-            {confirmDelete && (
+            {/* Custom delete confirm modal - portalise dans <body> pour couvrir toute la viewport */}
+            {confirmDelete && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
                     onClick={() => setConfirmDelete(null)}
                 >
                     <div
@@ -462,9 +465,9 @@ export default function Index({ certifications, selected_certification_id, quest
                             </div>
                             <div>
                                 <h3 className="text-lg font-bold text-ink-900 dark:text-white">
-                                    Supprimer cette question ?
+                                    {t('admin.questions_index.delete_confirm_title')}
                                 </h3>
-                                <p className="text-xs text-ink-500">Action irréversible.</p>
+                                <p className="text-xs text-ink-500">{t('admin.questions_index.delete_confirm_desc')}</p>
                             </div>
                         </div>
                         <div className="rounded-xl border border-ink-200 bg-ink-50/50 p-3 text-sm text-ink-700 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-300">
@@ -475,24 +478,26 @@ export default function Index({ certifications, selected_certification_id, quest
                         </div>
                         <div className="mt-5 flex justify-end gap-2">
                             <button onClick={() => setConfirmDelete(null)} className="btn-secondary">
-                                Annuler
+                                {t('admin.common.cancel')}
                             </button>
                             <button
                                 onClick={() => doDelete(confirmDelete.id)}
                                 className="btn bg-rose-500 text-white hover:bg-rose-600"
                             >
                                 <IconTrash className="h-4 w-4" />
-                                Supprimer
+                                {t('admin.common.delete')}
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </AppLayout>
     );
 }
 
 function EmptyState({ hasQuery, selectedCert, selectedCertId }) {
+    const t = useT();
     return (
         <div className="px-6 py-16 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-100 text-ink-400 dark:bg-ink-800">
@@ -502,14 +507,14 @@ function EmptyState({ hasQuery, selectedCert, selectedCertId }) {
                 </svg>
             </div>
             <h3 className="text-lg font-semibold text-ink-900 dark:text-white">
-                {hasQuery ? 'Aucune correspondance' : 'Aucune question'}
+                {hasQuery ? t('admin.questions_index.empty_no_match') : t('admin.questions_index.empty_none')}
             </h3>
             <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500">
                 {hasQuery
-                    ? 'Essaie un autre mot-clé ou change de certification.'
+                    ? t('admin.questions_index.empty_hint_query')
                     : selectedCert
-                    ? `Aucune question pour ${selectedCert.title}. Commence par en créer une.`
-                    : 'Choisis une certification puis crée ta première question.'}
+                    ? t('admin.questions_index.empty_hint_cert', { title: selectedCert.title })
+                    : t('admin.questions_index.empty_hint_generic')}
             </p>
             {!hasQuery && (
                 <Link
@@ -521,7 +526,7 @@ function EmptyState({ hasQuery, selectedCert, selectedCertId }) {
                     className="btn-primary mt-5 !inline-flex"
                 >
                     <Icon.Sparkles className="h-4 w-4" />
-                    Nouvelle question
+                    {t('admin.questions_index.new_cta')}
                 </Link>
             )}
         </div>

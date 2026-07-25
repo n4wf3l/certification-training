@@ -40,7 +40,7 @@ trait ExtractsJsonArray
                 }
             }
         }
-        // Unclosed — return from first '[' onward so json_decode can complain cleanly
+        // Unclosed - return from first '[' onward so json_decode can complain cleanly
         return substr($s, $start);
     }
 }

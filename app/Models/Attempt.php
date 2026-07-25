@@ -15,10 +15,12 @@ class Attempt extends Model
         'total_questions',
         'passing_score',
         'feedback_mode',
+        'practice_domain',
         'passed',
         'started_at',
         'completed_at',
         'duration_seconds',
+        'locale',
     ];
 
     protected $casts = [

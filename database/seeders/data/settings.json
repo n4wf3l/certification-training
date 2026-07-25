@@ -1,10 +1,14 @@
 [
     {
-        "key": "brand_name",
-        "value": null
+        "key": "allow_instant_feedback",
+        "value": "1"
     },
     {
         "key": "brand_logo_path",
         "value": "brand/kPyBBpfvGffNbVn82f5hvX9jif2YTAlnrW2FFbPr.png"
+    },
+    {
+        "key": "brand_name",
+        "value": null
     }
 ]

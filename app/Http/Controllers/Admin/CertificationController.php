@@ -33,6 +33,7 @@ class CertificationController extends Controller
                 'questions_count' => $c->questions_count,
                 'is_active' => $c->is_active,
                 'questions_updated_at' => $c->questions_updated_at,
+                'available_languages' => $c->available_languages ?: ['fr'],
             ]);
 
         return Inertia::render('Admin/Certifications/Index', [
@@ -53,11 +54,12 @@ class CertificationController extends Controller
         $data['logo_path'] = $this->handleLogo($request);
         $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
         $data['target_roles'] = $this->parseRoles($data['target_roles_text'] ?? null);
+        $data['available_languages'] = $this->normalizeLanguages($data['available_languages'] ?? null);
         unset($data['target_roles_text']);
 
         Certification::create($data);
 
-        return redirect()->route('admin.certifications.index')->with('success', 'Certification créée.');
+        return redirect()->route('admin.certifications.index')->with('success', __('flash.certification_created'));
     }
 
     public function edit(Certification $certification): Response
@@ -66,7 +68,7 @@ class CertificationController extends Controller
         $payload['target_roles_text'] = collect($certification->target_roles ?? [])->implode("\n");
         $payload['course_blocks_count'] = is_array($certification->course_blocks) ? count($certification->course_blocks) : 0;
 
-        // Nombre de questions par syllabus_domain — pour afficher la couverture réelle
+        // Nombre de questions par syllabus_domain - pour afficher la couverture réelle
         // à côté de chaque ligne du blueprint dans l'UI.
         $counts = \App\Models\Question::where('certification_id', $certification->id)
             ->whereNotNull('syllabus_domain')
@@ -86,6 +88,7 @@ class CertificationController extends Controller
         $data = $this->validated($request, $certification->id);
         $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
         $data['target_roles'] = $this->parseRoles($data['target_roles_text'] ?? null);
+        $data['available_languages'] = $this->normalizeLanguages($data['available_languages'] ?? null);
         $removeCourse = ! empty($data['remove_course']);
         unset($data['target_roles_text'], $data['remove_course']);
 
@@ -106,8 +109,8 @@ class CertificationController extends Controller
         $certification->update($data);
 
         return redirect()->route('admin.certifications.index')->with('success', $removeCourse
-            ? 'Certification mise à jour — cours retiré.'
-            : 'Certification mise à jour.');
+            ? __('flash.certification_updated_course_removed')
+            : __('flash.certification_updated'));
     }
 
     public function destroy(Certification $certification): RedirectResponse
@@ -117,12 +120,12 @@ class CertificationController extends Controller
         }
         $certification->delete();
 
-        return redirect()->route('admin.certifications.index')->with('success', 'Certification supprimée.');
+        return redirect()->route('admin.certifications.index')->with('success', __('flash.certification_deleted'));
     }
 
     /**
      * Export all Q&A of a certification as a JSON file download.
-     * Raw content only — no prompt embedded, the admin writes the ChatGPT prompt themselves.
+     * Raw content only - no prompt embedded, the admin writes the ChatGPT prompt themselves.
      */
     public function export(Certification $certification)
     {
@@ -188,7 +191,15 @@ class CertificationController extends Controller
     public function courseImportForm(Request $request): Response
     {
         return Inertia::render('Admin/Certifications/CourseImport', [
-            'certifications' => Certification::orderBy('title')->get(['id', 'title', 'slug', 'logo_path']),
+            'certifications' => Certification::orderBy('title')
+                ->get(['id', 'title', 'slug', 'logo_path', 'available_languages'])
+                ->map(fn (Certification $c) => [
+                    'id' => $c->id,
+                    'title' => $c->title,
+                    'slug' => $c->slug,
+                    'logo_path' => $c->logo_path,
+                    'available_languages' => $c->available_languages ?: ['fr'],
+                ]),
             'default_certification_id' => $request->integer('certification_id') ?: null,
         ]);
     }
@@ -204,7 +215,7 @@ class CertificationController extends Controller
         $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
             throw ValidationException::withMessages([
-                'payload' => "Le JSON n'est pas valide. Vérifie qu'il commence par [ et se termine par ].",
+                'payload' => __('flash.course_invalid_json'),
             ]);
         }
 
@@ -212,12 +223,16 @@ class CertificationController extends Controller
         foreach ($decoded as $i => $block) {
             if (!is_array($block) || empty($block['type'])) {
                 throw ValidationException::withMessages([
-                    'payload' => "Bloc " . ($i + 1) . " : clé 'type' manquante.",
+                    'payload' => __('flash.course_block_missing_type', ['n' => $i + 1]),
                 ]);
             }
             if (!in_array($block['type'], self::ALLOWED_BLOCK_TYPES, true)) {
                 throw ValidationException::withMessages([
-                    'payload' => "Bloc " . ($i + 1) . " : type '{$block['type']}' inconnu. Autorisés : " . implode(', ', self::ALLOWED_BLOCK_TYPES) . '.',
+                    'payload' => __('flash.course_block_unknown_type', [
+                        'n' => $i + 1,
+                        'type' => $block['type'],
+                        'allowed' => implode(', ', self::ALLOWED_BLOCK_TYPES),
+                    ]),
                 ]);
             }
             $normalized[] = $block;
@@ -225,7 +240,7 @@ class CertificationController extends Controller
 
         if (count($normalized) < 5) {
             throw ValidationException::withMessages([
-                'payload' => "Un cours doit contenir au moins 5 blocs. " . count($normalized) . " reçu(s).",
+                'payload' => __('flash.course_too_few_blocks', ['count' => count($normalized)]),
             ]);
         }
 
@@ -238,7 +253,7 @@ class CertificationController extends Controller
         $count = count($normalized);
         return redirect()
             ->route('admin.certifications.index')
-            ->with('success', "Cours importé : {$count} blocs pour {$certification->title}.");
+            ->with('success', __('flash.course_imported', ['count' => $count, 'title' => $certification->title]));
     }
 
     private function validated(Request $request, ?int $ignoreId = null): array
@@ -262,6 +277,8 @@ class CertificationController extends Controller
             'remove_course' => 'nullable|boolean',
             'syllabus_blueprint' => 'nullable|array',
             'syllabus_blueprint.*' => 'numeric|min:0|max:100',
+            'available_languages' => 'nullable|array|min:1',
+            'available_languages.*' => 'string|size:2|regex:/^[a-z]{2}$/',
         ]);
     }
 
@@ -273,6 +290,25 @@ class CertificationController extends Controller
             ->filter()
             ->values()
             ->all();
+    }
+
+    /**
+     * Nettoie la liste des langues : force en tableau, dedupe, garde
+     * uniquement les codes ISO 639-1 (2 lettres minuscules). Retombe
+     * sur ['fr'] si l'admin n'a rien coche pour eviter les prompts vides.
+     */
+    private function normalizeLanguages(mixed $raw): array
+    {
+        $codes = collect(is_array($raw) ? $raw : [])
+            ->map(fn ($c) => is_string($c) ? strtolower(trim($c)) : null)
+            ->filter(fn ($c) => $c && preg_match('/^[a-z]{2}$/', $c))
+            ->unique()
+            ->values()
+            ->all();
+
+        // L'anglais est la langue par defaut de la plateforme depuis la Phase 1
+        // multilingue : une certif sans langue definie retombe en EN, pas en FR.
+        return $codes ?: ['en'];
     }
 
     private function handleLogo(Request $request): ?string

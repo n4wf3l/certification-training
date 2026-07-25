@@ -1,7 +1,9 @@
+import { useT } from '@/lib/i18n';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 
 export default function UpdatePasswordForm({ className = '' }) {
+    const t = useT();
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
@@ -32,11 +34,11 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <div className={className}>
             <p className="mb-5 text-sm text-ink-500">
-                Utilise un mot de passe long et unique.
+                {t('profile.password_hint')}
             </p>
             <form onSubmit={updatePassword} className="space-y-5">
                 <div>
-                    <label className="field-label" htmlFor="current_password">Mot de passe actuel</label>
+                    <label className="field-label" htmlFor="current_password">{t('profile.field_current_password')}</label>
                     <input
                         id="current_password"
                         ref={currentPasswordInput}
@@ -49,7 +51,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     {errors.current_password && <p className="mt-1.5 text-xs text-rose-500">{errors.current_password}</p>}
                 </div>
                 <div>
-                    <label className="field-label" htmlFor="password">Nouveau mot de passe</label>
+                    <label className="field-label" htmlFor="password">{t('profile.field_new_password')}</label>
                     <input
                         id="password"
                         ref={passwordInput}
@@ -62,7 +64,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     {errors.password && <p className="mt-1.5 text-xs text-rose-500">{errors.password}</p>}
                 </div>
                 <div>
-                    <label className="field-label" htmlFor="password_confirmation">Confirmation</label>
+                    <label className="field-label" htmlFor="password_confirmation">{t('profile.field_password_confirm')}</label>
                     <input
                         id="password_confirmation"
                         type="password"
@@ -75,11 +77,11 @@ export default function UpdatePasswordForm({ className = '' }) {
                 </div>
                 <div className="flex items-center gap-3">
                     <button type="submit" disabled={processing} className="btn-primary">
-                        {processing ? 'Enregistrement…' : 'Enregistrer'}
+                        {processing ? t('profile.saving') : t('profile.save')}
                     </button>
                     {recentlySuccessful && (
                         <span className="text-xs text-emerald-600 dark:text-emerald-300 animate-fade-in">
-                            Mot de passe mis à jour.
+                            {t('profile.password_updated')}
                         </span>
                     )}
                 </div>

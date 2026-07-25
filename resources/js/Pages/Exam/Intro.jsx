@@ -1,7 +1,9 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import { LANGUAGE_CATALOG } from '@/lib/languages';
+import { useT } from '@/lib/i18n';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function Logo({ certification, size = 'lg' }) {
     if (certification.logo_path) {
@@ -29,6 +31,7 @@ function Logo({ certification, size = 'lg' }) {
 }
 
 function ModeOption({ selected, onSelect, title, description, icon }) {
+    const t = useT();
     return (
         <button
             type="button"
@@ -54,7 +57,7 @@ function ModeOption({ selected, onSelect, title, description, icon }) {
                         {title}
                     </span>
                     {selected && (
-                        <span className="badge-brand !py-0 text-[10px]">Sélectionné</span>
+                        <span className="badge-brand !py-0 text-[10px]">{t('exam_intro.selected_badge')}</span>
                     )}
                 </div>
                 <p className="mt-1 text-xs text-ink-500 dark:text-ink-400">{description}</p>
@@ -110,9 +113,29 @@ function Chip({ color, label, value }) {
 }
 
 export default function Intro({ certification, mastery, allow_instant_feedback = false }) {
+    const t = useT();
     const user = usePage().props.auth?.user;
     const [answerMode, setAnswerMode] = useState('manual');
     const [feedbackMode, setFeedbackMode] = useState('deferred');
+
+    // Langues disponibles pour CETTE certif (definies par l'admin, restreintes aux langues
+    // officiellement supportees par l'organisme certificateur). default_language = langue
+    // canonique des colonnes DB (fr pour le contenu existant, en pour les nouveaux imports).
+    const availableLangs = certification.available_languages?.length
+        ? certification.available_languages
+        : [certification.default_language || 'en'];
+    const [examLang, setExamLang] = useState(certification.default_language || availableLangs[0]);
+    const languageMeta = useMemo(() => {
+        const map = new Map();
+        LANGUAGE_CATALOG.forEach((l) => map.set(l.code, l));
+        return map;
+    }, []);
+    // Stats du pool pour la langue selectionnee (nb questions eligibles, sample size, seuil)
+    const currentPool = certification.language_pools?.[examLang] ?? {
+        available: certification.available_questions,
+        sample_size: certification.sample_size,
+        scaled_passing_score: certification.scaled_passing_score,
+    };
 
     useEffect(() => {
         try {
@@ -120,8 +143,13 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
             if (stored === 'manual' || stored === 'auto') setAnswerMode(stored);
             const fb = window.localStorage.getItem('exam.feedback_mode');
             if (fb === 'deferred' || fb === 'instant') setFeedbackMode(fb);
+            // Restaure la derniere langue choisie SI elle est dispo pour cette certif,
+            // sinon on garde la default_language de la certif.
+            const lang = window.localStorage.getItem('exam.lang');
+            if (lang && availableLangs.includes(lang)) setExamLang(lang);
         } catch { /* ignore */ }
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [certification.id]);
 
     const pickMode = (mode) => {
         setAnswerMode(mode);
@@ -133,11 +161,19 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
         try { window.localStorage.setItem('exam.feedback_mode', mode); } catch { /* ignore */ }
     };
 
+    const pickLang = (code) => {
+        setExamLang(code);
+        try { window.localStorage.setItem('exam.lang', code); } catch { /* ignore */ }
+    };
+
     const start = () => {
         try { window.localStorage.setItem('exam.answer_mode', answerMode); } catch { /* ignore */ }
         // Force deferred si l'admin a désactivé le mode instantané (double sécurité côté client)
         const effectiveFb = allow_instant_feedback ? feedbackMode : 'deferred';
-        router.post(route('exam.start', certification.slug), { feedback_mode: effectiveFb });
+        router.post(route('exam.start', certification.slug), {
+            feedback_mode: effectiveFb,
+            lang: examLang,
+        });
     };
 
     return (
@@ -152,7 +188,7 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                         <div className="flex-1">
                             <div className="badge-brand mb-3">
                                 <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                                Examen blanc
+                                {t('exam_intro.kicker')}
                             </div>
                             <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
                                 {certification.title}
@@ -166,59 +202,116 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                     </div>
                     <div className="border-t border-ink-200/60 p-6 dark:border-ink-800/60">
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                            <Stat label="Durée" value={`${certification.duration_minutes} min`} />
+                            <Stat label={t('exam_intro.stat_duration')} value={`${certification.duration_minutes} min`} />
                             <Stat
-                                label="Questions"
-                                value={certification.sample_size}
+                                label={t('exam_intro.stat_questions')}
+                                value={currentPool.sample_size}
                                 subtle={
-                                    certification.available_questions > certification.sample_size
-                                        ? `tirées sur ${certification.available_questions}`
+                                    currentPool.available > currentPool.sample_size
+                                        ? t('exam_intro.stat_questions_drawn', { n: currentPool.available })
                                         : null
                                 }
                             />
-                            <Stat label="Barème officiel" value={`${certification.passing_score}/${certification.total_questions}`} />
-                            <Stat label="Requis pour valider" value={`${certification.scaled_passing_score}/${certification.sample_size}`} />
+                            <Stat label={t('exam_intro.stat_official_score')} value={`${certification.passing_score}/${certification.total_questions}`} />
+                            <Stat label={t('exam_intro.stat_required')} value={`${currentPool.scaled_passing_score}/${currentPool.sample_size}`} />
                         </div>
                     </div>
                 </div>
 
-                {/* Mastery */}
                 {mastery && mastery.total > 0 && (
                     <div className="card p-6">
                         <div className="mb-3 flex items-center justify-between">
                             <div>
-                                <h3 className="font-semibold text-ink-900 dark:text-white">Ta progression</h3>
+                                <h3 className="font-semibold text-ink-900 dark:text-white">{t('exam_intro.mastery_title')}</h3>
                                 <p className="text-xs text-ink-500">
-                                    Les questions ratées reviennent en priorité dans la sélection.
+                                    {t('exam_intro.mastery_subtitle')}
                                 </p>
                             </div>
                             <span className="font-mono text-sm text-ink-500">
-                                {mastery.mastered}/{mastery.total} maîtrisées
+                                {t('exam_intro.mastery_progress', { mastered: mastery.mastered, total: mastery.total })}
                             </span>
                         </div>
                         <MasteryBar mastery={mastery} />
                         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                            <Chip color="emerald" label="Maîtrisées" value={mastery.mastered} />
-                            <Chip color="amber" label="En progrès" value={mastery.in_progress} />
-                            <Chip color="rose" label="À revoir" value={mastery.to_review} />
-                            <Chip color="slate" label="Jamais vues" value={mastery.never_seen} />
+                            <Chip color="emerald" label={t('exam_intro.mastery_chip_mastered')} value={mastery.mastered} />
+                            <Chip color="amber" label={t('exam_intro.mastery_chip_progress')} value={mastery.in_progress} />
+                            <Chip color="rose" label={t('exam_intro.mastery_chip_review')} value={mastery.to_review} />
+                            <Chip color="slate" label={t('exam_intro.mastery_chip_never')} value={mastery.never_seen} />
                         </div>
                     </div>
                 )}
 
-                {/* Answer mode */}
-                {user && certification.available_questions > 0 && (
+                {user && currentPool.available > 0 && availableLangs.length > 1 && (
                     <div className="card p-6">
                         <div className="mb-4">
-                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">Mode de réponse</h3>
-                            <p className="mt-0.5 text-xs text-ink-500">Comment tu veux enchaîner les questions.</p>
+                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">{t('exam_intro.lang_title')}</h3>
+                            <p className="mt-0.5 text-xs text-ink-500">
+                                {t('exam_intro.lang_subtitle')}
+                            </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {availableLangs.map((code) => {
+                                const meta = languageMeta.get(code) || { code, label: code, native: code };
+                                const active = examLang === code;
+                                const pool = certification.language_pools?.[code];
+                                const poolCount = pool?.available ?? 0;
+                                const empty = poolCount === 0;
+                                return (
+                                    <button
+                                        key={code}
+                                        type="button"
+                                        onClick={() => pickLang(code)}
+                                        disabled={empty}
+                                        className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition ${
+                                            empty
+                                                ? 'cursor-not-allowed border-dashed border-ink-200 bg-ink-50 text-ink-400 dark:border-ink-800 dark:bg-ink-900/20 dark:text-ink-600'
+                                                : active
+                                                    ? 'border-brand-500 bg-brand-500 text-white shadow-glow'
+                                                    : 'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-200 dark:hover:border-ink-700'
+                                        }`}
+                                    >
+                                        <span className={`font-mono text-[10px] font-semibold uppercase tracking-widest ${active && !empty ? 'text-white/80' : 'text-ink-400'}`}>
+                                            {code}
+                                        </span>
+                                        <span className="font-semibold">{meta.label}</span>
+                                        <span className={`text-[11px] ${active && !empty ? 'text-white/80' : 'text-ink-500'}`} lang={code}>
+                                            · {meta.native}
+                                        </span>
+                                        {pool && (
+                                            <span className={`ml-1 rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold ${
+                                                empty
+                                                    ? 'bg-ink-200 text-ink-500 dark:bg-ink-800 dark:text-ink-500'
+                                                    : active
+                                                        ? 'bg-white/25 text-white'
+                                                        : 'bg-ink-100 text-ink-500 dark:bg-ink-800 dark:text-ink-400'
+                                            }`}>
+                                                {t('exam_intro.lang_pool_suffix', { n: poolCount })}
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {currentPool.available > 0 && currentPool.available < 40 && examLang !== certification.default_language && (
+                            <p className="mt-3 text-xs text-amber-600 dark:text-amber-400">
+                                {t('exam_intro.lang_partial_warning', { n: currentPool.available })}
+                            </p>
+                        )}
+                    </div>
+                )}
+
+                {user && currentPool.available > 0 && (
+                    <div className="card p-6">
+                        <div className="mb-4">
+                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">{t('exam_intro.answer_mode_title')}</h3>
+                            <p className="mt-0.5 text-xs text-ink-500">{t('exam_intro.answer_mode_subtitle')}</p>
                         </div>
                         <div className="grid gap-3 sm:grid-cols-2">
                             <ModeOption
                                 selected={answerMode === 'manual'}
                                 onSelect={() => pickMode('manual')}
-                                title="Sélection puis Suivant"
-                                description="Clique une réponse, puis clique Suivant pour valider et passer à la question suivante."
+                                title={t('exam_intro.answer_mode_manual_title')}
+                                description={t('exam_intro.answer_mode_manual_desc')}
                                 icon={
                                     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                                         <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -229,75 +322,73 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                             <ModeOption
                                 selected={answerMode === 'auto'}
                                 onSelect={() => pickMode('auto')}
-                                title="Auto-suivant"
-                                description="Un clic sur une réponse enchaîne automatiquement vers la question suivante."
+                                title={t('exam_intro.answer_mode_auto_title')}
+                                description={t('exam_intro.answer_mode_auto_desc')}
                                 icon={<Icon.Bolt className="h-5 w-5" />}
                             />
                         </div>
                     </div>
                 )}
 
-                {/* Feedback mode — seulement si l'admin l'a autorisé */}
-                {user && allow_instant_feedback && certification.available_questions > 0 && (
+                {user && allow_instant_feedback && currentPool.available > 0 && (
                     <div className="card p-6">
                         <div className="mb-4">
-                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">Mode correction</h3>
-                            <p className="mt-0.5 text-xs text-ink-500">Quand tu veux voir si tes réponses sont correctes.</p>
+                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">{t('exam_intro.feedback_mode_title')}</h3>
+                            <p className="mt-0.5 text-xs text-ink-500">{t('exam_intro.feedback_mode_subtitle')}</p>
                         </div>
                         <div className="grid gap-3 sm:grid-cols-2">
                             <ModeOption
                                 selected={feedbackMode === 'deferred'}
                                 onSelect={() => pickFeedbackMode('deferred')}
-                                title="À la fin (simulation)"
-                                description="Comme le vrai examen : tu ne vois la correction que sur la page résultat, après avoir tout terminé."
+                                title={t('exam_intro.feedback_mode_deferred_title')}
+                                description={t('exam_intro.feedback_mode_deferred_desc')}
                                 icon={<Icon.Trophy className="h-5 w-5" />}
                             />
                             <ModeOption
                                 selected={feedbackMode === 'instant'}
                                 onSelect={() => pickFeedbackMode('instant')}
-                                title="Après chaque question (entraînement)"
-                                description="Dès que tu réponds, tu vois la bonne réponse et l'explication. Idéal pour apprendre — pas de conditions réelles."
+                                title={t('exam_intro.feedback_mode_instant_title')}
+                                description={t('exam_intro.feedback_mode_instant_desc')}
                                 icon={<Icon.Sparkles className="h-5 w-5" />}
                             />
                         </div>
                     </div>
                 )}
 
-                {/* CTA */}
                 <div className="card p-6 text-center">
                     {user ? (
-                        certification.available_questions > 0 ? (
+                        currentPool.available > 0 ? (
                             <>
                                 <button onClick={start} className="btn-primary !px-8 !py-4 text-base">
-                                    Démarrer l'examen
+                                    {t('exam_intro.start_cta')}
                                     <Icon.ArrowRight className="h-5 w-5" />
                                 </button>
                                 <p className="mt-3 text-xs text-ink-500">
-                                    Timer <span className="font-mono">{certification.duration_minutes}:00</span> · impossible de mettre en pause · quitter la page = examen perdu
+                                    {t('exam_intro.start_note', { time: `${certification.duration_minutes}:00` })}
                                 </p>
                             </>
                         ) : (
                             <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-amber-700 dark:text-amber-300">
-                                Aucune question configurée pour cet examen.
+                                {t('exam_intro.empty_pool')}
                             </div>
                         )
                     ) : (
                         <div className="space-y-4">
                             <p className="text-ink-600 dark:text-ink-400">
-                                Connecte-toi pour démarrer — tu reviendras ici automatiquement.
+                                {t('exam_intro.guest_prompt')}
                             </p>
                             <div className="flex flex-wrap items-center justify-center gap-3">
                                 <Link
                                     href={`${route('login')}?redirect_to=${encodeURIComponent(`/certifications/${certification.slug}/examen`)}`}
                                     className="btn-primary !px-6 !py-3"
                                 >
-                                    Se connecter et démarrer
+                                    {t('exam_intro.guest_login_cta')}
                                 </Link>
                                 <Link
                                     href={`${route('register')}?redirect_to=${encodeURIComponent(`/certifications/${certification.slug}/examen`)}`}
                                     className="btn-secondary !px-6 !py-3"
                                 >
-                                    Commencer
+                                    {t('exam_intro.guest_register_cta')}
                                 </Link>
                             </div>
                         </div>

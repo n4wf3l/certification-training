@@ -1,14 +1,18 @@
+import { useLocale, useT } from '@/lib/i18n';
 import { useState } from 'react';
 
 /**
  * SVG line chart : percentage per attempt with a passing-score reference line.
- * No external chart dependency — pure math + SVG.
+ * No external chart dependency - pure math + SVG.
  *
  * Props:
  *   - points: [{ index, percentage, passed, completed_at }]
  *   - passingPercentage: horizontal reference line
  */
 export default function EvolutionChart({ points, passingPercentage = 65 }) {
+    const t = useT();
+    const locale = useLocale();
+    const dateTag = locale === 'fr' ? 'fr-FR' : 'en-US';
     const [hover, setHover] = useState(null); // index of hovered point
     const W = 640;
     const H = 240;
@@ -37,7 +41,7 @@ export default function EvolutionChart({ points, passingPercentage = 65 }) {
     const fmtDate = (iso) => {
         if (!iso) return '';
         const d = new Date(iso);
-        return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+        return d.toLocaleDateString(dateTag, { day: '2-digit', month: '2-digit' });
     };
 
     return (
@@ -100,7 +104,7 @@ export default function EvolutionChart({ points, passingPercentage = 65 }) {
                     className="fill-amber-500 text-[10px] font-semibold"
                     style={{ fontFamily: 'JetBrains Mono, monospace' }}
                 >
-                    Seuil {passingPercentage}%
+                    {t('evolution_chart.threshold', { pct: passingPercentage })}
                 </text>
 
                 {/* Area fill (below the line) */}
@@ -206,12 +210,12 @@ export default function EvolutionChart({ points, passingPercentage = 65 }) {
                                 strokeOpacity="0.08"
                             />
                             <text x={boxX + 12} y={boxY + 18} className="fill-white text-[11px]" style={{ fontFamily: 'Inter, system-ui' }}>
-                                Tentative <tspan className="font-mono font-bold">#{p.index}</tspan>
+                                {t('evolution_chart.attempt')} <tspan className="font-mono font-bold">#{p.index}</tspan>
                             </text>
                             <text x={boxX + 12} y={boxY + 34} className="fill-white text-[13px] font-bold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                                 {p.percentage}%
                                 <tspan className={p.passed ? 'fill-emerald-400' : 'fill-rose-400'} dx="8">
-                                    {p.passed ? 'réussi' : 'échoué'}
+                                    {p.passed ? t('evolution_chart.passed') : t('evolution_chart.failed')}
                                 </tspan>
                             </text>
                             <text x={boxX + 12} y={boxY + 50} className="fill-white/60 text-[10px]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>

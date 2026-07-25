@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attempt;
+use App\Models\UserBadge;
+use App\Models\UserCertificate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -86,11 +88,56 @@ class StatsController extends Controller
             })
             ->values();
 
+        // Gamification : liste des badges obtenus, avec labels du catalogue
+        $badges = UserBadge::where('user_id', $userId)
+            ->with('certification:id,title,slug,logo_path')
+            ->orderByDesc('earned_at')
+            ->get()
+            ->map(function (UserBadge $b) {
+                $catalog = UserBadge::CATALOG[$b->badge_key] ?? ['label' => $b->badge_key, 'description' => '', 'icon' => 'sparkles'];
+                return [
+                    'key' => $b->badge_key,
+                    'label' => $catalog['label'],
+                    'description' => $catalog['description'],
+                    'icon' => $catalog['icon'],
+                    'certification' => $b->certification ? [
+                        'title' => $b->certification->title,
+                        'slug' => $b->certification->slug,
+                    ] : null,
+                    'meta' => $b->meta,
+                    'earned_at' => $b->earned_at?->toIso8601String(),
+                ];
+            });
+
+        // Certificats obtenus (maitrise >= 90% sur une certif)
+        $certificates = UserCertificate::where('user_id', $userId)
+            ->with('certification:id,title,slug,logo_path')
+            ->orderByDesc('awarded_at')
+            ->get()
+            ->map(fn (UserCertificate $c) => [
+                'token' => $c->token,
+                'awarded_at' => $c->awarded_at?->toIso8601String(),
+                'awarded_date' => $c->awarded_at?->translatedFormat('d F Y'),
+                'best_score' => $c->best_score,
+                'total_questions' => $c->total_questions,
+                'mastery_pct' => $c->mastery_pct,
+                'certification' => $c->certification ? [
+                    'title' => $c->certification->title,
+                    'slug' => $c->certification->slug,
+                    'logo_path' => $c->certification->logo_path,
+                ] : null,
+                'public_url' => route('certificate.show', $c->token),
+                'pdf_url' => route('certificate.pdf', $c->token),
+                'linkedin_url' => 'https://www.linkedin.com/sharing/share-offsite/?url=' . urlencode(route('certificate.show', $c->token)),
+            ]);
+
         return Inertia::render('Stats/Index', [
             'attempts' => $attempts,
             'summary' => $summary,
             'evolutions' => $evolutions,
             'evolution_min_attempts' => self::EVOLUTION_MIN_ATTEMPTS,
+            'badges' => $badges,
+            'certificates' => $certificates,
         ]);
     }
 }

@@ -1,4 +1,5 @@
 import Icon from '@/Components/Icons';
+import { useT } from '@/lib/i18n';
 import { Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -19,15 +20,8 @@ function writeLS(key, value) {
     try { window.localStorage.setItem(key, JSON.stringify(value)); } catch { /* ignore */ }
 }
 
-/**
- * Teaser Q/R interactif affiché aux visiteurs guest dans le hero.
- * Après 3 questions, propose de créer un compte pour continuer.
- * L'état (questions choisies, réponses, index) est persisté en localStorage :
- * refresh la page ne redonne pas de nouvelles questions et ne remet pas à zéro
- * les réponses — il faut vraiment se créer un compte pour continuer.
- */
 export default function HeroQuizTeaser({ questions: initialQuestions }) {
-    // Lock les questions en localStorage : refresh = mêmes questions
+    const t = useT();
     const [questions] = useState(() => {
         const cached = readLS(LS_QUESTIONS, null);
         if (Array.isArray(cached) && cached.length > 0) return cached;
@@ -36,7 +30,7 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
     });
     const total = questions.length;
     const [index, setIndex] = useState(() => Math.min(readLS(LS_INDEX, 0), total - 1));
-    const [picks, setPicks] = useState(() => readLS(LS_PICKS, {})); // questionId -> letter
+    const [picks, setPicks] = useState(() => readLS(LS_PICKS, {}));
 
     useEffect(() => { writeLS(LS_PICKS, picks); }, [picks]);
     useEffect(() => { writeLS(LS_INDEX, index); }, [index]);
@@ -68,36 +62,29 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
 
     return (
         <div className="flex flex-col gap-4">
-            {/* Top CTA */}
             <div className="rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-500/10 via-iris-500/5 to-transparent p-4">
                 <div className="mb-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-600 dark:text-brand-300">
                     <span className="relative flex h-1.5 w-1.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-70" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
                     </span>
-                    Essai gratuit — {total} questions
+                    {t('hero_quiz.trial_badge', { n: total })}
                 </div>
                 <p className="text-sm text-ink-700 dark:text-ink-200">
-                    Toutes les questions ci-dessous sont réelles.
+                    {t('hero_quiz.body_prefix')}
                     <br />
                     <Link href={route('register')} className="font-semibold text-brand-600 underline underline-offset-2 hover:text-brand-500 dark:text-brand-300">
-                        Crée ton compte gratuit
+                        {t('hero_quiz.body_cta_link')}
                     </Link>
-                    {' '}pour continuer et débloquer les examens blancs complets.
+                    {' '}{t('hero_quiz.body_cta_suffix')}
                 </p>
             </div>
 
-            {/* Card */}
             <div key={question.id} className="card animate-fade-up flex-1 overflow-hidden">
-                {/* Header */}
                 <div className="flex items-center justify-between border-b border-ink-200/60 px-4 py-2.5 dark:border-ink-800/60">
                     <div className="flex items-center gap-2 min-w-0">
                         {question.certification.logo_path ? (
-                            <img
-                                src={`/storage/${question.certification.logo_path}`}
-                                alt=""
-                                className="h-6 w-6 shrink-0 object-contain"
-                            />
+                            <img src={`/storage/${question.certification.logo_path}`} alt="" className="h-6 w-6 shrink-0 object-contain" />
                         ) : (
                             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gradient-to-br from-brand-500 to-iris-500 text-[9px] font-bold text-white">
                                 {question.certification.title.slice(0, 2).toUpperCase()}
@@ -112,7 +99,6 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                     </span>
                 </div>
 
-                {/* Question + answers */}
                 <div className="p-4">
                     {question.topic && (
                         <div className="mb-2 inline-flex rounded-full border border-ink-200/60 bg-ink-50 px-2 py-0.5 text-[10px] font-medium text-ink-500 dark:border-ink-800/60 dark:bg-ink-900/40">
@@ -150,15 +136,11 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                                         disabled={answered}
                                         className={`flex w-full items-start gap-2.5 rounded-lg border p-2.5 text-left text-sm transition ${style}`}
                                     >
-                                        <span
-                                            className={`flex h-6 w-6 shrink-0 items-center justify-center rounded font-mono text-[10px] font-bold ${
-                                                answered && isRight
-                                                    ? 'bg-emerald-500 text-white'
-                                                    : answered && isChosen
-                                                    ? 'bg-rose-500 text-white'
-                                                    : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'
-                                            }`}
-                                        >
+                                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded font-mono text-[10px] font-bold ${
+                                            answered && isRight ? 'bg-emerald-500 text-white'
+                                            : answered && isChosen ? 'bg-rose-500 text-white'
+                                            : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'
+                                        }`}>
                                             {a.letter}
                                         </span>
                                         <span className="flex-1 leading-snug">{a.text}</span>
@@ -171,21 +153,18 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                     </ul>
 
                     {answered && (
-                        <div
-                            className={`mt-3 rounded-lg border-l-2 p-2.5 text-xs ${
-                                correctAnswer && currentPick === correctAnswer.letter
-                                    ? 'border-emerald-500 bg-emerald-500/5 text-emerald-700 dark:text-emerald-200'
-                                    : 'border-rose-500 bg-rose-500/5 text-rose-700 dark:text-rose-200'
-                            }`}
-                        >
+                        <div className={`mt-3 rounded-lg border-l-2 p-2.5 text-xs ${
+                            correctAnswer && currentPick === correctAnswer.letter
+                                ? 'border-emerald-500 bg-emerald-500/5 text-emerald-700 dark:text-emerald-200'
+                                : 'border-rose-500 bg-rose-500/5 text-rose-700 dark:text-rose-200'
+                        }`}>
                             {correctAnswer && currentPick === correctAnswer.letter
-                                ? 'Bonne réponse.'
-                                : `La bonne réponse était ${correctAnswer?.letter}.`}
+                                ? t('hero_quiz.correct')
+                                : t('hero_quiz.incorrect', { letter: correctAnswer?.letter })}
                         </div>
                     )}
                 </div>
 
-                {/* Footer nav */}
                 <div className="flex items-center justify-between border-t border-ink-200/60 bg-ink-50/50 px-4 py-2.5 dark:border-ink-800/60 dark:bg-ink-900/30">
                     <button
                         onClick={prev}
@@ -193,33 +172,32 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                         className="inline-flex items-center gap-1 text-xs font-medium text-ink-500 hover:text-ink-800 disabled:opacity-30 dark:hover:text-white"
                     >
                         <Icon.ArrowLeft className="h-3 w-3" />
-                        Précédent
+                        {t('hero_quiz.prev')}
                     </button>
                     <div className="font-mono text-[10px] text-ink-500">
-                        {answeredCount > 0 && `${rightCount}/${answeredCount} bonnes`}
+                        {answeredCount > 0 && t('hero_quiz.score', { right: rightCount, answered: answeredCount })}
                     </div>
                     {index < total - 1 ? (
                         <button
                             onClick={next}
                             className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-500 dark:text-brand-300"
                         >
-                            Suivant
+                            {t('hero_quiz.next')}
                             <Icon.ArrowRight className="h-3 w-3" />
                         </button>
                     ) : (
-                        <span className="font-mono text-[10px] text-ink-500">Fin</span>
+                        <span className="font-mono text-[10px] text-ink-500">{t('hero_quiz.end')}</span>
                     )}
                 </div>
             </div>
 
-            {/* End CTA (visible dès la 3e réponse) */}
             {done && (
                 <Link
                     href={route('register')}
                     className="btn-primary animate-fade-up justify-center !py-3"
                 >
                     <Icon.Sparkles className="h-4 w-4" />
-                    Continuer gratuitement — {rightCount}/{total} sans effort
+                    {t('hero_quiz.continue_cta', { right: rightCount, total })}
                 </Link>
             )}
         </div>

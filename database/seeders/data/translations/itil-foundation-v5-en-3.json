@@ -1,0 +1,613 @@
+{
+    "meta": {
+        "certification_slug": "itil-foundation-v5",
+        "locale": "en",
+        "canonical_from": "fr",
+        "translated_at": "2026-07-25",
+        "translator": "Claude Opus 4.7",
+        "notes": "Batch 4 of ITIL 4/5 Foundation EN translations. Adds 50 more questions bringing coverage to 190/264.",
+        "coverage": { "questions_in_this_file": 50, "cumulative_translated": 190, "questions_total": 264 }
+    },
+    "questions": {
+        "99": {
+            "topic": "Improvement",
+            "scenario": null,
+            "question_text": "Which characteristic best describes a successful improvement according to ITIL?",
+            "explanation": "ITIL: a successful improvement delivers measurable value to stakeholders. It is the single success criterion - not the means (automation), not secondary objectives (cost).",
+            "answers": {
+                "A": { "text": "It delivers measurable value to stakeholders", "rationale": "Exact wording - measurable value = ITIL success criterion." },
+                "B": { "text": "It automates every activity", "rationale": "Automation is a means, not the measure of success." },
+                "C": { "text": "It always reduces costs", "rationale": "False - some improvements increase costs when the benefit is greater." },
+                "D": { "text": "It removes every risk", "rationale": "Absurd - no improvement removes every risk." }
+            }
+        },
+        "100": {
+            "topic": "Service Desk",
+            "scenario": "A technical team wants the service desk to systematically forward every ticket without any initial diagnosis.",
+            "question_text": "Which answer best matches best practice?",
+            "explanation": "The Service Desk is a Single Point of Contact AND performs first-level handling (triage, simple resolution, escalation when needed). It is neither a mere pass-through nor a universal solver.",
+            "answers": {
+                "A": { "text": "The service desk must provide a point of contact and perform first-level handling when appropriate", "rationale": "Exact wording - SPOC + appropriate first handling." },
+                "B": { "text": "The service desk must never analyse an incident", "rationale": "False - the SD analyses and categorises; it is not a mere relay." },
+                "C": { "text": "The service desk must only create tickets", "rationale": "False - the SD can resolve simple first-level incidents." },
+                "D": { "text": "The service desk must always resolve every incident alone", "rationale": "False - the SD escalates to specialist teams when needed." }
+            }
+        },
+        "101": {
+            "topic": "Availability",
+            "scenario": "An interruption is planned to carry out an approved maintenance.",
+            "question_text": "How does this interruption generally influence the availability measure?",
+            "explanation": "The impact of planned maintenance on the availability measure depends on rules defined in the service agreement: some maintenances are excluded from the calculation (Agreed Service Time), others are not. No universal rule.",
+            "answers": {
+                "A": { "text": "According to the measurement rules defined by the organisation", "rationale": "Exact wording - depends on the agreed rules." },
+                "B": { "text": "It is always ignored", "rationale": "False - no universal automatic exclusion." },
+                "C": { "text": "It is always counted as a major incident", "rationale": "False - planned maintenance is not a major incident." },
+                "D": { "text": "It automatically removes SLAs", "rationale": "False - maintenance does not remove SLAs." }
+            }
+        },
+        "102": {
+            "topic": "Knowledge",
+            "scenario": "A team regularly resolves the same incident but never documents the solution.",
+            "question_text": "Which consequence is the most likely?",
+            "explanation": "Not capitalising on a recurring solution forces re-solving every time - loss of time, quality, dependency on individual expertise. Contrary to ITIL Knowledge Management.",
+            "answers": {
+                "A": { "text": "A loss of efficiency during future handling", "rationale": "Exact wording - systematic loss of efficiency." },
+                "B": { "text": "An automatic improvement of resolution times", "rationale": "Absurd - without memory, times do not mechanically improve." },
+                "C": { "text": "A reduction in the number of users", "rationale": "No logical link." },
+                "D": { "text": "Better governance", "rationale": "No link - governance does not improve because of missing technical documentation." }
+            }
+        },
+        "103": {
+            "topic": "Major incidents",
+            "scenario": "An outage simultaneously affects several essential services of the company.",
+            "question_text": "Which objective must guide the immediate decisions?",
+            "explanation": "Facing a multi-service major incident, priority is fast restoration + coordination of stakeholders (communication, orchestration, decisions). Root-cause analysis is deferred to Problem Management after the crisis.",
+            "answers": {
+                "A": { "text": "Restore the service as quickly as possible while coordinating stakeholders", "rationale": "Exact wording - restoration + coordination = immediate priority." },
+                "B": { "text": "Immediately identify every root cause", "rationale": "False - root-cause analysis comes later, in Problem Management." },
+                "C": { "text": "Wait for the next governance meeting", "rationale": "Absurd - waiting for a scheduled meeting during a crisis = negligence." },
+                "D": { "text": "Create a new service catalogue", "rationale": "Off-topic - creating a catalogue has nothing to do with crisis management." }
+            }
+        },
+        "105": {
+            "topic": "Costs",
+            "scenario": "An improvement delivers significant benefits but also raises operating costs.",
+            "question_text": "Which approach best fits ITIL?",
+            "explanation": "An improvement is judged on the balance between costs, risks, and value (the 3 components of ITIL value). Refusing any cost increase without looking at benefits = an anti-improvement bias.",
+            "answers": {
+                "A": { "text": "Evaluate the overall balance between costs, risks, and value", "rationale": "Exact wording - cost/risk/value balance = ITIL judgement." },
+                "B": { "text": "Refuse any cost increase", "rationale": "False - mechanically refusing any increase ignores the benefits." },
+                "C": { "text": "Ignore the benefits obtained", "rationale": "Absurd - benefits are precisely the positive side of the trade-off." },
+                "D": { "text": "Measure only satisfaction", "rationale": "Reductive - satisfaction is a signal, not the sole criterion." }
+            }
+        },
+        "107": {
+            "topic": "Practices",
+            "scenario": null,
+            "question_text": "Why must ITIL practices be adapted to the context of each organisation?",
+            "explanation": "ITIL is explicitly a framework of recommendations, not universal procedures. Each organisation adapts practices to its context, size, culture, and regulatory constraints.",
+            "answers": {
+                "A": { "text": "Because ITIL provides recommendations and not universal procedures", "rationale": "Exact wording - ITIL = recommendations to adapt." },
+                "B": { "text": "Because each practice has a single official implementation", "rationale": "False - each practice has several possible implementations depending on context." },
+                "C": { "text": "Because the practices replace business objectives", "rationale": "Absurd - practices serve business objectives; they do not replace them." },
+                "D": { "text": "Because suppliers impose their use", "rationale": "False - suppliers do not dictate ITIL adoption." }
+            }
+        },
+        "110": {
+            "topic": "Continual improvement",
+            "scenario": "After several successful improvements, a team stops measuring the service's performance.",
+            "question_text": "What is the main potential consequence?",
+            "explanation": "Stopping measurement = losing the ability to detect new improvement opportunities and to validate that past gains hold over time. Contrary to continual improvement, which is a perpetual cycle.",
+            "answers": {
+                "A": { "text": "It will become harder to identify new improvement opportunities", "rationale": "Exact wording - without measurement, no more opportunity detection." },
+                "B": { "text": "Every service will automatically meet its objectives", "rationale": "Absurd - no automatic objective compliance without measurement." },
+                "C": { "text": "Changes will no longer be needed", "rationale": "False - changes remain permanently necessary." },
+                "D": { "text": "Incidents will automatically be eliminated", "rationale": "Absurd - incidents do not disappear because of missing measurement." }
+            }
+        },
+        "111": {
+            "topic": "Product and service management",
+            "scenario": null,
+            "question_text": "Which statement best distinguishes a digital product from a digital service according to ITIL Foundation (Version 5)?",
+            "explanation": "A digital product is a configuration of resources created to offer value to a consumer. A digital service organises the use of digital products and other resources to facilitate the desired outcomes.",
+            "answers": {
+                "A": { "text": "A digital product is the configuration of resources; a digital service is the organised use of those resources to facilitate outcomes", "rationale": "This distinction matches the ITIL definitions of a digital product and a digital service." },
+                "B": { "text": "A digital product is always sold, while a digital service is always provided free of charge", "rationale": "Billing arrangements do not determine whether an offering is a product or a service." },
+                "C": { "text": "A digital product belongs to the consumer, while a digital service belongs to the provider", "rationale": "Ownership can vary and is not the distinguishing criterion between the two concepts." },
+                "D": { "text": "A digital product is only software, while a digital service only includes people", "rationale": "A product can combine several resources, and a service can mobilise people, technologies, and processes." }
+            }
+        },
+        "121": {
+            "topic": "Service relationships",
+            "scenario": null,
+            "question_text": "Which of the following best defines service quality?",
+            "explanation": "Service quality is the sum of the characteristics of a service that are relevant to satisfying expressed or implied needs. It cannot be reduced to a single technical metric.",
+            "answers": {
+                "A": { "text": "The sum of the characteristics relevant to satisfying expressed and implied needs", "rationale": "This wording matches the overall definition of service quality." },
+                "B": { "text": "The availability percentage measured over a period", "rationale": "Availability may contribute to quality, but it represents only one aspect." },
+                "C": { "text": "Satisfaction declared only by the sponsor", "rationale": "Multiple stakeholders' perceptions can count, and quality does not depend on a single role." },
+                "D": { "text": "The number of service actions executed by the provider", "rationale": "Activity volume does not demonstrate that the consumer's needs are met." }
+            }
+        },
+        "122": {
+            "topic": "Service relationships",
+            "scenario": null,
+            "question_text": "What is a service level according to ITIL Foundation (Version 5)?",
+            "explanation": "A service level is a set of metrics that defines the expected or actually achieved quality. It makes expectations and results precise enough to be tracked and evaluated.",
+            "answers": {
+                "A": { "text": "A set of metrics defining expected or achieved service quality", "rationale": "A service level translates quality into defined metrics." },
+                "B": { "text": "A general statement of the provider's vision", "rationale": "A vision gives direction but does not define measurable quality expectations." },
+                "C": { "text": "A list of incidents resolved during the month", "rationale": "That list can feed reports but does not by itself constitute a service level." },
+                "D": { "text": "A classification of the relationship as basic, cooperative, or collaborative", "rationale": "Relationship types describe the nature of collaboration, not measured quality." }
+            }
+        },
+        "123": {
+            "topic": "Service relationships",
+            "scenario": null,
+            "question_text": "Which statement correctly describes a service level agreement (SLA)?",
+            "explanation": "An SLA is a documented agreement between a service provider and a customer. It identifies the required services and the expected service levels, generally through relevant metrics.",
+            "answers": {
+                "A": { "text": "A documented agreement between provider and customer specifying the services and expected service levels", "rationale": "This proposition covers the essential parties and content of an SLA." },
+                "B": { "text": "An internal document defining only the responsibilities of the technical team", "rationale": "An SLA commits the provider and the customer, and is not limited to the internal organisation." },
+                "C": { "text": "A report that only presents the levels actually achieved", "rationale": "A report measures results, while an SLA formalises the agreed services and expectations." },
+                "D": { "text": "A contract reserved for collaborative relationships", "rationale": "An SLA can be used in different types of service relationships." }
+            }
+        },
+        "124": {
+            "topic": "Service relationships",
+            "scenario": "A tender requires low-carbon energy, transparent supply chains, and responsible employment practices.",
+            "question_text": "Which service quality concept is mainly involved?",
+            "explanation": "Sustainability ensures that a product or service meets and will continue to meet expectations related to environmental protection, social progress, and economic growth. The requirements described therefore go beyond mere technical performance.",
+            "answers": {
+                "A": { "text": "Sustainability", "rationale": "Environmental, social, and economic criteria directly fall under sustainability." },
+                "B": { "text": "Warranty", "rationale": "Warranty concerns assurance that a service will meet agreed conditions of use." },
+                "C": { "text": "Utility", "rationale": "Utility describes what the service does and its ability to meet a functional need." },
+                "D": { "text": "Observability", "rationale": "Observability concerns inferring the internal state of a system from its outputs." }
+            }
+        },
+        "125": {
+            "topic": "Service relationships",
+            "scenario": "A company uses an external cloud service to host its own platform, then provides that platform as a service to its customers.",
+            "question_text": "Which statement is the most correct?",
+            "explanation": "The same organisation can take on different roles in several service relationships. It is a consumer with respect to the cloud provider and a provider with respect to the users of its platform.",
+            "answers": {
+                "A": { "text": "The company is a consumer of the cloud and a provider of its platform in two distinct relationships", "rationale": "Roles are determined separately in each service relationship." },
+                "B": { "text": "The company can only be a provider because it bills its customers", "rationale": "Providing a service does not prevent simultaneously consuming another service." },
+                "C": { "text": "The company can only be a consumer because it depends on external infrastructure", "rationale": "Its dependency on the cloud does not remove its role as provider to its own customers." },
+                "D": { "text": "The company is necessarily the sponsor in both relationships", "rationale": "The sponsor authorises the budget and is not automatically the whole organisation in each relationship." }
+            }
+        },
+        "127": {
+            "topic": "Internal and external factors",
+            "scenario": "An organisation finds that its punitive culture prevents teams from reporting mistakes and sharing feedback.",
+            "question_text": "How should this factor be classified?",
+            "explanation": "Organisational culture is an internal factor mainly belonging to organisations and people. It can strongly influence behaviours, collaboration, and improvement.",
+            "answers": {
+                "A": { "text": "An internal factor", "rationale": "Culture is created and maintained within the organisation." },
+                "B": { "text": "An external political factor", "rationale": "No government decision or external political dynamic is described." },
+                "C": { "text": "An external environmental factor", "rationale": "The scenario is not about the natural environment or ecological sustainability." },
+                "D": { "text": "An external technological factor", "rationale": "The issue concerns behaviours and culture, not a technological development." }
+            }
+        },
+        "128": {
+            "topic": "Internal and external factors",
+            "scenario": "Strong inflation suddenly raises the costs of licences, energy, and subcontracting contracts.",
+            "question_text": "Which PESTLE factor is mainly illustrated?",
+            "explanation": "Inflation, interest rates, costs, and market conditions are economic factors. They can change sourcing decisions, budgets, and the viability of offerings.",
+            "answers": {
+                "A": { "text": "Economic", "rationale": "Inflation is an economic development directly affecting costs." },
+                "B": { "text": "Social", "rationale": "Social factors mainly concern behaviours, expectations, and demographic changes." },
+                "C": { "text": "Legal", "rationale": "No new legal obligation is at the origin of the described increase." },
+                "D": { "text": "Technological", "rationale": "The technologies concerned cost more, but the triggering factor is economic." }
+            }
+        },
+        "129": {
+            "topic": "Internal and external factors",
+            "scenario": "A new regulation requires reducing the carbon footprint of data centres and publishing emission indicators.",
+            "question_text": "Which PESTLE factor is the most directly concerned by the emissions reduction objective?",
+            "explanation": "Reducing the carbon footprint and emissions mainly falls under the environmental factor. The regulation also has a legal dimension, but the question targets the ecological purpose of the requirement.",
+            "answers": {
+                "A": { "text": "Environmental", "rationale": "The main objective concerns the impact on the natural environment." },
+                "B": { "text": "Legal", "rationale": "The form of the requirement is regulatory, but its direct object is emissions reduction." },
+                "C": { "text": "Social", "rationale": "The scenario does not mainly target social behaviours or demographic trends." },
+                "D": { "text": "Economic", "rationale": "Costs may result from it, but they are not the objective described." }
+            }
+        },
+        "130": {
+            "topic": "Introduction to the four dimensions",
+            "scenario": null,
+            "question_text": "Which scope belongs to the \"information and technology\" dimension?",
+            "explanation": "This dimension covers the information, knowledge, and technologies used both in products and services and in the organisation's management system. It is therefore not limited to user-visible tools or to internal data only.",
+            "answers": {
+                "A": { "text": "The information, knowledge, and technologies used in products, services, and their management", "rationale": "This answer reflects the full scope of the dimension in the four-dimensions model." },
+                "B": { "text": "Only technologies directly visible to consumers", "rationale": "The dimension also includes tools, data, and knowledge used to manage products and services." },
+                "C": { "text": "Only data that the organisation legally owns", "rationale": "Scope depends on the use of information, not solely on its legal ownership." },
+                "D": { "text": "Only technologies operated by external partners", "rationale": "Internal as well as external technologies can fall under this dimension." }
+            }
+        },
+        "137": {
+            "topic": "ITIL guiding principles",
+            "scenario": "A dashboard indicates that a process is working correctly, but observing daily work reveals manual workarounds and unrecorded delays.",
+            "question_text": "Which action best applies the \"start where you are\" principle?",
+            "explanation": "This principle recommends assessing the current state objectively. Measures are useful, but they must be complemented by direct observation to avoid an incomplete or misleading picture of what exists.",
+            "answers": {
+                "A": { "text": "Combine dashboard data with direct observation of the work", "rationale": "This approach assesses what exists based on both quantitative evidence and what actually happens." },
+                "B": { "text": "Trust only the dashboard because measures are objective", "rationale": "A measure can omit workarounds or effects that are not recorded." },
+                "C": { "text": "Ignore what exists and immediately redesign the process", "rationale": "The clean-slate approach specifically contradicts the assessment of the current state recommended by this principle." },
+                "D": { "text": "Automate the manual steps before understanding their cause", "rationale": "Automating without evaluation risks reinforcing an inefficient way of working." }
+            }
+        },
+        "146": {
+            "topic": "Value chain",
+            "scenario": null,
+            "question_text": "Which definition best matches reliability?",
+            "explanation": "Reliability is the ability of a product, service, or configuration item to perform its intended function over a specified period or number of cycles. It differs from availability and recoverability.",
+            "answers": {
+                "A": { "text": "The ability to perform the intended function over a specified duration or number of cycles", "rationale": "This answer reflects the notion of correct and lasting operation associated with reliability." },
+                "B": { "text": "The ability to explain every internal state from metrics", "rationale": "This phrasing describes observability rather than reliability." },
+                "C": { "text": "The ability to restore a service after any interruption", "rationale": "Restoration belongs to resilience, recovery, and support, not to reliability alone." },
+                "D": { "text": "The proportion of requests closed within the agreed timeframe", "rationale": "This is a processing metric, not a definition of reliability." }
+            }
+        },
+        "147": {
+            "topic": "Value chain",
+            "scenario": "An organisation makes a team responsible for improving service reliability through measurable objectives, automation, and close collaboration with product teams.",
+            "question_text": "Which approach is mainly described?",
+            "explanation": "Site Reliability Engineering applies software engineering principles to operations to obtain scalable, reliable services. It relies notably on automation, reliability objectives, and shared responsibility.",
+            "answers": {
+                "A": { "text": "Site Reliability Engineering", "rationale": "The combination of engineering, automation, and reliability objectives matches SRE." },
+                "B": { "text": "Relationship management", "rationale": "This practice develops relationships with stakeholders and does not define this operational engineering approach." },
+                "C": { "text": "Service request management", "rationale": "It handles predefined user requests, not reliability engineering." },
+                "D": { "text": "Service design", "rationale": "Design can incorporate reliability but does not denote the operational approach described." }
+            }
+        },
+        "148": {
+            "topic": "Value chain",
+            "scenario": null,
+            "question_text": "Which statement best describes observability?",
+            "explanation": "Observability is the ability to determine or infer the internal state of a system from its outputs, such as logs, metrics, and traces. It does not simply correspond to collecting an isolated indicator.",
+            "answers": {
+                "A": { "text": "The ability to infer the internal state of a system from its outputs", "rationale": "This wording precisely expresses the link between observable outputs and internal state." },
+                "B": { "text": "The guarantee that a service always meets its SLA", "rationale": "Observability provides information but does not guarantee contractual performance." },
+                "C": { "text": "Monitoring a single availability indicator", "rationale": "An isolated measure generally does not explain complex internal states." },
+                "D": { "text": "Documenting all contractual dependencies", "rationale": "This activity concerns relationships and suppliers rather than a system's technical state." }
+            }
+        },
+        "149": {
+            "topic": "Value chain",
+            "scenario": "A flood makes the primary site unusable and threatens the continuity of several critical services.",
+            "question_text": "Which ITIL term best describes this situation?",
+            "explanation": "A disaster is a sudden, unplanned event that causes significant damage or losses and requires a coordinated response. It generally exceeds the scope of an ordinary operational incident.",
+            "answers": {
+                "A": { "text": "A disaster", "rationale": "The flood produces major effects requiring recovery and continuity capabilities." },
+                "B": { "text": "A standard event", "rationale": "An event is a significant state change, but this term does not convey the destructive scale described." },
+                "C": { "text": "A service request", "rationale": "A service request is a predefined request initiated by a user or their representative." },
+                "D": { "text": "A known error", "rationale": "A known error is an analysed problem whose cause or workaround is documented." }
+            }
+        },
+        "150": {
+            "topic": "Value chain",
+            "scenario": "A team has identified that a design defect causes recurring outages. The cause is understood and a workaround is documented, but the defect is not yet fixed.",
+            "question_text": "How should this item be classified?",
+            "explanation": "A known error is a problem that has been analysed but is not yet resolved. Its cause, its workaround, or both are generally documented to help handle the associated incidents.",
+            "answers": {
+                "A": { "text": "A known error", "rationale": "The cause and workaround are known while the permanent fix remains to be done." },
+                "B": { "text": "A major incident", "rationale": "An incident is a specific interruption, whereas the item described is the analysed underlying defect." },
+                "C": { "text": "An event", "rationale": "An event indicates a state change and does not necessarily represent a known cause." },
+                "D": { "text": "A service request", "rationale": "The defect is not a standard predefined user request." }
+            }
+        },
+        "151": {
+            "topic": "Value chain",
+            "scenario": null,
+            "question_text": "What is an operating model according to ITIL Foundation (Version 5)?",
+            "explanation": "An operating model represents the way an organisation configures and coordinates its capabilities and resources to fulfil its objective. It links strategy to the concrete organisation of work.",
+            "answers": {
+                "A": { "text": "A representation of how capabilities and resources are organised to fulfil the organisation's objective", "rationale": "This answer describes the structuring function of the operating model." },
+                "B": { "text": "A mock-up intended to test a product's interface", "rationale": "This description matches a product prototype." },
+                "C": { "text": "A set of metrics defining a service's quality", "rationale": "This definition matches a service level." },
+                "D": { "text": "A list of all approved suppliers", "rationale": "A supplier register is only one possible element of the organisation's resources." }
+            }
+        },
+        "152": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "What are the two groups of management practices identified in ITIL Foundation (Version 5)?",
+            "explanation": "Version 5 distinguishes general management practices and product and service management practices. This organisation reflects both the organisation's common capabilities and those directly oriented towards its products and services.",
+            "answers": {
+                "A": { "text": "General management practices and product and service management practices", "rationale": "These two headings match the practice groups presented in the syllabus." },
+                "B": { "text": "Strategic practices and tactical practices", "rationale": "ITIL does not split the syllabus practices along this opposition." },
+                "C": { "text": "In-house practices and outsourced practices", "rationale": "A single practice can mobilise internal and external resources." },
+                "D": { "text": "Mandatory practices and optional practices", "rationale": "ITIL recommends adapting practices to context rather than classifying them this way." }
+            }
+        },
+        "153": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "Why does the structure of the ITIL practice guides include chapters such as organisations and people, information and technology, partners and suppliers, and value streams and processes?",
+            "explanation": "The guides examine each practice through the four dimensions to avoid a view limited to processes or tools. This structure favours a balanced implementation adapted to context.",
+            "answers": {
+                "A": { "text": "To address each practice in a balanced way across the four dimensions", "rationale": "The structure explicitly links practices to the four-dimensions model." },
+                "B": { "text": "To require four separate teams for each practice", "rationale": "The dimensions are analytical perspectives and do not prescribe an organisational structure." },
+                "C": { "text": "To replace the value chain with four processes", "rationale": "The four dimensions complement the value chain without replacing it." },
+                "D": { "text": "To classify practices by their maturity level", "rationale": "The titles cited correspond to the dimensions, not to maturity levels." }
+            }
+        },
+        "154": {
+            "topic": "Management practices",
+            "scenario": "An organisation wants to improve incident management without inventing its own method from scratch.",
+            "question_text": "What main benefit do the ITIL practice guides bring?",
+            "explanation": "The guides provide consistent, detailed, adaptable recommendations concerning the people, technologies, partners, and value streams of a practice. They speed up adoption of good practice without imposing an identical procedure on every organisation.",
+            "answers": {
+                "A": { "text": "Consistent and adaptable recommendations covering several dimensions of a practice", "rationale": "The guides offer a structured base that must be tailored to the organisation's context." },
+                "B": { "text": "A mandatory procedure guaranteeing the same results in every organisation", "rationale": "ITIL is not prescriptive to the point of guaranteeing identical results regardless of context." },
+                "C": { "text": "A complete replacement for the teams' experience", "rationale": "The recommendations complement local knowledge and do not make it useless." },
+                "D": { "text": "A list of certified software products to buy", "rationale": "The guides describe capabilities and methods, not a mandatory tool catalogue." }
+            }
+        },
+        "155": {
+            "topic": "Management practices",
+            "scenario": null,
+            "question_text": "Which statement correctly distinguishes a metric from a critical success factor (CSF)?",
+            "explanation": "A critical success factor describes a condition essential to achieving an objective. A metric is a measure or set of data used to evaluate an aspect of performance or progress.",
+            "answers": {
+                "A": { "text": "A CSF expresses an essential success condition; a metric measures an aspect of performance", "rationale": "This distinction separates what must be true to succeed from what is measured." },
+                "B": { "text": "A CSF is always numerical; a metric is always qualitative", "rationale": "It is generally the metric that is quantifiable, while the CSF expresses a condition." },
+                "C": { "text": "A metric sets the strategy; a CSF records incidents", "rationale": "These functions match the definition of neither term." },
+                "D": { "text": "Both terms are synonymous in the practice guides", "rationale": "They are related but play distinct roles in performance management." }
+            }
+        },
+        "156": {
+            "topic": "Key value stream concepts",
+            "scenario": "Handling a customer order directly produces the paid service, while onboarding a new supplier supports that handling without directly delivering the outcome to the external customer.",
+            "question_text": "How should these two streams be classified?",
+            "explanation": "A core value stream directly delivers value to an external customer. An enabling stream supports one or more core streams by providing the capabilities, resources, or conditions they need.",
+            "answers": {
+                "A": { "text": "The first is core and the second is enabling", "rationale": "The order directly creates customer value, while supplier onboarding supports that creation." },
+                "B": { "text": "Both are core because they produce outputs", "rationale": "Producing an output does not mean the stream directly delivers value to an external customer." },
+                "C": { "text": "Both are enabling because they use internal resources", "rationale": "Using internal resources does not determine the stream's classification." },
+                "D": { "text": "The first is enabling and the second is core", "rationale": "This proposal reverses each stream's direct link to the value delivered to the customer." }
+            }
+        },
+        "160": {
+            "topic": "ITIL and PRINCE2",
+            "scenario": "An organisation uses ITIL to continually manage its products and services. It also launches a temporary initiative, with a business case, project governance, and defined deliverables, to replace a platform.",
+            "question_text": "How does PRINCE2 best complement ITIL in this situation?",
+            "explanation": "PRINCE2 provides a structured method to direct and manage a temporary project, while ITIL frames the continual management and improvement of products and services. The two approaches are complementary rather than competing.",
+            "answers": {
+                "A": { "text": "PRINCE2 structures the temporary project, while ITIL frames the continual management of products and services", "rationale": "Each framework addresses a distinct need and both can be integrated in the same organisation." },
+                "B": { "text": "PRINCE2 replaces every ITIL practice for the duration of the project", "rationale": "Service management practices remain useful during the project and for existing services." },
+                "C": { "text": "ITIL must be paused until the PRINCE2 project closes", "rationale": "The continual management of products and services does not stop when a project is launched." },
+                "D": { "text": "PRINCE2 only applies to projects without a digital component", "rationale": "PRINCE2 can be applied to many types of projects, including digital ones." }
+            }
+        },
+        "161": {
+            "topic": "Service relationships",
+            "scenario": null,
+            "question_text": "Which role authorises the budget dedicated to consuming a service?",
+            "explanation": "The sponsor authorises the funding for consuming the service within the consumer organisation.",
+            "answers": {
+                "A": { "text": "The sponsor", "rationale": "This role authorises the budget needed to consume the service." },
+                "B": { "text": "The user", "rationale": "The user directly uses the service but does not necessarily authorise its funding." },
+                "C": { "text": "The customer", "rationale": "The customer defines requirements and is accountable for the consumption outcomes, without being necessarily the budget authority." },
+                "D": { "text": "The change authority", "rationale": "It authorises changes and not the budget for consuming a service." }
+            }
+        },
+        "162": {
+            "topic": "Service relationships",
+            "scenario": null,
+            "question_text": "How does a service provider mainly contribute to value creation for the consumer?",
+            "explanation": "The provider brings specialised resources and helps reduce certain risks, while value remains co-created with the consumer.",
+            "answers": {
+                "A": { "text": "By providing specialised resources and reducing certain risks", "rationale": "The provider's specialisation complements the consumer's resources and capabilities." },
+                "B": { "text": "By taking over all the consumer's responsibilities", "rationale": "Responsibilities remain shared in the service relationship." },
+                "C": { "text": "By directly guaranteeing the consumer's financial results", "rationale": "Outcomes depend on many factors that the provider does not control alone." },
+                "D": { "text": "By removing every resource need at the consumer", "rationale": "The consumer must still contribute to value co-creation." }
+            }
+        },
+        "166": {
+            "topic": "Goods",
+            "scenario": null,
+            "question_text": "Which statement best describes a good in the context of a service offering?",
+            "explanation": "A good is a tangible or transferable resource whose ownership or responsibility can pass from the provider to the consumer. It differs from temporary access to a resource and from an action performed by the provider.",
+            "answers": {
+                "A": { "text": "A resource transferred to the consumer, who may then take ownership or responsibility for it", "rationale": "Transfer to the consumer is the characteristic that distinguishes a good in a service offering." },
+                "B": { "text": "An activity performed by the provider to meet a consumer need", "rationale": "This proposal describes a service action and not a good." },
+                "C": { "text": "A right of use granted without transfer of ownership", "rationale": "This proposal matches access to resources." },
+                "D": { "text": "A set of agreed metrics for measuring quality", "rationale": "This proposal describes a service level." }
+            }
+        },
+        "167": {
+            "topic": "User experience",
+            "scenario": null,
+            "question_text": "Which of the following best describes user experience?",
+            "explanation": "User experience gathers the perceptions and reactions of a person resulting from the actual or anticipated use of a product or service. It can form before, during, and after the interaction.",
+            "answers": {
+                "A": { "text": "A user's perceptions and reactions before, during, and after using a product or service", "rationale": "Experience covers all perceptions related to actual or anticipated use." },
+                "B": { "text": "The number of interactions recorded by the service desk", "rationale": "Interaction volume is an operational measure and does not represent the user's perception." },
+                "C": { "text": "The product's technical compliance with its specification", "rationale": "Compliance may influence experience, but does not define it." },
+                "D": { "text": "The service level accepted only by the sponsor", "rationale": "A service level is a set of agreed metrics, not the experience felt." }
+            }
+        },
+        "169": {
+            "topic": "Service consumer",
+            "scenario": null,
+            "question_text": "Which statement about the service consumer role is correct?",
+            "explanation": "The service consumer is a generic role that can include the customer, user, and sponsor roles. A person or group can hold several of these roles depending on the context.",
+            "answers": {
+                "A": { "text": "It can encompass the customer, user, and sponsor roles", "rationale": "These three roles are possible specialisations of the service consumer." },
+                "B": { "text": "It refers only to the person who directly uses the service", "rationale": "This definition matches the user role more precisely." },
+                "C": { "text": "It refers only to the person who authorises the budget", "rationale": "That responsibility belongs to the sponsor." },
+                "D": { "text": "It necessarily refers to an organisation external to the provider", "rationale": "The consumer can be internal or external depending on the service relationship." }
+            }
+        },
+        "170": {
+            "topic": "Service relationship",
+            "scenario": null,
+            "question_text": "Which elements together make up a service relationship?",
+            "explanation": "A service relationship includes service provision, service consumption, and the ongoing management of the relationship between the parties. These elements support value co-creation.",
+            "answers": {
+                "A": { "text": "Service provision, service consumption, and service relationship management", "rationale": "These three elements form the service relationship in ITIL." },
+                "B": { "text": "Utility, warranty, and service level agreement only", "rationale": "These elements describe aspects of the service but not all the components of the relationship." },
+                "C": { "text": "Incident, problem, and change", "rationale": "These are operational management concepts, not components of a service relationship." },
+                "D": { "text": "Discover, build, and operate only", "rationale": "These activities belong to the product and service lifecycle." }
+            }
+        },
+        "171": {
+            "topic": "Service provision",
+            "scenario": "A provider manages its resources, gives access to a platform, performs agreed backups, and reports on service levels.",
+            "question_text": "Which set of activities is mainly described?",
+            "explanation": "Service provision includes managing the provider's resources, granting access, performing the agreed actions, and managing service levels. It represents the provider's contribution to the relationship.",
+            "answers": {
+                "A": { "text": "Service provision", "rationale": "All the activities cited are performed by the provider within the service relationship." },
+                "B": { "text": "Service consumption", "rationale": "Consumption mainly describes the activities and resources mobilised on the consumer's side." },
+                "C": { "text": "Incident management", "rationale": "No unplanned interruption requiring restoration is described." },
+                "D": { "text": "Value stream mapping", "rationale": "The scenario describes execution of the service, not its representation as a flow." }
+            }
+        },
+        "172": {
+            "topic": "Service consumption",
+            "scenario": "A company assigns employees to use a platform, receives the agreed actions from the provider, and uses the resources it has access to.",
+            "question_text": "Which set of activities is mainly described?",
+            "explanation": "Service consumption covers managing the consumer's resources, using the accessible resources, and receiving the agreed actions or goods. It complements service provision.",
+            "answers": {
+                "A": { "text": "Service consumption", "rationale": "The activities described are performed on the consumer's side to use the service." },
+                "B": { "text": "Service provision", "rationale": "Provision concerns the activities and resources managed by the provider." },
+                "C": { "text": "Service design", "rationale": "The scenario concerns ongoing use rather than defining a future solution." },
+                "D": { "text": "Governance", "rationale": "Governance evaluates, directs, and monitors rather than directly using the service." }
+            }
+        },
+        "188": {
+            "topic": "Transition",
+            "scenario": "A product has passed its technical tests, but users are not trained, data has not been migrated, and support has no procedure.",
+            "question_text": "Which activity should mainly coordinate preparation before operational use?",
+            "explanation": "Transition aims to smoothly introduce new or changed products and services into their usage environment. Preparation includes people, data, support, communications, and technical changes.",
+            "answers": {
+                "A": { "text": "Transition", "rationale": "The gaps described directly concern the state of readiness for moving into operational use." },
+                "B": { "text": "Build", "rationale": "The technical solution is already implemented and tested; the problem is about introducing it into service." },
+                "C": { "text": "Discover", "rationale": "Needs have already been turned into a product; it is no longer about understanding the initial opportunity." },
+                "D": { "text": "Operate", "rationale": "Operation starts when the product is in ongoing running." }
+            }
+        },
+        "189": {
+            "topic": "Operate",
+            "scenario": "A team runs scheduled backups, monitors capacity, handles events, and keeps components in operational condition on a daily basis.",
+            "question_text": "Why do these tasks mainly belong to the \"operate\" activity rather than to \"support\"?",
+            "explanation": "Operate covers the running, monitoring, and routine upkeep of products and services. Support mainly steps in to resolve interruptions, difficulties, or assistance needs.",
+            "answers": {
+                "A": { "text": "They routinely maintain the running and performance of systems", "rationale": "The planned, recurring nature of the tasks matches operation." },
+                "B": { "text": "They are all triggered by a user incident", "rationale": "The scenario describes routine tasks and not a response to an interruption." },
+                "C": { "text": "They prepare a product that is not yet in use", "rationale": "That would rather belong to transition." },
+                "D": { "text": "They define the needs of a future service", "rationale": "That activity belongs to discovery and design." }
+            }
+        },
+        "190": {
+            "topic": "Lifecycle",
+            "scenario": null,
+            "question_text": "Which statement about the organisation of the eight lifecycle activities is correct?",
+            "explanation": "Lifecycle activities are types of work that are interconnected, not mandatory departments. A single team can contribute to several activities and several activities can run in parallel.",
+            "answers": {
+                "A": { "text": "They do not necessarily correspond to eight distinct teams or departments", "rationale": "ITIL describes activities that can be adapted to the organisation's operating model." },
+                "B": { "text": "Each activity must have a legally separate organisation", "rationale": "No legal separation is prescribed by the model." },
+                "C": { "text": "A person can participate in only one activity", "rationale": "Responsibilities can span several activities depending on skills and the value stream." },
+                "D": { "text": "The activities must always be executed one after another without overlap", "rationale": "The lifecycle is interconnected, iterative, and often non-linear." }
+            }
+        },
+        "193": {
+            "topic": "Guiding principles",
+            "scenario": null,
+            "question_text": "Which statement about the use of the ITIL guiding principles is correct?",
+            "explanation": "The guiding principles are universal recommendations that must be considered in every circumstance. Their application still has to be adapted to context and does not constitute a rigid procedure.",
+            "answers": {
+                "A": { "text": "They are relevant in every circumstance, but their application must be adapted to context", "rationale": "The principles guide decisions without imposing a single procedure." },
+                "B": { "text": "Each principle can only be used in a specific lifecycle phase", "rationale": "The principles can apply to every activity and decision." },
+                "C": { "text": "A single principle should be chosen for each initiative", "rationale": "Several principles must generally be considered together." },
+                "D": { "text": "They replace the organisation's policies and governance", "rationale": "They orient decisions but do not replace governance mechanisms." }
+            }
+        },
+        "194": {
+            "topic": "Focus on value",
+            "scenario": "An improvement reduces internal processing time but forces customers to provide more information and increases their overall effort.",
+            "question_text": "Which analysis best applies the \"focus on value\" principle?",
+            "explanation": "Value must be considered from the perspective of consumers and other stakeholders, including experience and indirect effects. An internal optimisation can destroy value if it shifts the effort to the customer.",
+            "answers": {
+                "A": { "text": "Evaluate the total effect on the customer's outcomes and experience, not just the internal gain", "rationale": "The principle requires linking every activity to the value actually perceived." },
+                "B": { "text": "Keep the improvement because internal time has decreased", "rationale": "The local gain may be cancelled out by the extra effort imposed on the customer." },
+                "C": { "text": "Measure only the number of steps removed", "rationale": "The simplicity of the internal process does not prove value creation." },
+                "D": { "text": "Transfer responsibility for value to the sponsor", "rationale": "Value is co-created and must guide decisions of every concerned party." }
+            }
+        },
+        "195": {
+            "topic": "Start where you are",
+            "scenario": "Members of a team know their process so well that they no longer notice certain workarounds and unnecessary waits.",
+            "question_text": "Which action is particularly useful under the \"start where you are\" principle?",
+            "explanation": "A person unfamiliar with the service can observe without the preconceptions of teams used to the current way of working. This perspective complements the specialists' data and experience.",
+            "answers": {
+                "A": { "text": "Have the work observed by a person with little prior knowledge of the service", "rationale": "A fresh eye can reveal practices that have become invisible to people used to them." },
+                "B": { "text": "Exclude anyone who does not already know the process", "rationale": "This approach deprives the team of a useful independent perspective." },
+                "C": { "text": "Replace the process before observing it", "rationale": "The principle recommends assessing what exists before deciding what to change." },
+                "D": { "text": "Rely only on official documentation", "rationale": "Documentation can differ from the work actually performed." }
+            }
+        },
+        "209": {
+            "topic": "Continual improvement model",
+            "scenario": "An organisation knows its vision and has established a baseline for current performance.",
+            "question_text": "What must it mainly define at the \"Where do we want to be?\" step?",
+            "explanation": "This step translates the vision into measurable objectives and improvement targets. It clarifies the gap to close without yet detailing the implementation actions in full.",
+            "answers": {
+                "A": { "text": "Measurable objectives and targets describing the desired future state", "rationale": "The step defines the concrete destination based on the vision and current state." },
+                "B": { "text": "A detailed list of actions already executed", "rationale": "Execution belongs to the \"act\" step and comes after planning." },
+                "C": { "text": "Only a new baseline measure of the current state", "rationale": "The baseline was already established at the previous step." },
+                "D": { "text": "The method for keeping momentum going after success", "rationale": "Keeping momentum going is handled at the last step of the model." }
+            }
+        },
+        "219": {
+            "topic": "Human-centred design",
+            "scenario": "A team defines a new procedure only from the constraints of the existing system, without observing users or testing prototypes with them.",
+            "question_text": "Which approach should be added as a priority?",
+            "explanation": "Human-centred design starts with understanding people, their goals, and their context. It uses repeated participation and feedback to design a usable and relevant solution.",
+            "answers": {
+                "A": { "text": "Involve users in research, prototyping, and iterative testing", "rationale": "This approach grounds design in the actual needs and behaviours of the people concerned." },
+                "B": { "text": "Finalise the entire solution before showing it to users", "rationale": "Late feedback makes design errors harder and more expensive to fix." },
+                "C": { "text": "Replace observations with the technical team's preferences", "rationale": "Internal assumptions are not evidence about real experience." },
+                "D": { "text": "Measure only server uptime", "rationale": "This technical measure does not inform about usability or fit to human needs." }
+            }
+        },
+        "234": {
+            "topic": "AI accountability",
+            "scenario": "When an AI system produces a harmful decision, the business team claims the vendor is responsible, while the vendor claims the model decided by itself.",
+            "question_text": "Which measure best matches responsible governance?",
+            "explanation": "The organisation must clearly assign responsibility for decisions, oversight, and responses to AI-related incidents. An automated system cannot itself bear organisational accountability.",
+            "answers": {
+                "A": { "text": "Define human owners accountable for decisions, controls, and consequences", "rationale": "Explicit accountability prevents an automated decision from becoming an accountability gap." },
+                "B": { "text": "Consider the model as solely responsible for its decisions", "rationale": "A model cannot bear organisational or legal accountability." },
+                "C": { "text": "Avoid documenting responsibilities to preserve flexibility", "rationale": "Ambiguous responsibilities increase risks and slow down response." },
+                "D": { "text": "Automatically assign every responsibility to the end user", "rationale": "The user does not necessarily control the system's design, data, and rules." }
+            }
+        },
+        "235": {
+            "topic": "Human oversight",
+            "scenario": "An AI recommends automatically suspending a critical service when it detects an anomaly, but some false positives could cause a significant outage.",
+            "question_text": "Which control is the most appropriate?",
+            "explanation": "Human oversight must be proportionate to the possible consequences and to the system's uncertainty. High-impact decisions may require validation or the possibility of human intervention.",
+            "answers": {
+                "A": { "text": "Require human validation before high-impact suspensions", "rationale": "The control preserves the benefits of automated detection while reducing the risk of harmful decisions." },
+                "B": { "text": "Allow every suspension without any possibility of intervention", "rationale": "False positives could then automatically cause major consequences." },
+                "C": { "text": "Prohibit any use of AI to detect anomalies", "rationale": "Proportionate oversight may be preferable to abandoning the capability entirely." },
+                "D": { "text": "Ask users to restore the service themselves", "rationale": "This action transfers the risk without controlling the initial decision." }
+            }
+        },
+        "239": {
+            "topic": "Discovery metrics",
+            "scenario": "An organisation wants to measure the success of the \"discover\" activity before authorising the detailed design of a new product.",
+            "question_text": "Which indicator would provide the most relevant evidence?",
+            "explanation": "Discovery must improve understanding of needs, opportunities, constraints, and assumptions. Success is shown notably by the validation of problems and the reduction of uncertainty before investment.",
+            "answers": {
+                "A": { "text": "The proportion of critical assumptions validated with stakeholders", "rationale": "This measure indicates that the team is reducing uncertainty about the need and the opportunity." },
+                "B": { "text": "The number of lines of code already produced", "rationale": "Building the solution is not the main objective of discovery." },
+                "C": { "text": "The number of incidents resolved in production", "rationale": "This measure mainly concerns products already in operation." },
+                "D": { "text": "The percentage of user accounts activated", "rationale": "User activation belongs more to service delivery." }
+            }
+        }
+    }
+}

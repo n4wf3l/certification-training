@@ -1,7 +1,9 @@
 import GuestLayout from '@/Layouts/GuestLayout';
+import { useT } from '@/lib/i18n';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
+    const t = useT();
     const { data, setData, post, processing, errors, reset } = useForm({
         token,
         email,
@@ -18,14 +20,14 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout
-            title="Nouveau mot de passe"
-            subtitle="Choisis un mot de passe fort et unique."
+            title={t('auth_reset.title')}
+            subtitle={t('auth_reset.subtitle')}
         >
-            <Head title="Nouveau mot de passe" />
+            <Head title={t('auth_reset.page_title')} />
 
             <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <label className="field-label" htmlFor="email">Email</label>
+                    <label className="field-label" htmlFor="email">{t('auth.field_email')}</label>
                     <input
                         id="email"
                         type="email"
@@ -37,7 +39,7 @@ export default function ResetPassword({ token, email }) {
                     {errors.email && <p className="mt-1.5 text-xs text-rose-500">{errors.email}</p>}
                 </div>
                 <div>
-                    <label className="field-label" htmlFor="password">Mot de passe</label>
+                    <label className="field-label" htmlFor="password">{t('auth.field_password')}</label>
                     <input
                         id="password"
                         type="password"
@@ -47,12 +49,12 @@ export default function ResetPassword({ token, email }) {
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         className="field"
-                        placeholder="8 caractères min."
+                        placeholder={t('auth.field_password_new_placeholder')}
                     />
                     {errors.password && <p className="mt-1.5 text-xs text-rose-500">{errors.password}</p>}
                 </div>
                 <div>
-                    <label className="field-label" htmlFor="password_confirmation">Confirmation</label>
+                    <label className="field-label" htmlFor="password_confirmation">{t('auth.field_password_confirm')}</label>
                     <input
                         id="password_confirmation"
                         type="password"
@@ -63,7 +65,7 @@ export default function ResetPassword({ token, email }) {
                     />
                 </div>
                 <button type="submit" disabled={processing} className="btn-primary w-full !py-3">
-                    {processing ? 'Réinitialisation…' : 'Réinitialiser'}
+                    {processing ? t('auth_reset.submit_loading') : t('auth_reset.submit')}
                 </button>
             </form>
         </GuestLayout>

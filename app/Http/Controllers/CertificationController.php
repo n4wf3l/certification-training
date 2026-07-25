@@ -17,23 +17,28 @@ class CertificationController extends Controller
         $mastery = auth()->check()
             ? $this->masterySummary(auth()->id(), $certification)
             : null;
+        $locale = app()->getLocale();
+        // target_roles est un array : localized() renvoie array ou array selon
+        // ce qui est stocke dans translations[locale][target_roles]. Fallback
+        // vers la colonne directe (langue canonique) si absent.
+        $targetRoles = $certification->localized($locale, 'target_roles') ?? [];
 
         return Inertia::render('Certification/Show', [
             'certification' => [
                 'id' => $certification->id,
-                'title' => $certification->title,
+                'title' => $certification->localized($locale, 'title'),
                 'slug' => $certification->slug,
                 'logo_path' => $certification->logo_path,
-                'description' => $certification->description,
-                'long_description' => $certification->long_description,
-                'importance' => $certification->importance,
-                'target_roles' => $certification->target_roles ?? [],
+                'description' => $certification->localized($locale, 'description'),
+                'long_description' => $certification->localized($locale, 'long_description'),
+                'importance' => $certification->localized($locale, 'importance'),
+                'target_roles' => is_array($targetRoles) ? $targetRoles : [],
                 'questions_updated_at' => $certification->questions_updated_at,
                 'duration_minutes' => $certification->duration_minutes,
                 'passing_score' => $certification->passing_score,
                 'total_questions' => $certification->total_questions,
                 'validity_months' => $certification->validity_months,
-                'validity_note' => $certification->validity_note,
+                'validity_note' => $certification->localized($locale, 'validity_note'),
                 'version_retires_at' => $certification->version_retires_at?->toDateString(),
                 'available_questions' => $availableQuestions,
                 'has_course' => is_array($certification->course_blocks) && count($certification->course_blocks) > 0,
@@ -82,12 +87,13 @@ class CertificationController extends Controller
 
     private function basePayload(Certification $certification): array
     {
+        $locale = app()->getLocale();
         return [
             'id' => $certification->id,
-            'title' => $certification->title,
+            'title' => $certification->localized($locale, 'title'),
             'slug' => $certification->slug,
             'logo_path' => $certification->logo_path,
-            'description' => $certification->description,
+            'description' => $certification->localized($locale, 'description'),
             'duration_minutes' => $certification->duration_minutes,
             'passing_score' => $certification->passing_score,
             'total_questions' => $certification->total_questions,

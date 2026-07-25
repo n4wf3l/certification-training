@@ -1,5 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import { useT } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -13,10 +14,11 @@ function shuffle(arr) {
 }
 
 export default function Flashcards({ certification, cards: initialCards }) {
+    const t = useT();
     const [deck, setDeck] = useState(() => shuffle(initialCards));
     const [index, setIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
-    const [marks, setMarks] = useState({}); // id => 'knew' | 'review'
+    const [marks, setMarks] = useState({});
 
     const card = deck[index];
     const total = deck.length;
@@ -63,12 +65,12 @@ export default function Flashcards({ certification, cards: initialCards }) {
     if (!card) {
         return (
             <AppLayout>
-                <Head title={`Flashcards — ${certification.title}`} />
+                <Head title={t('flashcards.page_title', { title: certification.title })} />
                 <div className="mx-auto max-w-2xl text-center">
                     <div className="card p-10">
-                        <p className="text-ink-500">Aucune carte disponible pour cette certification.</p>
+                        <p className="text-ink-500">{t('flashcards.empty')}</p>
                         <Link href={route('certifications.show', certification.slug)} className="btn-secondary mt-4">
-                            Retour
+                            {t('flashcards.back')}
                         </Link>
                     </div>
                 </div>
@@ -78,9 +80,8 @@ export default function Flashcards({ certification, cards: initialCards }) {
 
     return (
         <AppLayout>
-            <Head title={`Flashcards — ${certification.title}`} />
+            <Head title={t('flashcards.page_title', { title: certification.title })} />
             <div className="mx-auto max-w-3xl space-y-6">
-                {/* Header */}
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <Link
                         href={route('certifications.show', certification.slug)}
@@ -92,21 +93,20 @@ export default function Flashcards({ certification, cards: initialCards }) {
                     <div className="flex items-center gap-2">
                         <span className="badge-success">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                            {known} connues
+                            {t('flashcards.known_badge', { n: known })}
                         </span>
                         <span className="badge-danger">
                             <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
-                            {toReview} à revoir
+                            {t('flashcards.review_badge', { n: toReview })}
                         </span>
                     </div>
                 </div>
 
-                {/* Progress */}
                 <div>
                     <div className="mb-2 flex items-center justify-between text-xs text-ink-500">
-                        <span>Carte {index + 1} / {total}</span>
+                        <span>{t('flashcards.progress', { i: index + 1, total })}</span>
                         <button onClick={reshuffle} className="inline-flex items-center gap-1 text-brand-500 hover:text-brand-400">
-                            <Icon.Shuffle className="h-3.5 w-3.5" /> Mélanger
+                            <Icon.Shuffle className="h-3.5 w-3.5" /> {t('flashcards.shuffle')}
                         </button>
                     </div>
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
@@ -117,7 +117,6 @@ export default function Flashcards({ certification, cards: initialCards }) {
                     </div>
                 </div>
 
-                {/* Flashcard */}
                 <div
                     className="relative min-h-[380px] cursor-pointer"
                     onClick={() => setFlipped((f) => !f)}
@@ -131,14 +130,13 @@ export default function Flashcards({ certification, cards: initialCards }) {
                             minHeight: '380px',
                         }}
                     >
-                        {/* Front */}
                         <div
                             className="card absolute inset-0 flex flex-col justify-between p-8"
                             style={{ backfaceVisibility: 'hidden' }}
                         >
                             <div className="flex items-center justify-between">
                                 <span className="badge-brand">
-                                    Question <span className="font-mono ml-1">{card.position}</span>
+                                    {t('flashcards.badge_question_num')} <span className="font-mono ml-1">{card.position}</span>
                                 </span>
                                 {card.topic && <span className="badge-muted">{card.topic}</span>}
                             </div>
@@ -153,19 +151,18 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                 </p>
                             </div>
                             <div className="flex items-center justify-between text-xs text-ink-500">
-                                <span>Clique la carte ou appuie sur Espace pour la retourner</span>
-                                <span className="badge-muted">Question</span>
+                                <span>{t('flashcards.front_hint')}</span>
+                                <span className="badge-muted">{t('flashcards.front_badge_question')}</span>
                             </div>
                         </div>
 
-                        {/* Back */}
                         <div
                             className="card absolute inset-0 flex flex-col justify-between overflow-hidden p-8"
                             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                         >
                             <div className="pointer-events-none absolute inset-0 bg-emerald-500/5" />
                             <div className="relative flex items-center justify-between">
-                                <span className="badge-success">Réponse</span>
+                                <span className="badge-success">{t('flashcards.back_badge_answer')}</span>
                                 {card.topic && <span className="badge-muted">{card.topic}</span>}
                             </div>
                             <div className="relative my-6 flex-1">
@@ -176,7 +173,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white">
                                                 {correctAnswer.letter}
                                             </span>
-                                            Bonne réponse
+                                            {t('flashcards.correct_answer_label')}
                                         </div>
                                         <p className="text-lg font-bold leading-snug text-ink-900 dark:text-white">
                                             {correctAnswer.answer_text}
@@ -185,7 +182,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                 )}
                                 <details className="mt-4 rounded-xl border border-ink-200 bg-white/50 p-3 text-sm dark:border-ink-800 dark:bg-ink-900/40">
                                     <summary className="cursor-pointer text-xs font-medium text-ink-500 hover:text-brand-500">
-                                        Voir toutes les options
+                                        {t('flashcards.show_all_options')}
                                     </summary>
                                     <ul className="mt-3 space-y-2">
                                         {card.answers.map((a) => (
@@ -205,55 +202,53 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                 </details>
                             </div>
                             <div className="relative text-center text-xs text-ink-500">
-                                Comment as-tu réagi ?
+                                {t('flashcards.reaction_prompt')}
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Actions */}
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         onClick={() => mark('review')}
                         className="btn rounded-xl border border-rose-500/30 bg-rose-500/10 py-4 text-rose-600 hover:bg-rose-500/20 dark:text-rose-300"
                     >
-                        <Icon.Close className="h-5 w-5" /> À revoir <span className="ml-2 text-xs text-ink-400">1</span>
+                        <Icon.Close className="h-5 w-5" /> {t('flashcards.mark_review')} <span className="ml-2 text-xs text-ink-400">1</span>
                     </button>
                     <button
                         onClick={() => mark('knew')}
                         className="btn rounded-xl border border-emerald-500/30 bg-emerald-500/10 py-4 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-300"
                     >
-                        <Icon.Check className="h-5 w-5" /> Je savais <span className="ml-2 text-xs text-ink-400">2</span>
+                        <Icon.Check className="h-5 w-5" /> {t('flashcards.mark_knew')} <span className="ml-2 text-xs text-ink-400">2</span>
                     </button>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <button onClick={prev} disabled={index === 0} className="btn-secondary">
                         <Icon.ArrowLeft className="h-4 w-4" />
-                        Précédent
+                        {t('flashcards.prev')}
                     </button>
                     <span className="text-xs text-ink-500">
-                        Espace : retourner · flèches : naviguer
+                        {t('flashcards.kb_hint')}
                     </span>
                     <button onClick={next} disabled={index === total - 1} className="btn-secondary">
-                        Suivant
+                        {t('flashcards.next')}
                         <Icon.ArrowRight className="h-4 w-4" />
                     </button>
                 </div>
 
-                {/* Fin de session */}
                 {Object.keys(marks).length === total && (
                     <div className="card p-6 text-center">
-                        <h3 className="text-xl font-bold text-ink-900 dark:text-white">Session terminée</h3>
+                        <h3 className="text-xl font-bold text-ink-900 dark:text-white">{t('flashcards.session_done_title')}</h3>
                         <p className="mt-2 text-ink-500">
-                            Tu as marqué <span className="font-mono text-emerald-500">{known}</span> cartes connues et <span className="font-mono text-rose-500">{toReview}</span> à revoir.
+                            {t('flashcards.session_done_body', { known, review: toReview })}
                         </p>
                         <div className="mt-4 flex flex-wrap justify-center gap-3">
                             <button onClick={reshuffle} className="btn-primary">
-                                <Icon.Refresh className="h-4 w-4" /> Recommencer
+                                <Icon.Refresh className="h-4 w-4" /> {t('flashcards.session_restart')}
                             </button>
                             <Link href={route('certifications.exam', certification.slug)} className="btn-secondary">
-                                Passer à l'examen blanc
+                                {t('flashcards.session_go_exam')}
                             </Link>
                         </div>
                     </div>

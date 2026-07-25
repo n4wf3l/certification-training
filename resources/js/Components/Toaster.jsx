@@ -1,4 +1,5 @@
 import Icon from '@/Components/Icons';
+import { translate } from '@/lib/i18n';
 import { usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
@@ -35,13 +36,28 @@ function useToasts() {
 
 /** Écoute les flash Laravel et les convertit en toast. */
 export function useFlashToasts() {
-    const flash = usePage().props.flash;
+    const page = usePage();
+    const flash = page.props.flash;
+    const locale = page.props.locale || 'en';
     useEffect(() => {
         if (flash?.success) pushToast({ variant: 'success', message: flash.success });
     }, [flash?.success]);
     useEffect(() => {
         if (flash?.error) pushToast({ variant: 'error', message: flash.error });
     }, [flash?.error]);
+    useEffect(() => {
+        if (flash?.info) pushToast({ variant: 'info', message: flash.info });
+    }, [flash?.info]);
+    useEffect(() => {
+        const r = flash?.gamification_reward;
+        if (r && (r.xp_gained > 0 || (r.new_badges && r.new_badges.length > 0))) {
+            let msg = `+${r.xp_gained} XP`;
+            if (r.new_badges && r.new_badges.length > 0) {
+                msg += ` · ${translate(locale, r.new_badges.length > 1 ? 'components.toast_badges_unlocked_many' : 'components.toast_badges_unlocked_one')}`;
+            }
+            pushToast({ variant: 'success', message: msg, duration: 6000 });
+        }
+    }, [flash?.gamification_reward, locale]);
 }
 
 export default function Toaster() {
@@ -57,6 +73,8 @@ export default function Toaster() {
 }
 
 function ToastItem({ toast }) {
+    const locale = usePage().props.locale || 'en';
+    const closeLabel = translate(locale, 'components.toast_close');
     const variants = {
         success: {
             border: 'border-emerald-500/30',
@@ -96,7 +114,7 @@ function ToastItem({ toast }) {
             <button
                 onClick={() => dismissToast(toast.id)}
                 className="shrink-0 rounded-lg p-1 text-ink-400 transition hover:bg-ink-100 hover:text-ink-700 dark:hover:bg-ink-800 dark:hover:text-white"
-                aria-label="Fermer"
+                aria-label={closeLabel}
             >
                 <Icon.Close className="h-3.5 w-3.5" />
             </button>

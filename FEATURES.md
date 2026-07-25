@@ -1,4 +1,4 @@
-# CertifLoop — À quoi sert la plateforme et ce qui est implémenté
+# CertifLoop - À quoi sert la plateforme et ce qui est implémenté
 
 ## 1. À quoi sert la plateforme
 
@@ -17,20 +17,20 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
 
 ---
 
-## 2. Fonctionnalités — vue guest (non connecté)
+## 2. Fonctionnalités - vue guest (non connecté)
 
 ### Home publique
 
-- **Hero** avec titre gradient, sous-titre expliquant la promesse, badge "Méthode — Répétition adaptative".
+- **Hero** avec titre gradient, sous-titre expliquant la promesse, badge "Méthode - Répétition adaptative".
 - **Bloc de stats live** : nombre de certifications, nombre total de questions, date de dernière mise à jour, mention "Gratuit".
 - **CTA "Voir la liste des certifications"** avec smooth scroll vers la grille.
-- **Colonne droite du hero — teaser interactif Q/R** (guest uniquement) :
+- **Colonne droite du hero - teaser interactif Q/R** (guest uniquement) :
   - 3 vraies questions tirées de la DB (une par certif quand possible pour la diversité).
   - Affiche scénario + énoncé + 4 réponses cliquables.
   - Feedback immédiat au clic (vert / rouge, bonne réponse révélée).
-  - Progression persistée en `localStorage` — refresh = mêmes questions, mêmes réponses (impossible de contourner par F5).
+  - Progression persistée en `localStorage` - refresh = mêmes questions, mêmes réponses (impossible de contourner par F5).
   - Une fois les 3 questions jouées, gros CTA "Continuer gratuitement" vers l'inscription.
-- **Section "Nos promesses"** — bloc plein sur la home, version compacte sur les pages détail (cours gratuits, examens blancs réels, répétition adaptative, toujours à jour).
+- **Section "Nos promesses"** - bloc plein sur la home, version compacte sur les pages détail (cours gratuits, examens blancs réels, répétition adaptative, toujours à jour).
 - **Grille des certifications** avec cards :
   - Logo (uploadé ou initiales en gradient).
   - Badge "Prêt" / "Bientôt".
@@ -38,7 +38,7 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
   - Ligne d'infos : `à jour · date` + `valide N ans` + `retrait YYYY` (colorée en orange/rouge selon proximité).
   - Trois stats mono : questions, durée, seuil.
   - Animation stagger à l'apparition.
-- **Section "Comment ça marche"** — trois étapes numérotées.
+- **Section "Comment ça marche"** - trois étapes numérotées.
 - **Footer** avec liens plateforme, compte, CTA, badge "Tous systèmes opérationnels", nom de marque dynamique.
 
 ### Certification hub `/certifications/{slug}`
@@ -51,14 +51,14 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
 - Sidebar **"Postes ciblés"** (liste des rôles).
 - Bloc **"Durée de validité"** (validity_months + note officielle sur renouvellement).
 - Bloc **"Retrait de version"** avec 4 états visuels selon proximité :
-  - `> 18 mois` — carte verte, "aucune urgence"
-  - `6-18 mois` — carte orange, "retrait programmé"
-  - `< 6 mois` — carte rouge pulsante, "encore N jours"
-  - `passée` — carte rouge foncé, "version retirée"
+  - `> 18 mois` - carte verte, "aucune urgence"
+  - `6-18 mois` - carte orange, "retrait programmé"
+  - `< 6 mois` - carte rouge pulsante, "encore N jours"
+  - `passée` - carte rouge foncé, "version retirée"
 - **Trois cartes de mode** en grille (stagger animation) :
-  - **Cours** — actif si `course_blocks` non vide, sinon "Bientôt".
-  - **Flashcards** — actif dès qu'il y a des questions.
-  - **Examen blanc** — actif dès qu'il y a des questions.
+  - **Cours** - actif si `course_blocks` non vide, sinon "Bientôt".
+  - **Flashcards** - actif dès qu'il y a des questions.
+  - **Examen blanc** - actif dès qu'il y a des questions.
 - Bandeau compact "100 % gratuit jusqu'à 10 000 utilisateurs" en bas.
 
 ### Cours `/certifications/{slug}/cours`
@@ -91,12 +91,12 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
 
 ---
 
-## 3. Fonctionnalités — vue utilisateur connecté
+## 3. Fonctionnalités - vue utilisateur connecté
 
 ### Examen blanc (`/certifications/{slug}/examen`)
 
-- **Page intro** — logo, badges de fraîcheur, 4 stats (durée, questions tirées sur pool, barème officiel, requis pour valider).
-- **Barre de maîtrise** (si historique) — répartition maîtrisées / en progrès / à revoir / jamais vues, avec chips colorées.
+- **Page intro** - logo, badges de fraîcheur, 4 stats (durée, questions tirées sur pool, barème officiel, requis pour valider).
+- **Barre de maîtrise** (si historique) - répartition maîtrisées / en progrès / à revoir / jamais vues, avec chips colorées.
 - **Sélecteur de mode de réponse** avant démarrage :
   - "Sélection puis Suivant" (classique)
   - "Auto-suivant" (avance automatique 320 ms après le clic)
@@ -138,11 +138,11 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
   - Progression % (± en points de pourcentage)
   - Badges "Nouveau record temps" / "Nouveau record score"
   - Rappel des records antérieurs.
-- **Bloc maîtrise** — barre 3 couleurs + chips (Maîtrisées / En progrès / À revoir / Jamais vues).
+- **Bloc maîtrise** - barre 3 couleurs + chips (Maîtrisées / En progrès / À revoir / Jamais vues).
 - **Correction** :
   - Par défaut : **uniquement les erreurs**, auto-dépliées.
   - Toggle "Voir tout" / "Erreurs seulement".
-  - Cas sans-faute : bloc vert "Sans-faute — bravo".
+  - Cas sans-faute : bloc vert "Sans-faute - bravo".
   - Chaque erreur : scénario, énoncé, ta réponse (rouge) + bonne réponse (verte).
 
 ### Statistiques (`/stats`)
@@ -158,18 +158,18 @@ Les questions et cours sont produits par IA sur base de prompts durcis (recherch
   - Tooltip au survol : `#tentative`, `%`, statut, date.
   - Badge tendance ↑/↓/= depuis la 1ʳᵉ tentative.
   - 4 mini-stats : Meilleur / Moyenne / Réussies / Meilleur temps.
-- **Table historique** — toutes les tentatives triées, logo, score, %, statut, durée, date + lien "Voir".
+- **Table historique** - toutes les tentatives triées, logo, score, %, statut, durée, date + lien "Voir".
 
 ### Profil (`/profile`)
 
 - Header avec avatar généré (initiales gradient), nom, email, badge admin.
-- Section **Informations** — nom + email avec toast de confirmation.
-- Section **Mot de passe** — courant + nouveau + confirmation.
-- Section **Zone dangereuse** — bouton "Supprimer mon compte" avec **modale custom** de confirmation par mot de passe.
+- Section **Informations** - nom + email avec toast de confirmation.
+- Section **Mot de passe** - courant + nouveau + confirmation.
+- Section **Zone dangereuse** - bouton "Supprimer mon compte" avec **modale custom** de confirmation par mot de passe.
 
 ---
 
-## 4. Fonctionnalités — administration
+## 4. Fonctionnalités - administration
 
 Accès réservé aux users avec `role='admin'` via middleware `admin`.
 
@@ -193,12 +193,12 @@ Accès réservé aux users avec `role='admin'` via middleware `admin`.
 ### Édition d'une certification
 
 - Structure en sections :
-  1. **Identité** — titre, slug (auto si vide), description courte.
-  2. **Contenu marketing** — description longue, importance, postes ciblés (un par ligne, parsé en JSON).
-  3. **Paramètres d'examen** — durée, score requis, questions cible.
-  4. **Fraîcheur & validité** — date de dernière vérif des questions, validity_months + note libre, date de retrait de version.
-  5. **Cours importé** — carte verte avec compteur de blocs + bouton **"Vider le cours"** (case à cocher qui bascule visuellement en rouge, action au submit) ; carte vide avec raccourci "Importer un cours" sinon.
-  6. **Logo & visibilité** — preview du logo, upload avec barre de progression, checkbox "Visible sur la home".
+  1. **Identité** - titre, slug (auto si vide), description courte.
+  2. **Contenu marketing** - description longue, importance, postes ciblés (un par ligne, parsé en JSON).
+  3. **Paramètres d'examen** - durée, score requis, questions cible.
+  4. **Fraîcheur & validité** - date de dernière vérif des questions, validity_months + note libre, date de retrait de version.
+  5. **Cours importé** - carte verte avec compteur de blocs + bouton **"Vider le cours"** (case à cocher qui bascule visuellement en rouge, action au submit) ; carte vide avec raccourci "Importer un cours" sinon.
+  6. **Logo & visibilité** - preview du logo, upload avec barre de progression, checkbox "Visible sur la home".
 - Barre de submit sticky en bas.
 
 ### Questions (`/admin/questions`)
@@ -217,13 +217,13 @@ Accès réservé aux users avec `role='admin'` via middleware `admin`.
 
 - Sections **Contexte** (cert + position + topic), **Énoncé** (scénario optionnel + question), **Réponses**.
 - Éditeur de réponses réinventé :
-  - Badge lettre auto (A/B/C/D…) — non éditable, se re-numérote au réordonnement.
+  - Badge lettre auto (A/B/C/D…) - non éditable, se re-numérote au réordonnement.
   - Clic sur le badge = marque cette réponse comme correcte (badge devient vert + check icon, bordure verte, glow).
   - Boutons monter / descendre / retirer par réponse.
   - De 2 à 6 réponses possibles.
 - Barre de submit sticky avec récap "4 réponses · B marquée comme bonne".
 
-### Import ChatGPT — Questions
+### Import ChatGPT - Questions
 
 - Wizard 3 étapes : choisis certif → copie prompt → colle JSON.
 - **Prompt durci** :
@@ -232,10 +232,10 @@ Accès réservé aux users avec `role='admin'` via middleware `admin`.
   - Cadre "chaque question est réfléchie" (domaine, objectif d'apprentissage, piège pédagogique identifiés).
   - Fallback strict : si recherche infructueuse → `[]`.
 - Aperçu live à droite pendant que tu colles.
-- **Extracteur JSON robuste** — trouve le premier `[` et le `]` qui referme le tableau racine, ignore les footnotes `[1]: https://…` et toute prose ajoutée après.
+- **Extracteur JSON robuste** - trouve le premier `[` et le `]` qui referme le tableau racine, ignore les footnotes `[1]: https://…` et toute prose ajoutée après.
 - Prise en compte des questions déjà en base pour éviter les doublons dans le prompt.
 
-### Import ChatGPT — Cours
+### Import ChatGPT - Cours
 
 - Même pattern que Questions.
 - Format en blocs typés (heading, paragraph, list, callout, key_terms, steps, comparison, example, code, summary).
@@ -248,7 +248,7 @@ Accès réservé aux users avec `role='admin'` via middleware `admin`.
 - Endpoint `GET /admin/certifications/{id}/export`.
 - Fichier téléchargeable `certif-{slug}-{date}.json` en UTF-8 pretty-printé.
 - Contient toutes les métadonnées de la certif + toutes les questions/réponses avec `correct_letter`.
-- Sans prompt embarqué — l'admin colle le JSON dans ChatGPT avec son propre prompt (audit, complétude, propositions).
+- Sans prompt embarqué - l'admin colle le JSON dans ChatGPT avec son propre prompt (audit, complétude, propositions).
 
 ### Paramètres plateforme (`/admin/settings`)
 
@@ -272,7 +272,7 @@ Table `user_question_stats` : par user × question, on stocke `times_seen`, `tim
 1. **Toutes les questions actuellement ratées** (`last_result = 'wrong'`), triées par `times_wrong` desc puis mélangées dans chaque niveau.
 2. Complétées par les **jamais vues** (shuffled).
 3. Puis les **en progrès** (`correct_streak = 1`).
-4. Puis les **maîtrisées** (`correct_streak ≥ 2`) — dernier recours.
+4. Puis les **maîtrisées** (`correct_streak ≥ 2`) - dernier recours.
 5. Ordre final aléatoire.
 
 Résultat vérifié : si tu rates 10 questions, à la session suivante les 10 reviennent (dans un ordre différent). Une question maîtrisée sort de la rotation active.
@@ -288,9 +288,9 @@ Après soumission, chaque `AttemptAnswer` met à jour le stat correspondant (`ti
 - **Design system** dans `resources/css/app.css` : fonts Inter + JetBrains Mono, palette `ink` (10 nuances) + `brand` (10 nuances teal) + `iris` (accent secondaire).
 - Utilitaires `.btn-primary/secondary/ghost`, `.card`, `.card-lift`, `.field`, `.field-label`, `.badge-*`, `.gradient-text`, `.glass-nav`, `.divider-dot`.
 - Dark mode par défaut (via `class`), fond `#0b0f17`.
-- **Aucun emoji** dans le codebase — tous les pictogrammes passent par le composant `<Icon />` (`resources/js/Components/Icons.jsx`), lui-même SVG inline (30+ icônes : Check, Close, ArrowLeft/Right/Up/Down, Refresh, Book, Cards, Timer, Trophy, Target, Sparkles, Bolt, Hand, Shuffle, ChevronDown, Menu, Logo, User, LogOut, Chart, Sun, Moon, Shield, Heart, Mail, Github, Equal).
+- **Aucun emoji** dans le codebase - tous les pictogrammes passent par le composant `<Icon />` (`resources/js/Components/Icons.jsx`), lui-même SVG inline (30+ icônes : Check, Close, ArrowLeft/Right/Up/Down, Refresh, Book, Cards, Timer, Trophy, Target, Sparkles, Bolt, Hand, Shuffle, ChevronDown, Menu, Logo, User, LogOut, Chart, Sun, Moon, Shield, Heart, Mail, Github, Equal).
 - **Animations** dans Tailwind config : `fade-up`, `fade-in`, `scale-in`, `stagger-in`, `toast-in/out/progress`, `shimmer`, `float`, `marquee-scroll`, `marquee-scroll-v`.
-- **Transitions de page** : `<main key={page.url} className="animate-fade-up">` dans les layouts — chaque nav Inertia rejoue une entrée en fade-up.
+- **Transitions de page** : `<main key={page.url} className="animate-fade-up">` dans les layouts - chaque nav Inertia rejoue une entrée en fade-up.
 - **Toaster** (`resources/js/Components/Toaster.jsx`) : notifications bottom-right, slide-in animé, barre de progression de dismiss, 3 variants (success/error/info), écoute automatique des flash Laravel.
 - **Smooth scroll** global (`scroll-behavior: smooth`) + `scroll-margin-top: 6rem` sur toutes les sections pour ne pas passer sous la navbar sticky.
 - **`prefers-reduced-motion`** respecté : toutes les animations passent en 0.01ms.
@@ -303,11 +303,11 @@ Après soumission, chaque `AttemptAnswer` met à jour le stat correspondant (`ti
 - **Frontend** : React 18, Vite, Tailwind CSS 3, `@inertiajs/react`.
 - **Auth** : Laravel Breeze (React stack).
 - **Route model binding par slug** pour toutes les routes publiques certif.
-- **Middleware `admin`** — alias enregistré dans `bootstrap/app.php`, refuse 403 si `user.role !== 'admin'`.
+- **Middleware `admin`** - alias enregistré dans `bootstrap/app.php`, refuse 403 si `user.role !== 'admin'`.
 - **HandleInertiaRequests** partage globalement : `auth.user` (avec `has_attempts`), `settings` (brand_name, brand_logo_path), `flash` (success/error).
 - **AppServiceProvider** partage `brandName` + `brandLogoUrl` à toutes les vues Blade via `View::composer('*', ...)` → utilisé pour `<title>` et `<link rel="icon">`.
 - **Cache** : settings mis en cache forever, invalidé sur `saved`/`deleted`.
-- **Trait `ExtractsJsonArray`** partagé entre les controllers admin d'import — parseur robuste qui isole le premier tableau JSON de haut niveau.
+- **Trait `ExtractsJsonArray`** partagé entre les controllers admin d'import - parseur robuste qui isole le premier tableau JSON de haut niveau.
 
 ### Migrations (chronologiques)
 
@@ -322,10 +322,10 @@ Après soumission, chaque `AttemptAnswer` met à jour le stat correspondant (`ti
 
 ### Seeders
 
-- `AdminUserSeeder` — admin + user de démo (`password`).
-- `SettingSeeder` — restaure brand_name + brand_logo_path depuis `database/seeders/data/settings.json`, recopie le logo dans `storage/app/public/brand/`.
-- `CertificationSeeder` — **snapshot restore** depuis `database/seeders/data/certifications.json` et `questions.json`, recopie les logos dans `storage/app/public/logos/`, purge et réinsère toutes les questions.
-- `ItilFoundationSeeder` — no-op (absorbé dans le snapshot).
+- `AdminUserSeeder` - admin + user de démo (`password`).
+- `SettingSeeder` - restaure brand_name + brand_logo_path depuis `database/seeders/data/settings.json`, recopie le logo dans `storage/app/public/brand/`.
+- `CertificationSeeder` - **snapshot restore** depuis `database/seeders/data/certifications.json` et `questions.json`, recopie les logos dans `storage/app/public/logos/`, purge et réinsère toutes les questions.
+- `ItilFoundationSeeder` - no-op (absorbé dans le snapshot).
 
 `php artisan migrate:fresh --seed` restaure à l'identique : 4 certifs, 170 questions, 680 réponses, 2 users, 2 settings, 3 fichiers logo.
 
@@ -343,6 +343,6 @@ Après soumission, chaque `AttemptAnswer` met à jour le stat correspondant (`ti
 | POST | `/exam/{attempt}/submit` | Soumettre |
 | GET | `/exam/{attempt}/result` | Résultat |
 | GET | `/stats` | Statistiques user (auth) |
-| — | `/admin/*` | Console admin (auth + role admin) |
+| - | `/admin/*` | Console admin (auth + role admin) |
 | GET | `/admin/certifications/{id}/export` | Export JSON Q/R |
 | GET/POST | `/admin/settings` | Brand name + logo |

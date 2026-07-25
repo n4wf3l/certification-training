@@ -1,9 +1,13 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import { LANGUAGE_CATALOG, DEFAULT_LANGUAGE } from '@/lib/languages';
+import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function Form({ certification, question_counts_by_domain = {} }) {
+    const t = useT();
+    const locale = useLocale();
     const editing = !!certification;
 
     const { data, setData, post, processing, errors, progress } = useForm({
@@ -28,8 +32,28 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
         logo: null,
         remove_course: false,
         syllabus_blueprint: certification?.syllabus_blueprint ?? null,
+        available_languages: certification?.available_languages?.length
+            ? certification.available_languages
+            : [DEFAULT_LANGUAGE],
         _method: editing ? 'put' : 'post',
     });
+
+    const selectedLanguages = useMemo(
+        () => new Set(data.available_languages || []),
+        [data.available_languages]
+    );
+
+    const toggleLanguage = (code) => {
+        const next = new Set(selectedLanguages);
+        if (next.has(code)) {
+            // Interdit de tout decocher : au moins 1 langue pour que le prompt reste utilisable.
+            if (next.size <= 1) return;
+            next.delete(code);
+        } else {
+            next.add(code);
+        }
+        setData('available_languages', Array.from(next));
+    };
 
     // Blueprint editor : local rows state derived from the object.
     const [blueprintRows, setBlueprintRows] = useState(() => {
@@ -64,32 +88,39 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
         post(url, { forceFormData: true });
     };
 
+    const headTitle = editing
+        ? t('admin.certs_form.head_title_edit', { title: certification.title })
+        : t('admin.certs_form.head_title_new');
+    const pageTitle = editing
+        ? t('admin.certs_form.head_title_edit', { title: certification.title })
+        : t('admin.certs_form.head_title_new');
+
     return (
         <AppLayout>
-            <Head title={editing ? `Éditer ${certification.title}` : 'Nouvelle certification'} />
+            <Head title={headTitle} />
 
             <div className="mx-auto max-w-4xl space-y-6">
                 {/* Breadcrumb + Header */}
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-xs text-ink-500">
-                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">Dashboard</Link>
+                        <Link href={route('admin.dashboard')} className="hover:text-brand-500">{t('admin.common.dashboard_breadcrumb')}</Link>
                         <span>/</span>
-                        <Link href={route('admin.certifications.index')} className="hover:text-brand-500">Certifications</Link>
+                        <Link href={route('admin.certifications.index')} className="hover:text-brand-500">{t('admin.certs_index.title')}</Link>
                         <span>/</span>
                         <span className="text-ink-700 dark:text-ink-300">
-                            {editing ? certification.title : 'Nouvelle'}
+                            {editing ? certification.title : t('admin.certs_form.breadcrumb_new')}
                         </span>
                     </div>
                     <div className="flex flex-wrap items-end justify-between gap-4">
                         <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
-                            {editing ? `Éditer ${certification.title}` : 'Nouvelle certification'}
+                            {pageTitle}
                         </h1>
                         <Link
                             href={route('admin.certifications.index')}
                             className="btn-ghost !py-2"
                         >
                             <Icon.ArrowLeft className="h-4 w-4" />
-                            Retour
+                            {t('admin.common.back')}
                         </Link>
                     </div>
                 </div>
@@ -98,35 +129,35 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {/* Identity */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Identité"
-                            description="Titre visible sur la home, slug utilisé dans l'URL, description courte affichée sur la carte."
+                            title={t('admin.certs_form.section_identity')}
+                            description={t('admin.certs_form.section_identity_desc')}
                         />
                         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                            <Field label="Titre" required error={errors.title} className="sm:col-span-2">
+                            <Field label={t('admin.certs_form.field_title')} required error={errors.title} className="sm:col-span-2">
                                 <input
                                     className="field"
                                     value={data.title}
                                     onChange={(e) => setData('title', e.target.value)}
-                                    placeholder="Ex. ITIL Foundation v5"
+                                    placeholder={t('admin.certs_form.field_title_placeholder')}
                                 />
                             </Field>
-                            <Field label="Slug" hint="auto si vide" error={errors.slug}>
+                            <Field label={t('admin.certs_form.field_slug')} hint={t('admin.certs_form.field_slug_hint')} error={errors.slug}>
                                 <input
                                     className="field font-mono"
                                     value={data.slug}
                                     onChange={(e) => setData('slug', e.target.value)}
-                                    placeholder="itil-foundation-v5"
+                                    placeholder={t('admin.certs_form.field_slug_placeholder')}
                                 />
                             </Field>
                         </div>
                         <div className="mt-4">
-                            <Field label="Description courte (2 lignes max)" error={errors.description}>
+                            <Field label={t('admin.certs_form.field_description')} error={errors.description}>
                                 <textarea
                                     rows={2}
                                     className="field resize-y"
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
-                                    placeholder="Le référentiel mondial de la gestion des services IT."
+                                    placeholder={t('admin.certs_form.field_description_placeholder')}
                                 />
                             </Field>
                         </div>
@@ -135,11 +166,11 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {/* Rich content */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Contenu marketing"
-                            description="Ce qui aide le guest à comprendre pourquoi cette certif est intéressante et pour quels postes."
+                            title={t('admin.certs_form.section_content')}
+                            description={t('admin.certs_form.section_content_desc')}
                         />
                         <div className="mt-4 space-y-4">
-                            <Field label="Description longue (à quoi ça sert, ce qui est couvert)" error={errors.long_description}>
+                            <Field label={t('admin.certs_form.field_long_description')} error={errors.long_description}>
                                 <textarea
                                     rows={5}
                                     className="field resize-y"
@@ -147,7 +178,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     onChange={(e) => setData('long_description', e.target.value)}
                                 />
                             </Field>
-                            <Field label="Importance (impact carrière)" error={errors.importance}>
+                            <Field label={t('admin.certs_form.field_importance')} error={errors.importance}>
                                 <textarea
                                     rows={4}
                                     className="field resize-y"
@@ -155,11 +186,11 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     onChange={(e) => setData('importance', e.target.value)}
                                 />
                             </Field>
-                            <Field label="Postes ciblés" hint="un par ligne" error={errors.target_roles_text}>
+                            <Field label={t('admin.certs_form.field_target_roles')} hint={t('admin.certs_form.field_target_roles_hint')} error={errors.target_roles_text}>
                                 <textarea
                                     rows={5}
                                     className="field font-mono resize-y"
-                                    placeholder={"IT Service Manager\nChange Manager\nProblem Manager"}
+                                    placeholder={t('admin.certs_form.field_target_roles_placeholder')}
                                     value={data.target_roles_text}
                                     onChange={(e) => setData('target_roles_text', e.target.value)}
                                 />
@@ -167,14 +198,72 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                         </div>
                     </section>
 
+                    {/* Available languages */}
+                    <section className="card p-6">
+                        <SectionHeader
+                            title={t('admin.certs_form.section_languages')}
+                            description={t('admin.certs_form.section_languages_desc')}
+                        />
+                        <div className="mt-4">
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                                {LANGUAGE_CATALOG.map((lang) => {
+                                    const active = selectedLanguages.has(lang.code);
+                                    return (
+                                        <label
+                                            key={lang.code}
+                                            className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm transition ${
+                                                active
+                                                    ? 'border-brand-500 bg-brand-500/10 text-ink-900 dark:text-white'
+                                                    : 'border-ink-200 bg-white hover:border-ink-300 dark:border-ink-800 dark:bg-ink-900/40 dark:hover:border-ink-700'
+                                            }`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="sr-only"
+                                                checked={active}
+                                                onChange={() => toggleLanguage(lang.code)}
+                                            />
+                                            <span
+                                                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                                                    active
+                                                        ? 'bg-brand-500 text-white'
+                                                        : 'bg-ink-100 text-ink-500 dark:bg-ink-800 dark:text-ink-400'
+                                                }`}
+                                            >
+                                                {lang.code}
+                                            </span>
+                                            <span className="flex flex-col leading-tight">
+                                                <span className="font-semibold">{lang.label}</span>
+                                                <span className="text-[11px] text-ink-500" lang={lang.code}>
+                                                    {lang.native}
+                                                </span>
+                                            </span>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                            {errors.available_languages && (
+                                <p className="mt-2 text-xs text-rose-500">{errors.available_languages}</p>
+                            )}
+                            <p className="mt-3 text-xs text-ink-500">
+                                {t(
+                                    selectedLanguages.size > 1
+                                        ? 'admin.certs_form.languages_active_plural'
+                                        : 'admin.certs_form.languages_active_singular',
+                                    { count: selectedLanguages.size }
+                                )}
+                            </p>
+                        </div>
+                    </section>
+
                     {/* Exam config */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Paramètres d'examen"
-                            description="Format officiel de l'épreuve — durée, nombre de questions, score minimum pour valider."
+                            title={t('admin.certs_form.section_exam')}
+                            description={t('admin.certs_form.section_exam_desc')}
                         />
                         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                            <Field label="Durée (minutes)" required error={errors.duration_minutes}>
+                            <Field label={t('admin.certs_form.field_duration')} required error={errors.duration_minutes}>
                                 <input
                                     type="number"
                                     min="1"
@@ -183,7 +272,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     onChange={(e) => setData('duration_minutes', +e.target.value)}
                                 />
                             </Field>
-                            <Field label="Score requis" required error={errors.passing_score}>
+                            <Field label={t('admin.certs_form.field_passing_score')} required error={errors.passing_score}>
                                 <input
                                     type="number"
                                     min="1"
@@ -192,7 +281,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     onChange={(e) => setData('passing_score', +e.target.value)}
                                 />
                             </Field>
-                            <Field label="Questions cible" required error={errors.total_questions}>
+                            <Field label={t('admin.certs_form.field_total_questions')} required error={errors.total_questions}>
                                 <input
                                     type="number"
                                     min="1"
@@ -207,11 +296,11 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {/* Freshness + validity */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Fraîcheur & validité"
-                            description="Quand les questions ont été vérifiées, combien de temps la certif reste valable pour un candidat, et quand la version d'examen est retirée par l'éditeur."
+                            title={t('admin.certs_form.section_freshness')}
+                            description={t('admin.certs_form.section_freshness_desc')}
                         />
                         <div className="mt-4 space-y-4">
-                            <Field label="Date de dernière vérification des questions" error={errors.questions_updated_at}>
+                            <Field label={t('admin.certs_form.field_questions_updated_at')} error={errors.questions_updated_at}>
                                 <input
                                     type="datetime-local"
                                     className="field"
@@ -220,7 +309,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                 />
                             </Field>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                                <Field label="Validité (mois)" hint="vide = sans expiration" error={errors.validity_months}>
+                                <Field label={t('admin.certs_form.field_validity_months')} hint={t('admin.certs_form.field_validity_months_hint')} error={errors.validity_months}>
                                     <input
                                         type="number"
                                         min="1"
@@ -230,17 +319,17 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                         onChange={(e) => setData('validity_months', e.target.value === '' ? '' : +e.target.value)}
                                     />
                                 </Field>
-                                <Field label="Note de validité (renouvellement)" error={errors.validity_note} className="sm:col-span-2">
+                                <Field label={t('admin.certs_form.field_validity_note')} error={errors.validity_note} className="sm:col-span-2">
                                     <textarea
                                         rows={3}
                                         className="field resize-y"
-                                        placeholder="Renouvelable via… / Pas d'expiration mais…"
+                                        placeholder={t('admin.certs_form.field_validity_note_placeholder')}
                                         value={data.validity_note}
                                         onChange={(e) => setData('validity_note', e.target.value)}
                                     />
                                 </Field>
                             </div>
-                            <Field label="Date de retrait de la version d'examen" hint="vide si non annoncée" error={errors.version_retires_at}>
+                            <Field label={t('admin.certs_form.field_version_retires_at')} hint={t('admin.certs_form.field_version_retires_at_hint')} error={errors.version_retires_at}>
                                 <input
                                     type="date"
                                     className="field"
@@ -248,7 +337,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     onChange={(e) => setData('version_retires_at', e.target.value)}
                                 />
                                 <p className="mt-1 text-xs text-ink-500">
-                                    Différent de la validité individuelle : c'est la date à laquelle l'éditeur retire l'examen du catalogue (ex. ITIL 4 : 31 déc 2027).
+                                    {t('admin.certs_form.field_version_retires_at_help')}
                                 </p>
                             </Field>
                         </div>
@@ -258,8 +347,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {editing && (
                         <section className="card p-6">
                             <SectionHeader
-                                title="Cours importé"
-                                description="Contenu pédagogique lié à cette certification (importé via ChatGPT depuis /admin/certifications/course-import)."
+                                title={t('admin.certs_form.section_course')}
+                                description={t('admin.certs_form.section_course_desc')}
                             />
                             <div className="mt-4">
                                 {certification.course_blocks_count > 0 ? (
@@ -270,11 +359,21 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                             </span>
                                             <div>
                                                 <div className="font-semibold text-ink-900 dark:text-white">
-                                                    {certification.course_blocks_count} blocs de contenu publiés
+                                                    {t(
+                                                        certification.course_blocks_count > 1
+                                                            ? 'admin.certs_form.course_blocks_published_plural'
+                                                            : 'admin.certs_form.course_blocks_published_singular',
+                                                        { count: certification.course_blocks_count }
+                                                    )}
                                                 </div>
                                                 {certification.course_updated_at && (
                                                     <div className="text-xs text-ink-500">
-                                                        Mis à jour le {new Date(certification.course_updated_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                                        {t('admin.certs_form.course_updated_on', {
+                                                            date: new Date(certification.course_updated_at).toLocaleDateString(
+                                                                locale === 'fr' ? 'fr-FR' : 'en-US',
+                                                                { day: '2-digit', month: 'long', year: 'numeric' }
+                                                            ),
+                                                        })}
                                                     </div>
                                                 )}
                                             </div>
@@ -293,27 +392,27 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                                 onChange={(e) => setData('remove_course', e.target.checked)}
                                             />
                                             <Icon.Close className="h-3.5 w-3.5" />
-                                            {data.remove_course ? 'Sera vidé à l\'enregistrement' : 'Vider le cours'}
+                                            {data.remove_course ? t('admin.certs_form.course_will_clear') : t('admin.certs_form.course_clear')}
                                         </label>
                                     </div>
                                 ) : (
                                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-dashed border-ink-300 bg-ink-50 p-4 dark:border-ink-700 dark:bg-ink-900/40">
                                         <div className="flex items-center gap-3 text-sm text-ink-500">
                                             <Icon.Book className="h-4 w-4" />
-                                            Aucun cours importé pour cette certification.
+                                            {t('admin.certs_form.course_none')}
                                         </div>
                                         <Link
                                             href={`${route('admin.certifications.course-import')}?certification_id=${certification.id}`}
                                             className="btn-secondary !py-1.5 !text-xs"
                                         >
                                             <Icon.Bolt className="h-3.5 w-3.5" />
-                                            Importer un cours
+                                            {t('admin.certs_form.course_import_cta')}
                                         </Link>
                                     </div>
                                 )}
                                 {data.remove_course && certification.course_blocks_count > 0 && (
                                     <p className="mt-2 text-xs text-rose-500">
-                                        Attention : cette action est irréversible. Le contenu sera perdu, tu devras le réimporter.
+                                        {t('admin.certs_form.course_clear_warning')}
                                     </p>
                                 )}
                             </div>
@@ -324,13 +423,13 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {editing && (
                         <section className="card p-6">
                             <SectionHeader
-                                title="Blueprint syllabus"
-                                description="Répartition en % par domaine du syllabus. Utilisée pour tirer un examen équilibré : sur les 40 questions, chaque domaine reçoit sa part proportionnelle. Le total doit faire 100."
+                                title={t('admin.certs_form.section_blueprint')}
+                                description={t('admin.certs_form.section_blueprint_desc')}
                             />
                             <div className="mt-4">
                                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                                     <div className="font-mono text-xs">
-                                        <span className="text-ink-500">Total :</span>{' '}
+                                        <span className="text-ink-500">{t('admin.certs_form.blueprint_total')}</span>{' '}
                                         <span className={`font-semibold ${
                                             blueprintTotal === 100
                                                 ? 'text-emerald-600 dark:text-emerald-300'
@@ -340,7 +439,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                         </span>
                                         {blueprintTotal !== 100 && blueprintRows.length > 0 && (
                                             <span className="ml-2 text-amber-600 dark:text-amber-300">
-                                                (doit faire 100 pour un tirage équilibré)
+                                                {t('admin.certs_form.blueprint_must_100')}
                                             </span>
                                         )}
                                     </div>
@@ -350,20 +449,20 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                         className="btn-ghost !py-1.5 !text-xs"
                                     >
                                         <Icon.Sparkles className="h-3.5 w-3.5" />
-                                        Ajouter un domaine
+                                        {t('admin.certs_form.blueprint_add_domain')}
                                     </button>
                                 </div>
 
                                 {blueprintRows.length === 0 ? (
                                     <div className="rounded-2xl border border-dashed border-ink-300 bg-ink-50 p-4 text-sm text-ink-500 dark:border-ink-700 dark:bg-ink-900/40">
-                                        Aucun blueprint défini. Le tirage sera 100 % adaptatif, sans respect de proportions par domaine.
+                                        {t('admin.certs_form.blueprint_empty')}
                                     </div>
                                 ) : (
                                     <div className="space-y-2">
                                         <div className="hidden grid-cols-12 gap-2 px-2 font-mono text-[10px] uppercase tracking-widest text-ink-500 sm:grid">
-                                            <div className="col-span-5">Domaine (slug)</div>
-                                            <div className="col-span-2 text-right">%</div>
-                                            <div className="col-span-4">Couverture réelle</div>
+                                            <div className="col-span-5">{t('admin.certs_form.blueprint_col_domain')}</div>
+                                            <div className="col-span-2 text-right">{t('admin.certs_form.blueprint_col_pct')}</div>
+                                            <div className="col-span-4">{t('admin.certs_form.blueprint_col_coverage')}</div>
                                             <div className="col-span-1" />
                                         </div>
                                         {blueprintRows.map((row, i) => {
@@ -376,7 +475,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                                         type="text"
                                                         value={row.key}
                                                         onChange={(e) => updateRow(i, { key: e.target.value })}
-                                                        placeholder="ex: guiding-principles"
+                                                        placeholder={t('admin.certs_form.blueprint_row_placeholder')}
                                                         className="field col-span-5 !py-2 font-mono text-xs"
                                                     />
                                                     <input
@@ -389,14 +488,14 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                                         className="field col-span-2 !py-2 text-right font-mono text-xs"
                                                     />
                                                     <div className={`col-span-4 font-mono text-xs ${insufficient ? 'text-amber-600 dark:text-amber-300' : 'text-ink-500'}`}>
-                                                        {count} Q en base · {target}/{examSize} par examen
-                                                        {insufficient && ' ⚠'}
+                                                        {t('admin.certs_form.blueprint_row_coverage', { count, target, size: examSize })}
+                                                        {insufficient && ' !'}
                                                     </div>
                                                     <button
                                                         type="button"
                                                         onClick={() => removeRow(i)}
                                                         className="col-span-1 flex h-8 w-8 items-center justify-center rounded-lg text-ink-400 transition hover:bg-rose-500/10 hover:text-rose-500"
-                                                        title="Supprimer ce domaine"
+                                                        title={t('admin.certs_form.blueprint_delete_domain')}
                                                     >
                                                         <Icon.Close className="h-4 w-4" />
                                                     </button>
@@ -405,9 +504,10 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                         })}
                                     </div>
                                 )}
-                                <p className="mt-3 text-xs text-ink-500">
-                                    Le slug du domaine (ex : <code className="rounded bg-ink-100 px-1 dark:bg-ink-800">practices</code>) doit correspondre à ceux stockés sur les questions. Colonne « Couverture réelle » : nombre de questions actuellement classées dans ce domaine.
-                                </p>
+                                <p
+                                    className="mt-3 text-xs text-ink-500"
+                                    dangerouslySetInnerHTML={{ __html: t('admin.certs_form.blueprint_help_html') }}
+                                />
                             </div>
                         </section>
                     )}
@@ -415,8 +515,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {/* Visuals + visibility */}
                     <section className="card p-6">
                         <SectionHeader
-                            title="Logo & visibilité"
-                            description="Le logo apparaît sur la carte home et sur la page détail. La visibilité contrôle l'apparition dans la liste guest."
+                            title={t('admin.certs_form.section_logo')}
+                            description={t('admin.certs_form.section_logo_desc')}
                         />
                         <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr]">
                             {editing && certification.logo_path ? (
@@ -431,7 +531,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                 </div>
                             )}
                             <div>
-                                <Field label="Logo (PNG/JPG/SVG, max 2 Mo)" error={errors.logo}>
+                                <Field label={t('admin.certs_form.field_logo')} error={errors.logo}>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -458,10 +558,10 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                             />
                             <div>
                                 <div className="text-sm font-semibold text-ink-900 dark:text-white">
-                                    Visible sur la page d'accueil
+                                    {t('admin.certs_form.visibility_title')}
                                 </div>
                                 <div className="text-xs text-ink-500">
-                                    Décoche pour masquer temporairement cette certif aux guests (utile pour la préparer).
+                                    {t('admin.certs_form.visibility_desc')}
                                 </div>
                             </div>
                         </label>
@@ -470,10 +570,14 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     {/* Submit bar */}
                     <div className="sticky bottom-4 z-10 flex items-center justify-end gap-2 rounded-2xl border border-ink-200/60 bg-white/90 p-3 shadow-xl backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-900/90">
                         <Link href={route('admin.certifications.index')} className="btn-secondary">
-                            Annuler
+                            {t('admin.common.cancel')}
                         </Link>
                         <button type="submit" disabled={processing} className="btn-primary">
-                            {processing ? 'Enregistrement…' : editing ? 'Mettre à jour' : 'Créer la certification'}
+                            {processing
+                                ? t('admin.common.saving')
+                                : editing
+                                    ? t('admin.certs_form.submit_update')
+                                    : t('admin.certs_form.submit_create')}
                         </button>
                     </div>
                 </form>

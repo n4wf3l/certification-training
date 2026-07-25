@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import PlatformPromise from '@/Components/PlatformPromise';
+import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
 
 function Logo({ certification, size = 'lg' }) {
@@ -46,7 +47,6 @@ function ModeCard({ href, disabled, IconComp, title, description, meta, accent, 
                     : 'card-lift hover:border-brand-500/40'
             }`}
         >
-            {/* Glow accent */}
             <div className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl transition group-hover:opacity-30`} />
 
             <div className="mb-5 flex items-start justify-between">
@@ -76,8 +76,8 @@ function ModeCard({ href, disabled, IconComp, title, description, meta, accent, 
 }
 
 function MasteryBar({ mastery }) {
-    const t = mastery.total || 1;
-    const pct = (n) => `${(n / t) * 100}%`;
+    const total = mastery.total || 1;
+    const pct = (n) => `${(n / total) * 100}%`;
     return (
         <div className="flex h-2 w-full overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
             <div className="bg-emerald-500" style={{ width: pct(mastery.mastered) }} />
@@ -88,54 +88,57 @@ function MasteryBar({ mastery }) {
 }
 
 function RetirementCard({ label, days, urgency }) {
+    const t = useT();
     const themes = {
         past: {
             accent: 'from-rose-600 to-red-600',
             ring: 'bg-rose-500',
-            title: "Version retirée par l'éditeur",
-            main: `Depuis ${label}`,
-            note: "Cet examen n'est plus proposé par l'organisme officiel. Les candidats qui l'avaient déjà passé restent certifiés, mais on ne peut plus s'y inscrire.",
+            title: t('cert_show.retire_past_title'),
+            main: t('cert_show.retire_past_main', { date: label }),
+            note: t('cert_show.retire_past_note'),
         },
         critical: {
             accent: 'from-rose-500 to-orange-500',
             ring: 'bg-rose-500',
-            title: 'Version retirée bientôt',
-            main: `Encore ${days} jour${days > 1 ? 's' : ''}`,
-            note: `L'éditeur retire cette version le ${label}. Passe l'examen avant cette date pour rester sur cette version.`,
+            title: t('cert_show.retire_critical_title'),
+            main: days === 1
+                ? t('cert_show.retire_critical_main_one', { days })
+                : t('cert_show.retire_critical_main', { days }),
+            note: t('cert_show.retire_critical_note', { date: label }),
         },
         warning: {
             accent: 'from-amber-500 to-orange-500',
             ring: 'bg-amber-500',
-            title: 'Retrait de version programmé',
-            main: `Le ${label}`,
-            note: `Il te reste environ ${Math.round(days / 30)} mois pour passer cette version avant qu'elle soit remplacée par la suivante.`,
+            title: t('cert_show.retire_warning_title'),
+            main: t('cert_show.retire_warning_main', { date: label }),
+            note: t('cert_show.retire_warning_note', { months: Math.round(days / 30) }),
         },
         ok: {
             accent: 'from-emerald-500 to-teal-500',
             ring: 'bg-emerald-500',
-            title: 'Retrait de version annoncé',
-            main: `Le ${label}`,
-            note: `Cette version restera proposée pendant encore ${Math.round(days / 30)} mois. Aucune urgence à s'y prendre à l'avance.`,
+            title: t('cert_show.retire_ok_title'),
+            main: t('cert_show.retire_ok_main', { date: label }),
+            note: t('cert_show.retire_ok_note', { months: Math.round(days / 30) }),
         },
     };
-    const t = themes[urgency] || themes.ok;
+    const theme = themes[urgency] || themes.ok;
 
     return (
         <div className="card relative overflow-hidden p-5">
-            <div className={`pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full ${t.ring} opacity-10 blur-2xl`} />
+            <div className={`pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full ${theme.ring} opacity-10 blur-2xl`} />
             <div className="relative flex items-start gap-4">
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${t.accent} text-white shadow-glow`}>
+                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${theme.accent} text-white shadow-glow`}>
                     <Icon.Timer className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-                        {t.title}
+                        {theme.title}
                     </div>
                     <div className="mt-1 font-mono text-2xl font-bold text-ink-900 dark:text-white">
-                        {t.main}
+                        {theme.main}
                     </div>
                     <p className="mt-2 text-sm text-ink-600 dark:text-ink-400">
-                        {t.note}
+                        {theme.note}
                     </p>
                 </div>
             </div>
@@ -143,13 +146,13 @@ function RetirementCard({ label, days, urgency }) {
     );
 }
 
-function formatValidity(months) {
+function formatValidity(months, t) {
     if (!months) return null;
     if (months % 12 === 0) {
         const y = months / 12;
-        return `${y} an${y > 1 ? 's' : ''}`;
+        return y === 1 ? t('cert_show.duration_years_one', { n: y }) : t('cert_show.duration_years_many', { n: y });
     }
-    return `${months} mois`;
+    return t('cert_show.duration_months', { n: months });
 }
 
 function daysUntil(dateStr) {
@@ -160,17 +163,20 @@ function daysUntil(dateStr) {
 }
 
 export default function Show({ certification, mastery }) {
+    const t = useT();
+    const locale = useLocale();
+    const dateLocaleTag = locale === 'fr' ? 'fr-FR' : 'en-US';
     const updatedAt = certification.questions_updated_at
-        ? new Date(certification.questions_updated_at).toLocaleDateString('fr-FR', {
+        ? new Date(certification.questions_updated_at).toLocaleDateString(dateLocaleTag, {
               day: '2-digit',
               month: 'long',
               year: 'numeric',
           })
         : null;
-    const validity = formatValidity(certification.validity_months);
+    const validity = formatValidity(certification.validity_months, t);
     const retiresAt = certification.version_retires_at;
     const retiresAtLabel = retiresAt
-        ? new Date(retiresAt).toLocaleDateString('fr-FR', {
+        ? new Date(retiresAt).toLocaleDateString(dateLocaleTag, {
               day: '2-digit',
               month: 'long',
               year: 'numeric',
@@ -200,39 +206,39 @@ export default function Show({ certification, mastery }) {
                             <div className="flex flex-wrap items-center gap-2">
                                 <Link href={route('home')} className="inline-flex items-center gap-1 text-xs text-ink-500 hover:text-brand-500">
                                     <Icon.ArrowLeft className="h-3 w-3" />
-                                    Certifications
+                                    {t('cert_show.breadcrumb_back')}
                                 </Link>
                                 <span className="divider-dot" />
                                 <span className="badge-brand">
                                     <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                                    {certification.available_questions} questions
+                                    {t('cert_show.badge_questions', { n: certification.available_questions })}
                                 </span>
                                 {updatedAt && (
                                     <span className="badge-success">
                                         <Icon.Check className="h-3 w-3" />
-                                        Questions à jour · {updatedAt}
+                                        {t('cert_show.badge_questions_up_to_date', { date: updatedAt })}
                                     </span>
                                 )}
                                 <span className="badge-brand">
                                     <Icon.Timer className="h-3 w-3" />
-                                    {validity ? `Valide ${validity}` : 'Sans expiration'}
+                                    {validity ? t('cert_show.badge_valid_for', { duration: validity }) : t('cert_show.badge_no_expiration')}
                                 </span>
                                 {retireUrgency === 'critical' && (
                                     <span className="badge-danger">
-                                        Version retirée le {retiresAtLabel}
+                                        {t('cert_show.badge_retires_on', { date: retiresAtLabel })}
                                     </span>
                                 )}
                                 {retireUrgency === 'warning' && (
                                     <span className="badge-warn">
-                                        Retrait de version le {retiresAtLabel}
+                                        {t('cert_show.badge_retires_soon', { date: retiresAtLabel })}
                                     </span>
                                 )}
                                 {retireUrgency === 'past' && (
                                     <span className="badge-danger">
-                                        Version retirée
+                                        {t('cert_show.badge_retired')}
                                     </span>
                                 )}
-                                <span className="badge-warn">Gratuit</span>
+                                <span className="badge-warn">{t('cert_show.badge_free')}</span>
                             </div>
                             <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink-900 dark:text-white">
                                 {certification.title}
@@ -248,10 +254,10 @@ export default function Show({ certification, mastery }) {
                         <div className="relative border-t border-ink-200/60 p-6 dark:border-ink-800/60">
                             <div className="mb-3 flex items-center justify-between">
                                 <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-                                    Ta progression
+                                    {t('cert_show.progress_label')}
                                 </span>
                                 <span className="font-mono text-sm text-ink-500">
-                                    {mastery.mastered}/{mastery.total} maîtrisées
+                                    {t('cert_show.progress_mastered', { mastered: mastery.mastered, total: mastery.total })}
                                 </span>
                             </div>
                             <MasteryBar mastery={mastery} />
@@ -271,10 +277,10 @@ export default function Show({ certification, mastery }) {
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-                                            Ta certification (après obtention)
+                                            {t('cert_show.validity_kicker')}
                                         </div>
                                         <div className="mt-1 font-mono text-2xl font-bold text-ink-900 dark:text-white">
-                                            {validity ? `Valide ${validity}` : "Sans date d'expiration"}
+                                            {validity ? t('cert_show.validity_valid', { duration: validity }) : t('cert_show.validity_no_expiration')}
                                         </div>
                                         {certification.validity_note && (
                                             <p className="mt-2 text-sm text-ink-600 dark:text-ink-400">
@@ -302,7 +308,7 @@ export default function Show({ certification, mastery }) {
                             <div className="card p-6 lg:col-span-2">
                                 <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
                                     <Icon.Book className="h-4 w-4" />
-                                    À quoi sert cette certification
+                                    {t('cert_show.about_title')}
                                 </h3>
                                 <p className="text-ink-700 leading-relaxed dark:text-ink-200">
                                     {certification.long_description}
@@ -311,7 +317,7 @@ export default function Show({ certification, mastery }) {
                                     <div className="mt-5 rounded-xl border-l-4 border-brand-500 bg-brand-500/5 p-4">
                                         <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-500">
                                             <Icon.Target className="h-3.5 w-3.5" />
-                                            Pourquoi la passer
+                                            {t('cert_show.why_title')}
                                         </div>
                                         <p className="text-sm text-ink-700 dark:text-ink-200">
                                             {certification.importance}
@@ -324,7 +330,7 @@ export default function Show({ certification, mastery }) {
                             <div className="card p-6">
                                 <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
                                     <Icon.Trophy className="h-4 w-4" />
-                                    Postes ciblés
+                                    {t('cert_show.roles_title')}
                                 </h3>
                                 <ul className="space-y-2">
                                     {certification.target_roles.map((role) => (
@@ -346,10 +352,10 @@ export default function Show({ certification, mastery }) {
                 <div>
                     <div className="mb-4">
                         <h2 className="text-2xl font-bold tracking-tight text-ink-900 dark:text-white">
-                            Choisis ta méthode
+                            {t('cert_show.modes_title')}
                         </h2>
                         <p className="mt-1 text-sm text-ink-500">
-                            Trois approches complémentaires pour préparer ton examen.
+                            {t('cert_show.modes_subtitle')}
                         </p>
                     </div>
 
@@ -358,21 +364,23 @@ export default function Show({ certification, mastery }) {
                             <ModeCard
                                 href={route('certifications.course', certification.slug)}
                                 accent="amber"
-                                badge={certification.has_course ? null : 'Bientôt'}
+                                badge={certification.has_course ? null : t('cert_show.mode_course_badge_soon')}
                                 disabled={!certification.has_course}
                                 IconComp={Icon.Book}
-                                title="Cours"
+                                title={t('cert_show.mode_course_title')}
                                 description={
                                     certification.has_course
-                                        ? "Résumés théoriques structurés, schémas et exemples pour comprendre avant de te tester."
-                                        : "Résumés théoriques, schémas et exemples pour comprendre les concepts avant de te tester."
+                                        ? t('cert_show.mode_course_ready_desc')
+                                        : t('cert_show.mode_course_soon_desc')
                                 }
                                 meta={
                                     certification.has_course
                                         ? (certification.course_updated_at
-                                            ? `Mis à jour le ${new Date(certification.course_updated_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}`
-                                            : 'Prêt à lire')
-                                        : 'Modules progressifs'
+                                            ? t('cert_show.mode_course_meta_updated', {
+                                                date: new Date(certification.course_updated_at).toLocaleDateString(dateLocaleTag, { day: '2-digit', month: 'short', year: 'numeric' }),
+                                            })
+                                            : t('cert_show.mode_course_meta_ready'))
+                                        : t('cert_show.mode_course_meta_soon')
                                 }
                             />
                         </div>
@@ -381,9 +389,9 @@ export default function Show({ certification, mastery }) {
                                 href={route('certifications.flashcards', certification.slug)}
                                 accent="emerald"
                                 IconComp={Icon.Cards}
-                                title="Flashcards"
-                                description="Révise sans pression : une carte à la fois, retourne pour voir la réponse. Idéal pour ancrer les définitions."
-                                meta={`${certification.available_questions} cartes`}
+                                title={t('cert_show.mode_flashcards_title')}
+                                description={t('cert_show.mode_flashcards_desc')}
+                                meta={t('cert_show.mode_flashcards_meta', { n: certification.available_questions })}
                             />
                         </div>
                         <div className="animate-stagger-in" style={{ animationDelay: '160ms' }}>
@@ -391,9 +399,9 @@ export default function Show({ certification, mastery }) {
                                 href={route('certifications.exam', certification.slug)}
                                 accent="brand"
                                 IconComp={Icon.Timer}
-                                title="Examen blanc"
-                                description="Conditions réelles : timer, tirage aléatoire de 40 questions, score final et correction complète."
-                                meta={`${certification.duration_minutes} min · ${certification.passing_score}/${certification.total_questions} pour valider`}
+                                title={t('cert_show.mode_exam_title')}
+                                description={t('cert_show.mode_exam_desc')}
+                                meta={t('cert_show.mode_exam_meta', { minutes: certification.duration_minutes, threshold: certification.passing_score, total: certification.total_questions })}
                             />
                         </div>
                     </div>
