@@ -65,8 +65,19 @@ class CertificationController extends Controller
         $payload = $certification->toArray();
         $payload['target_roles_text'] = collect($certification->target_roles ?? [])->implode("\n");
         $payload['course_blocks_count'] = is_array($certification->course_blocks) ? count($certification->course_blocks) : 0;
+
+        // Nombre de questions par syllabus_domain — pour afficher la couverture réelle
+        // à côté de chaque ligne du blueprint dans l'UI.
+        $counts = \App\Models\Question::where('certification_id', $certification->id)
+            ->whereNotNull('syllabus_domain')
+            ->select('syllabus_domain', \Illuminate\Support\Facades\DB::raw('COUNT(*) as n'))
+            ->groupBy('syllabus_domain')
+            ->pluck('n', 'syllabus_domain')
+            ->all();
+
         return Inertia::render('Admin/Certifications/Form', [
             'certification' => $payload,
+            'question_counts_by_domain' => $counts,
         ]);
     }
 
@@ -249,6 +260,8 @@ class CertificationController extends Controller
             'is_active' => 'boolean',
             'logo' => 'nullable|image|max:2048',
             'remove_course' => 'nullable|boolean',
+            'syllabus_blueprint' => 'nullable|array',
+            'syllabus_blueprint.*' => 'numeric|min:0|max:100',
         ]);
     }
 

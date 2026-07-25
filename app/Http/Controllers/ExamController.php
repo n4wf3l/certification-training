@@ -92,18 +92,21 @@ class ExamController extends Controller
             ->orderBy('position')
             ->get();
 
-        $questions = $items->map(fn (AttemptAnswer $aa) => [
-            'id' => $aa->question->id,
-            'position' => $aa->position,
-            'topic' => $aa->question->topic,
-            'scenario' => $aa->question->scenario,
-            'question_text' => $aa->question->question_text,
-            'answers' => $aa->question->answers->map(fn ($a) => [
-                'id' => $a->id,
-                'letter' => $a->letter,
-                'answer_text' => $a->answer_text,
-            ]),
-        ]);
+        $questions = $items->map(function (AttemptAnswer $aa) use ($attempt) {
+            $shuffled = $this->shuffledAnswers($aa->question->answers, $this->answerSeed($attempt->id, $aa->question->id));
+            return [
+                'id' => $aa->question->id,
+                'position' => $aa->position,
+                'topic' => $aa->question->topic,
+                'scenario' => $aa->question->scenario,
+                'question_text' => $aa->question->question_text,
+                'answers' => collect($shuffled)->map(fn ($a, $i) => [
+                    'id' => $a->id,
+                    'letter' => chr(65 + $i),
+                    'answer_text' => $a->answer_text,
+                ])->values(),
+            ];
+        });
 
         return Inertia::render('Exam/Take', [
             'attempt' => [
@@ -180,8 +183,11 @@ class ExamController extends Controller
 
         $attempt->load(['certification', 'attemptAnswers.question.answers', 'attemptAnswers.answer']);
 
-        $details = $attempt->attemptAnswers->sortBy('position')->values()->map(function (AttemptAnswer $aa) {
+        $details = $attempt->attemptAnswers->sortBy('position')->values()->map(function (AttemptAnswer $aa) use ($attempt) {
             $correct = $aa->question->answers->firstWhere('is_correct', true);
+            // Rebuild the same shuffled order used during the exam so displayed letters match
+            $shuffled = $this->shuffledAnswers($aa->question->answers, $this->answerSeed($attempt->id, $aa->question->id));
+            $letterMap = collect($shuffled)->mapWithKeys(fn ($a, $i) => [$a->id => chr(65 + $i)]);
             return [
                 'position' => $aa->position,
                 'question_text' => $aa->question->question_text,
@@ -190,12 +196,12 @@ class ExamController extends Controller
                 'explanation' => $aa->question->explanation,
                 'is_correct' => $aa->is_correct,
                 'chosen' => $aa->answer ? [
-                    'letter' => $aa->answer->letter,
+                    'letter' => $letterMap[$aa->answer->id] ?? $aa->answer->letter,
                     'text' => $aa->answer->answer_text,
                     'rationale' => $aa->answer->rationale,
                 ] : null,
                 'correct' => $correct ? [
-                    'letter' => $correct->letter,
+                    'letter' => $letterMap[$correct->id] ?? $correct->letter,
                     'text' => $correct->answer_text,
                     'rationale' => $correct->rationale,
                 ] : null,
@@ -299,6 +305,37 @@ class ExamController extends Controller
         abort_unless($attempt->user_id === auth()->id() || auth()->user()?->isAdmin(), 403);
     }
 
+    /**
+     * Deterministic seed for shuffling answers of a given (attempt, question) pair.
+     * Same attempt → same order for all views of the same question (stable across
+     * refresh, prev/next, and between the exam page and the result page).
+     * Different attempts → different order.
+     */
+    private function answerSeed(int $attemptId, int $questionId): int
+    {
+        return $attemptId * 100000 + $questionId;
+    }
+
+    /**
+     * Fisher–Yates shuffle seeded with the attempt-question pair. Returns the
+     * answers in a new array; the caller can reassign letters based on index.
+     * Correctness lookup remains id-based on submit, so shuffling doesn't
+     * affect scoring — only the visual order and displayed letters change.
+     */
+    private function shuffledAnswers($answers, int $seed): array
+    {
+        $arr = $answers->values()->all();
+        $n = count($arr);
+        if ($n <= 1) return $arr;
+        mt_srand($seed);
+        for ($i = $n - 1; $i > 0; $i--) {
+            $j = mt_rand(0, $i);
+            [$arr[$i], $arr[$j]] = [$arr[$j], $arr[$i]];
+        }
+        mt_srand(); // restore a random seed so we don't affect other rand calls
+        return $arr;
+    }
+
     private function sampleSize(Certification $certification, int $availableQuestions): int
     {
         $target = $certification->total_questions ?: $availableQuestions;
@@ -318,64 +355,169 @@ class ExamController extends Controller
     }
 
     /**
-     * Sélection adaptative :
-     *  1. On force les questions actuellement ratées (last_result = 'wrong').
-     *     Si elles sont plus nombreuses que la taille de l'échantillon, on
-     *     priorise celles ratées le plus souvent, puis les plus anciennes.
-     *  2. On complète avec les questions jamais vues.
-     *  3. On complète avec les questions vues 1 fois correctement (streak 1).
-     *  4. En dernier, les questions maîtrisées (streak >= 2), pondération faible.
-     * Chaque bucket est mélangé pour que l'ordre change à chaque session.
+     * Sélection d'examen : combine trois contraintes.
+     *
+     *  A. Blueprint syllabus (si défini) : respecte les proportions par
+     *     syllabus_domain de la certification. Ex : { "practices": 20, ... }
+     *     donne 20 % de questions pratiques dans l'échantillon de 40.
+     *  B. Répétition adaptative : dans chaque domaine, priorité aux questions
+     *     ratées, puis jamais vues, puis vues 1 fois, puis maîtrisées.
+     *  C. Dédup pédagogique : max 1 question par concept_group_key.
+     *
+     * Si aucun blueprint n'est défini, on retombe sur l'ancien tri global
+     * priorité-adaptative + dédup groupe.
      */
     private function selectQuestions(Certification $certification, int $userId, int $sampleSize): array
     {
-        $questionIds = $certification->questions()->reorder()->pluck('id');
+        $questions = $certification->questions()
+            ->reorder()
+            ->get(['id', 'syllabus_domain', 'concept_group_key']);
+        $questionIds = $questions->pluck('id');
+
         $stats = UserQuestionStat::where('user_id', $userId)
             ->whereIn('question_id', $questionIds)
             ->get()
             ->keyBy('question_id');
 
-        $toReview = collect();
-        $unseen = collect();
-        $inProgress = collect();
-        $mastered = collect();
+        $groupKeys = $questions
+            ->whereNotNull('concept_group_key')
+            ->pluck('concept_group_key', 'id')
+            ->all();
 
-        foreach ($questionIds as $qid) {
+        // Range chaque question par priorité pédagogique (0 = plus prioritaire).
+        // Tri secondaire : shuffle intra-bucket pour éviter l'ordre déterministe.
+        $priorityOf = function (int $qid) use ($stats): array {
             $s = $stats->get($qid);
-            if ($s === null) {
-                $unseen->push($qid);
-            } elseif ($s->last_result === 'wrong') {
-                $toReview->push(['id' => $qid, 'times_wrong' => $s->times_wrong, 'last' => $s->last_seen_at]);
-            } elseif ($s->correct_streak >= 2) {
-                $mastered->push($qid);
-            } else {
-                $inProgress->push($qid);
+            if ($s === null) return [1, 0]; // unseen
+            if ($s->last_result === 'wrong') return [0, -($s->times_wrong ?? 0)]; // to-review, times_wrong desc
+            if ($s->correct_streak >= 2) return [3, 0]; // mastered
+            return [2, 0]; // in-progress
+        };
+
+        // Sort a list of question IDs by priority + jitter aléatoire
+        $sortByPriority = function (array $ids) use ($priorityOf): array {
+            $keyed = array_map(fn ($id) => [
+                'id' => $id,
+                'p' => $priorityOf($id),
+                'r' => mt_rand(),
+            ], $ids);
+            usort($keyed, fn ($a, $b) => [$a['p'][0], $a['p'][1], $a['r']] <=> [$b['p'][0], $b['p'][1], $b['r']]);
+            return array_column($keyed, 'id');
+        };
+
+        $blueprint = $certification->syllabus_blueprint ?? null;
+
+        // ─── Sans blueprint : ancien comportement (adaptatif global + dédup groupe) ───
+        if (!is_array($blueprint) || empty($blueprint)) {
+            $ordered = $sortByPriority($questionIds->all());
+            return $this->applyGroupDedupAndTake($ordered, $groupKeys, $sampleSize);
+        }
+
+        // ─── Avec blueprint : cible par domaine ───
+        $totalPct = array_sum($blueprint);
+        if ($totalPct <= 0) $totalPct = 100;
+
+        // Compute target per domain (proportional rounding)
+        $targets = [];
+        $rawAssign = 0;
+        foreach ($blueprint as $domain => $pct) {
+            $targets[$domain] = (int) round($sampleSize * $pct / $totalPct);
+            $rawAssign += $targets[$domain];
+        }
+        // Adjust rounding drift so total == sampleSize
+        $drift = $sampleSize - $rawAssign;
+        if ($drift !== 0) {
+            // Add/remove to the largest bucket first
+            arsort($targets);
+            $keys = array_keys($targets);
+            $targets[$keys[0]] += $drift;
+        }
+
+        // Group questions by domain
+        $byDomain = [];
+        foreach ($questions as $q) {
+            $d = $q->syllabus_domain ?? '__unassigned__';
+            $byDomain[$d][] = $q->id;
+        }
+
+        // Pick per domain
+        $selected = [];
+        $usedGroups = [];
+        $leftovers = []; // questions we didn't pick from any domain, for potential fallback
+        foreach ($targets as $domain => $target) {
+            $pool = $byDomain[$domain] ?? [];
+            if (empty($pool)) continue;
+            $ordered = $sortByPriority($pool);
+            $taken = 0;
+            foreach ($ordered as $qid) {
+                if ($taken >= $target) {
+                    $leftovers[] = $qid; // may serve fallback if another domain is short
+                    continue;
+                }
+                $gk = $groupKeys[$qid] ?? null;
+                if ($gk !== null && isset($usedGroups[$gk])) {
+                    $leftovers[] = $qid;
+                    continue;
+                }
+                $selected[] = $qid;
+                if ($gk !== null) $usedGroups[$gk] = true;
+                $taken++;
             }
         }
 
-        // 1. Ratées : trier par times_wrong desc puis last_seen_at asc, mais mélanger dans chaque niveau
-        $toReviewIds = $toReview
-            ->groupBy(fn ($x) => $x['times_wrong'])
-            ->sortKeysDesc()
-            ->flatMap(fn ($group) => $group->shuffle())
-            ->pluck('id')
-            ->values();
-
-        $selected = $toReviewIds->take($sampleSize);
-
-        // 2-4. Fill avec le reste
-        $remaining = $sampleSize - $selected->count();
-        if ($remaining > 0) {
-            $filler = collect()
-                ->concat($unseen->shuffle())
-                ->concat($inProgress->shuffle())
-                ->concat($mastered->shuffle())
-                ->take($remaining);
-            $selected = $selected->concat($filler);
+        // If some domain is short (not enough questions or all colliding on groups),
+        // fill from leftovers respecting group dedup, then priority.
+        if (count($selected) < $sampleSize) {
+            $orderedLeftovers = $sortByPriority(array_values(array_unique($leftovers)));
+            foreach ($orderedLeftovers as $qid) {
+                if (count($selected) >= $sampleSize) break;
+                if (in_array($qid, $selected, true)) continue;
+                $gk = $groupKeys[$qid] ?? null;
+                if ($gk !== null && isset($usedGroups[$gk])) continue;
+                $selected[] = $qid;
+                if ($gk !== null) $usedGroups[$gk] = true;
+            }
         }
 
-        // Ordre de présentation aléatoire
-        return $selected->shuffle()->values()->toArray();
+        // Ultimate fallback : still short → relax group dedup
+        if (count($selected) < $sampleSize) {
+            foreach ($leftovers as $qid) {
+                if (count($selected) >= $sampleSize) break;
+                if (in_array($qid, $selected, true)) continue;
+                $selected[] = $qid;
+            }
+        }
+
+        return collect($selected)->shuffle()->values()->toArray();
+    }
+
+    /**
+     * Sélectionne jusqu'à $sampleSize questions dans l'ordre donné, en évitant
+     * les collisions par concept_group_key. Fallback autorise les collisions
+     * si le pool est trop restreint.
+     */
+    private function applyGroupDedupAndTake(array $orderedIds, array $groupKeys, int $sampleSize): array
+    {
+        $selected = [];
+        $usedGroups = [];
+        $collisions = [];
+        foreach ($orderedIds as $qid) {
+            if (count($selected) >= $sampleSize) break;
+            $gk = $groupKeys[$qid] ?? null;
+            if ($gk !== null && isset($usedGroups[$gk])) {
+                $collisions[] = $qid;
+                continue;
+            }
+            $selected[] = $qid;
+            if ($gk !== null) $usedGroups[$gk] = true;
+        }
+        if (count($selected) < $sampleSize) {
+            foreach ($collisions as $qid) {
+                if (count($selected) >= $sampleSize) break;
+                $selected[] = $qid;
+            }
+        }
+        return collect($selected)->shuffle()->values()->toArray();
     }
 
     private function recordStat(int $userId, int $questionId, bool $isCorrect): void

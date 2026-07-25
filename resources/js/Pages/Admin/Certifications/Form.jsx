@@ -1,8 +1,9 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
-export default function Form({ certification }) {
+export default function Form({ certification, question_counts_by_domain = {} }) {
     const editing = !!certification;
 
     const { data, setData, post, processing, errors, progress } = useForm({
@@ -26,8 +27,34 @@ export default function Form({ certification }) {
         is_active: certification?.is_active ?? true,
         logo: null,
         remove_course: false,
+        syllabus_blueprint: certification?.syllabus_blueprint ?? null,
         _method: editing ? 'put' : 'post',
     });
+
+    // Blueprint editor : local rows state derived from the object.
+    const [blueprintRows, setBlueprintRows] = useState(() => {
+        const bp = certification?.syllabus_blueprint ?? {};
+        return Object.entries(bp).map(([key, pct]) => ({ key, pct: Number(pct) }));
+    });
+
+    // Sync rows → form data whenever rows change
+    useEffect(() => {
+        const obj = {};
+        blueprintRows.forEach(({ key, pct }) => {
+            const k = (key || '').trim();
+            if (k) obj[k] = Number(pct) || 0;
+        });
+        setData('syllabus_blueprint', Object.keys(obj).length ? obj : null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [blueprintRows]);
+
+    const blueprintTotal = blueprintRows.reduce((s, r) => s + (Number(r.pct) || 0), 0);
+    const examSize = Number(data.total_questions) || 40;
+    const addRow = () => setBlueprintRows([...blueprintRows, { key: '', pct: 0 }]);
+    const removeRow = (i) => setBlueprintRows(blueprintRows.filter((_, idx) => idx !== i));
+    const updateRow = (i, patch) => setBlueprintRows(
+        blueprintRows.map((r, idx) => idx === i ? { ...r, ...patch } : r)
+    );
 
     const submit = (e) => {
         e.preventDefault();
@@ -289,6 +316,98 @@ export default function Form({ certification }) {
                                         Attention : cette action est irréversible. Le contenu sera perdu, tu devras le réimporter.
                                     </p>
                                 )}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Blueprint syllabus */}
+                    {editing && (
+                        <section className="card p-6">
+                            <SectionHeader
+                                title="Blueprint syllabus"
+                                description="Répartition en % par domaine du syllabus. Utilisée pour tirer un examen équilibré : sur les 40 questions, chaque domaine reçoit sa part proportionnelle. Le total doit faire 100."
+                            />
+                            <div className="mt-4">
+                                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                                    <div className="font-mono text-xs">
+                                        <span className="text-ink-500">Total :</span>{' '}
+                                        <span className={`font-semibold ${
+                                            blueprintTotal === 100
+                                                ? 'text-emerald-600 dark:text-emerald-300'
+                                                : 'text-amber-600 dark:text-amber-300'
+                                        }`}>
+                                            {blueprintTotal} %
+                                        </span>
+                                        {blueprintTotal !== 100 && blueprintRows.length > 0 && (
+                                            <span className="ml-2 text-amber-600 dark:text-amber-300">
+                                                (doit faire 100 pour un tirage équilibré)
+                                            </span>
+                                        )}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={addRow}
+                                        className="btn-ghost !py-1.5 !text-xs"
+                                    >
+                                        <Icon.Sparkles className="h-3.5 w-3.5" />
+                                        Ajouter un domaine
+                                    </button>
+                                </div>
+
+                                {blueprintRows.length === 0 ? (
+                                    <div className="rounded-2xl border border-dashed border-ink-300 bg-ink-50 p-4 text-sm text-ink-500 dark:border-ink-700 dark:bg-ink-900/40">
+                                        Aucun blueprint défini. Le tirage sera 100 % adaptatif, sans respect de proportions par domaine.
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        <div className="hidden grid-cols-12 gap-2 px-2 font-mono text-[10px] uppercase tracking-widest text-ink-500 sm:grid">
+                                            <div className="col-span-5">Domaine (slug)</div>
+                                            <div className="col-span-2 text-right">%</div>
+                                            <div className="col-span-4">Couverture réelle</div>
+                                            <div className="col-span-1" />
+                                        </div>
+                                        {blueprintRows.map((row, i) => {
+                                            const count = question_counts_by_domain[row.key] ?? 0;
+                                            const target = Math.round((examSize * (Number(row.pct) || 0)) / 100);
+                                            const insufficient = count < target;
+                                            return (
+                                                <div key={i} className="grid grid-cols-12 items-center gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={row.key}
+                                                        onChange={(e) => updateRow(i, { key: e.target.value })}
+                                                        placeholder="ex: guiding-principles"
+                                                        className="field col-span-5 !py-2 font-mono text-xs"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        min={0}
+                                                        max={100}
+                                                        step={1}
+                                                        value={row.pct}
+                                                        onChange={(e) => updateRow(i, { pct: Number(e.target.value) })}
+                                                        className="field col-span-2 !py-2 text-right font-mono text-xs"
+                                                    />
+                                                    <div className={`col-span-4 font-mono text-xs ${insufficient ? 'text-amber-600 dark:text-amber-300' : 'text-ink-500'}`}>
+                                                        {count} Q en base · {target}/{examSize} par examen
+                                                        {insufficient && ' ⚠'}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeRow(i)}
+                                                        className="col-span-1 flex h-8 w-8 items-center justify-center rounded-lg text-ink-400 transition hover:bg-rose-500/10 hover:text-rose-500"
+                                                        title="Supprimer ce domaine"
+                                                    >
+                                                        <Icon.Close className="h-4 w-4" />
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                                <p className="mt-3 text-xs text-ink-500">
+                                    Le slug du domaine (ex : <code className="rounded bg-ink-100 px-1 dark:bg-ink-800">practices</code>) doit correspondre à ceux stockés sur les questions. Colonne « Couverture réelle » : nombre de questions actuellement classées dans ce domaine.
+                                </p>
                             </div>
                         </section>
                     )}

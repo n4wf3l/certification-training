@@ -38,7 +38,7 @@ export default function PlatformPromise({ compact = false }) {
                     <span className="text-sm text-ink-700 dark:text-ink-200">
                         Gratuit jusqu'aux{' '}
                         <span className="font-mono font-bold text-ink-900 dark:text-white">{FREE_UNTIL_USERS.toLocaleString('fr-FR')}</span>{' '}
-                        premiers inscrits — à utiliser avec la doc officielle PeopleCert / Cisco / CompTIA / AWS.
+                        premiers inscrits — <span className="font-semibold text-ink-900 dark:text-white">sans carte bancaire</span>, à utiliser avec la doc officielle PeopleCert / Cisco / CompTIA / AWS.
                     </span>
                 </div>
             </div>
@@ -62,7 +62,7 @@ export default function PlatformPromise({ compact = false }) {
                             CertifLoop ne remplace pas les manuels officiels PeopleCert / Cisco / CompTIA / AWS.
                             La plateforme est faite pour <span className="font-semibold text-ink-900 dark:text-white">la dernière ligne droite</span>
                             {' '}: enchaîner des sessions timées, identifier les zones faibles, et consolider les définitions par répétition espacée.
-                            Gratuit jusqu'aux <span className="font-semibold text-ink-900 dark:text-white">{FREE_UNTIL_USERS.toLocaleString('fr-FR')} premiers inscrits</span>.
+                            Gratuit jusqu'aux <span className="font-semibold text-ink-900 dark:text-white">{FREE_UNTIL_USERS.toLocaleString('fr-FR')} premiers inscrits</span> — <span className="font-semibold text-ink-900 dark:text-white">aucune carte bancaire requise</span>, désinscription en un clic.
                         </p>
                     </div>
                 </div>

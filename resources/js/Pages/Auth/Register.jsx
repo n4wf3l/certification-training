@@ -99,6 +99,10 @@ export default function Register({ redirect_to }) {
                     </svg>
                 </button>
 
+                <p className="text-center text-xs text-ink-500 dark:text-ink-400">
+                    Aucune carte bancaire · Compte créé en 20 secondes · Désinscription en un clic
+                </p>
+
                 <p className="text-center text-sm text-ink-500 dark:text-ink-400">
                     Déjà inscrit ?{' '}
                     <Link href={loginHref} className="font-semibold text-brand-500 hover:text-brand-400">

@@ -66,8 +66,9 @@ class CertificationController extends Controller
             'topic' => $q->topic,
             'scenario' => $q->scenario,
             'question_text' => $q->question_text,
-            'answers' => $q->answers->map(fn ($a) => [
-                'letter' => $a->letter,
+            // Shuffle answers and reassign letters so users can't memorize positions
+            'answers' => $q->answers->shuffle()->values()->map(fn ($a, $i) => [
+                'letter' => chr(65 + $i),
                 'answer_text' => $a->answer_text,
                 'is_correct' => $a->is_correct,
             ]),
