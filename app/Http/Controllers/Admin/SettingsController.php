@@ -18,6 +18,7 @@ class SettingsController extends Controller
             'settings' => [
                 'brand_name' => Setting::get('brand_name'),
                 'brand_logo_path' => Setting::get('brand_logo_path'),
+                'allow_instant_feedback' => (bool) Setting::get('allow_instant_feedback', false),
             ],
         ]);
     }
@@ -28,9 +29,11 @@ class SettingsController extends Controller
             'brand_name' => 'nullable|string|max:60',
             'brand_logo' => 'nullable|image|max:2048',
             'remove_logo' => 'nullable|boolean',
+            'allow_instant_feedback' => 'nullable|boolean',
         ]);
 
         Setting::set('brand_name', $data['brand_name'] ?: null);
+        Setting::set('allow_instant_feedback', ! empty($data['allow_instant_feedback']) ? '1' : '0');
 
         if (! empty($data['remove_logo'])) {
             $current = Setting::get('brand_logo_path');

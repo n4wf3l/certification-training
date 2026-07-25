@@ -8,6 +8,7 @@ export default function Edit({ settings }) {
         brand_name: settings.brand_name ?? '',
         brand_logo: null,
         remove_logo: false,
+        allow_instant_feedback: !!settings.allow_instant_feedback,
         _method: 'post',
     });
 
@@ -145,6 +146,30 @@ export default function Edit({ settings }) {
                                 </div>
                             </div>
                         </div>
+                    </section>
+
+                    {/* Exam behaviour */}
+                    <section className="card p-6">
+                        <div className="mb-5">
+                            <h2 className="text-base font-semibold text-ink-900 dark:text-white">Comportement des examens</h2>
+                            <p className="mt-0.5 text-xs text-ink-500">Options proposées aux utilisateurs quand ils démarrent un examen blanc.</p>
+                        </div>
+                        <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-ink-200 bg-white p-4 transition hover:border-brand-500/40 dark:border-ink-800 dark:bg-ink-900/40">
+                            <input
+                                type="checkbox"
+                                checked={!!data.allow_instant_feedback}
+                                onChange={(e) => setData('allow_instant_feedback', e.target.checked)}
+                                className="mt-1 h-4 w-4 rounded border-ink-300 text-brand-500 focus:ring-brand-500"
+                            />
+                            <div className="flex-1">
+                                <div className="text-sm font-semibold text-ink-900 dark:text-white">
+                                    Autoriser le mode « correction immédiate »
+                                </div>
+                                <p className="mt-1 text-xs text-ink-500 dark:text-ink-400">
+                                    Si activé, l'utilisateur peut choisir sur la page d'intro entre voir la correction <strong>question par question</strong> (mode entraînement) ou <strong>à la fin de l'examen</strong> (mode simulation, par défaut). Si désactivé, seul le mode « à la fin » est disponible.
+                                </p>
+                            </div>
+                        </label>
                     </section>
 
                     {/* Submit bar */}

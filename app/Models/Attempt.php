@@ -14,6 +14,7 @@ class Attempt extends Model
         'score',
         'total_questions',
         'passing_score',
+        'feedback_mode',
         'passed',
         'started_at',
         'completed_at',

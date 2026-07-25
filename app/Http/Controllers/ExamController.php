@@ -7,6 +7,7 @@ use App\Models\Attempt;
 use App\Models\AttemptAnswer;
 use App\Models\Certification;
 use App\Models\Question;
+use App\Models\Setting;
 use App\Models\UserQuestionStat;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,10 +42,11 @@ class ExamController extends Controller
                 'scaled_passing_score' => $this->scaledPassingScore($certification, $sampleSize),
             ],
             'mastery' => $mastery,
+            'allow_instant_feedback' => (bool) Setting::get('allow_instant_feedback', false),
         ]);
     }
 
-    public function start(Certification $certification): RedirectResponse
+    public function start(Request $request, Certification $certification): RedirectResponse
     {
         abort_unless($certification->is_active, 404);
         $availableQuestions = $certification->questions()->count();
@@ -53,7 +55,13 @@ class ExamController extends Controller
         $sampleSize = $this->sampleSize($certification, $availableQuestions);
         $scaledPassing = $this->scaledPassingScore($certification, $sampleSize);
 
-        return DB::transaction(function () use ($certification, $sampleSize, $scaledPassing) {
+        // Feedback mode : forcé à 'deferred' si l'admin a désactivé le mode instantané,
+        // sinon respecte le choix de l'utilisateur.
+        $requestedMode = $request->input('feedback_mode', 'deferred');
+        $allowInstant = (bool) Setting::get('allow_instant_feedback', false);
+        $feedbackMode = ($allowInstant && $requestedMode === 'instant') ? 'instant' : 'deferred';
+
+        return DB::transaction(function () use ($certification, $sampleSize, $scaledPassing, $feedbackMode) {
             $selectedIds = $this->selectQuestions($certification, auth()->id(), $sampleSize);
 
             $attempt = Attempt::create([
@@ -61,6 +69,7 @@ class ExamController extends Controller
                 'certification_id' => $certification->id,
                 'total_questions' => $sampleSize,
                 'passing_score' => $scaledPassing,
+                'feedback_mode' => $feedbackMode,
                 'started_at' => now(),
             ]);
 
@@ -92,7 +101,9 @@ class ExamController extends Controller
             ->orderBy('position')
             ->get();
 
-        $questions = $items->map(function (AttemptAnswer $aa) use ($attempt) {
+        $isInstant = $attempt->feedback_mode === 'instant';
+
+        $questions = $items->map(function (AttemptAnswer $aa) use ($attempt, $isInstant) {
             $shuffled = $this->shuffledAnswers($aa->question->answers, $this->answerSeed($attempt->id, $aa->question->id));
             return [
                 'id' => $aa->question->id,
@@ -100,11 +111,16 @@ class ExamController extends Controller
                 'topic' => $aa->question->topic,
                 'scenario' => $aa->question->scenario,
                 'question_text' => $aa->question->question_text,
-                'answers' => collect($shuffled)->map(fn ($a, $i) => [
+                // Explication uniquement en mode instant (dévoilée après réponse)
+                'explanation' => $isInstant ? $aa->question->explanation : null,
+                'answers' => collect($shuffled)->map(fn ($a, $i) => array_filter([
                     'id' => $a->id,
                     'letter' => chr(65 + $i),
                     'answer_text' => $a->answer_text,
-                ])->values(),
+                    // is_correct et rationale uniquement en mode instant
+                    'is_correct' => $isInstant ? (bool) $a->is_correct : null,
+                    'rationale' => $isInstant ? $a->rationale : null,
+                ], fn ($v) => $v !== null))->values(),
             ];
         });
 
@@ -113,6 +129,7 @@ class ExamController extends Controller
                 'id' => $attempt->id,
                 'started_at' => $attempt->started_at,
                 'duration_minutes' => $certification->duration_minutes,
+                'feedback_mode' => $attempt->feedback_mode,
             ],
             'certification' => [
                 'id' => $certification->id,

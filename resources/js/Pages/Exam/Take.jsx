@@ -20,6 +20,10 @@ export default function Take({ attempt, certification, questions }) {
     const submittingRef = useRef(false);
     const allowLeaveRef = useRef(false);
 
+    // Mode correction ('deferred' par défaut : correction à la fin ; 'instant' : après chaque question)
+    const feedbackMode = attempt.feedback_mode || 'deferred';
+    const isInstant = feedbackMode === 'instant';
+
     const totalSeconds = attempt.duration_minutes * 60;
     const startedAt = useMemo(() => new Date(attempt.started_at).getTime(), [attempt.started_at]);
     const [remaining, setRemaining] = useState(() => {
@@ -101,10 +105,13 @@ export default function Take({ attempt, certification, questions }) {
     const progressPct = (answeredCount / totalQuestions) * 100;
 
     const pick = (questionId, answerId) => {
+        // En mode instant, la réponse est verrouillée une fois choisie
+        // (pas de changement d'avis, comme dans une flashcard)
+        if (isInstant && answers[questionId]) return;
         setAnswers((a) => ({ ...a, [questionId]: answerId }));
-        if (answerMode === 'auto') {
+        // Auto-suivant désactivé en mode instant (l'utilisateur doit lire la correction avant)
+        if (answerMode === 'auto' && !isInstant) {
             setJustPicked(questionId);
-            // Advance after a short delay so user sees selection
             const idx = questions.findIndex((qq) => qq.id === questionId);
             if (idx >= 0 && idx < questions.length - 1) {
                 setTimeout(() => {
@@ -112,7 +119,6 @@ export default function Take({ attempt, certification, questions }) {
                     setJustPicked(null);
                 }, 320);
             } else {
-                // Last question — don't auto-submit, let user click "Terminer"
                 setTimeout(() => setJustPicked(null), 500);
             }
         }
@@ -177,7 +183,13 @@ export default function Take({ attempt, certification, questions }) {
                                 {answeredCount}/{totalQuestions}
                             </div>
                         </div>
-                        {answerMode === 'auto' && (
+                        {isInstant && (
+                            <span className="hidden items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-300 sm:inline-flex">
+                                <Icon.Sparkles className="h-3 w-3" />
+                                Entraînement
+                            </span>
+                        )}
+                        {answerMode === 'auto' && !isInstant && (
                             <span className="hidden items-center gap-1 rounded-full border border-brand-500/30 bg-brand-500/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-300 sm:inline-flex">
                                 <Icon.Bolt className="h-3 w-3" />
                                 Auto-suivant
@@ -228,29 +240,63 @@ export default function Take({ attempt, certification, questions }) {
                             {q.answers.map((a, idx) => {
                                 const selected = answers[q.id] === a.id;
                                 const flashing = justPicked === q.id && selected && answerMode === 'auto';
+                                // En mode instant, on révèle la correction dès que l'user a répondu
+                                const revealed = isInstant && !!answers[q.id];
+                                const isCorrect = a.is_correct === true;
+                                const isSelectedCorrect = selected && isCorrect;
+                                const isSelectedWrong = selected && revealed && !isCorrect;
+
+                                let className = 'group flex w-full items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all ';
+                                let letterBg = 'bg-ink-100 text-ink-700 group-hover:bg-brand-500/20 group-hover:text-brand-600 dark:bg-ink-800 dark:text-ink-200';
+
+                                if (revealed) {
+                                    if (isCorrect) {
+                                        className += 'border-emerald-500 bg-emerald-500/10';
+                                        letterBg = 'bg-emerald-500 text-white shadow-glow';
+                                    } else if (isSelectedWrong) {
+                                        className += 'border-rose-500 bg-rose-500/10';
+                                        letterBg = 'bg-rose-500 text-white';
+                                    } else {
+                                        className += 'border-ink-200 bg-white opacity-60 dark:border-ink-800 dark:bg-ink-900/40';
+                                    }
+                                } else if (selected) {
+                                    className += `border-brand-500 bg-brand-500/10 shadow-glow ${flashing ? 'scale-[0.99]' : ''}`;
+                                    letterBg = 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow';
+                                } else {
+                                    className += 'border-ink-200 bg-white hover:border-brand-500/40 hover:bg-brand-500/5 dark:border-ink-800 dark:bg-ink-900/40 dark:hover:bg-ink-800/60';
+                                }
+
                                 return (
                                     <button
                                         key={a.id}
                                         type="button"
                                         onClick={() => pick(q.id, a.id)}
-                                        className={`group flex w-full items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all ${
-                                            selected
-                                                ? `border-brand-500 bg-brand-500/10 shadow-glow ${flashing ? 'scale-[0.99]' : ''}`
-                                                : 'border-ink-200 bg-white hover:border-brand-500/40 hover:bg-brand-500/5 dark:border-ink-800 dark:bg-ink-900/40 dark:hover:bg-ink-800/60'
-                                        }`}
+                                        disabled={revealed}
+                                        className={`${className} ${revealed ? 'cursor-default' : ''}`}
                                     >
-                                        <span
-                                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl font-bold transition ${
-                                                selected
-                                                    ? 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow'
-                                                    : 'bg-ink-100 text-ink-700 group-hover:bg-brand-500/20 group-hover:text-brand-600 dark:bg-ink-800 dark:text-ink-200'
-                                            }`}
-                                        >
-                                            {a.letter}
+                                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl font-bold transition ${letterBg}`}>
+                                            {revealed && isCorrect ? (
+                                                <Icon.Check className="h-5 w-5" />
+                                            ) : revealed && isSelectedWrong ? (
+                                                <Icon.Close className="h-5 w-5" />
+                                            ) : (
+                                                a.letter
+                                            )}
                                         </span>
-                                        <span className="flex-1 pt-2 text-base text-ink-900 dark:text-ink-100 sm:text-lg">
-                                            {a.answer_text}
-                                        </span>
+                                        <div className="flex-1">
+                                            <div className="pt-2 text-base text-ink-900 dark:text-ink-100 sm:text-lg">
+                                                {a.answer_text}
+                                            </div>
+                                            {revealed && (isCorrect || isSelectedWrong) && a.rationale && (
+                                                <div className={`mt-2 rounded-lg border-l-2 py-1.5 pl-3 pr-2 text-sm ${
+                                                    isCorrect
+                                                        ? 'border-emerald-500 bg-emerald-500/5 text-emerald-800 dark:text-emerald-200'
+                                                        : 'border-rose-500 bg-rose-500/5 text-rose-800 dark:text-rose-200'
+                                                }`}>
+                                                    {a.rationale}
+                                                </div>
+                                            )}
+                                        </div>
                                         <span className="hidden shrink-0 self-center rounded border border-ink-200 px-1.5 py-0.5 text-[10px] font-mono text-ink-400 dark:border-ink-800 sm:inline">
                                             {idx + 1}
                                         </span>
@@ -258,6 +304,19 @@ export default function Take({ attempt, certification, questions }) {
                                 );
                             })}
                         </div>
+
+                        {/* Explication globale de la question (mode instant, une fois répondu) */}
+                        {isInstant && answers[q.id] && q.explanation && (
+                            <div className="mt-6 rounded-2xl border border-brand-500/30 bg-brand-500/5 p-4">
+                                <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-300">
+                                    <Icon.Sparkles className="h-3.5 w-3.5" />
+                                    Explication
+                                </div>
+                                <div className="text-sm leading-relaxed text-ink-700 dark:text-ink-200">
+                                    {q.explanation}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="mt-8 flex items-center justify-between">
                             <button

@@ -109,14 +109,17 @@ function Chip({ color, label, value }) {
     );
 }
 
-export default function Intro({ certification, mastery }) {
+export default function Intro({ certification, mastery, allow_instant_feedback = false }) {
     const user = usePage().props.auth?.user;
     const [answerMode, setAnswerMode] = useState('manual');
+    const [feedbackMode, setFeedbackMode] = useState('deferred');
 
     useEffect(() => {
         try {
             const stored = window.localStorage.getItem('exam.answer_mode');
             if (stored === 'manual' || stored === 'auto') setAnswerMode(stored);
+            const fb = window.localStorage.getItem('exam.feedback_mode');
+            if (fb === 'deferred' || fb === 'instant') setFeedbackMode(fb);
         } catch { /* ignore */ }
     }, []);
 
@@ -125,9 +128,16 @@ export default function Intro({ certification, mastery }) {
         try { window.localStorage.setItem('exam.answer_mode', mode); } catch { /* ignore */ }
     };
 
+    const pickFeedbackMode = (mode) => {
+        setFeedbackMode(mode);
+        try { window.localStorage.setItem('exam.feedback_mode', mode); } catch { /* ignore */ }
+    };
+
     const start = () => {
         try { window.localStorage.setItem('exam.answer_mode', answerMode); } catch { /* ignore */ }
-        router.post(route('exam.start', certification.slug));
+        // Force deferred si l'admin a désactivé le mode instantané (double sécurité côté client)
+        const effectiveFb = allow_instant_feedback ? feedbackMode : 'deferred';
+        router.post(route('exam.start', certification.slug), { feedback_mode: effectiveFb });
     };
 
     return (
@@ -222,6 +232,32 @@ export default function Intro({ certification, mastery }) {
                                 title="Auto-suivant"
                                 description="Un clic sur une réponse enchaîne automatiquement vers la question suivante."
                                 icon={<Icon.Bolt className="h-5 w-5" />}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* Feedback mode — seulement si l'admin l'a autorisé */}
+                {user && allow_instant_feedback && certification.available_questions > 0 && (
+                    <div className="card p-6">
+                        <div className="mb-4">
+                            <h3 className="text-sm font-semibold text-ink-900 dark:text-white">Mode correction</h3>
+                            <p className="mt-0.5 text-xs text-ink-500">Quand tu veux voir si tes réponses sont correctes.</p>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            <ModeOption
+                                selected={feedbackMode === 'deferred'}
+                                onSelect={() => pickFeedbackMode('deferred')}
+                                title="À la fin (simulation)"
+                                description="Comme le vrai examen : tu ne vois la correction que sur la page résultat, après avoir tout terminé."
+                                icon={<Icon.Trophy className="h-5 w-5" />}
+                            />
+                            <ModeOption
+                                selected={feedbackMode === 'instant'}
+                                onSelect={() => pickFeedbackMode('instant')}
+                                title="Après chaque question (entraînement)"
+                                description="Dès que tu réponds, tu vois la bonne réponse et l'explication. Idéal pour apprendre — pas de conditions réelles."
+                                icon={<Icon.Sparkles className="h-5 w-5" />}
                             />
                         </div>
                     </div>
