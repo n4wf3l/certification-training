@@ -220,7 +220,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     Gratuit
                                 </div>
                                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                                    sans carte, sans pub
+                                    sans carte bancaire
                                 </div>
                             </div>
                         </div>

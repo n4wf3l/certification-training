@@ -114,6 +114,10 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                 <Link href={registerHref} className="btn-secondary w-full !py-3">
                     Commencer
                 </Link>
+
+                <p className="text-center text-xs text-ink-500 dark:text-ink-400">
+                    Aucune carte bancaire requise.
+                </p>
             </form>
 
             <p className="mt-6 text-center text-xs text-ink-500 dark:text-ink-500">
