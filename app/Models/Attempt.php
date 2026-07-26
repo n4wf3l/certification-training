@@ -19,6 +19,7 @@ class Attempt extends Model
         'passed',
         'started_at',
         'completed_at',
+        'abandoned_at',
         'duration_seconds',
         'locale',
     ];
@@ -26,8 +27,14 @@ class Attempt extends Model
     protected $casts = [
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'abandoned_at' => 'datetime',
         'passed' => 'boolean',
     ];
+
+    public function isAbandoned(): bool
+    {
+        return $this->abandoned_at !== null;
+    }
 
     public function user(): BelongsTo
     {

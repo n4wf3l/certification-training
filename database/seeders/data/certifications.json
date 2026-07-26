@@ -25,7 +25,7 @@
         "course_updated_at": null,
         "syllabus_blueprint": null,
         "is_active": true,
-        "available_languages": ["fr"]
+        "available_languages": ["fr", "en"]
     },
     {
         "title": "CompTIA A+",
@@ -106,6 +106,7 @@
         "validity_note": "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
         "version_retires_at": null,
         "questions_updated_at": "2026-07-25T16:39:16+00:00",
+        "available_languages": ["fr", "en"],
         "course_blocks": [
             {
                 "type": "heading",

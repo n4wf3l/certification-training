@@ -40,7 +40,7 @@ class HomeController extends Controller
         // Teaser pour les guests : 3 questions réelles tirées aléatoirement
         $teaserQuestions = null;
         if (! auth()->check()) {
-            $teaserQuestions = $this->buildTeaser();
+            $teaserQuestions = $this->buildTeaser($locale);
         }
 
         return Inertia::render('Home', [
@@ -55,7 +55,7 @@ class HomeController extends Controller
      *
      * @return array<int, array<string, mixed>>
      */
-    private function buildTeaser(int $count = 3): array
+    private function buildTeaser(string $locale, int $count = 3): array
     {
         // On récupère les IDs, shuffle côté PHP (Question a un default orderBy('position'))
         $ids = Question::query()
@@ -93,29 +93,32 @@ class HomeController extends Controller
         }
 
         return Question::query()
-            ->with(['answers', 'certification:id,title,slug,logo_path'])
+            ->with(['answers', 'certification:id,title,slug,logo_path,default_language,translations'])
             ->whereIn('id', $picked->take($count))
             ->get()
-            ->map(fn (Question $q) => [
-                'id' => $q->id,
-                'topic' => $q->topic,
-                'scenario' => $q->scenario,
-                'question_text' => $q->question_text,
-                'certification' => [
-                    'title' => $q->certification->title,
-                    'slug' => $q->certification->slug,
-                    'logo_path' => $q->certification->logo_path,
-                ],
-                'answers' => $q->answers
-                    ->sortBy('letter')
-                    ->values()
-                    ->map(fn ($a) => [
-                        'letter' => $a->letter,
-                        'text' => $a->answer_text,
-                        'is_correct' => (bool) $a->is_correct,
-                    ])
-                    ->all(),
-            ])
+            ->map(function (Question $q) use ($locale) {
+                $canonical = $q->certification->default_language ?? 'en';
+                return [
+                    'id' => $q->id,
+                    'topic' => $q->localized($locale, 'topic', $canonical),
+                    'scenario' => $q->localized($locale, 'scenario', $canonical),
+                    'question_text' => $q->localized($locale, 'question_text', $canonical),
+                    'certification' => [
+                        'title' => $q->certification->localized($locale, 'title'),
+                        'slug' => $q->certification->slug,
+                        'logo_path' => $q->certification->logo_path,
+                    ],
+                    'answers' => $q->answers
+                        ->sortBy('letter')
+                        ->values()
+                        ->map(fn ($a) => [
+                            'letter' => $a->letter,
+                            'text' => $a->localized($locale, 'answer_text', $canonical),
+                            'is_correct' => (bool) $a->is_correct,
+                        ])
+                        ->all(),
+                ];
+            })
             ->values()
             ->all();
     }

@@ -1,14 +1,21 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
+import LanguageTabs from '@/Components/LanguageTabs';
 import { LANGUAGE_CATALOG, DEFAULT_LANGUAGE } from '@/lib/languages';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
+// Champs traduisibles (canonique <-> translations[lang]) sur le form cert.
+// Le reste (slug, durees, dates, logo, blueprint, is_active) est mono-langue.
+const TRANSLATABLE_FIELDS = ['title', 'description', 'long_description', 'importance', 'validity_note', 'target_roles_text'];
+
 export default function Form({ certification, question_counts_by_domain = {} }) {
     const t = useT();
     const locale = useLocale();
     const editing = !!certification;
+
+    const canonicalLang = certification?.default_language ?? DEFAULT_LANGUAGE;
 
     const { data, setData, post, processing, errors, progress } = useForm({
         title: certification?.title ?? '',
@@ -35,8 +42,54 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
         available_languages: certification?.available_languages?.length
             ? certification.available_languages
             : [DEFAULT_LANGUAGE],
+        // Shadow translations : { lang: { title, description, ... } }. Hydrate
+        // depuis certification.translations si edit, sinon objet vide.
+        translations: certification?.translations ?? {},
         _method: editing ? 'put' : 'post',
     });
+
+    // Onglet de langue actif dans le form multi-langue (par defaut : canonique).
+    const [activeLang, setActiveLang] = useState(canonicalLang);
+    const isCanonicalTab = activeLang === canonicalLang;
+
+    // Lecture/ecriture d'un champ traduisible selon l'onglet actif.
+    const getField = (name) => isCanonicalTab
+        ? (data[name] ?? '')
+        : (data.translations?.[activeLang]?.[name] ?? '');
+
+    const setField = (name, value) => {
+        if (isCanonicalTab) {
+            setData(name, value);
+            return;
+        }
+        setData('translations', {
+            ...(data.translations ?? {}),
+            [activeLang]: {
+                ...(data.translations?.[activeLang] ?? {}),
+                [name]: value,
+            },
+        });
+    };
+
+    // Locales avec au moins 1 champ traduisible non-vide (sert au badge "missing"
+    // sur les onglets non-canoniques dont l'onglet est totalement vide).
+    const missingLangs = useMemo(() => {
+        const missing = [];
+        for (const lang of data.available_languages || []) {
+            if (lang === canonicalLang) continue;
+            const bucket = data.translations?.[lang] ?? {};
+            const hasContent = TRANSLATABLE_FIELDS.some((f) => (bucket[f] ?? '').toString().trim() !== '');
+            if (!hasContent) missing.push(lang);
+        }
+        return missing;
+    }, [data.translations, data.available_languages, canonicalLang]);
+
+    // Si l'admin decoche l'onglet actuel, retomber sur le canonique.
+    useEffect(() => {
+        if (!(data.available_languages || []).includes(activeLang)) {
+            setActiveLang(canonicalLang);
+        }
+    }, [data.available_languages, activeLang, canonicalLang]);
 
     const selectedLanguages = useMemo(
         () => new Set(data.available_languages || []),
@@ -126,6 +179,35 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                 </div>
 
                 <form onSubmit={submit} className="space-y-6">
+                    {/* Language tabs : visible only if the cert has > 1 available language.
+                        Switches the 6 translatable fields between canonical column and translations[lang]. */}
+                    {(data.available_languages?.length ?? 0) > 1 && (
+                        <section className="card overflow-hidden p-5">
+                            <div className="mb-3 flex items-center justify-between gap-3">
+                                <div>
+                                    <h2 className="text-sm font-semibold text-ink-900 dark:text-white">
+                                        {t('admin.certs_form.content_language_title')}
+                                    </h2>
+                                    <p className="mt-0.5 text-xs text-ink-500">
+                                        {t('admin.certs_form.content_language_desc')}
+                                    </p>
+                                </div>
+                            </div>
+                            <LanguageTabs
+                                availableLangs={data.available_languages || []}
+                                canonicalLang={canonicalLang}
+                                activeLang={activeLang}
+                                onChange={setActiveLang}
+                                missingLangs={missingLangs}
+                            />
+                            {!isCanonicalTab && (
+                                <div className="mt-3 rounded-lg border-l-2 border-brand-500/50 bg-brand-500/5 px-3 py-2 text-xs text-ink-600 dark:text-ink-300">
+                                    {t('admin.certs_form.content_language_hint', { lang: activeLang.toUpperCase() })}
+                                </div>
+                            )}
+                        </section>
+                    )}
+
                     {/* Identity */}
                     <section className="card p-6">
                         <SectionHeader
@@ -136,8 +218,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                             <Field label={t('admin.certs_form.field_title')} required error={errors.title} className="sm:col-span-2">
                                 <input
                                     className="field"
-                                    value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
+                                    value={getField('title')}
+                                    onChange={(e) => setField('title', e.target.value)}
                                     placeholder={t('admin.certs_form.field_title_placeholder')}
                                 />
                             </Field>
@@ -155,8 +237,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                 <textarea
                                     rows={2}
                                     className="field resize-y"
-                                    value={data.description}
-                                    onChange={(e) => setData('description', e.target.value)}
+                                    value={getField('description')}
+                                    onChange={(e) => setField('description', e.target.value)}
                                     placeholder={t('admin.certs_form.field_description_placeholder')}
                                 />
                             </Field>
@@ -174,16 +256,16 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                 <textarea
                                     rows={5}
                                     className="field resize-y"
-                                    value={data.long_description}
-                                    onChange={(e) => setData('long_description', e.target.value)}
+                                    value={getField('long_description')}
+                                    onChange={(e) => setField('long_description', e.target.value)}
                                 />
                             </Field>
                             <Field label={t('admin.certs_form.field_importance')} error={errors.importance}>
                                 <textarea
                                     rows={4}
                                     className="field resize-y"
-                                    value={data.importance}
-                                    onChange={(e) => setData('importance', e.target.value)}
+                                    value={getField('importance')}
+                                    onChange={(e) => setField('importance', e.target.value)}
                                 />
                             </Field>
                             <Field label={t('admin.certs_form.field_target_roles')} hint={t('admin.certs_form.field_target_roles_hint')} error={errors.target_roles_text}>
@@ -191,8 +273,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     rows={5}
                                     className="field font-mono resize-y"
                                     placeholder={t('admin.certs_form.field_target_roles_placeholder')}
-                                    value={data.target_roles_text}
-                                    onChange={(e) => setData('target_roles_text', e.target.value)}
+                                    value={getField('target_roles_text')}
+                                    onChange={(e) => setField('target_roles_text', e.target.value)}
                                 />
                             </Field>
                         </div>
@@ -324,8 +406,8 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                         rows={3}
                                         className="field resize-y"
                                         placeholder={t('admin.certs_form.field_validity_note_placeholder')}
-                                        value={data.validity_note}
-                                        onChange={(e) => setData('validity_note', e.target.value)}
+                                        value={getField('validity_note')}
+                                        onChange={(e) => setField('validity_note', e.target.value)}
                                     />
                                 </Field>
                             </div>
@@ -568,17 +650,31 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     </section>
 
                     {/* Submit bar */}
-                    <div className="sticky bottom-4 z-10 flex items-center justify-end gap-2 rounded-2xl border border-ink-200/60 bg-white/90 p-3 shadow-xl backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-900/90">
-                        <Link href={route('admin.certifications.index')} className="btn-secondary">
-                            {t('admin.common.cancel')}
-                        </Link>
-                        <button type="submit" disabled={processing} className="btn-primary">
-                            {processing
-                                ? t('admin.common.saving')
-                                : editing
-                                    ? t('admin.certs_form.submit_update')
-                                    : t('admin.certs_form.submit_create')}
-                        </button>
+                    <div className="sticky bottom-4 z-10 flex items-center justify-between gap-2 rounded-2xl border border-ink-200/60 bg-white/90 p-3 shadow-xl backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-900/90">
+                        <div>
+                            {editing && (
+                                <Link
+                                    href={route('admin.certifications.certificate-preview', certification.id)}
+                                    className="btn-ghost !text-xs"
+                                    title={t('admin.certs_form.preview_certificate_title')}
+                                >
+                                    <Icon.Shield className="h-3.5 w-3.5" />
+                                    {t('admin.certs_form.preview_certificate')}
+                                </Link>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Link href={route('admin.certifications.index')} className="btn-secondary">
+                                {t('admin.common.cancel')}
+                            </Link>
+                            <button type="submit" disabled={processing} className="btn-primary">
+                                {processing
+                                    ? t('admin.common.saving')
+                                    : editing
+                                        ? t('admin.certs_form.submit_update')
+                                        : t('admin.certs_form.submit_create')}
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

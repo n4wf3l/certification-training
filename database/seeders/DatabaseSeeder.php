@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             CertificationSeeder::class,
             CertificationTranslationsSeeder::class,
+            CourseTranslationsSeeder::class,
             QuestionTranslationsSeeder::class,
         ]);
     }

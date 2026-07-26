@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Ton streak est en danger</title>
+    <title>{{ __('emails.streak.subject', ['days' => $streak]) }}</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; background: #f7f8fa; margin: 0; padding: 40px 20px; color: #1f2431; }
         .wrap { max-width: 520px; margin: 0 auto; background: white; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -17,17 +17,17 @@
 <body>
     <div class="wrap">
         <div class="brand">{{ $brandName }}</div>
-        <h1>Salut {{ $user->name }},</h1>
-        <p>Ton streak de <strong>{{ $streak }} jours consécutifs</strong> risque de casser aujourd'hui si tu ne fais pas au moins un exercice avant minuit.</p>
-        <div class="streak-num">{{ $streak }} jours</div>
-        <p>Il te suffit d'une seule bonne réponse pour prolonger la série. Pas besoin de faire un examen complet.</p>
+        <h1>{{ __('emails.streak.title', ['name' => $user->name]) }}</h1>
+        <p>{!! __('emails.streak.body_1_html', ['days' => $streak]) !!}</p>
+        <div class="streak-num">{{ __('emails.streak.streak_pill', ['days' => $streak]) }}</div>
+        <p>{{ __('emails.streak.body_2') }}</p>
         <p style="text-align: center;">
-            <a href="{{ url('/') }}" class="cta">Reprendre l'entraînement</a>
+            <a href="{{ url('/') }}" class="cta">{{ __('emails.streak.cta') }}</a>
         </p>
         <div class="foot">
-            Tu reçois cet email parce que ton streak est menacé. Il ne partira pas si tu es actif au moins un jour tous les deux jours.
+            {{ __('emails.streak.footer') }}
             <br><br>
-            {{ $brandName }} · Entraînement adaptatif pour certifications IT
+            {{ $brandName }} . {{ __('emails.streak.tagline') }}
         </div>
     </div>
 </body>

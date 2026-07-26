@@ -258,6 +258,14 @@ function CertCard({ certification: c, onDelete }) {
                     <IconDownload className="h-3.5 w-3.5" />
                     {t('admin.certs_index.export_json')}
                 </a>
+                <Link
+                    href={route('admin.certifications.certificate-preview', c.id)}
+                    className="btn-ghost !px-3 !py-1.5 !text-xs"
+                    title={t('admin.certs_index.certificate_preview_title')}
+                >
+                    <Icon.Shield className="h-3.5 w-3.5" />
+                    {t('admin.certs_index.certificate_preview_action')}
+                </Link>
                 <div className="flex-1" />
                 <Link
                     href={route('admin.certifications.edit', c.id)}

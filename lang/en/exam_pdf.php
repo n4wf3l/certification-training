@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'page_title'         => 'Result - :title',
+    'header_subtitle'    => ':brand - Mock exam result',
+    'attempt_label'      => 'Attempt #:id',
+    'started_at'         => 'Started :date',
+    'completed_at'       => 'Completed :date',
+    'verdict_passed'     => 'Exam passed',
+    'verdict_failed'     => 'Not passed',
+    'threshold_line'     => ':pct% . required threshold :required/:total',
+    'stat_score'         => 'Score',
+    'stat_required'      => 'Required',
+    'stat_delta'         => 'Delta',
+    'stat_time'          => 'Time',
+    'section_details'    => 'Detail of the :count questions',
+    'status_correct'     => 'CORRECT',
+    'status_incorrect'   => 'INCORRECT',
+    'your_answer'        => 'Your answer:',
+    'not_answered'       => 'Not answered',
+    'correct_answer'     => 'Correct answer:',
+    'explanation'        => 'Explanation:',
+    'footer_line'        => ':brand . Result generated on :date . page ',
+    'question_prefix'    => 'Q:n',
+    'date_format'        => 'm/d/Y \a\t H:i',
+];

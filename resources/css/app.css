@@ -4,6 +4,9 @@
 
 @layer base {
     :root {
+        color-scheme: light;
+    }
+    :root.dark {
         color-scheme: dark;
     }
     html {
@@ -13,6 +16,7 @@
     }
     body {
         font-feature-settings: 'ss01', 'cv11';
+        transition: background-color 200ms ease, color 200ms ease;
     }
     h1, h2, h3, h4 {
         letter-spacing: -0.02em;
@@ -22,6 +26,54 @@
     section[id],
     div[id] {
         scroll-margin-top: 6rem;
+    }
+
+    /* === Dark mode geek/console aesthetic ================================
+       En mode dark on ajoute :
+       - une grille de points fixe très discrète (dot-grid style Vercel/Linear)
+       - un halo dégradé teal en haut de la page, ancré à droite
+       - une scanline horizontale en très bas d'opacité pour un feel "terminal"
+       Tout est en position: fixed / z-index:-1 pour ne rien perturber du DOM.
+       ==================================================================== */
+    html.dark body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background-image:
+            radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0),
+            radial-gradient(ellipse 60% 40% at 80% -10%, rgba(18, 204, 176, 0.12), transparent 70%),
+            radial-gradient(ellipse 50% 30% at 20% -5%, rgba(139, 92, 246, 0.08), transparent 70%);
+        background-size: 24px 24px, 100% 100%, 100% 100%;
+        background-repeat: repeat, no-repeat, no-repeat;
+    }
+    html.dark body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+            0deg,
+            transparent 0,
+            transparent 3px,
+            rgba(255, 255, 255, 0.012) 3px,
+            rgba(255, 255, 255, 0.012) 4px
+        );
+    }
+
+    /* Focus ring qui pop davantage en mode dark */
+    html.dark *:focus-visible {
+        outline: 2px solid rgba(18, 204, 176, 0.7);
+        outline-offset: 2px;
+    }
+
+    /* Sélection texte teal glow en dark */
+    html.dark ::selection {
+        background: rgba(18, 204, 176, 0.35);
+        color: #ffffff;
+        text-shadow: 0 0 8px rgba(18, 204, 176, 0.6);
     }
 }
 

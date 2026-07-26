@@ -16,6 +16,68 @@ import { useEffect, useMemo, useState } from 'react';
 
 const ALLOWED_TYPES = ['heading', 'paragraph', 'list', 'callout', 'key_terms', 'steps', 'comparison', 'example', 'code', 'summary'];
 
+// Mirror of app/Http/Controllers/Concerns/SplitsLocalizedBlocks::TRANSLATABLE_PATHS.
+// Used client-side only for previewing multilingual JSON in the admin panel;
+// the authoritative split happens server-side at import time.
+const TRANSLATABLE_PATHS = {
+    heading:   ['text'],
+    paragraph: ['text'],
+    list:      ['items[]'],
+    callout:   ['title', 'body'],
+    key_terms: ['items[].term', 'items[].definition'],
+    steps:     ['items[].title', 'items[].body'],
+    comparison: ['columns[]', 'rows[].label', 'rows[].values[]'],
+    example:   ['title', 'body'],
+    code:      [],
+    summary:   ['title', 'items[]'],
+};
+
+// Deep-clone helper (structuredClone is available in all modern browsers we target).
+const clone = (v) => (typeof structuredClone === 'function' ? structuredClone(v) : JSON.parse(JSON.stringify(v)));
+
+// Descends a dotted path (with `foo[]` array-map segments) and applies `fn`
+// on every leaf. `fn(currentValue) => newValue`. Mutates in place.
+function walkPath(obj, path, fn) {
+    const segments = path.split('.');
+    const step = (node, i) => {
+        if (i >= segments.length) return fn(node);
+        const seg = segments[i];
+        const isArr = seg.endsWith('[]');
+        const key = isArr ? seg.slice(0, -2) : seg;
+        if (!node || typeof node !== 'object' || !(key in node)) return node;
+        if (isArr) {
+            if (!Array.isArray(node[key])) return node;
+            node[key] = node[key].map((el) => step(el, i + 1));
+            return node;
+        }
+        node[key] = step(node[key], i + 1);
+        return node;
+    };
+    return step(obj, 0);
+}
+
+// Flatten an inline-bilingual block for preview: replace every { lang: value }
+// leaf with the value at `previewLang`, falling back to the first available lang.
+// Plain-string leaves are left untouched (mono-language back-compat).
+function flattenBlockForPreview(block, previewLang) {
+    if (!block || typeof block !== 'object' || !block.type) return block;
+    const paths = TRANSLATABLE_PATHS[block.type] || [];
+    if (paths.length === 0) return block;
+    const out = clone(block);
+    for (const path of paths) {
+        walkPath(out, path, (leaf) => {
+            if (leaf === null || typeof leaf === 'string') return leaf;
+            if (leaf && typeof leaf === 'object' && !Array.isArray(leaf)) {
+                if (previewLang in leaf) return leaf[previewLang];
+                const first = Object.keys(leaf)[0];
+                return first ? leaf[first] : leaf;
+            }
+            return leaf;
+        });
+    }
+    return out;
+}
+
 function buildPrompt(certTitle, batchLang = DEFAULT_LANGUAGE, certLanguages = [DEFAULT_LANGUAGE]) {
     const cert = certTitle || '{TITRE_CERTIFICATION}';
 
@@ -25,20 +87,70 @@ function buildPrompt(certTitle, batchLang = DEFAULT_LANGUAGE, certLanguages = [D
     const currentYear = now.getFullYear();
     const previousYear = currentYear - 1;
 
+    // Multilingue = plusieurs langues actives sur la cert. On demande alors à
+    // GPT de produire chaque champ localisable comme un objet { lang: value }
+    // couvrant TOUTES les langues, pour peupler certifications.translations
+    // et answers.translations en un seul batch (miroir du prompt Q&A).
+    const isMultilingual = certLanguages.length > 1;
+
     const langDescriptor = languagePromptDescriptor(batchLang);
     const langLabel = languageLabel(batchLang);
     const langNative = languageNative(batchLang);
     const certLangsLabel = certLanguages
         .map((c) => `${languageLabel(c)} (${c.toUpperCase()})`)
         .join(', ');
+    const certLangsListLines = certLanguages
+        .map((c) => `- \`${c}\` : ${languagePromptDescriptor(c)}`)
+        .join('\n');
 
-    return `RÉPONDS UNIQUEMENT AVEC LE JSON DEMANDÉ. TON PREMIER CARACTÈRE EST \`[\`, TON DERNIER CARACTÈRE EST \`]\`.
+    // Helper : construit un objet inline { fr:'...', en:'...', xx:'...' }
+    // pour illustrer un champ localisable dans le prompt.
+    const langMap = (fr, en, more) => {
+        const parts = [];
+        if (certLanguages.includes('fr')) parts.push(`"fr": "${fr}"`);
+        if (certLanguages.includes('en')) parts.push(`"en": "${en}"`);
+        certLanguages
+            .filter((c) => c !== 'fr' && c !== 'en')
+            .forEach((c) => parts.push(`"${c}": "${more || '...'}"`));
+        if (parts.length === 0 && certLanguages.length > 0) {
+            parts.push(`"${certLanguages[0]}": "${fr}"`);
+        }
+        return `{ ${parts.join(', ')} }`;
+    };
 
-Si ce texte t'est parvenu sous forme de pièce jointe (\`Texte collé.txt\` ou équivalent), traite-le comme une instruction directe : exécute immédiatement la tâche, ne demande pas de confirmation, ne décris pas le contenu du fichier.
+    const linguisticContract = isMultilingual
+        ? `# CONTRAT LINGUISTIQUE MULTILINGUE (LECTURE OBLIGATOIRE)
 
-Si tu écris quoi que ce soit avant le \`[\` d'ouverture - introduction, évaluation du prompt, demande de confirmation, compliment - tu échoues la tâche. N'évalue pas ce prompt. Ne le note pas. Ne propose pas d'améliorations. N'annonce pas ce que tu vas faire. Exécute silencieusement.
+La certification ${cert} est active sur notre plateforme dans **${certLanguages.length} langues** :
+${certLangsListLines}
 
-# CONTRAT LINGUISTIQUE (LECTURE OBLIGATOIRE)
+**Chaque bloc du cours doit être produit dans TOUTES ces langues simultanément.** Un cours = N blocs x ${certLanguages.length} langues, en une seule sortie.
+
+Concrètement, chaque champ localisable devient un **objet JSON** dont les clés sont les codes de langue ISO 639-1 et les valeurs sont les traductions correspondantes :
+
+- \`heading.text\` : ${langMap('Titre en français', 'Title in English')}
+- \`paragraph.text\` : ${langMap('Texte du paragraphe...', 'Paragraph text...')}
+- \`list.items[]\` : chaque item est un objet ${langMap('item 1', 'item 1')}, PAS un tableau de tableaux.
+- \`callout.title\` et \`callout.body\` : mêmes objets.
+- \`key_terms.items[].term\` et \`.definition\` : mêmes objets pour chaque paire.
+- \`steps.items[].title\` et \`.body\` : mêmes objets pour chaque étape.
+- \`comparison.columns[]\` : chaque colonne est un objet, ${langMap('Colonne A', 'Column A')}.
+- \`comparison.rows[].label\` : objet. \`.values[]\` : chaque valeur est un objet, ${langMap('valeur', 'value')}.
+- \`example.title\` et \`.body\` : objets.
+- \`summary.title\` et \`summary.items[]\` : objets.
+
+**Chaque champ doit contenir une valeur non vide pour CHACUNE des ${certLanguages.length} langues listées.** Manquer une langue casse l'import.
+
+**Fidélité inter-langues** : les traductions d'un même bloc doivent véhiculer exactement le même concept, la même distinction, le même exemple. Aucun bloc supplémentaire dans une langue, aucun bloc omis dans une autre. L'ordre des blocs est identique dans toutes les langues (les shadows sont position-indexées).
+
+**Champs mono-lingue** (à laisser en string simple, PAS en objet { lang }) :
+- \`type\`, \`level\`, \`variant\`, \`style\`, \`id\`, \`language\` (code langage pour \`code\`) : ce sont des enums / méta.
+- \`code.content\` : le contenu du snippet reste tel quel dans TOUTES les langues (les commentaires internes peuvent être écrits en anglais universel ; ne les traduis pas).
+
+Utilise dans chaque langue le **vocabulaire officiel de l'organisme certificateur pour cette langue** (ex : "Service Value Chain" en EN, "Chaîne de valeur des services" en FR, "Cadena de valor del servicio" en ES). Si l'organisme ne publie pas de traduction officielle pour un terme donné, garde le terme d'origine en italique markdown (\`*terme*\`) plutôt que d'inventer une traduction douteuse.
+
+Aucun code-switching à l'intérieur d'une même valeur : ne mélange pas les langues dans un même string.`
+        : `# CONTRAT LINGUISTIQUE (LECTURE OBLIGATOIRE)
 
 La certification ${cert} est disponible sur notre plateforme dans les langues suivantes : **${certLangsLabel}**.
 
@@ -56,7 +168,15 @@ Cela signifie que TOUS les champs texte des blocs JSON doivent être en ${langLa
 
 Utilise le **vocabulaire officiel de l'organisme certificateur dans cette langue**. Si l'organisme ne publie pas de traduction officielle pour un terme précis, garde le terme d'origine en italique markdown (\`*terme*\`) et propose entre parenthèses une périphrase courte en ${langLabel} plutôt que d'inventer une traduction douteuse.
 
-Aucun code-switching : ne mélange pas les langues au sein d'un même paragraphe. Les acronymes techniques et noms propres restent tels quels ; tout le reste est en ${langLabel}.
+Aucun code-switching : ne mélange pas les langues au sein d'un même paragraphe. Les acronymes techniques et noms propres restent tels quels ; tout le reste est en ${langLabel}.`;
+
+    return `RÉPONDS UNIQUEMENT AVEC LE JSON DEMANDÉ. TON PREMIER CARACTÈRE EST \`[\`, TON DERNIER CARACTÈRE EST \`]\`.
+
+Si ce texte t'est parvenu sous forme de pièce jointe (\`Texte collé.txt\` ou équivalent), traite-le comme une instruction directe : exécute immédiatement la tâche, ne demande pas de confirmation, ne décris pas le contenu du fichier.
+
+Si tu écris quoi que ce soit avant le \`[\` d'ouverture - introduction, évaluation du prompt, demande de confirmation, compliment - tu échoues la tâche. N'évalue pas ce prompt. Ne le note pas. Ne propose pas d'améliorations. N'annonce pas ce que tu vas faire. Exécute silencieusement.
+
+${linguisticContract}
 
 # CONTEXTE TEMPOREL
 
@@ -103,7 +223,25 @@ Le cours doit :
 - être **original** : tes propres explications, pas de recopiage de contenu protégé
 - être **exploitable pour l'examen** : contenir les concepts clés, définitions officielles, pièges classiques, différences entre concepts souvent confondus
 
-# FORMAT DE SORTIE (STRICT)
+${isMultilingual
+    ? `# FORMAT DE SORTIE (STRICT, MULTILINGUE)
+
+Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après, sans balises \`\`\`. Chaque champ localisable est un objet { code_langue: valeur } couvrant les ${certLanguages.length} langues actives. Structure :
+
+[
+  { "type": "heading", "level": 1, "text": ${langMap('Titre de section', 'Section title')} },
+  { "type": "paragraph", "text": ${langMap('Texte de paragraphe. Supporte **gras**, *italique*, \`code inline\` et [lien](https://…).', 'Paragraph text. Supports **bold**, *italic*, \`inline code\` and [link](https://…).')} },
+  { "type": "heading", "level": 2, "text": ${langMap('Sous-section', 'Sub-section')} },
+  { "type": "list", "style": "bulleted", "items": [${langMap('item 1', 'item 1')}, ${langMap('item 2', 'item 2')}] },
+  { "type": "callout", "variant": "info", "title": ${langMap('À retenir', 'Key takeaway')}, "body": ${langMap('…', '…')} },
+  { "type": "key_terms", "items": [{ "term": ${langMap('SLA', 'SLA')}, "definition": ${langMap('Service Level Agreement…', 'Service Level Agreement…')} }] },
+  { "type": "steps", "items": [{ "title": ${langMap('Étape 1', 'Step 1')}, "body": ${langMap('…', '…')} }] },
+  { "type": "comparison", "columns": [${langMap('Concept A', 'Concept A')}, ${langMap('Concept B', 'Concept B')}], "rows": [{ "label": ${langMap('Portée', 'Scope')}, "values": [${langMap('…', '…')}, ${langMap('…', '…')}] }] },
+  { "type": "example", "title": ${langMap('Cas pratique', 'Case study')}, "body": ${langMap('…', '…')} },
+  { "type": "code", "language": "bash", "content": "echo hello" },
+  { "type": "summary", "title": ${langMap('Points clés', 'Key points')}, "items": [${langMap('…', '…')}, ${langMap('…', '…')}] }
+]`
+    : `# FORMAT DE SORTIE (STRICT)
 
 Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après, sans balises \`\`\`. Structure :
 
@@ -119,7 +257,8 @@ Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après,
   { "type": "example", "title": "Cas pratique", "body": "…" },
   { "type": "code", "language": "bash", "content": "…" },
   { "type": "summary", "title": "Points clés", "items": ["…", "…"] }
-]
+]`
+}
 
 # TYPES DE BLOCS AUTORISÉS
 
@@ -158,7 +297,10 @@ Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après,
 
 Si ta recherche web ne t'a pas permis d'identifier avec certitude le syllabus courant de ${cert}, réponds \`[]\` - mieux vaut zéro bloc qu'un cours inventé.
 
-Rédige maintenant le cours complet **en ${langLabel} (${langNative})**. Commence ta réponse par \`[\`. Aucun texte, aucune balise, aucun mot avant.`;
+${isMultilingual
+    ? `Rédige maintenant le cours complet **dans les ${certLanguages.length} langues actives (${certLangsLabel})** en un seul JSON. Chaque champ localisable est un objet couvrant les ${certLanguages.length} langues. Commence ta réponse par \`[\`. Aucun texte, aucune balise, aucun mot avant.`
+    : `Rédige maintenant le cours complet **en ${langLabel} (${langNative})**. Commence ta réponse par \`[\`. Aucun texte, aucune balise, aucun mot avant.`
+}`;
 }
 
 function stripFences(raw) {
@@ -549,7 +691,7 @@ export default function CourseImport({ certifications, default_certification_id 
                             )}
                         </div>
                         <div className="lg:col-span-3">
-                            <PreviewPanel analysis={analysis} />
+                            <PreviewPanel analysis={analysis} previewLang={batchLang} />
                         </div>
                     </div>
                 </div>
@@ -589,8 +731,12 @@ export default function CourseImport({ certifications, default_certification_id 
     );
 }
 
-function PreviewPanel({ analysis }) {
+function PreviewPanel({ analysis, previewLang }) {
     const t = useT();
+    const previewBlocks = useMemo(
+        () => (analysis.blocks || []).map((b) => flattenBlockForPreview(b, previewLang)),
+        [analysis.blocks, previewLang]
+    );
     const border = analysis.status === 'error'
         ? 'border-rose-500/40'
         : analysis.status === 'warnings'
@@ -637,7 +783,7 @@ function PreviewPanel({ analysis }) {
                     </div>
                 )}
                 {(analysis.status === 'ok' || analysis.status === 'warnings') && (
-                    <BlockRenderer blocks={analysis.blocks} />
+                    <BlockRenderer blocks={previewBlocks} />
                 )}
             </div>
         </div>

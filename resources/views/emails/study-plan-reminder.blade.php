@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Ton plan attend</title>
+    <title>{{ __('emails.plan_reminder.subject', ['cert' => $plan->certification->title, 'days' => $daysSince]) }}</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; background: #f7f8fa; margin: 0; padding: 40px 20px; color: #1f2431; }
         .wrap { max-width: 520px; margin: 0 auto; background: white; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -17,17 +17,17 @@
 <body>
     <div class="wrap">
         <div class="brand">{{ $brandName }}</div>
-        <h1>Hey {{ $plan->user->name }},</h1>
-        <p>Ton plan pour <strong>{{ $plan->certification->title }}</strong> attend depuis <strong>{{ $daysSince }} jours</strong>.</p>
+        <h1>{{ __('emails.plan_reminder.title', ['name' => $plan->user->name]) }}</h1>
+        <p>{!! __('emails.plan_reminder.body_1_html', ['cert' => e($plan->certification->title), 'days' => $daysSince]) !!}</p>
         <div class="box">
-            Il te reste <strong>{{ $daysUntil }} jour{{ $daysUntil > 1 ? 's' : '' }}</strong> avant l'examen, et ton objectif quotidien est de <strong>{{ $plan->daily_target }} questions</strong>.
+            {!! __('emails.plan_reminder.box_html', ['remaining' => $daysUntil, 'target' => $plan->daily_target]) !!}
         </div>
-        <p>Pas la peine de faire un marathon : quelques questions aujourd'hui suffisent pour reprendre le rythme.</p>
+        <p>{{ __('emails.plan_reminder.body_2') }}</p>
         <p style="text-align: center;">
-            <a href="{{ url('/study-plans/' . $plan->id) }}" class="cta">Reprendre mon plan</a>
+            <a href="{{ url('/study-plans/' . $plan->id) }}" class="cta">{{ __('emails.plan_reminder.cta') }}</a>
         </p>
         <div class="foot">
-            Tu recois cet email car tu as active les rappels de plan. Tu peux le desactiver depuis la page du plan.
+            {{ __('emails.plan_reminder.footer') }}
             <br><br>
             {{ $brandName }}
         </div>

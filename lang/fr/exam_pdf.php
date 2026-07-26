@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'page_title'         => 'Résultat - :title',
+    'header_subtitle'    => ':brand - Résultat d\'examen blanc',
+    'attempt_label'      => 'Tentative n° :id',
+    'started_at'         => 'Démarrée le :date',
+    'completed_at'       => 'Terminée le :date',
+    'verdict_passed'     => 'Examen validé',
+    'verdict_failed'     => 'Non validé',
+    'threshold_line'     => ':pct % . seuil requis :required/:total',
+    'stat_score'         => 'Score',
+    'stat_required'      => 'Requis',
+    'stat_delta'         => 'Écart',
+    'stat_time'          => 'Temps',
+    'section_details'    => 'Détail des :count questions',
+    'status_correct'     => 'CORRECT',
+    'status_incorrect'   => 'INCORRECT',
+    'your_answer'        => 'Votre réponse :',
+    'not_answered'       => 'Non répondue',
+    'correct_answer'     => 'Bonne réponse :',
+    'explanation'        => 'Explication :',
+    'footer_line'        => ':brand . Résultat généré le :date . page ',
+    'question_prefix'    => 'Q:n',
+    'date_format'        => 'd/m/Y \à H:i',
+];

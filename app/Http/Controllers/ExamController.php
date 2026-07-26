@@ -222,6 +222,14 @@ class ExamController extends Controller
             return redirect()->route('exam.result', $attempt);
         }
 
+        // Attempt explicitement abandonne : impossible de reprendre.
+        // Redirige vers la page cert avec un flash explicatif.
+        if ($attempt->isAbandoned()) {
+            return redirect()
+                ->route('certifications.show', $attempt->certification)
+                ->with('info', __('flash.exam_attempt_abandoned'));
+        }
+
         $certification = $attempt->certification;
         $items = $attempt->attemptAnswers()
             ->with(['question.answers'])
@@ -253,6 +261,21 @@ class ExamController extends Controller
             ];
         });
 
+        // Cert progress : etat courant du streak vers le certificat CertifLoop
+        // + quit budget consomme. Sert au modal de sortie a 3 tiers (basique /
+        // renforce si streak > 0 / maximum si 2e quit imminent).
+        $certProgress = null;
+        if (!$attempt->practice_domain) {
+            $state = app(GamificationService::class)->computeStreakState($attempt->user_id, $certification->id);
+            $certProgress = [
+                'perfect_runs' => $state['perfect_runs'],
+                'required' => $state['required'],
+                'quits_used' => $state['quits_used'],
+                'quits_left' => $state['quits_left'],
+                'quit_budget' => $state['quit_budget'],
+            ];
+        }
+
         return Inertia::render('Exam/Take', [
             'attempt' => [
                 'id' => $attempt->id,
@@ -260,15 +283,41 @@ class ExamController extends Controller
                 'duration_minutes' => $certification->duration_minutes,
                 'feedback_mode' => $attempt->feedback_mode,
                 'locale' => $locale,
+                'practice_domain' => $attempt->practice_domain,
             ],
             'certification' => [
                 'id' => $certification->id,
+                'slug' => $certification->slug,
                 'title' => $certification->title,
                 'logo_path' => $certification->logo_path,
                 'passing_score' => $attempt->passing_score,
             ],
             'questions' => $questions,
+            'cert_progress' => $certProgress,
         ]);
+    }
+
+    /**
+     * Marque un attempt comme abandonne. Consomme 1 unite du quit budget
+     * du streak certificat CertifLoop. Le 2e abandon du meme streak reset
+     * (via computeStreakState, cote lecture).
+     *
+     * Idempotent : appelable via POST normal ou via navigator.sendBeacon()
+     * sur beforeunload (fire-and-forget). Renvoie 204 pour eviter tout
+     * traitement supplementaire cote client.
+     */
+    public function abandon(Attempt $attempt)
+    {
+        $this->authorizeAttempt($attempt);
+
+        // Silencieusement no-op si deja termine ou deja abandonne (idempotence
+        // pour retries et double-firing du beacon).
+        if ($attempt->isCompleted() || $attempt->isAbandoned()) {
+            return response()->noContent();
+        }
+
+        $attempt->update(['abandoned_at' => now()]);
+        return response()->noContent();
     }
 
     public function submit(Request $request, Attempt $attempt): RedirectResponse
@@ -416,6 +465,28 @@ class ExamController extends Controller
             'pct' => $v['seen'] > 0 ? round($v['correct'] / $v['seen'] * 100) : 0,
         ])->sortBy('pct')->values()->all();
 
+        // Progression vers le certificat CertifLoop : nb de mock exams parfaits
+        // consecutifs sur cette cert. On l'envoie uniquement pour les mock exams
+        // (pas les practice sessions) puisque la regle exclut les practice.
+        $certProgress = null;
+        if (!$attempt->practice_domain) {
+            $state = app(GamificationService::class)->computeStreakState($attempt->user_id, $attempt->certification->id);
+            $awarded = \App\Models\UserCertificate::where('user_id', $attempt->user_id)
+                ->where('certification_id', $attempt->certification->id)
+                ->first();
+            $certProgress = [
+                'perfect_runs' => $state['perfect_runs'],
+                'required' => $state['required'],
+                'quits_used' => $state['quits_used'],
+                'quits_left' => $state['quits_left'],
+                'quit_budget' => $state['quit_budget'],
+                'this_attempt_perfect' => $attempt->total_questions > 0 && $attempt->score === $attempt->total_questions,
+                'awarded' => $awarded !== null,
+                'awarded_token' => $awarded?->token,
+                'just_awarded' => $awarded !== null && $state['perfect_runs'] >= $state['required'],
+            ];
+        }
+
         return Inertia::render('Exam/Result', [
             'attempt' => [
                 'id' => $attempt->id,
@@ -440,6 +511,7 @@ class ExamController extends Controller
             'mastery' => $this->masterySummary($attempt->user_id, $attempt->certification),
             'comparison' => $comparison,
             'domain_breakdown' => $domainBreakdown,
+            'cert_progress' => $certProgress,
         ]);
     }
 
@@ -496,7 +568,7 @@ class ExamController extends Controller
             ],
             'details' => $details,
             'duration_human' => $durationHuman,
-            'generated_at' => now()->format('d/m/Y à H:i'),
+            'generated_at' => now()->format(__('exam_pdf.date_format')),
             'brand_name' => Setting::get('brand_name') ?: 'CertifLoop',
         ];
 

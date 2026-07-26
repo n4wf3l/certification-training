@@ -12,7 +12,7 @@ function formatTime(seconds) {
     return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-export default function Take({ attempt, certification, questions }) {
+export default function Take({ attempt, certification, questions, cert_progress = null }) {
     const t = useT();
     const [current, setCurrent] = useState(0);
     const [answers, setAnswers] = useState({});
@@ -22,6 +22,16 @@ export default function Take({ attempt, certification, questions }) {
     const [justPicked, setJustPicked] = useState(null);
     const submittingRef = useRef(false);
     const allowLeaveRef = useRef(false);
+
+    // Tier de warning affiche dans la modal de sortie :
+    //  0 = warning basique (aucun streak en jeu OU practice)
+    //  1 = streak >= 1 ET budget quit restant (1er quit "gratuit")
+    //  2 = streak >= 1 ET budget quit epuise (2e quit = reset streak)
+    const exitTier = (() => {
+        if (!cert_progress || cert_progress.perfect_runs === 0) return 0;
+        if (cert_progress.quits_left > 0) return 1;
+        return 2;
+    })();
 
     const feedbackMode = attempt.feedback_mode || 'deferred';
     const isInstant = feedbackMode === 'instant';
@@ -73,6 +83,16 @@ export default function Take({ attempt, certification, questions }) {
     useEffect(() => {
         const beforeUnload = (e) => {
             if (submittingRef.current || allowLeaveRef.current) return;
+            // Best-effort abandon signal for tab close / navigator kill.
+            // sendBeacon est le seul appel HTTP autorise durant beforeunload.
+            // On envoie un FormData vide - le controller ne lit pas de body.
+            try {
+                const url = route('exam.abandon', attempt.id);
+                const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const fd = new FormData();
+                if (csrf) fd.append('_token', csrf);
+                navigator.sendBeacon?.(url, fd);
+            } catch { /* silent - beforeunload doesn't allow throwing */ }
             e.preventDefault();
             e.returnValue = '';
         };
@@ -129,10 +149,25 @@ export default function Take({ attempt, certification, questions }) {
         );
     };
 
-    const confirmLeave = () => {
+    const confirmLeave = async () => {
         allowLeaveRef.current = true;
         const target = pendingLeave;
         setPendingLeave(null);
+        // Marque l'attempt comme abandonne cote serveur avant de naviguer.
+        // fetch (avec keepalive) est plus fiable que router.post ici car on
+        // veut naviguer immediatement sans attendre le round-trip Inertia.
+        try {
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            await fetch(route('exam.abandon', attempt.id), {
+                method: 'POST',
+                keepalive: true,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    ...(csrf ? { 'X-CSRF-TOKEN': csrf } : {}),
+                },
+            });
+        } catch { /* on navigue meme si l'abandon POST echoue - le sendBeacon prend le relais */ }
         if (target) {
             if ((target.method || 'get').toLowerCase() === 'get') {
                 router.visit(target.url);
@@ -400,6 +435,35 @@ export default function Take({ attempt, certification, questions }) {
                                 <p className="text-xs text-ink-500">{t('exam_take.exit_subtitle')}</p>
                             </div>
                         </div>
+                        {exitTier === 1 && cert_progress && (
+                            <div className="mb-4 rounded-xl border-l-4 border-amber-500 bg-amber-500/10 p-4 text-sm">
+                                <div className="mb-1 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-300">
+                                    <Icon.Bolt className="h-3.5 w-3.5" />
+                                    {t('exam_take.exit_cert_tier1_kicker')}
+                                </div>
+                                <p className="text-ink-800 dark:text-ink-100">
+                                    {t('exam_take.exit_cert_tier1_body', {
+                                        perfect: cert_progress.perfect_runs,
+                                        budget: cert_progress.quit_budget,
+                                    })}
+                                </p>
+                            </div>
+                        )}
+                        {exitTier === 2 && cert_progress && (
+                            <div className="mb-4 rounded-xl border-2 border-rose-500 bg-rose-500/15 p-4 text-sm shadow-glow">
+                                <div className="mb-1 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-widest text-rose-700 dark:text-rose-300">
+                                    <Icon.Bolt className="h-3.5 w-3.5" />
+                                    {t('exam_take.exit_cert_tier2_kicker')}
+                                </div>
+                                <p className="font-medium text-ink-900 dark:text-white">
+                                    {t('exam_take.exit_cert_tier2_body', {
+                                        perfect: cert_progress.perfect_runs,
+                                        required: cert_progress.required,
+                                    })}
+                                </p>
+                            </div>
+                        )}
+
                         <ul className="space-y-2 rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 text-sm text-ink-800 dark:text-ink-200">
                             <li className="flex items-start gap-2">
                                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />

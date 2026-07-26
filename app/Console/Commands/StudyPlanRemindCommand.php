@@ -51,7 +51,9 @@ class StudyPlanRemindCommand extends Command
                 continue;
             }
             try {
-                Mail::to($plan->user->email)->send(new StudyPlanReminderMail($plan, $daysSince, $brandName));
+                Mail::to($plan->user->email)
+                    ->locale($plan->user->preferred_locale ?: config('app.fallback_locale', 'en'))
+                    ->send(new StudyPlanReminderMail($plan, $daysSince, $brandName));
                 $sent++;
                 $this->line("  envoye a {$plan->user->email}");
             } catch (\Throwable $e) {

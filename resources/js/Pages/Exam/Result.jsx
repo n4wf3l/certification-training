@@ -299,7 +299,78 @@ function Chip({ color, label, value }) {
     );
 }
 
-export default function Result({ attempt, certification, details, mastery, comparison, domain_breakdown = [] }) {
+// Banner that appears after a perfect run to reinforce the 3-of-3 certification
+// mechanic. Only rendered when the attempt hit 100% AND is a full mock exam
+// (practice sessions carry `cert_progress = null` server-side, so they never
+// trigger a banner here).
+function CertProgressBanner({ progress }) {
+    const t = useT();
+    if (!progress || !progress.this_attempt_perfect) return null;
+
+    if (progress.just_awarded && progress.awarded_token) {
+        return (
+            <div className="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-500/15 via-brand-500/10 to-iris-500/10 p-6 shadow-glow-lg">
+                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/30 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-iris-500/20 blur-3xl" />
+                <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-brand-500 text-white shadow-glow">
+                        <Icon.Shield className="h-7 w-7" />
+                    </div>
+                    <div className="flex-1">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-300">
+                            {t('result_cert_banner.perfect_3_title')}
+                        </div>
+                        <p className="mt-1 text-base leading-relaxed text-ink-800 dark:text-ink-100">
+                            {t('result_cert_banner.perfect_3_body')}
+                        </p>
+                    </div>
+                    <Link
+                        href={route('certificate.show', progress.awarded_token)}
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-700"
+                    >
+                        <Icon.Sparkles className="h-4 w-4" />
+                        {t('result_cert_banner.perfect_3_cta')}
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    const step = progress.perfect_runs; // 1 or 2 after a perfect run pre-award
+    if (step !== 1 && step !== 2) return null;
+
+    return (
+        <div className="rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 to-transparent p-5">
+            <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 text-brand-600 dark:text-brand-300">
+                    <Icon.Shield className="h-5 w-5" />
+                </div>
+                <div className="flex-1">
+                    <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-600 dark:text-brand-300">
+                        {t(`result_cert_banner.perfect_${step}_title`)}
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-ink-700 dark:text-ink-200">
+                        {t(`result_cert_banner.perfect_${step}_body`)}
+                    </p>
+                    <div className="mt-3 flex gap-1.5">
+                        {[0, 1, 2].map((i) => (
+                            <div
+                                key={i}
+                                className={`h-1.5 w-8 rounded-full transition ${
+                                    i < step
+                                        ? 'bg-gradient-to-r from-brand-500 to-iris-500 shadow-glow'
+                                        : 'bg-ink-200 dark:bg-ink-800'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default function Result({ attempt, certification, details, mastery, comparison, domain_breakdown = [], cert_progress = null }) {
     const t = useT();
     const passed = attempt.passed;
     const wrong = details.filter((d) => !d.is_correct);
@@ -378,6 +449,8 @@ export default function Result({ attempt, certification, details, mastery, compa
                         </div>
                     </div>
                 </div>
+
+                <CertProgressBanner progress={cert_progress} />
 
                 {comparison && (
                     <ComparisonCard comparison={comparison} currentDuration={attempt.duration_seconds} />

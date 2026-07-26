@@ -10,6 +10,9 @@ return [
     'course_block_missing_type' => "Block :n: missing 'type' key.",
     'course_block_unknown_type' => "Block :n: unknown type ':type'. Allowed: :allowed.",
     'course_too_few_blocks' => 'A course must contain at least 5 blocks. :count received.',
+    'course_row_field_type' => 'Block :n: field ":field" must be either a string or a { lang: value } object.',
+    'course_row_missing_lang' => 'Block :n: field ":field" is missing the translation for language ":lang".',
+    'exam_attempt_abandoned' => 'That exam attempt was abandoned - start a new mock exam to continue your progression.',
 
     'question_added' => 'Question added.',
     'question_updated' => 'Question updated.',
@@ -19,6 +22,8 @@ return [
     'questions_row_bad_shape' => 'Question :n: missing prompt or invalid answer count (2 to 6 expected).',
     'questions_row_empty_answer' => 'Question :n: one answer has empty text.',
     'questions_row_wrong_correct_count' => 'Question :n: exactly one correct answer expected, :count found.',
+    'questions_row_field_type' => 'Question :n: field ":field" must be either a string or a { lang: value } object.',
+    'questions_row_missing_lang' => 'Question :n: field ":field" is missing the translation for language ":lang".',
 
     'settings_updated' => 'Settings updated.',
 

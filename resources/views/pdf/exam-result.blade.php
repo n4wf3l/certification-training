@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Résultat - {{ $certification['title'] }}</title>
+    <title>{{ __('exam_pdf.page_title', ['title' => $certification['title']]) }}</title>
     <style>
         @page { margin: 24mm 20mm; }
         body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 10.5pt; color: #1f2431; line-height: 1.45; }
@@ -49,49 +49,53 @@
 </head>
 <body>
     <div class="footer">
-        {{ $brand_name ?? 'CertifLoop' }} · Résultat généré le {{ $generated_at }} · page <span class="pagenum"></span>
+        {{ __('exam_pdf.footer_line', ['brand' => $brand_name ?? 'CertifLoop', 'date' => $generated_at]) }}<span class="pagenum"></span>
     </div>
 
     <div class="header">
-        <div class="brand">{{ $brand_name ?? 'CertifLoop' }} - Résultat d'examen blanc</div>
+        <div class="brand">{{ __('exam_pdf.header_subtitle', ['brand' => $brand_name ?? 'CertifLoop']) }}</div>
         <div class="title">{{ $certification['title'] }}</div>
         <div class="meta">
-            Tentative n° {{ $attempt['id'] }}
+            {{ __('exam_pdf.attempt_label', ['id' => $attempt['id']]) }}
             @if(!empty($attempt['started_at']))
-                · Démarrée le {{ \Carbon\Carbon::parse($attempt['started_at'])->format('d/m/Y à H:i') }}
+                . {{ __('exam_pdf.started_at', ['date' => \Carbon\Carbon::parse($attempt['started_at'])->format(__('exam_pdf.date_format'))]) }}
             @endif
             @if(!empty($attempt['completed_at']))
-                · Terminée le {{ \Carbon\Carbon::parse($attempt['completed_at'])->format('d/m/Y à H:i') }}
+                . {{ __('exam_pdf.completed_at', ['date' => \Carbon\Carbon::parse($attempt['completed_at'])->format(__('exam_pdf.date_format'))]) }}
             @endif
         </div>
     </div>
 
     <div class="verdict {{ $attempt['passed'] ? 'passed' : 'failed' }}">
-        <div class="label">{{ $attempt['passed'] ? 'Examen validé' : 'Non validé' }}</div>
+        <div class="label">{{ $attempt['passed'] ? __('exam_pdf.verdict_passed') : __('exam_pdf.verdict_failed') }}</div>
         <div class="score">{{ $attempt['score'] }}/{{ $attempt['total_questions'] }}</div>
-        <div class="pct">{{ $attempt['percentage'] }} % · seuil requis {{ $attempt['passing_score'] }}/{{ $attempt['total_questions'] }}</div>
+        <div class="pct">{{ __('exam_pdf.threshold_line', [
+            'pct' => $attempt['percentage'],
+            'required' => $attempt['passing_score'],
+            'total' => $attempt['total_questions'],
+        ]) }}</div>
     </div>
 
     <table class="stats">
         <tr>
-            <td><div class="lbl">Score</div><div class="val">{{ $attempt['score'] }}/{{ $attempt['total_questions'] }}</div></td>
-            <td><div class="lbl">Requis</div><div class="val">{{ $attempt['passing_score'] }}</div></td>
-            <td><div class="lbl">Écart</div><div class="val">{{ ($attempt['score'] - $attempt['passing_score']) > 0 ? '+' : '' }}{{ $attempt['score'] - $attempt['passing_score'] }}</div></td>
-            <td><div class="lbl">Temps</div><div class="val">{{ $duration_human }}</div></td>
+            <td><div class="lbl">{{ __('exam_pdf.stat_score') }}</div><div class="val">{{ $attempt['score'] }}/{{ $attempt['total_questions'] }}</div></td>
+            <td><div class="lbl">{{ __('exam_pdf.stat_required') }}</div><div class="val">{{ $attempt['passing_score'] }}</div></td>
+            <td><div class="lbl">{{ __('exam_pdf.stat_delta') }}</div><div class="val">{{ ($attempt['score'] - $attempt['passing_score']) > 0 ? '+' : '' }}{{ $attempt['score'] - $attempt['passing_score'] }}</div></td>
+            <td><div class="lbl">{{ __('exam_pdf.stat_time') }}</div><div class="val">{{ $duration_human }}</div></td>
         </tr>
     </table>
 
-    <h2>Détail des {{ count($details) }} questions</h2>
+    <h2>{{ __('exam_pdf.section_details', ['count' => count($details)]) }}</h2>
 
     @foreach($details as $d)
         <div class="question {{ $d['is_correct'] ? 'correct' : 'wrong' }}">
             <div class="q-head">
-                Q{{ $d['position'] }}
+                {{ __('exam_pdf.question_prefix', ['n' => $d['position']]) }}
                 @if(!empty($d['topic']))
-                    · {{ $d['topic'] }}
+                    . {{ $d['topic'] }}
                 @endif
                 <span class="status {{ $d['is_correct'] ? 'ok' : 'ko' }}">
-                    {{ $d['is_correct'] ? 'CORRECT' : 'INCORRECT' }}
+                    {{ $d['is_correct'] ? __('exam_pdf.status_correct') : __('exam_pdf.status_incorrect') }}
                 </span>
             </div>
 
@@ -104,23 +108,23 @@
             @if(!empty($d['chosen']))
                 <div class="answer {{ $d['is_correct'] ? 'chosen-correct' : 'chosen-wrong' }}">
                     <span class="letter">{{ $d['chosen']['letter'] }}.</span>
-                    Votre réponse : {{ $d['chosen']['text'] }}
+                    {{ __('exam_pdf.your_answer') }} {{ $d['chosen']['text'] }}
                 </div>
             @else
                 <div class="answer" style="background:#f7f8fa;color:#646c81;font-style:italic;">
-                    Non répondue
+                    {{ __('exam_pdf.not_answered') }}
                 </div>
             @endif
 
             @if(!$d['is_correct'] && !empty($d['correct']))
                 <div class="answer correct">
                     <span class="letter">{{ $d['correct']['letter'] }}.</span>
-                    Bonne réponse : {{ $d['correct']['text'] }}
+                    {{ __('exam_pdf.correct_answer') }} {{ $d['correct']['text'] }}
                 </div>
             @endif
 
             @if(!empty($d['explanation']))
-                <div class="explanation"><strong>Explication :</strong> {{ $d['explanation'] }}</div>
+                <div class="explanation"><strong>{{ __('exam_pdf.explanation') }}</strong> {{ $d['explanation'] }}</div>
             @endif
         </div>
     @endforeach

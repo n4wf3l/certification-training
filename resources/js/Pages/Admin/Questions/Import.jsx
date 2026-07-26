@@ -23,12 +23,20 @@ function buildPrompt(certTitle, count, existing = [], batchLang = DEFAULT_LANGUA
     const currentYear = now.getFullYear();
     const previousYear = currentYear - 1;
 
+    // Multilingue = la certif a plusieurs langues actives. On demande alors à GPT
+    // de produire chaque champ localisable comme un objet { code_langue: valeur }
+    // au lieu d'une string, pour peupler questions.translations en un seul batch.
+    const isMultilingual = certLanguages.length > 1;
+
     const langDescriptor = languagePromptDescriptor(batchLang);
     const langLabel = languageLabel(batchLang);
     const langNative = languageNative(batchLang);
     const certLangsLabel = certLanguages
         .map((c) => `${languageLabel(c)} (${c.toUpperCase()})`)
         .join(', ');
+    const certLangsListLines = certLanguages
+        .map((c) => `- \`${c}\` : ${languagePromptDescriptor(c)}`)
+        .join('\n');
 
     const existingBlock = existing.length
         ? `
@@ -43,29 +51,161 @@ ${existing.map((q, i) => `${String(i + 1).padStart(2, '0')}. [${q.topic || 'sans
 `
         : '';
 
+    // En mode multilingue on demande a GPT de produire chaque champ localisable
+    // comme un objet { lang: value } couvrant toutes les langues actives. En mode
+    // mono-langue on garde le format string historique (retro-compat).
+    const linguisticContract = isMultilingual
+        ? `# CONTRAT LINGUISTIQUE MULTILINGUE (LECTURE OBLIGATOIRE)
+
+La certification ${cert} est active sur notre plateforme dans **${certLanguages.length} langues** :
+${certLangsListLines}
+
+**Chaque question doit être produite dans TOUTES ces langues simultanément.** Un batch = ${count} questions x ${certLanguages.length} langues.
+
+Concretement, chaque champ localisable devient un **objet JSON** dont les cles sont les codes de langue ISO 639-1 et les valeurs sont les traductions correspondantes :
+- \`topic\`, \`scenario\`, \`question\`, \`explanation\` : \`{ ${certLanguages.map((c) => `"${c}": "..."`).join(', ')} }\`
+- \`answers[].text\` et \`answers[].rationale\` : meme forme.
+- \`scenario\` peut valoir \`null\` (question directe) - dans ce cas la valeur est \`null\` tout court, pas un objet.
+- \`answers[].correct\` reste un booleen (la bonne reponse est la meme dans toutes les langues).
+
+**Chaque champ doit contenir une valeur non vide pour CHACUNE des ${certLanguages.length} langues listees.** Manquer une langue casse l'import.
+
+Utilise dans chaque langue le **vocabulaire officiel de l'organisme certificateur pour cette langue** (ex : "Service Value Chain" en EN, "Chaine de valeur des services" en FR, "Cadena de valor del servicio" en ES). Si l'organisme ne publie pas de traduction officielle pour un terme donne dans une langue donnee, garde le terme d'origine en italique markdown (\`*terme*\`) plutot que d'inventer une traduction douteuse.
+
+**Fidelite inter-langues** : les traductions doivent tester exactement le meme objectif d'apprentissage avec la meme reponse correcte. L'ordre des propositions et l'index de la bonne reponse restent identiques dans toutes les langues. Aucun code-switching a l'interieur d'une meme valeur : ne melange pas les langues dans un meme string.`
+        : `# CONTRAT LINGUISTIQUE (LECTURE OBLIGATOIRE)
+
+La certification ${cert} est disponible sur notre plateforme dans les langues suivantes : **${certLangsLabel}**.
+
+**Ce batch specifique doit etre redige integralement en ${langDescriptor}.** Aucune exception.
+
+Cela signifie que TOUS les champs texte du JSON de sortie doivent etre en ${langLabel} (${langNative}) :
+- \`topic\` : nom du domaine du syllabus dans la terminologie officielle en ${langLabel}
+- \`scenario\` : contexte en ${langLabel}
+- \`question\` : enonce en ${langLabel}
+- \`explanation\` : justification en ${langLabel}
+- \`answers[].text\` : chaque proposition en ${langLabel}
+- \`answers[].rationale\` : chaque justification en ${langLabel}
+
+Utilise le **vocabulaire officiel de l'organisme certificateur dans cette langue** (ex : "Service Value Chain" en anglais, "Chaine de valeur des services" en francais, "Cadena de valor del servicio" en espagnol). Si l'organisme ne publie pas de traduction officielle pour un terme precis, garde le terme d'origine en italique markdown (\`*terme*\`) plutot que d'inventer une traduction douteuse.
+
+Aucun code-switching : ne melange pas les langues au sein d'une meme question. Si le contenu naturel d'un extrait doit rester dans une autre langue (nom propre, marque, extrait de commande CLI, acronyme technique intraduisible), ce doit etre un fragment identifiable, pas une phrase entiere.`;
+
+    const langMap = (fr, en, more) => {
+        const parts = [];
+        if (certLanguages.includes('fr')) parts.push(`"fr": "${fr}"`);
+        if (certLanguages.includes('en')) parts.push(`"en": "${en}"`);
+        certLanguages
+            .filter((c) => c !== 'fr' && c !== 'en')
+            .forEach((c) => parts.push(`"${c}": "${more || '...'}"`));
+        // fallback si ni FR ni EN n'est present : premiere langue seulement
+        if (parts.length === 0 && certLanguages.length > 0) {
+            parts.push(`"${certLanguages[0]}": "${fr}"`);
+        }
+        return `{ ${parts.join(', ')} }`;
+    };
+
+    const formatSection = isMultilingual
+        ? `# FORMAT DE SORTIE (STRICT)
+
+Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire. Chaque champ localisable est un objet { code_langue: valeur } couvrant les ${certLanguages.length} langues actives. Structure exacte :
+
+[
+  {
+    "topic": ${langMap('Theme court en 1-4 mots', 'Short topic in 1-4 words')},
+    "scenario": null,
+    "question": ${langMap("Enonce de la question", 'Question stem')},
+    "explanation": ${langMap('1 a 3 phrases : pourquoi la bonne reponse est la bonne, quel concept du syllabus elle valide.', '1 to 3 sentences: why the correct answer is correct and which syllabus concept it validates.')},
+    "answers": [
+      { "text": ${langMap('Proposition A', 'Answer A')}, "correct": false, "rationale": ${langMap("Piege classique : pourquoi cette reponse semble juste mais ne l'est pas.", 'Classic trap: why this option looks right but is not.')} },
+      { "text": ${langMap('Proposition B', 'Answer B')}, "correct": true, "rationale": ${langMap("Confirme brievement pourquoi c'est la bonne reponse - 1 phrase.", 'Briefly confirm why this is the correct answer - 1 sentence.')} },
+      { "text": ${langMap('Proposition C', 'Answer C')}, "correct": false, "rationale": ${langMap('Explique le distracteur : quelle notion voisine il evoque.', 'Explain the distractor: which neighbouring concept it evokes.')} },
+      { "text": ${langMap('Proposition D', 'Answer D')}, "correct": false, "rationale": ${langMap('Idem - 1 phrase courte.', 'Same - 1 short sentence.')} }
+    ]
+  }
+]`
+        : `# FORMAT DE SORTIE (STRICT)
+
+Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire. Structure exacte :
+
+[
+  {
+    "topic": "Theme court en 1-4 mots",
+    "scenario": null,
+    "question": "Enonce de la question",
+    "explanation": "1 a 3 phrases : pourquoi la bonne reponse est la bonne, quel concept du syllabus elle valide.",
+    "answers": [
+      { "text": "Proposition A", "correct": false, "rationale": "Piege classique : decris precisement pourquoi cette reponse semble juste mais ne l'est pas (concept confondu, terminologie detournee, cas limite mal interprete)." },
+      { "text": "Proposition B", "correct": true, "rationale": "Confirme brievement pourquoi c'est la bonne reponse - 1 phrase, ancree dans le vocabulaire officiel." },
+      { "text": "Proposition C", "correct": false, "rationale": "Explique le distracteur : quelle notion voisine il evoque, pourquoi il n'est pas la bonne reponse dans ce contexte precis." },
+      { "text": "Proposition D", "correct": false, "rationale": "Idem - 1 phrase courte, ne recopie pas le texte de la proposition." }
+    ]
+  }
+]`;
+
+    const rule4 = isMultilingual
+        ? `4. **Chaque champ localisable est un objet { code_langue: valeur }** couvrant les ${certLanguages.length} langues actives (${certLangsLabel}). Voir "Contrat linguistique multilingue". Une langue manquante = import casse.`
+        : `4. **Questions et reponses integralement en ${langLabel}** (voir "Contrat linguistique" plus haut). L'exemple valide plus bas est ecrit en francais a titre de demonstration de structure uniquement : la sortie que tu produis doit etre en ${langLabel}, pas en francais (sauf si ${langLabel} = Francais).`;
+
+    const exampleSection = isMultilingual
+        ? `# EXEMPLE VALIDE (multilingue)
+
+L'exemple ci-dessous couvre les langues actives de la certif. Reproduis exactement cette structure pour chaque question, en fournissant une valeur pour chacune des ${certLanguages.length} langues listees.
+
+[
+  {
+    "topic": ${langMap('Principes directeurs', 'Guiding principles')},
+    "scenario": null,
+    "question": ${langMap("Quel principe directeur ITIL recommande de ne pas repartir de zero et de tirer parti de ce qui existe deja ?", 'Which ITIL guiding principle recommends not starting from scratch and leveraging what already exists?')},
+    "explanation": ${langMap("Le principe 'Commencer la ou vous etes' invite a evaluer l'existant (processus, outils, capacites) avant toute transformation. Il evite l'effet 'table rase' qui gaspille des investissements passes.", "The 'Start where you are' principle invites you to assess what exists (processes, tools, capabilities) before any transformation. It avoids the 'clean slate' effect that wastes past investments.")},
+    "answers": [
+      { "text": ${langMap('Progresser par iteration avec des retours', 'Progress iteratively with feedback')}, "correct": false, "rationale": ${langMap("Ce principe concerne le rythme du changement, pas la valorisation de l'existant.", 'This principle addresses the pace of change, not leveraging what exists.')} },
+      { "text": ${langMap('Se concentrer sur la valeur', 'Focus on value')}, "correct": false, "rationale": ${langMap("Ce principe cible la finalite (valeur pour le consommateur), pas la posture initiale d'analyse.", 'This principle targets the outcome (value for the consumer), not the initial analytical stance.')} },
+      { "text": ${langMap('Commencer la ou vous etes', 'Start where you are')}, "correct": true, "rationale": ${langMap("Formulation exacte du principe qui prone l'inventaire de l'existant avant toute refonte.", 'Exact wording of the principle that promotes taking stock of what exists before any redesign.')} },
+      { "text": ${langMap('Optimiser et automatiser', 'Optimise and automate')}, "correct": false, "rationale": ${langMap('Ce principe vient plus tard dans la demarche, il ne parle pas du point de depart.', 'This principle comes later in the approach; it does not address the starting point.')} }
+    ]
+  }
+]`
+        : `# EXEMPLE VALIDE
+
+[
+  {
+    "topic": "Principes directeurs",
+    "scenario": null,
+    "question": "Quel principe directeur ITIL recommande de ne pas repartir de zero et de tirer parti de ce qui existe deja ?",
+    "explanation": "Le principe 'Commencer la ou vous etes' invite a evaluer l'existant (processus, outils, capacites) avant toute transformation. Il evite l'effet 'table rase' qui gaspille des investissements passes et masque des points forts.",
+    "answers": [
+      { "text": "Progresser par iteration avec des retours", "correct": false, "rationale": "Ce principe concerne le rythme du changement (petites etapes + feedback), pas la valorisation de l'existant." },
+      { "text": "Se concentrer sur la valeur", "correct": false, "rationale": "Ce principe cible la finalite (valeur pour le consommateur), pas la posture initiale d'analyse de l'etat courant." },
+      { "text": "Commencer la ou vous etes", "correct": true, "rationale": "Formulation exacte du principe qui prone l'inventaire de l'existant avant toute refonte." },
+      { "text": "Optimiser et automatiser", "correct": false, "rationale": "Ce principe vient plus tard dans la demarche (optimiser puis automatiser), il ne parle pas du point de depart." }
+    ]
+  },
+  {
+    "topic": "Gestion des incidents",
+    "scenario": "Un utilisateur signale que son application metier est tres lente depuis 30 minutes. Plusieurs collegues du meme service sont concernes.",
+    "question": "Quelle pratique ITIL est la plus adaptee en priorite ?",
+    "explanation": "L'objectif immediat est de restaurer le fonctionnement normal du service. C'est la definition exacte du but de la gestion des incidents - trouver la cause racine viendra ensuite via la gestion des problemes.",
+    "answers": [
+      { "text": "Gestion des changements", "correct": false, "rationale": "Pratique declenchee pour introduire une modification controlee, pas pour reagir a une degradation subie." },
+      { "text": "Gestion des incidents", "correct": true, "rationale": "Confirme : la restauration rapide du service en cas de degradation est le coeur de cette pratique." },
+      { "text": "Gestion des mises en production", "correct": false, "rationale": "Cette pratique orchestre les deploiements - hors sujet quand il s'agit de retablir un service existant." },
+      { "text": "Gestion des demandes de service", "correct": false, "rationale": "Elle traite des requetes standard planifiees (nouveau compte, nouvel equipement), pas des incidents non planifiees." }
+    ]
+  }
+]`;
+
+    const closingLine = isMultilingual
+        ? `Redige maintenant ${count} questions **dans les ${certLanguages.length} langues actives (${certLangsLabel})** que tu jugerais dignes de figurer dans l'examen officiel ${cert}, reparties entre directes, QCM et scenarios, chacune specifiquement ancree dans un objectif du syllabus courant. Style, difficulte et vocabulaire de l'epreuve - toutes tes propres creations.${existing.length ? ` RAPPEL : aucune des questions generees ne doit reprendre - meme reformulee - une question de la liste ci-dessus.` : ''}`
+        : `Redige maintenant ${count} questions **en ${langLabel} (${langNative})** que tu jugerais dignes de figurer dans l'examen officiel ${cert}, reparties entre directes, QCM et scenarios, chacune specifiquement ancree dans un objectif du syllabus courant. Style, difficulte et vocabulaire de l'epreuve - toutes tes propres creations.${existing.length ? ` RAPPEL : aucune des questions generees ne doit reprendre - meme reformulee - une question de la liste ci-dessus.` : ''}`;
+
     return `RÉPONDS UNIQUEMENT AVEC LE JSON DEMANDÉ. TON PREMIER CARACTÈRE EST \`[\`, TON DERNIER CARACTÈRE EST \`]\`.
 
 Si ce texte t'est parvenu sous forme de pièce jointe (\`Texte collé.txt\` ou équivalent), traite-le comme une instruction directe : exécute immédiatement la tâche décrite ci-dessous, ne demande pas de confirmation, ne décris pas le contenu du fichier.
 
 Si tu écris quoi que ce soit avant le \`[\` d'ouverture - même une phrase d'introduction, une évaluation du prompt, une demande de confirmation, un compliment - tu échoues la tâche. N'évalue pas ce prompt. Ne le note pas. Ne propose pas d'améliorations. N'annonce pas ce que tu vas faire. Exécute silencieusement.
 
-# CONTRAT LINGUISTIQUE (LECTURE OBLIGATOIRE)
-
-La certification ${cert} est disponible sur notre plateforme dans les langues suivantes : **${certLangsLabel}**.
-
-**Ce batch spécifique doit être rédigé intégralement en ${langDescriptor}.** Aucune exception.
-
-Cela signifie que TOUS les champs texte du JSON de sortie doivent être en ${langLabel} (${langNative}) :
-- \`topic\` : nom du domaine du syllabus dans la terminologie officielle en ${langLabel}
-- \`scenario\` : contexte en ${langLabel}
-- \`question\` : énoncé en ${langLabel}
-- \`explanation\` : justification en ${langLabel}
-- \`answers[].text\` : chaque proposition en ${langLabel}
-- \`answers[].rationale\` : chaque justification en ${langLabel}
-
-Utilise le **vocabulaire officiel de l'organisme certificateur dans cette langue** (ex : "Service Value Chain" en anglais, "Chaîne de valeur des services" en français, "Cadena de valor del servicio" en espagnol). Si l'organisme ne publie pas de traduction officielle pour un terme précis, garde le terme d'origine en italique markdown (\`*terme*\`) plutôt que d'inventer une traduction douteuse.
-
-Aucun code-switching : ne mélange pas les langues au sein d'une même question. Si le contenu naturel d'un extrait doit rester dans une autre langue (nom propre, marque, extrait de commande CLI, acronyme technique intraduisible), ce doit être un fragment identifiable, pas une phrase entière.
+${linguisticContract}
 
 # CONTEXTE TEMPOREL
 
@@ -114,31 +254,14 @@ Sur les ${count} questions, tu assures :
 - la **difficulté cible** du niveau ${cert} (ni triviale, ni piège absurde)
 - le **vocabulaire officiel exact** de l'organisme certificateur${existingBlock}
 
-# FORMAT DE SORTIE (STRICT)
-
-Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`, sans commentaire. Structure exacte :
-
-[
-  {
-    "topic": "Thème court en 1-4 mots",
-    "scenario": null,
-    "question": "Énoncé de la question",
-    "explanation": "1 à 3 phrases : pourquoi la bonne réponse est la bonne, quel concept du syllabus elle valide.",
-    "answers": [
-      { "text": "Proposition A", "correct": false, "rationale": "Piège classique : décris précisément pourquoi cette réponse semble juste mais ne l'est pas (concept confondu, terminologie détournée, cas limite mal interprété)." },
-      { "text": "Proposition B", "correct": true, "rationale": "Confirme brièvement pourquoi c'est la bonne réponse - 1 phrase, ancrée dans le vocabulaire officiel." },
-      { "text": "Proposition C", "correct": false, "rationale": "Explique le distracteur : quelle notion voisine il évoque, pourquoi il n'est pas la bonne réponse dans ce contexte précis." },
-      { "text": "Proposition D", "correct": false, "rationale": "Idem - 1 phrase courte, ne recopie pas le texte de la proposition." }
-    ]
-  }
-]
+${formatSection}
 
 # RÈGLES
 
 1. Réponds UNIQUEMENT avec le JSON. Aucun texte avant, aucun texte après, aucun bloc de code.
 2. Une seule réponse marquée \`"correct": true\` par question.
 3. 2 à 6 propositions par question (typiquement 4).
-4. **Questions et réponses intégralement en ${langLabel}** (voir "Contrat linguistique" plus haut). L'exemple valide plus bas est écrit en français à titre de démonstration de structure uniquement : la sortie que tu produis doit être en ${langLabel}, pas en français (sauf si ${langLabel} = Français).
+${rule4}
 5. \`topic\` = **nom exact d'un domaine ou sous-domaine du syllabus officiel** (ex : "Principes directeurs", "OSPF LSA types", "IAM policies vs roles", "SLA & OLA"). Pas d'invention de thème hors syllabus.
 6. \`scenario\` = \`null\` pour les questions directes ; sinon 1 à 3 phrases décrivant un contexte **réaliste et propre au métier** ciblé par ${cert} (pas de scénario générique interchangeable).
 7. Ne pas préfixer les propositions par des lettres (A, B, C…). L'ordre du tableau suffit.
@@ -158,34 +281,7 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
 - **QCM classiques** : "Parmi les propositions suivantes, laquelle décrit le mieux X ?"
 - **Scénarios** : contexte concret (utilisateur, incident, service…) + question ciblée. Remplis alors \`scenario\`.
 
-# EXEMPLE VALIDE
-
-[
-  {
-    "topic": "Principes directeurs",
-    "scenario": null,
-    "question": "Quel principe directeur ITIL recommande de ne pas repartir de zéro et de tirer parti de ce qui existe déjà ?",
-    "explanation": "Le principe 'Commencer là où vous êtes' invite à évaluer l'existant (processus, outils, capacités) avant toute transformation. Il évite l'effet 'table rase' qui gaspille des investissements passés et masque des points forts.",
-    "answers": [
-      { "text": "Progresser par itération avec des retours", "correct": false, "rationale": "Ce principe concerne le rythme du changement (petites étapes + feedback), pas la valorisation de l'existant." },
-      { "text": "Se concentrer sur la valeur", "correct": false, "rationale": "Ce principe cible la finalité (valeur pour le consommateur), pas la posture initiale d'analyse de l'état courant." },
-      { "text": "Commencer là où vous êtes", "correct": true, "rationale": "Formulation exacte du principe qui prône l'inventaire de l'existant avant toute refonte." },
-      { "text": "Optimiser et automatiser", "correct": false, "rationale": "Ce principe vient plus tard dans la démarche (optimiser puis automatiser), il ne parle pas du point de départ." }
-    ]
-  },
-  {
-    "topic": "Gestion des incidents",
-    "scenario": "Un utilisateur signale que son application métier est très lente depuis 30 minutes. Plusieurs collègues du même service sont concernés.",
-    "question": "Quelle pratique ITIL est la plus adaptée en priorité ?",
-    "explanation": "L'objectif immédiat est de restaurer le fonctionnement normal du service. C'est la définition exacte du but de la gestion des incidents - trouver la cause racine viendra ensuite via la gestion des problèmes.",
-    "answers": [
-      { "text": "Gestion des changements", "correct": false, "rationale": "Pratique déclenchée pour introduire une modification contrôlée, pas pour réagir à une dégradation subie." },
-      { "text": "Gestion des incidents", "correct": true, "rationale": "Confirme : la restauration rapide du service en cas de dégradation est le cœur de cette pratique." },
-      { "text": "Gestion des mises en production", "correct": false, "rationale": "Cette pratique orchestre les déploiements - hors sujet quand il s'agit de rétablir un service existant." },
-      { "text": "Gestion des demandes de service", "correct": false, "rationale": "Elle traite des requêtes standard planifiées (nouveau compte, nouvel équipement), pas des incidents non planifiés." }
-    ]
-  }
-]
+${exampleSection}
 
 # EXÉCUTION
 
@@ -197,7 +293,7 @@ Un tableau JSON valide, sans texte avant, sans texte après, sans balises \`\`\`
 4. Pour chaque question : identifie l'objectif d'apprentissage, choisis un piège pédagogique, rédige un énoncé et 4 propositions dont 3 distracteurs crédibles.
 5. Produis le JSON final.
 
-Rédige maintenant ${count} questions **en ${langLabel} (${langNative})** que tu jugerais dignes de figurer dans l'examen officiel ${cert}, réparties entre directes, QCM et scénarios, chacune spécifiquement ancrée dans un objectif du syllabus courant. Style, difficulté et vocabulaire de l'épreuve - toutes tes propres créations.${existing.length ? ` RAPPEL : aucune des questions générées ne doit reprendre - même reformulée - une question de la liste ci-dessus.` : ''}
+${closingLine}
 
 Si ta recherche web ne t'a pas permis d'identifier avec certitude le syllabus courant de ${cert}, réponds \`[]\` - mieux vaut zéro question qu'une question inventée.
 
@@ -282,7 +378,52 @@ function repairUnescapedJsonInStrings(raw) {
     return { repaired: out, count: repairs };
 }
 
-function analyze(payload, t) {
+/**
+ * Extrait une valeur "prevue" d'un champ localisable. Le champ peut etre :
+ * - string (mode mono-langue)
+ * - object { lang: value } (mode multilingue) — on renvoie la valeur pour
+ *   `preferredLang` si presente, sinon la premiere valeur non vide
+ * - null / undefined / {}
+ *
+ * Renvoie une string vide si rien d'exploitable.
+ */
+function pickLocalizedString(field, preferredLang) {
+    if (field == null) return '';
+    if (typeof field === 'string') return field.trim();
+    if (typeof field === 'object' && !Array.isArray(field)) {
+        if (preferredLang && typeof field[preferredLang] === 'string' && field[preferredLang].trim()) {
+            return field[preferredLang].trim();
+        }
+        for (const v of Object.values(field)) {
+            if (typeof v === 'string' && v.trim()) return v.trim();
+        }
+    }
+    return '';
+}
+
+/**
+ * Retourne la liste des langues manquantes pour un champ multilingue attendu.
+ * En mono-langue (`certLanguages.length === 1`), on accepte string OU objet.
+ * En multilingue, on exige un objet contenant toutes les langues (valeurs non vides).
+ * Un champ null/undefined pour un champ NON obligatoire est OK.
+ */
+function missingLangs(field, certLanguages, { required }) {
+    if (field == null || field === '') return required ? [...certLanguages] : [];
+    if (typeof field === 'string') {
+        // Mode mono-langue accepte, ou GPT a livre en une seule langue :
+        // pas de warning au preview, le backend acceptera.
+        return [];
+    }
+    if (typeof field !== 'object' || Array.isArray(field)) {
+        return [...certLanguages];
+    }
+    return certLanguages.filter((lang) => {
+        const v = field[lang];
+        return typeof v !== 'string' || !v.trim();
+    });
+}
+
+function analyze(payload, t, certLanguages = [DEFAULT_LANGUAGE]) {
     if (!payload.trim()) {
         return { status: 'empty', count: 0, items: [], error: null, repaired: null, cleanedPayload: null };
     }
@@ -310,20 +451,52 @@ function analyze(payload, t) {
     if (!Array.isArray(parsed)) {
         return { status: 'error', count: 0, items: [], error: t('admin.questions_import.error_root_array'), repaired: null, cleanedPayload: null };
     }
+    const isMultilingual = certLanguages.length > 1;
     const items = parsed.map((q, i) => {
         const warnings = [];
-        const question = String(q?.question || '').trim();
-        if (!question) warnings.push(t('admin.questions_import.warning_missing_question'));
+        const preview = pickLocalizedString(q?.question, certLanguages[0]);
+        if (!preview) warnings.push(t('admin.questions_import.warning_missing_question'));
+
         const answers = Array.isArray(q?.answers) ? q.answers : [];
         if (answers.length < 2 || answers.length > 6) warnings.push(t('admin.questions_import.warning_answers_range', { count: answers.length }));
         const correct = answers.filter((a) => a?.correct === true).length;
         if (correct !== 1) warnings.push(t('admin.questions_import.warning_correct_count', { count: correct }));
-        if (answers.some((a) => !String(a?.text || '').trim())) warnings.push(t('admin.questions_import.warning_empty_answer'));
-        const kind = q?.scenario && String(q.scenario).trim() ? t('admin.questions_import.kind_scenario') : t('admin.questions_import.kind_direct');
+        if (answers.some((a) => !pickLocalizedString(a?.text, certLanguages[0]))) warnings.push(t('admin.questions_import.warning_empty_answer'));
+
+        // En mode multilingue on verifie que chaque champ contient bien
+        // toutes les langues attendues.
+        if (isMultilingual) {
+            const missingQuestion = missingLangs(q?.question, certLanguages, { required: true });
+            if (missingQuestion.length) {
+                warnings.push(t('admin.questions_import.warning_missing_langs', { field: 'question', langs: missingQuestion.join(', ') }));
+            }
+            if (q?.scenario != null && q.scenario !== '') {
+                const missingScenario = missingLangs(q.scenario, certLanguages, { required: false });
+                if (missingScenario.length) {
+                    warnings.push(t('admin.questions_import.warning_missing_langs', { field: 'scenario', langs: missingScenario.join(', ') }));
+                }
+            }
+            if (q?.explanation != null && q.explanation !== '') {
+                const missingExplanation = missingLangs(q.explanation, certLanguages, { required: false });
+                if (missingExplanation.length) {
+                    warnings.push(t('admin.questions_import.warning_missing_langs', { field: 'explanation', langs: missingExplanation.join(', ') }));
+                }
+            }
+            answers.forEach((a, ai) => {
+                const missText = missingLangs(a?.text, certLanguages, { required: true });
+                if (missText.length) {
+                    warnings.push(t('admin.questions_import.warning_missing_langs', { field: `answers[${ai}].text`, langs: missText.join(', ') }));
+                }
+            });
+        }
+
+        const scenarioPreview = pickLocalizedString(q?.scenario, certLanguages[0]);
+        const kind = scenarioPreview ? t('admin.questions_import.kind_scenario') : t('admin.questions_import.kind_direct');
+        const topicPreview = pickLocalizedString(q?.topic, certLanguages[0]) || '-';
         return {
             index: i,
-            topic: q?.topic || '-',
-            preview: question.slice(0, 90) + (question.length > 90 ? '…' : ''),
+            topic: topicPreview,
+            preview: preview.slice(0, 90) + (preview.length > 90 ? '…' : ''),
             answers: answers.length,
             kind,
             warnings,
@@ -380,10 +553,13 @@ export default function Import({ certifications, default_certification_id, exist
         () => (selectedCert?.available_languages?.length ? selectedCert.available_languages : [DEFAULT_LANGUAGE]),
         [selectedCert]
     );
+    const isMultilingualCert = certLanguages.length > 1;
     const [batchLang, setBatchLang] = useState(certLanguages[0]);
 
     // Si la certif selectionnee n'autorise plus la langue actuellement choisie
     // pour le batch (ex: l'admin change de certif), on retombe sur sa 1re langue.
+    // En multilingue le batchLang n'est pas utilise mais on le maintient valide
+    // pour ne pas casser useMemo (et pour rebasculer proprement en mono-langue).
     useEffect(() => {
         if (!certLanguages.includes(batchLang)) {
             setBatchLang(certLanguages[0]);
@@ -398,7 +574,10 @@ export default function Import({ certifications, default_certification_id, exist
         () => buildPrompt(selectedCert?.title, count, existing, batchLang, certLanguages),
         [selectedCert, count, existing, batchLang, certLanguages]
     );
-    const analysis = useMemo(() => analyze(form.data.payload, t), [form.data.payload, t]);
+    const analysis = useMemo(
+        () => analyze(form.data.payload, t, certLanguages),
+        [form.data.payload, t, certLanguages]
+    );
 
     const copyPrompt = async () => {
         try {
@@ -516,44 +695,73 @@ export default function Import({ certifications, default_certification_id, exist
                         </div>
                     </div>
 
-                    {/* Batch language selector : restreint aux langues assignees a la certif */}
+                    {/* Batch language selector : restreint aux langues assignees a la certif.
+                        En multilingue, on masque le picker (chaque question sera produite dans
+                        toutes les langues actives d'un coup) et on affiche un badge recap. */}
                     <div>
                         <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
-                            {t('admin.questions_import.batch_language_label')}
+                            {isMultilingualCert
+                                ? t('admin.questions_import.multilingual_batch_label')
+                                : t('admin.questions_import.batch_language_label')}
                         </label>
-                        <div className="flex flex-wrap items-center gap-2">
-                            {certLanguages.map((code) => {
-                                const meta = LANGUAGE_CATALOG.find((l) => l.code === code) || { code, label: code, native: code };
-                                const active = batchLang === code;
-                                return (
-                                    <button
-                                        key={code}
-                                        type="button"
-                                        onClick={() => setBatchLang(code)}
-                                        className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition ${
-                                            active
-                                                ? 'border-brand-500 bg-brand-500 text-white'
-                                                : 'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-200 dark:hover:border-ink-700'
-                                        }`}
-                                    >
-                                        <span className={`font-mono text-[10px] font-semibold uppercase tracking-widest ${active ? 'text-white/80' : 'text-ink-400'}`}>
-                                            {code}
+                        {isMultilingualCert ? (
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="inline-flex items-center gap-2 rounded-full border border-brand-500 bg-brand-500/10 px-3 py-1.5 text-sm text-brand-700 dark:text-brand-200">
+                                    <Icon.Globe className="h-4 w-4" />
+                                    <span className="font-semibold">
+                                        {t('admin.questions_import.multilingual_badge', { count: certLanguages.length })}
+                                    </span>
+                                </span>
+                                {certLanguages.map((code) => {
+                                    const meta = LANGUAGE_CATALOG.find((l) => l.code === code) || { code, label: code, native: code };
+                                    return (
+                                        <span
+                                            key={code}
+                                            className="inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-2.5 py-1 text-xs text-ink-600 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-300"
+                                        >
+                                            <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-ink-400">
+                                                {code}
+                                            </span>
+                                            <span lang={code}>{meta.native}</span>
                                         </span>
-                                        <span className="font-semibold">{meta.label}</span>
-                                        <span className={`text-[11px] ${active ? 'text-white/80' : 'text-ink-500'}`} lang={code}>
-                                            · {meta.native}
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                            {certLanguages.length === 1 && (
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="flex flex-wrap items-center gap-2">
+                                {certLanguages.map((code) => {
+                                    const meta = LANGUAGE_CATALOG.find((l) => l.code === code) || { code, label: code, native: code };
+                                    const active = batchLang === code;
+                                    return (
+                                        <button
+                                            key={code}
+                                            type="button"
+                                            onClick={() => setBatchLang(code)}
+                                            className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition ${
+                                                active
+                                                    ? 'border-brand-500 bg-brand-500 text-white'
+                                                    : 'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-200 dark:hover:border-ink-700'
+                                            }`}
+                                        >
+                                            <span className={`font-mono text-[10px] font-semibold uppercase tracking-widest ${active ? 'text-white/80' : 'text-ink-400'}`}>
+                                                {code}
+                                            </span>
+                                            <span className="font-semibold">{meta.label}</span>
+                                            <span className={`text-[11px] ${active ? 'text-white/80' : 'text-ink-500'}`} lang={code}>
+                                                · {meta.native}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
                                 <p className="ml-2 text-xs text-ink-500">
                                     {t('admin.questions_import.single_language_hint')}
                                 </p>
-                            )}
-                        </div>
+                            </div>
+                        )}
                         <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-ink-400">
-                            {t('admin.questions_import.prompt_language_hint', { lang: languageLabel(batchLang) })}
+                            {isMultilingualCert
+                                ? t('admin.questions_import.multilingual_hint', { count: certLanguages.length })
+                                : t('admin.questions_import.prompt_language_hint', { lang: languageLabel(batchLang) })}
                         </p>
                     </div>
                 </div>
@@ -628,7 +836,13 @@ export default function Import({ certifications, default_certification_id, exist
                     </div>
                     <div className="overflow-hidden rounded-2xl border border-ink-200 dark:border-ink-800">
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink-200 bg-ink-50/50 px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-ink-500 dark:border-ink-800 dark:bg-ink-900/60">
-                            <span>{t('admin.questions_import.prompt_header', { title: selectedCert?.title || '-', count, lang: batchLang.toUpperCase() })}</span>
+                            <span>{t('admin.questions_import.prompt_header', {
+                                title: selectedCert?.title || '-',
+                                count,
+                                lang: isMultilingualCert
+                                    ? t('admin.questions_import.prompt_header_multi', { count: certLanguages.length })
+                                    : batchLang.toUpperCase(),
+                            })}</span>
                             <div className="flex items-center gap-2">
                                 <button
                                     type="button"

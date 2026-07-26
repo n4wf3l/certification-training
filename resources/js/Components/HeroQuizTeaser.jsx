@@ -1,11 +1,13 @@
 import Icon from '@/Components/Icons';
-import { useT } from '@/lib/i18n';
+import { useLocale, useT } from '@/lib/i18n';
 import { Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
-const LS_QUESTIONS = 'hero_quiz.questions';
 const LS_PICKS = 'hero_quiz.picks';
 const LS_INDEX = 'hero_quiz.index';
+// v2 = invalide les caches remplis avant le fix de localisation du teaser (les
+// entrees v1 stockees en francais dans .en persisteraient sinon).
+const lsQuestionsKey = (locale) => `hero_quiz.questions.v2.${locale}`;
 
 function readLS(key, fallback) {
     try {
@@ -22,10 +24,11 @@ function writeLS(key, value) {
 
 export default function HeroQuizTeaser({ questions: initialQuestions }) {
     const t = useT();
+    const locale = useLocale();
     const [questions] = useState(() => {
-        const cached = readLS(LS_QUESTIONS, null);
+        const cached = readLS(lsQuestionsKey(locale), null);
         if (Array.isArray(cached) && cached.length > 0) return cached;
-        writeLS(LS_QUESTIONS, initialQuestions);
+        writeLS(lsQuestionsKey(locale), initialQuestions);
         return initialQuestions;
     });
     const total = questions.length;

@@ -10,6 +10,9 @@ return [
     'course_block_missing_type' => "Bloc :n : clé 'type' manquante.",
     'course_block_unknown_type' => "Bloc :n : type ':type' inconnu. Autorisés : :allowed.",
     'course_too_few_blocks' => 'Un cours doit contenir au moins 5 blocs. :count reçu(s).',
+    'course_row_field_type' => 'Bloc :n : le champ « :field » doit être une string ou un objet { lang: valeur }.',
+    'course_row_missing_lang' => 'Bloc :n : le champ « :field » manque la traduction pour la langue « :lang ».',
+    'exam_attempt_abandoned' => 'Cette tentative a été abandonnée - lance un nouvel examen blanc pour continuer ta progression.',
 
     'question_added' => 'Question ajoutée.',
     'question_updated' => 'Question mise à jour.',
@@ -19,6 +22,8 @@ return [
     'questions_row_bad_shape' => 'Question :n : énoncé manquant ou nombre de réponses invalide (2 à 6 attendues).',
     'questions_row_empty_answer' => 'Question :n : une réponse a un texte vide.',
     'questions_row_wrong_correct_count' => 'Question :n : une seule réponse correcte attendue, :count trouvée(s).',
+    'questions_row_field_type' => 'Question :n : le champ « :field » doit être une string ou un objet { lang: valeur }.',
+    'questions_row_missing_lang' => 'Question :n : le champ « :field » manque la traduction pour la langue « :lang ».',
 
     'settings_updated' => 'Paramètres mis à jour.',
 

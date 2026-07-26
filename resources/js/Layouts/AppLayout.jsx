@@ -4,6 +4,7 @@ import GamificationBadge from '@/Components/GamificationBadge';
 import OfflineIndicator from '@/Components/OfflineIndicator';
 import PwaInstallPrompt from '@/Components/PwaInstallPrompt';
 import LocaleSwitcher from '@/Components/LocaleSwitcher';
+import ThemeSwitcher from '@/Components/ThemeSwitcher';
 import { useT, useLocale } from '@/lib/i18n';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
@@ -212,6 +213,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                     </div>
 
                     <div className="hidden items-center gap-3 md:flex">
+                        <ThemeSwitcher />
                         <LocaleSwitcher />
                         {user ? (
                             <>
@@ -302,7 +304,8 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 </Link>
                             </div>
                         )}
-                        <div className="mt-4 flex justify-center">
+                        <div className="mt-4 flex flex-col items-center gap-3">
+                            <ThemeSwitcher variant="inline" />
                             <LocaleSwitcher variant="inline" />
                         </div>
                     </div>
@@ -377,7 +380,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                     </li>
                                 )}
                                 <li>
-                                    <a href="#comment-ca-marche" className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
+                                    <a href="#how-it-works" className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
                                         <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
                                         {t('footer.link_how_it_works')}
                                     </a>

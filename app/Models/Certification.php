@@ -68,6 +68,23 @@ class Certification extends Model
         return $translated;
     }
 
+    /**
+     * Return course_blocks translated for the requested locale, with fallback
+     * to the canonical column. Follows the same shadow-per-locale pattern as
+     * question/answer translations: translated blocks mirror the canonical
+     * shape (flat strings, not { lang: value } objects) so BlockRenderer.jsx
+     * needs no changes.
+     */
+    public function localizedCourseBlocks(?string $locale = null): ?array
+    {
+        $locale = $locale ?? app()->getLocale();
+        if ($locale === ($this->default_language ?? 'fr')) {
+            return $this->course_blocks;
+        }
+        $shadow = data_get($this->translations, "{$locale}.course_blocks");
+        return is_array($shadow) && count($shadow) > 0 ? $shadow : $this->course_blocks;
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Certification $c) {

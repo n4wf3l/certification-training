@@ -1,5 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import HeroQuizTeaser from '@/Components/HeroQuizTeaser';
+import Icon from '@/Components/Icons';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, usePage } from '@inertiajs/react';
 
@@ -186,10 +187,17 @@ export default function Home({ certifications, teaser_questions = null }) {
                             <span className="text-ink-400 dark:text-ink-500">{t('home.hero_title_2')}</span> {t('home.hero_title_3')}
                         </h1>
 
-                        <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
+                        {/* Tagline poetique gardee comme signature rythmique sous le H1 :
+                            plus explicite qu'un titre, ca fait respirer et re-imprime
+                            la promesse (vocabulaire / timing / passage) avant le body. */}
+                        <p className="mt-6 max-w-2xl text-lg font-medium leading-snug text-ink-700 dark:text-ink-200 sm:text-xl">
+                            {t('home.hero_tagline')}
+                        </p>
+
+                        <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
                             {t('home.hero_subtitle_pre')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_1')}</span>
-                            {' '}{t('home.hero_subtitle_mid')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_2')}</span>
-                            {' '}{t('home.hero_subtitle_post')}
+                            {t('home.hero_subtitle_mid')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_2')}</span>
+                            {t('home.hero_subtitle_post')}
                         </p>
 
                         <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">
@@ -255,7 +263,7 @@ export default function Home({ certifications, teaser_questions = null }) {
             </section>
 
             {/* METHOD */}
-            <section id="comment-ca-marche" className="border-b border-ink-200 py-20 dark:border-ink-800">
+            <section id="how-it-works" className="border-b border-ink-200 py-20 dark:border-ink-800">
                 <SectionLabel>{t('home.method_kicker')}</SectionLabel>
                 <h2 className="mt-6 max-w-2xl text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
                     {t('home.method_title')}
@@ -291,6 +299,44 @@ export default function Home({ certifications, teaser_questions = null }) {
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                             {t('home.step3_body')}
                         </p>
+                    </div>
+                </div>
+
+                {/* Certificate mechanic callout : explains the 3-perfect-runs rule
+                    and positions the CertifLoop certificate as proof of readiness
+                    rather than a participation trophy. */}
+                <div className="mt-16 rounded-3xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 via-iris-500/5 to-transparent p-8 sm:p-10">
+                    <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+                        <div>
+                            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
+                                <Icon.Shield className="h-3.5 w-3.5" />
+                                {t('home_cert_callout.kicker')}
+                            </div>
+                            <h3 className="mt-4 text-2xl font-bold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
+                                {t('home_cert_callout.title')}
+                            </h3>
+                            <p className="mt-4 text-sm leading-relaxed text-ink-700 dark:text-ink-300 sm:text-base">
+                                {t('home_cert_callout.body_1')}
+                            </p>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400 sm:text-base">
+                                {t('home_cert_callout.body_2')}
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                            {['1', '2', '3'].map((n) => (
+                                <div
+                                    key={n}
+                                    className="rounded-2xl border border-brand-500/20 bg-white/60 p-4 text-center backdrop-blur-sm dark:border-ink-800 dark:bg-ink-900/40"
+                                >
+                                    <div className="bg-gradient-to-br from-brand-500 to-iris-500 bg-clip-text font-mono text-4xl font-bold text-transparent">
+                                        {t(`home_cert_callout.stat_${n}_value`)}
+                                    </div>
+                                    <div className="mt-2 text-[10px] font-medium uppercase leading-tight tracking-wider text-ink-500 dark:text-ink-400">
+                                        {t(`home_cert_callout.stat_${n}_label`)}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>

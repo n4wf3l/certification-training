@@ -1,0 +1,613 @@
+{
+    "meta": {
+        "certification_slug": "ccna-200-301",
+        "locale": "en",
+        "canonical_from": "fr",
+        "translated_at": "2026-07-26",
+        "translator": "Claude Opus 4.7",
+        "notes": "Cisco CCNA 200-301 official English vocabulary. 50 of 50 questions covering all six blueprint domains (Network Fundamentals, Network Access, IP Connectivity, IP Services, Security Fundamentals, Automation & Programmability).",
+        "coverage": { "questions_translated": 50, "questions_total": 50 }
+    },
+    "questions": {
+        "1": {
+            "topic": "Role of network components",
+            "scenario": "A ceiling-mounted Wi-Fi access point must receive both data and power without a local electrical outlet.",
+            "question_text": "Which switch function directly meets this requirement?",
+            "explanation": "PoE (802.3af/at/bt) lets a switch power a device (AP, IP phone, camera) over the same Ethernet cable that carries the data, avoiding any local electrical connection. This is the expected function whenever an AP is mounted on the ceiling with no nearby outlet.",
+            "answers": {
+                "A": { "text": "Inter-VLAN routing", "rationale": "Inter-VLAN routing is a Layer 3 function on a multilayer switch, unrelated to powering a device." },
+                "B": { "text": "Power over Ethernet (PoE)", "rationale": "PoE delivers up to 30 W (802.3at) or even 60-90 W (802.3bt) over the copper pairs to power the AP directly." },
+                "C": { "text": "LACP link aggregation", "rationale": "LACP aggregates multiple links for bandwidth or redundancy, but carries no electrical power." },
+                "D": { "text": "NAT address translation", "rationale": "NAT translates IP addresses at Layer 3; it has no ability to deliver electrical power." }
+            }
+        },
+        "2": {
+            "topic": "Network topology architectures",
+            "scenario": "A data center requires predictable latency between servers and multiple equal-cost paths between each rack.",
+            "question_text": "Which architecture best meets this requirement?",
+            "explanation": "The spine-leaf architecture places each leaf one hop from any other leaf via the spines, with multiple equal-cost ECMP paths. It offers predictable latency (constant hop count) and scalable east-west bandwidth; it is the standard for modern data centers.",
+            "answers": {
+                "A": { "text": "Three-tier with core, distribution and access", "rationale": "The three-tier architecture (core/distribution/access) is optimized for the campus, with a variable hop count between server racks." },
+                "B": { "text": "Spine-leaf", "rationale": "Spine-leaf has only two tiers, each leaf connects to every spine, ECMP is native and latency is constant." },
+                "C": { "text": "SOHO with integrated router", "rationale": "SOHO refers to a \"small office/home office\" topology with an all-in-one router, with no relation to a data center." },
+                "D": { "text": "Hub-and-spoke WAN with a central site", "rationale": "A hub-and-spoke WAN topology connects sites through a central site: it is an inter-site design, not an intra-data-center server architecture." }
+            }
+        },
+        "3": {
+            "topic": "Interface and cabling types",
+            "scenario": "Two buildings several kilometers apart must be linked by fiber, with minimal attenuation and a single light propagation mode.",
+            "question_text": "Which physical medium should be chosen?",
+            "explanation": "Single-mode fiber (SMF) propagates a single light mode in a core of about 9 µm and supports tens of kilometers with very low attenuation. Multimode fiber (MMF), with a wider core, tolerates multiple modes but suffers from dispersion and is limited to a few hundred meters.",
+            "answers": {
+                "A": { "text": "Multimode fiber", "rationale": "Multimode is capped at 300-550 m (OM3/OM4) because of modal dispersion: unsuitable for the several kilometers required." },
+                "B": { "text": "Single-mode fiber", "rationale": "Single-mode = a single propagation mode, low attenuation, long reach - exactly matches the need." },
+                "C": { "text": "Twisted-pair copper", "rationale": "Twisted-pair copper is capped at 100 m per standard Ethernet segment." },
+                "D": { "text": "Ethernet over shared media", "rationale": "\"Ethernet over shared media\" is not a physical medium: it is a concept of collision sharing." }
+            }
+        },
+        "4": {
+            "topic": "Interface and cable issues",
+            "scenario": "An interface shows many late collisions and low throughput. One side of the link is configured full-duplex and the other half-duplex.",
+            "question_text": "What is the most likely cause?",
+            "explanation": "A duplex mismatch (one side full, the other half) creates exactly these symptoms: the half-duplex side detects collisions because the other side transmits without listening (CSMA/CD is dropped in full-duplex). Late collisions are the typical signature. The fix: align both sides (auto/auto or matching fixed/fixed).",
+            "answers": {
+                "A": { "text": "A duplex mismatch", "rationale": "Duplex mismatch = late collisions + low throughput + one side full and the other half: characteristic combination." },
+                "B": { "text": "A native VLAN mismatch", "rationale": "A native VLAN mismatch causes traffic leakage between VLANs, not collisions." },
+                "C": { "text": "An IPv6 MTU set too low", "rationale": "An MTU that is too low causes fragmentation or PMTU issues, but no physical collisions." },
+                "D": { "text": "An aged MAC address", "rationale": "Aging removes a MAC entry and causes transient flooding, unrelated to collisions." }
+            }
+        },
+        "5": {
+            "topic": "TCP and UDP",
+            "scenario": null,
+            "question_text": "Which statement correctly describes a difference between TCP and UDP?",
+            "explanation": "TCP is connection-oriented (3-way handshake, ACKs, retransmissions, flow and congestion control). UDP is connectionless: no ACKs, no guaranteed ordering, lighter and faster. The CCNA very often tests this reliability/performance distinction.",
+            "answers": {
+                "A": { "text": "UDP establishes a session with a three-way handshake before transmitting", "rationale": "It is TCP that performs the 3-way handshake, not UDP - UDP sends without prior negotiation." },
+                "B": { "text": "TCP provides sequencing, acknowledgments and retransmissions", "rationale": "Exact definition of TCP (RFC 793): byte sequencing, ACKs, retransmission of lost segments." },
+                "C": { "text": "TCP cannot perform flow control", "rationale": "False: TCP has flow control (sliding window) and congestion control (slow start, AIMD)." },
+                "D": { "text": "UDP guarantees in-order delivery", "rationale": "False: UDP guarantees neither delivery nor ordering - it is up to the application to handle those aspects." }
+            }
+        },
+        "6": {
+            "topic": "IPv4 addressing and subnetting",
+            "scenario": "The 192.0.2.0/24 network must be subdivided into subnets, each offering at least 30 usable host addresses.",
+            "question_text": "What is the longest prefix that satisfies the requirement?",
+            "explanation": "At least 30 usable hosts are required, so 2^n - 2 >= 30, meaning n = 5 host bits. That yields the /27 prefix (32 - 5). A /28 would offer only 14 hosts, insufficient. \"Longest prefix\" = the smallest subnet that satisfies the constraint.",
+            "answers": {
+                "A": { "text": "/25", "rationale": "/25 leaves 126 hosts: valid but wastes addresses, not the longest prefix." },
+                "B": { "text": "/26", "rationale": "/26 leaves 62 hosts: valid but less efficient." },
+                "C": { "text": "/27", "rationale": "/27 leaves 30 usable hosts - just enough, the longest prefix that fits." },
+                "D": { "text": "/28", "rationale": "/28 leaves only 14 usable hosts: does not meet the constraint." }
+            }
+        },
+        "7": {
+            "topic": "Private IPv4 addressing",
+            "scenario": null,
+            "question_text": "Which address belongs to a private IPv4 range defined for internal networks?",
+            "explanation": "RFC 1918 defines three private IPv4 ranges: 10.0.0.0/8, 172.16.0.0/12 (i.e. 172.16.x to 172.31.x) and 192.168.0.0/16. The blocks 192.0.2.0/24 and 198.51.100.0/24 are documentation blocks (RFC 5737), public but reserved for documentation.",
+            "answers": {
+                "A": { "text": "172.20.14.9", "rationale": "172.20.14.9 is within 172.16.0.0/12, therefore a proper RFC 1918 private address." },
+                "B": { "text": "172.32.14.9", "rationale": "172.32.x is outside 172.16-31, it is a public address." },
+                "C": { "text": "192.0.2.9", "rationale": "192.0.2.9 belongs to TEST-NET-1 (documentation, RFC 5737), not a private range." },
+                "D": { "text": "198.51.100.9", "rationale": "198.51.100.9 belongs to TEST-NET-2 (documentation, RFC 5737), not a private range." }
+            }
+        },
+        "8": {
+            "topic": "IPv6 address types",
+            "scenario": "A router must communicate with a directly connected IPv6 neighbor before any global prefix is configured.",
+            "question_text": "Which source address type can it use on this link?",
+            "explanation": "Every active IPv6 interface automatically has a link-local address in fe80::/10, used for Neighbor Discovery (ND), routing protocols such as OSPFv3/EIGRP, and any direct communication on the link before a global prefix is configured.",
+            "answers": {
+                "A": { "text": "Global unicast", "rationale": "By assumption, no global prefix is configured yet." },
+                "B": { "text": "Unique local", "rationale": "ULAs (fc00::/7) are not auto-generated: they must be configured manually." },
+                "C": { "text": "Link-local", "rationale": "Link-local (fe80::/10) is auto-generated as soon as IPv6 is enabled, perfect for talking to a direct neighbor." },
+                "D": { "text": "Global anycast", "rationale": "An anycast address is shared among multiple nodes, not intended to reach a single neighbor." }
+            }
+        },
+        "9": {
+            "topic": "Wireless principles",
+            "scenario": "Three nearby 2.4 GHz access points must be configured to minimize channel overlap.",
+            "question_text": "Which channel set is appropriate in a regulatory domain that uses channels 1 through 11?",
+            "explanation": "In 2.4 GHz, each channel is 22 MHz wide. On the 2412-2462 MHz spectrum (channels 1-11 in the FCC domain), only three channels do not overlap: 1, 6 and 11. Any other combination generates co-channel interference.",
+            "answers": {
+                "A": { "text": "1, 5 and 9", "rationale": "Channels 1 and 5 overlap (only 20 MHz apart vs. 22 MHz wide)." },
+                "B": { "text": "1, 6 and 11", "rationale": "1, 6 and 11: the only three non-overlapping 2.4 GHz channels - the standard deployment configuration." },
+                "C": { "text": "2, 7 and 10", "rationale": "7 and 10 overlap, the set is bad." },
+                "D": { "text": "3, 6 and 9", "rationale": "3, 6 and 9 all partially overlap." }
+            }
+        },
+        "10": {
+            "topic": "Switching concepts",
+            "scenario": "A switch receives a unicast frame whose source MAC address is unknown and whose destination MAC address does not exist in its table.",
+            "question_text": "What behavior is expected?",
+            "explanation": "A switch learns the source MAC address of every frame and associates it with the ingress port (MAC learning). If the destination MAC is unknown to the CAM, it floods the frame out of every port in the same VLAN except the ingress port (unknown unicast flooding, IEEE 802.1D).",
+            "answers": {
+                "A": { "text": "It learns the source address on the ingress port then floods the frame out the other ports in the VLAN", "rationale": "Standard behavior: learning on source MAC + flood within the VLAN when the destination is unknown." },
+                "B": { "text": "It learns the destination address on the ingress port then discards the frame", "rationale": "A switch never learns from the destination MAC: this would create false associations." },
+                "C": { "text": "It broadcasts the frame across all VLANs and learns no addresses", "rationale": "Flooding is confined to the frame's VLAN; a switch never broadcasts between VLANs." },
+                "D": { "text": "It forwards the frame only to the default gateway", "rationale": "A Layer 2 switch does not use a default gateway for Layer 2 forwarding." }
+            }
+        },
+        "11": {
+            "topic": "VLANs",
+            "scenario": "An IP phone and a workstation share the same switch port. Voice must be placed in VLAN 20 and data in VLAN 10.",
+            "question_text": "Which port configuration meets this requirement?",
+            "explanation": "On a Cisco access port, the command `switchport voice vlan 20` places voice (tagged by the phone) in VLAN 20, while the PC connected behind the phone remains untagged in access VLAN 10. A single physical interface thus carries two VLANs without becoming a full trunk.",
+            "answers": {
+                "A": { "text": "Configure the port as a trunk with native VLAN 20 only", "rationale": "A trunk with native VLAN 20 would allow everything and would not properly isolate voice/data." },
+                "B": { "text": "Configure access VLAN 10 and voice VLAN 20", "rationale": "Access 10 for data + voice vlan 20: standard IP phone + PC configuration." },
+                "C": { "text": "Configure two routed ports on the same physical interface", "rationale": "It is impossible to assign two routed ports to a single physical interface." },
+                "D": { "text": "Configure access VLAN 20 and disable CDP", "rationale": "Placing PC and voice in VLAN 20 removes the separation; disabling CDP prevents the phone from learning the voice VLAN." }
+            }
+        },
+        "12": {
+            "topic": "Inter-switch connectivity",
+            "scenario": "Two switches connected by an 802.1Q trunk use native VLANs 10 and 20 respectively.",
+            "question_text": "Which effect is most directly associated with this mismatch?",
+            "explanation": "On an 802.1Q trunk, untagged frames are assigned to the locally configured native VLAN. If each end has a different native VLAN, a host in VLAN 10 on one side can end up in VLAN 20 on the other - inter-VLAN leakage and CDP alarms.",
+            "answers": {
+                "A": { "text": "Untagged frames can be placed into different VLANs at each end", "rationale": "Exact description of the problem: untagged frames \"migrate\" to the local native VLAN on each side." },
+                "B": { "text": "LACP automatically disables all member links", "rationale": "LACP negotiates aggregation; it does not react to a diverging native VLAN." },
+                "C": { "text": "MAC addresses stop aging", "rationale": "MAC aging is independent of the trunk configuration." },
+                "D": { "text": "OSPF routing elects a new DR", "rationale": "OSPF is Layer 3 and has no direct relationship with the native VLAN of a Layer 2 trunk." }
+            }
+        },
+        "13": {
+            "topic": "Inter-VLAN connectivity",
+            "scenario": "Hosts in VLAN 10 and VLAN 20 must communicate through a Layer 3 switch.",
+            "question_text": "What action is required on this switch?",
+            "explanation": "A multilayer switch performs inter-VLAN routing via SVIs (Switched Virtual Interfaces): one `interface vlan X` per VLAN with an IP address, plus `ip routing` enabled globally. No trunk to the hosts is required; the workstations stay on access ports.",
+            "answers": {
+                "A": { "text": "Create VLAN interfaces with IP addresses and enable IP routing", "rationale": "Standard method on a Layer 3 switch: SVI per VLAN + `ip routing`." },
+                "B": { "text": "Configure only a trunk toward each host", "rationale": "A trunk to a host is neither necessary nor recommended - workstations use access ports." },
+                "C": { "text": "Place both VLANs in the same broadcast domain", "rationale": "Placing both VLANs in the same broadcast domain would merge the VLANs, contrary to their isolation." },
+                "D": { "text": "Disable MAC learning on the access ports", "rationale": "Disabling MAC learning would break Layer 2 switching without adding anything to routing." }
+            }
+        },
+        "14": {
+            "topic": "Layer 2 discovery protocols",
+            "scenario": null,
+            "question_text": "Which statement correctly compares Cisco Discovery Protocol and LLDP?",
+            "explanation": "CDP is Cisco proprietary (SNAP encapsulation), enabled by default on IOS. LLDP is the equivalent IEEE 802.1AB standard, multi-vendor. Neither one encrypts advertisements - which is why they are commonly disabled on user ports to limit information leakage.",
+            "answers": {
+                "A": { "text": "Both are Cisco proprietary protocols", "rationale": "False: only CDP is Cisco, LLDP is an IEEE standard." },
+                "B": { "text": "LLDP is standardized, while Cisco Discovery Protocol is Cisco proprietary", "rationale": "Exact distinction: LLDP is IEEE 802.1AB standard, CDP is Cisco proprietary." },
+                "C": { "text": "Cisco Discovery Protocol runs only between routers and LLDP only between switches", "rationale": "Both protocols run on routers and switches alike." },
+                "D": { "text": "LLDP encrypts neighbor advertisements, unlike Cisco Discovery Protocol", "rationale": "Neither one encrypts: advertisements travel in the clear." }
+            }
+        },
+        "15": {
+            "topic": "LACP EtherChannel",
+            "scenario": "Two links must form an EtherChannel with LACP. One side is configured in active mode.",
+            "question_text": "Which remote mode allows the channel to form without statically forcing aggregation?",
+            "explanation": "LACP has two modes: active (actively sends LACPDUs) and passive (only responds). Active+active or active+passive form the channel. Passive+passive does not. The \"on\" mode is static (no protocol), and auto/desirable belong to PAgP.",
+            "answers": {
+                "A": { "text": "On", "rationale": "\"On\" aggregates statically without LACP negotiation." },
+                "B": { "text": "Auto", "rationale": "\"Auto\" is a PAgP (Cisco) mode, incompatible with LACP." },
+                "C": { "text": "Passive", "rationale": "Active + passive = channel formed without forcing static aggregation." },
+                "D": { "text": "Desirable", "rationale": "\"Desirable\" is a PAgP mode, not LACP." }
+            }
+        },
+        "16": {
+            "topic": "Rapid PVST+",
+            "scenario": "For VLAN 30, SW1 has priority 24576 and MAC address 00AA.AAAA.AAAA. SW2 has priority 24576 and MAC address 0099.9999.9999.",
+            "question_text": "Which switch becomes the root bridge if no other switch has a lower Bridge ID?",
+            "explanation": "The root bridge election compares Bridge ID = priority (per VLAN in PVST+) + MAC address. Identical priority => the lowest MAC wins. 00:99:99:99:99:99 is lower than 00:AA:AA:AA:AA:AA, so SW2 becomes root.",
+            "answers": {
+                "A": { "text": "SW1, because its MAC address is higher", "rationale": "In STP, the lowest MAC wins, not the highest." },
+                "B": { "text": "SW1, because equal priority favors the first configured", "rationale": "STP does not know the configuration order: priority and MAC are the only criteria." },
+                "C": { "text": "SW2, because its MAC address is lower", "rationale": "0099... < 00AA..., so SW2 wins the election." },
+                "D": { "text": "SW2, because Rapid PVST+ always chooses the most recent switch", "rationale": "Nonexistent notion: STP does not care about the switch's age." }
+            }
+        },
+        "17": {
+            "topic": "Rapid PVST+",
+            "scenario": "An access port connected to a user workstation is configured with PortFast. The administrator wants to place the port in err-disabled immediately if a BPDU is received on it.",
+            "question_text": "Which feature must be added?",
+            "explanation": "PortFast immediately places a port in forwarding for a host. BPDU guard complements PortFast: if a BPDU arrives (a sign that a rogue switch has been plugged in), the port moves to err-disabled to prevent any loop or STP root hijacking.",
+            "answers": {
+                "A": { "text": "Root guard", "rationale": "Root guard prevents a neighbor from becoming root on this port but leaves the port operational." },
+                "B": { "text": "Loop guard", "rationale": "Loop guard handles blocking/designated cases when BPDUs are lost, not receiving a BPDU on PortFast." },
+                "C": { "text": "BPDU guard", "rationale": "BPDU guard moves the port to err-disabled as soon as a BPDU is received - answers the need." },
+                "D": { "text": "BPDU filter", "rationale": "BPDU filter filters BPDUs on ingress/egress without err-disabling: very different and often risky." }
+            }
+        },
+        "18": {
+            "topic": "Cisco wireless architectures and AP modes",
+            "scenario": "A lightweight access point loses connectivity with the controller, but must continue to locally switch client traffic at a remote site.",
+            "question_text": "Which AP mode is designed for this scenario?",
+            "explanation": "FlexConnect (formerly HREAP) allows a remote lightweight AP to locally switch client traffic and to continue authenticating locally even when the WAN link to the WLC is down. It is the mode designed for remote branches.",
+            "answers": {
+                "A": { "text": "Monitor", "rationale": "Monitor only listens (IDS/location), it does not serve clients." },
+                "B": { "text": "Sniffer", "rationale": "Sniffer captures 802.11 traffic and forwards it to an analyzer, no client service." },
+                "C": { "text": "FlexConnect", "rationale": "FlexConnect: WAN survivability + local switching - exactly meets the need." },
+                "D": { "text": "Rogue detector", "rationale": "Rogue detector is connected via wired to correlate ARP addresses, no radio client role." }
+            }
+        },
+        "19": {
+            "topic": "WLAN infrastructure connections",
+            "scenario": "A central WLC carries multiple client VLANs toward a switch over a single logical connection made up of several physical links.",
+            "question_text": "Which combination best describes this connection?",
+            "explanation": "On the WLC side, multiple physical interfaces are bundled into a LAG (Link Aggregation) to form a single logical link on the switch side. This link must be configured as an 802.1Q trunk to carry multiple client VLANs (management + dynamic interfaces per WLAN).",
+            "answers": {
+                "A": { "text": "Access port and PortFast", "rationale": "An access port only carries one VLAN, insufficient for a multi-WLAN WLC." },
+                "B": { "text": "802.1Q trunk and LAG", "rationale": "802.1Q trunk + LAG: standard configuration between a WLC and the aggregation switch." },
+                "C": { "text": "Routed link and HSRP", "rationale": "HSRP is a redundant Layer 3 gateway, unrelated to WLC connectivity." },
+                "D": { "text": "Console port and Layer 3 EtherChannel toward the APs", "rationale": "APs connect via CAPWAP, not by console or routed EtherChannel." }
+            }
+        },
+        "20": {
+            "topic": "Network device management access",
+            "scenario": "An administrator must manage a switch remotely while protecting credentials and commands from eavesdropping.",
+            "question_text": "Which protocol is the most appropriate choice?",
+            "explanation": "SSHv2 encrypts both authentication and the shell session (unlike Telnet, which sends everything in the clear). It is the recommended remote CLI access method on any infrastructure device.",
+            "answers": {
+                "A": { "text": "Telnet", "rationale": "Telnet transmits credentials and commands in the clear: to be avoided." },
+                "B": { "text": "HTTP", "rationale": "HTTP is in the clear: prefer HTTPS for the web interface, but SSH for the CLI." },
+                "C": { "text": "SSH", "rationale": "SSH encrypts the entire session - good choice." },
+                "D": { "text": "TFTP", "rationale": "TFTP has neither authentication nor encryption, it only serves to transfer files." }
+            }
+        },
+        "21": {
+            "topic": "Routing table components",
+            "scenario": null,
+            "question_text": "In a routing entry, which field indicates the preference of the route source relative to other sources that learn the same prefix?",
+            "explanation": "When multiple sources learn the same prefix, IOS installs the one with the lowest Administrative Distance (AD): static = 1, eBGP = 20, OSPF = 110, RIP = 120. The metric only breaks ties between routes from the same source.",
+            "answers": {
+                "A": { "text": "The metric", "rationale": "The metric breaks ties among routes from the same source, not between sources." },
+                "B": { "text": "The administrative distance", "rationale": "The AD is indeed the preference criterion between different route sources." },
+                "C": { "text": "The next hop", "rationale": "The next-hop indicates where to send, it is not a preference criterion." },
+                "D": { "text": "The network mask", "rationale": "The mask serves the longest match, not to compare two sources on the same prefix." }
+            }
+        },
+        "22": {
+            "topic": "Router forwarding decision",
+            "scenario": "The table contains 10.0.0.0/8 via R1, 10.20.0.0/16 via R2 and 10.20.30.0/24 via R3.",
+            "question_text": "To which next hop is a packet destined for 10.20.30.77 sent?",
+            "explanation": "The router applies the longest prefix match rule: it always chooses the entry whose prefix is the longest that covers the destination IP. 10.20.30.77 is covered by all three routes, but /24 (R3) is more specific than /16 and /8.",
+            "answers": {
+                "A": { "text": "R1", "rationale": "/8 is the least specific prefix, not selected." },
+                "B": { "text": "R2", "rationale": "/16 is more specific than /8 but less than /24." },
+                "C": { "text": "R3", "rationale": "/24 is the longest prefix that covers 10.20.30.77 - R3 wins." },
+                "D": { "text": "The gateway of last resort", "rationale": "The gateway of last resort is only used when no route matches." }
+            }
+        },
+        "23": {
+            "topic": "Router forwarding decision",
+            "scenario": "A router learns 192.168.50.0/24 via OSPF with an administrative distance of 110 and via a static route with an administrative distance of 1.",
+            "question_text": "Which route is installed in the routing table by default?",
+            "explanation": "Static AD = 1, OSPF AD = 110. The static route wins solely on AD. The metric and the dynamic nature only come into play when the ADs are equal, which is not the case here.",
+            "answers": {
+                "A": { "text": "The OSPF route, because its metric is dynamic", "rationale": "The dynamic nature does not factor into AD." },
+                "B": { "text": "The static route, because its administrative distance is lower", "rationale": "1 < 110: the static route is installed in the routing table." },
+                "C": { "text": "Both routes, because the prefix is identical", "rationale": "IOS installs only one route at a time for a given prefix (except ECMP from the same source)." },
+                "D": { "text": "None, because the sources conflict", "rationale": "There is a clear winner: the static route." }
+            }
+        },
+        "24": {
+            "topic": "Router forwarding decision",
+            "scenario": "Two OSPF routes to the same prefix have the same prefix length and the same administrative distance, but different OSPF costs.",
+            "question_text": "Which criterion breaks the tie between these routes?",
+            "explanation": "With identical AD and identical prefix length, it is the protocol's metric (the cumulative OSPF cost) that breaks the tie. If the metrics are also equal, IOS installs multiple entries up to `maximum-paths` (ECMP).",
+            "answers": {
+                "A": { "text": "The highest next-hop IP address", "rationale": "The highest next-hop is not a tie-breaker." },
+                "B": { "text": "The OSPF metric", "rationale": "The OSPF metric (cumulative cost) breaks ties between routes from the same source and the same prefix." },
+                "C": { "text": "The autonomous system number", "rationale": "The AS number concerns BGP, not OSPF." },
+                "D": { "text": "The STP priority", "rationale": "STP is Layer 2, unrelated to IP routing." }
+            }
+        },
+        "25": {
+            "topic": "IPv4 and IPv6 static routing",
+            "scenario": null,
+            "question_text": "Which IPv4 route corresponds to a default route?",
+            "explanation": "An IPv4 default route is written 0.0.0.0 with mask 0.0.0.0: no bit is constrained, so it catches everything with no more specific match. `ip default-gateway` is only used on a device without IP routing (Layer 2 switch, setup mode).",
+            "answers": {
+                "A": { "text": "ip route 0.0.0.0 0.0.0.0 192.0.2.1", "rationale": "Canonical syntax for the IPv4 default route." },
+                "B": { "text": "ip route 0.0.0.0 255.255.255.255 192.0.2.1", "rationale": "This 255.255.255.255 mask would make it a host route toward 0.0.0.0, which makes no sense." },
+                "C": { "text": "ip route 192.0.2.0 0.0.0.0 198.51.100.1", "rationale": "This syntax targets 192.0.2.0 as a host, it is not a default." },
+                "D": { "text": "ip default-gateway 0.0.0.0 192.0.2.1", "rationale": "`ip default-gateway` is used when `no ip routing` is configured, different syntax." }
+            }
+        },
+        "26": {
+            "topic": "IPv4 and IPv6 static routing",
+            "scenario": "An administrator wants to create an IPv4 route matching a single destination, 203.0.113.45.",
+            "question_text": "Which mask must be used for this host route?",
+            "explanation": "A 255.255.255.255 mask (/32) designates a single host. /32 routes are used for targeted redirects, advertising loopback IPs in OSPF, or precise static NATs.",
+            "answers": {
+                "A": { "text": "255.255.255.0", "rationale": "/24 covers 256 addresses, too broad." },
+                "B": { "text": "255.255.255.252", "rationale": "/30 = 4 addresses, used for point-to-point." },
+                "C": { "text": "255.255.255.254", "rationale": "/31 = 2 addresses (RFC 3021), modern point-to-point." },
+                "D": { "text": "255.255.255.255", "rationale": "/32 (255.255.255.255) designates exactly one host - correct answer." }
+            }
+        },
+        "27": {
+            "topic": "IPv4 and IPv6 static routing",
+            "scenario": "OSPF provides the primary route to 198.51.100.0/24. A static route must be used only if the OSPF route disappears.",
+            "question_text": "What characteristic must the floating static route have?",
+            "explanation": "A floating static route is a static route declared with an AD higher than that of the primary protocol (e.g., `ip route ... 200`). As long as OSPF provides its route (AD 110), the floating one stays out of the table; if OSPF loses the route, the floating one becomes active.",
+            "answers": {
+                "A": { "text": "An administrative distance higher than that of OSPF", "rationale": "A higher AD ensures the static route stays dormant as long as OSPF is operating." },
+                "B": { "text": "A metric lower than that of OSPF", "rationale": "Metrics are not compared between different protocols." },
+                "C": { "text": "A prefix less specific than /24 only", "rationale": "The prefix is generally identical to OSPF's, not less specific." },
+                "D": { "text": "A multicast next-hop address", "rationale": "A multicast next-hop makes no sense for unicast routing." }
+            }
+        },
+        "28": {
+            "topic": "IPv4 and IPv6 static routing",
+            "scenario": null,
+            "question_text": "Which command configures a default IPv6 route via the next hop 2001:db8:1::1?",
+            "explanation": "In IPv6, the default route is ::/0 and is configured via `ipv6 route ::/0 <next-hop>`. The keyword `ip` is reserved for IPv4, and 0.0.0.0/0 is invalid IPv4 notation in IPv6.",
+            "answers": {
+                "A": { "text": "ipv6 route ::/0 2001:db8:1::1", "rationale": "Correct IPv6 syntax for a default route." },
+                "B": { "text": "ip route ::/0 2001:db8:1::1", "rationale": "`ip route` is IPv4; `ipv6 route` is required for IPv6." },
+                "C": { "text": "ipv6 default-route 2001:db8:1::1", "rationale": "This command does not exist in IOS." },
+                "D": { "text": "ipv6 route 0.0.0.0/0 2001:db8:1::1", "rationale": "Mix of IPv4 and IPv6 notations, invalid syntax." }
+            }
+        },
+        "29": {
+            "topic": "Single-area OSPFv2",
+            "scenario": "Two directly connected OSPFv2 routers do not become neighbors. Their addresses belong to the same subnet and their interfaces are up, but one is in area 0 and the other in area 1.",
+            "question_text": "Which correction is required?",
+            "explanation": "An OSPF adjacency requires, among other things: same area, matching hello/dead timers, matching MTU, matching network type. Two neighboring interfaces cannot be in area 0 and area 1 respectively: they must be in the same area.",
+            "answers": {
+                "A": { "text": "Assign the same Router ID to both routers", "rationale": "On the contrary, Router IDs must be unique." },
+                "B": { "text": "Place the neighboring interfaces in the same OSPF area", "rationale": "Same area = necessary condition for any OSPF adjacency." },
+                "C": { "text": "Configure a floating static route", "rationale": "A floating static route has no bearing on neighbor formation." },
+                "D": { "text": "Manually elect the same DR on both routers", "rationale": "The DR is elected per segment, it does not have to be \"identical on two routers\"." }
+            }
+        },
+        "30": {
+            "topic": "Single-area OSPFv2",
+            "scenario": "Two routers are connected by a dedicated Ethernet link with no other Layer 3 device on the segment.",
+            "question_text": "Which OSPF network type avoids a DR/BDR election on this link?",
+            "explanation": "On an OSPF point-to-point network type (serial link or dedicated Ethernet between two routers), no DR/BDR is elected - unnecessary since there are only two neighbors. The broadcast and NBMA types, on the other hand, trigger the election.",
+            "answers": {
+                "A": { "text": "Broadcast", "rationale": "Broadcast elects a DR and a BDR." },
+                "B": { "text": "Point-to-point", "rationale": "Point-to-point removes any DR/BDR election: direct neighbor relationship." },
+                "C": { "text": "Nonbroadcast multiaccess", "rationale": "NBMA elects DR/BDR (with static neighbors)." },
+                "D": { "text": "Passive-interface", "rationale": "Passive-interface suppresses hellos and prevents any adjacency - it is not a network type." }
+            }
+        },
+        "31": {
+            "topic": "Single-area OSPFv2",
+            "scenario": "On a broadcast network, R1 has OSPF priority 100, R2 priority 50, and R3 priority 0. No DR or BDR has been elected yet.",
+            "question_text": "Which router is eligible and becomes DR?",
+            "explanation": "OSPF DR election: highest priority wins (0 = ineligible). In case of a tie, highest Router ID. R3 is ruled out (priority 0), R1 has the highest (100) and becomes DR. R2 (50) becomes BDR.",
+            "answers": {
+                "A": { "text": "R1", "rationale": "R1 with priority 100 is the highest eligible - DR." },
+                "B": { "text": "R2", "rationale": "R2 will be BDR, not DR." },
+                "C": { "text": "R3", "rationale": "R3 is ineligible (priority 0)." },
+                "D": { "text": "R3 becomes DR and R1 becomes BDR", "rationale": "R3 can never be DR because its priority is 0." }
+            }
+        },
+        "32": {
+            "topic": "Single-area OSPFv2",
+            "scenario": "No OSPF Router ID is manually configured. The router has loopbacks 10.10.10.10/32 and 10.20.20.20/32, as well as a physical interface 192.0.2.1/24.",
+            "question_text": "Which OSPF Router ID is selected when the process starts?",
+            "explanation": "Without a manual `router-id`, OSPF chooses the highest IPv4 address among active loopbacks (preferred), otherwise among physical interfaces. 10.20.20.20 > 10.10.10.10, and loopbacks are preferred over physical interfaces.",
+            "answers": {
+                "A": { "text": "192.0.2.1", "rationale": "The physical interface is ignored as soon as a loopback exists." },
+                "B": { "text": "10.10.10.10", "rationale": "10.10.10.10 is a loopback but not the highest." },
+                "C": { "text": "10.20.20.20", "rationale": "10.20.20.20 is the highest loopback - becomes the RID." },
+                "D": { "text": "0.0.0.0", "rationale": "Impossible: several valid interfaces exist." }
+            }
+        },
+        "33": {
+            "topic": "First-hop redundancy protocols",
+            "scenario": "Two routers provide a redundant gateway to the same user VLAN.",
+            "question_text": "Which element do hosts use to keep a stable default gateway when one router fails?",
+            "explanation": "HSRP / VRRP / GLBP expose a virtual IP address (and a virtual MAC) shared by the two routers. Hosts use this virtual IP as their default gateway; if the active router fails, the standby takes over without any change to the hosts' configuration.",
+            "answers": {
+                "A": { "text": "A virtual IP address", "rationale": "The virtual IP is the very definition of a redundant FHRP." },
+                "B": { "text": "The OSPF Router ID of the active router", "rationale": "The OSPF Router ID is not exposed to hosts." },
+                "C": { "text": "A link-local address learned via CDP", "rationale": "CDP discovers neighbors for the admin, it does not provide a gateway to hosts." },
+                "D": { "text": "The native VLAN of the trunk", "rationale": "The native VLAN is a Layer 2 concept unrelated to the Layer 3 gateway." }
+            }
+        },
+        "34": {
+            "topic": "Inside source NAT",
+            "scenario": "An internal server 10.10.10.20 must always be reachable from the outside via the public address 203.0.113.20.",
+            "question_text": "Which translation type meets this requirement?",
+            "explanation": "Inside source static NAT creates a fixed 1:1 mapping between an inside IP and a public IP: the server is always reachable from outside at the same address. Dynamic NAT and PAT do not guarantee this stable mapping.",
+            "answers": {
+                "A": { "text": "Inside source static NAT", "rationale": "Fixed 1:1 mapping = definition of static NAT." },
+                "B": { "text": "Dynamic NAT with a pool and no reservation", "rationale": "Dynamic NAT allocates a variable address based on availability, unpredictable." },
+                "C": { "text": "DHCP relay", "rationale": "DHCP relay carries DHCP requests, unrelated to NAT translation." },
+                "D": { "text": "PAT based only on the interface address", "rationale": "Interface PAT shares one public IP via ports on the outbound side, it does not expose an inbound server with a dedicated IP." }
+            }
+        },
+        "35": {
+            "topic": "NTP client and server",
+            "scenario": "R1 must obtain the time from R2, while R2 is synchronized to a reliable time source.",
+            "question_text": "What NTP role does R1 play with respect to R2?",
+            "explanation": "R1 learns the time from R2: R1 is therefore an NTP client. R2, synchronized to a reliable source, acts as a server for R1. A single router can combine both roles (client of an upstream source, server for others downstream).",
+            "answers": {
+                "A": { "text": "NTP server", "rationale": "R1 receives the time, it does not provide it." },
+                "B": { "text": "NTP client", "rationale": "R1 is a client of R2: receives the time from an upstream server." },
+                "C": { "text": "DNS master", "rationale": "DNS resolves names, off topic." },
+                "D": { "text": "SNMP agent", "rationale": "SNMP is a monitoring protocol, off topic." }
+            }
+        },
+        "36": {
+            "topic": "DHCP client and relay",
+            "scenario": "Clients in a VLAN receive no addresses. The DHCP server is in a different subnet, and the router does not forward DHCP broadcasts.",
+            "question_text": "Which configuration must be added on the client VLAN's gateway interface?",
+            "explanation": "DHCP DISCOVER packets are broadcasts (255.255.255.255) that are not forwarded between subnets. The command `ip helper-address <server>` on the client's gateway interface converts the broadcast into a unicast toward the remote DHCP server.",
+            "answers": {
+                "A": { "text": "An ip helper-address entry pointing to the DHCP server", "rationale": "`ip helper-address` is the standard DHCP relay command." },
+                "B": { "text": "A static host route toward each client", "rationale": "Host routes to each client do not solve the DHCP broadcast problem." },
+                "C": { "text": "An ntp server command pointing to the DHCP server", "rationale": "`ntp server` synchronizes the clock, no effect on DHCP." },
+                "D": { "text": "A standard ACL that denies UDP", "rationale": "An ACL denying UDP would also block DHCP (UDP 67/68), the opposite of what is wanted." }
+            }
+        },
+        "37": {
+            "topic": "PHB behavior for QoS",
+            "scenario": "An operator wants to limit a flow to a contractual rate and immediately drop excess packets rather than temporarily buffering them.",
+            "question_text": "Which QoS mechanism matches this behavior?",
+            "explanation": "Policing limits a flow to a defined rate and immediately drops excess packets (drop). Shaping queues the excess to smooth the traffic over time - but introduces delay. Here, immediate drop is wanted.",
+            "answers": {
+                "A": { "text": "Shaping", "rationale": "Shaping queues, it does not drop immediately." },
+                "B": { "text": "Policing", "rationale": "Policing = immediate drop of excess packets - meets the need." },
+                "C": { "text": "Queuing", "rationale": "Queuing schedules packets, it does not rate-limit." },
+                "D": { "text": "Classification", "rationale": "Classification identifies or marks traffic, it does not rate-limit." }
+            }
+        },
+        "38": {
+            "topic": "SSH remote access",
+            "scenario": "A switch has a management IP address. RSA keys are generated, but the VTY line still accepts Telnet and does not use the local database.",
+            "question_text": "Which combination finalizes SSH access using local accounts?",
+            "explanation": "On a VTY line, `login local` enforces authentication against the local user database (`username X secret Y`), and `transport input ssh` prohibits Telnet by allowing only SSH as the inbound protocol. Without these two commands, access remains weak (Telnet possible or no auth).",
+            "answers": {
+                "A": { "text": "login local and transport input ssh", "rationale": "Correct combination: local auth + SSH only inbound." },
+                "B": { "text": "login and transport output telnet", "rationale": "`login` alone uses a shared line password (weak); `transport output` governs outbound, not inbound." },
+                "C": { "text": "no login and transport input all", "rationale": "`no login` completely disables authentication - major breach." },
+                "D": { "text": "aaa authorization exec default and transport input http", "rationale": "Configures AAA authorization and allows HTTP inbound, neither of which finalizes SSH." }
+            }
+        },
+        "39": {
+            "topic": "Key security concepts",
+            "scenario": null,
+            "question_text": "Which term designates a weakness that can be exploited in a system or configuration?",
+            "explanation": "Vulnerability = an exploitable weakness in a system or configuration. Threat = a source capable of exploiting that weakness. Exploit = the technique or code that takes advantage of the vulnerability. Mitigation = a measure that reduces the risk.",
+            "answers": {
+                "A": { "text": "Threat", "rationale": "A threat is the agent that could attack, not the weakness itself." },
+                "B": { "text": "Vulnerability", "rationale": "Vulnerability = exploitable weakness - exact definition." },
+                "C": { "text": "Exploit", "rationale": "An exploit is the tool that takes advantage of a vulnerability, not the weakness itself." },
+                "D": { "text": "Mitigation technique", "rationale": "A mitigation is a countermeasure, not a flaw." }
+            }
+        },
+        "40": {
+            "topic": "Wireless security protocols",
+            "scenario": "A company replaces an old WLAN using WPA with a modern solution offering better protection against offline dictionary attacks and stronger authentication.",
+            "question_text": "Which wireless protocol best meets this requirement?",
+            "explanation": "WPA3 replaces the 4-way handshake of WPA2/PSK (vulnerable to offline dictionary attacks) with SAE (Simultaneous Authentication of Equals, aka Dragonfly), which prevents that attack. WPA3 is the recommended modern protocol.",
+            "answers": {
+                "A": { "text": "WPA with TKIP", "rationale": "WPA + TKIP is obsolete and broken." },
+                "B": { "text": "WPA2 with WEP", "rationale": "WPA2 + WEP is an invalid combination, WEP is completely broken." },
+                "C": { "text": "WPA3", "rationale": "WPA3 with SAE resists offline brute-force - correct answer." },
+                "D": { "text": "A hidden SSID with no encryption", "rationale": "A hidden SSID with no encryption remains an open network, ineffective security by obscurity." }
+            }
+        },
+        "41": {
+            "topic": "Password policies",
+            "scenario": "The company wants a stolen password to not be enough to open an administration session.",
+            "question_text": "Which measure best meets this requirement?",
+            "explanation": "Multifactor authentication (MFA) requires at least two independent factors (know/have/be). A stolen password is no longer enough because the token/OTP/biometric is also required. Increasing password length makes brute-force harder but does not help against theft.",
+            "answers": {
+                "A": { "text": "Only increase the minimum password length", "rationale": "A long stolen password is still stolen - length does not compensate." },
+                "B": { "text": "Enable multifactor authentication", "rationale": "MFA adds a second independent factor - password theft alone becomes insufficient." },
+                "C": { "text": "Reduce the MAC address aging time", "rationale": "MAC aging is a Layer 2 switching mechanism, unrelated to admin auth." },
+                "D": { "text": "Use Telnet with an encrypted password", "rationale": "Telnet is in the clear - degrades security, not an improvement." }
+            }
+        },
+        "42": {
+            "topic": "IPsec VPN",
+            "scenario": "Two branches must permanently protect the IP traffic exchanged between their private networks across the Internet, with no individual user action.",
+            "question_text": "Which type of VPN is the most appropriate?",
+            "explanation": "A site-to-site IPsec VPN links two edge routers and permanently protects all traffic between the private networks, transparently for users. A remote-access VPN requires user action (client to launch, connection to establish).",
+            "answers": {
+                "A": { "text": "Site-to-site IPsec VPN", "rationale": "Site-to-site: permanent, transparent, between branches - meets the need." },
+                "B": { "text": "Per-user remote-access IPsec VPN", "rationale": "Per-user remote access requires action from each person." },
+                "C": { "text": "CAPWAP tunnel between AP and WLC", "rationale": "CAPWAP is a control/data tunnel between AP and WLC, not an inter-site VPN." },
+                "D": { "text": "Encrypted 802.1Q trunk", "rationale": "802.1Q does not encrypt and runs over a single Layer 2 link, not across the Internet." }
+            }
+        },
+        "43": {
+            "topic": "Access control lists",
+            "scenario": "An extended ACL must permit hosts on the 10.10.10.0/24 network to access server 192.0.2.50 over HTTPS, then deny other access to this server.",
+            "question_text": "Which permit entry is correct?",
+            "explanation": "An extended ACL is written `permit <proto> <src> <wildcard-src> <dst> <wildcard-dst> [eq port]`. HTTPS = TCP 443. The wildcard 0.0.0.255 covers the source /24, and `host 192.0.2.50` is equivalent to a 0.0.0.0 wildcard.",
+            "answers": {
+                "A": { "text": "permit tcp 10.10.10.0 0.0.0.255 host 192.0.2.50 eq 443", "rationale": "Exact syntax: TCP + source /24 + host + port 443." },
+                "B": { "text": "permit udp host 10.10.10.0 255.255.255.0 192.0.2.50 eq 443", "rationale": "HTTPS is TCP, not UDP; and an ACL uses wildcards, not masks." },
+                "C": { "text": "permit ip 10.10.10.0 255.255.255.0 any eq 443", "rationale": "`permit ip` does not support `eq <port>` (the port is specific to TCP/UDP)." },
+                "D": { "text": "permit tcp any 192.0.2.50 0.0.0.255 eq 22", "rationale": "Port 22 = SSH, not HTTPS." }
+            }
+        },
+        "44": {
+            "topic": "Layer 2 security",
+            "scenario": "A switch must block spoofed ARP replies by validating the IP-MAC bindings learned via DHCP snooping.",
+            "question_text": "Which feature must be enabled?",
+            "explanation": "Dynamic ARP Inspection (DAI) validates every ARP reply against the DHCP snooping bindings table. ARP packets whose IP/MAC binding does not match a valid binding are dropped - protection against ARP spoofing and MITM.",
+            "answers": {
+                "A": { "text": "Port security", "rationale": "Port security limits the allowed source MACs per port, not ARP validity." },
+                "B": { "text": "Dynamic ARP Inspection", "rationale": "DAI checks every ARP reply against DHCP snooping bindings - meets the need." },
+                "C": { "text": "BPDU filter", "rationale": "BPDU filter concerns STP, unrelated to ARP." },
+                "D": { "text": "Root guard", "rationale": "Root guard protects the STP root, unrelated to ARP." }
+            }
+        },
+        "45": {
+            "topic": "Authentication, authorization and accounting",
+            "scenario": "A central server first verifies an administrator's identity, then determines which commands they can execute, then logs those commands.",
+            "question_text": "Which AAA order is being described?",
+            "explanation": "The AAA order is always: Authentication (who are you?), Authorization (what can you do?), Accounting (what did you do?). A TACACS+/RADIUS server performs these three roles sequentially in this order.",
+            "answers": {
+                "A": { "text": "Authorization, authentication, accounting", "rationale": "Authentication must precede authorization, wrong order." },
+                "B": { "text": "Authentication, accounting, authorization", "rationale": "Accounting cannot precede authorization." },
+                "C": { "text": "Authentication, authorization, accounting", "rationale": "Authentication, Authorization, Accounting: the standard AAA order." },
+                "D": { "text": "Accounting, authorization, authentication", "rationale": "Order completely reversed." }
+            }
+        },
+        "46": {
+            "topic": "Impact of automation",
+            "scenario": "A team replaces repetitive manual changes with validated templates applied automatically to hundreds of devices.",
+            "question_text": "Which benefit is most directly expected?",
+            "explanation": "Automation applies a validated template to N devices, which reduces configuration drift and human inconsistencies. Change control remains necessary (validation, rollback), and automation does not eliminate hardware failures.",
+            "answers": {
+                "A": { "text": "A reduction in configuration inconsistencies", "rationale": "Direct benefit of reproducible templates: less drift and fewer inconsistencies." },
+                "B": { "text": "Removal of any need for change control", "rationale": "False: traceability and change control are actually reinforced by automation." },
+                "C": { "text": "The disappearance of control and data planes", "rationale": "Control and data planes still exist in every device." },
+                "D": { "text": "The elimination of all hardware failures", "rationale": "Automation does not touch hardware, it does not prevent hardware failures." }
+            }
+        },
+        "47": {
+            "topic": "Software-driven architecture",
+            "scenario": null,
+            "question_text": "In a controller-based architecture, which interface typically connects the controller to the infrastructure devices?",
+            "explanation": "In an SDN model: northbound APIs go from the controller up to business apps (REST/GraphQL). Southbound APIs go from the controller down to the devices (NETCONF, RESTCONF, OpenFlow) - it is through them that configuration is pushed.",
+            "answers": {
+                "A": { "text": "Northbound API", "rationale": "Northbound = toward applications, not toward devices." },
+                "B": { "text": "Southbound API", "rationale": "Southbound = toward infrastructure: NETCONF, RESTCONF, OpenFlow." },
+                "C": { "text": "Graphical user API only", "rationale": "A GUI is a northbound consumer, not the interface toward the devices." },
+                "D": { "text": "Data-plane API toward the business application", "rationale": "Architectural nonsense, the data plane does not go up to the business." }
+            }
+        },
+        "48": {
+            "topic": "AI and machine learning",
+            "scenario": "A platform analyzes telemetry time series to predict link saturation before it occurs.",
+            "question_text": "Which category best describes this use case?",
+            "explanation": "Analyzing time series to predict a future event (link saturation) is a classic case of temporal machine learning: it is predictive AI. Generative AI, by contrast, produces content (text, configuration) from a prompt.",
+            "answers": {
+                "A": { "text": "Generative AI producing a configuration from text", "rationale": "Generative AI creates content, it does not perform temporal forecasting." },
+                "B": { "text": "Predictive AI based on a machine learning model", "rationale": "Predictive AI: forecast based on ML history - exact description." },
+                "C": { "text": "Simple static NAT with no learning", "rationale": "Static NAT is a network mechanism with no AI." },
+                "D": { "text": "Overlay encapsulation with no analysis", "rationale": "Overlay encapsulation is a tunneling mechanism, no analysis or prediction." }
+            }
+        },
+        "49": {
+            "topic": "REST APIs",
+            "scenario": "An application must partially modify an existing resource via a REST API without necessarily replacing its entire representation.",
+            "question_text": "Which HTTP verb is the most appropriate?",
+            "explanation": "In REST: GET reads a resource, POST creates a new one, PUT fully replaces a resource, PATCH partially modifies an existing resource, DELETE removes it. A partial update is therefore done with PATCH.",
+            "answers": {
+                "A": { "text": "GET", "rationale": "GET is read-only, modifies nothing." },
+                "B": { "text": "POST", "rationale": "POST creates a new resource, it does not partially modify an existing one." },
+                "C": { "text": "PATCH", "rationale": "PATCH = partial modification - suitable verb." },
+                "D": { "text": "DELETE", "rationale": "DELETE removes a resource, does not modify it." }
+            }
+        },
+        "50": {
+            "topic": "Configuration management",
+            "scenario": "A team wants to describe a desired infrastructure state, preview the required changes, then create or modify the resources declaratively.",
+            "question_text": "Which syllabus mechanism best matches this need?",
+            "explanation": "Terraform is a declarative IaC tool: an HCL file describes the desired state, `terraform plan` previews the delta between the current and target state, `terraform apply` materializes the changes. Syslog, CDP and TFTP drive no infrastructure state.",
+            "answers": {
+                "A": { "text": "Terraform", "rationale": "Terraform: declarative IaC with plan/apply - exactly meets the need." },
+                "B": { "text": "Syslog", "rationale": "Syslog logs events, it does not manage infrastructure state." },
+                "C": { "text": "Cisco Discovery Protocol", "rationale": "CDP discovers Layer 2 neighbors, no IaC capability." },
+                "D": { "text": "TFTP", "rationale": "TFTP transfers files, no declarative capability." }
+            }
+        }
+    }
+}

@@ -60,6 +60,17 @@ class CertificateController extends Controller
 
         $brandName = Setting::get('brand_name') ?: 'CertifLoop';
 
+        // Le certificat CertifLoop est un signal international destine aux
+        // recruteurs / LinkedIn : on force la langue en EN quel que soit le
+        // UI locale du user au moment du telechargement.
+        app()->setLocale('en');
+
+        // Verification anchor : URL publique de la page de partage + QR SVG qui
+        // pointe dessus. Un recruteur scanne le QR ou visite l'URL en clair,
+        // tombe sur la vue publique et confirme l'existence du certificat en DB.
+        $verificationUrl = route('certificate.show', $cert->token);
+        $qrDataUri = self::qrCodeDataUri($verificationUrl);
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.certificate', [
             'user_name' => $cert->user?->name ?? 'Candidat',
             'certification_title' => $cert->certification?->title ?? '',
@@ -69,6 +80,8 @@ class CertificateController extends Controller
             'awarded_date' => $cert->awarded_at?->translatedFormat('d F Y'),
             'brand_name' => $brandName,
             'token' => $cert->token,
+            'verification_url' => $verificationUrl,
+            'qr_data_uri' => $qrDataUri,
         ])->setPaper('a4', 'landscape');
 
         $filename = sprintf(
@@ -78,5 +91,26 @@ class CertificateController extends Controller
         );
 
         return $pdf->download($filename);
+    }
+
+    /**
+     * Genere un QR code PNG (base64 data URI) pointant sur l'URL de verification.
+     * On utilise endroid/qr-code avec le PngWriter GD-based (image raster)
+     * plutot que du SVG parce que DomPDF gere mal les SVG a paths complexes
+     * (rendu vide dans le PDF). PNG data URI = bulletproof dans DomPDF.
+     *
+     * Retourne un string prêt à mettre dans src="..." d'une balise <img>.
+     */
+    public static function qrCodeDataUri(string $url, int $size = 300): string
+    {
+        $result = \Endroid\QrCode\Builder\Builder::create()
+            ->writer(new \Endroid\QrCode\Writer\PngWriter())
+            ->data($url)
+            ->size($size)
+            ->margin(4)
+            ->errorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::Medium)
+            ->build();
+
+        return $result->getDataUri();
     }
 }

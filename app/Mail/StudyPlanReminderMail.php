@@ -21,9 +21,12 @@ class StudyPlanReminderMail extends Mailable
 
     public function envelope(): Envelope
     {
-        $cert = $this->plan->certification?->title ?? 'ta certification';
+        $cert = $this->plan->certification?->title ?? __('emails.plan_reminder.subject_cert_fallback');
         return new Envelope(
-            subject: "Ton plan {$cert} attend depuis {$this->daysSinceLastActivity} jours",
+            subject: __('emails.plan_reminder.subject', [
+                'cert' => $cert,
+                'days' => $this->daysSinceLastActivity,
+            ]),
         );
     }
 

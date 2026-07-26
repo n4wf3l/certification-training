@@ -21,9 +21,12 @@ class StudyPlanDigestMail extends Mailable
 
     public function envelope(): Envelope
     {
-        $cert = $this->plan->certification?->title ?? 'ton plan';
+        $cert = $this->plan->certification?->title ?? __('emails.plan_digest.subject_cert_fallback');
         return new Envelope(
-            subject: "{$this->brandName} - Ta semaine sur {$cert}",
+            subject: __('emails.plan_digest.subject', [
+                'brand' => $this->brandName,
+                'cert' => $cert,
+            ]),
         );
     }
 

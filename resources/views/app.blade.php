@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#12ccb0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="{{ $brandName ?? 'CertifLoop' }}">
@@ -11,6 +12,20 @@
 
         <title inertia>{{ $brandName ?? 'CertifLoop' }}</title>
         <script>window.__BRAND_NAME__ = @json($brandName ?? 'CertifLoop');</script>
+
+        {{-- Pre-boot theme resolution : evite le FOUC en appliquant la classe
+             `dark` sur <html> AVANT le premier paint. Miroir strict de la logique
+             de useTheme() dans resources/js/lib/theme.js. --}}
+        <script>
+            (function () {
+                try {
+                    var stored = window.localStorage.getItem('theme');
+                    var mode = (stored === 'dark' || stored === 'light' || stored === 'system') ? stored : 'system';
+                    var isDark = mode === 'dark' || (mode === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    if (isDark) document.documentElement.classList.add('dark');
+                } catch (e) { /* localStorage disabled : silently fall back to light */ }
+            })();
+        </script>
 
         {{-- Favicon : logo custom si upload, sinon un SVG inline avec le logo par défaut --}}
         @if(!empty($brandLogoUrl))

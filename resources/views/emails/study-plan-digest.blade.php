@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Ta semaine</title>
+    <title>{{ __('emails.plan_digest.subject', ['brand' => $brandName, 'cert' => $plan->certification->title]) }}</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; background: #f7f8fa; margin: 0; padding: 40px 20px; color: #1f2431; }
         .wrap { max-width: 560px; margin: 0 auto; background: white; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -19,36 +19,35 @@
 </head>
 <body>
     <div class="wrap">
-        <div class="brand">{{ $brandName }} - Digest hebdo</div>
-        <h1>Ta semaine sur {{ $plan->certification->title }}</h1>
-        <p>Salut {{ $plan->user->name }}, voici ton bilan pour la semaine ecoulee.</p>
+        <div class="brand">{{ __('emails.plan_digest.brand_tag', ['brand' => $brandName]) }}</div>
+        <h1>{{ __('emails.plan_digest.title', ['cert' => $plan->certification->title]) }}</h1>
+        <p>{{ __('emails.plan_digest.greeting', ['name' => $plan->user->name]) }}</p>
 
         <div class="grid">
             <div class="cell">
                 <div class="val">{{ $stats['questions_answered'] ?? 0 }}</div>
-                <div class="lbl">Questions</div>
+                <div class="lbl">{{ __('emails.plan_digest.label_questions') }}</div>
             </div>
             <div class="cell">
                 <div class="val">{{ $stats['exams_completed'] ?? 0 }}</div>
-                <div class="lbl">Examens</div>
+                <div class="lbl">{{ __('emails.plan_digest.label_exams') }}</div>
             </div>
             <div class="cell">
                 <div class="val">{{ $stats['avg_score'] ?? 0 }}%</div>
-                <div class="lbl">Moyenne</div>
+                <div class="lbl">{{ __('emails.plan_digest.label_avg') }}</div>
             </div>
         </div>
 
         <p>
-            Il te reste <strong>{{ $daysUntil }} jour{{ $daysUntil > 1 ? 's' : '' }}</strong> avant l'examen.
-            Objectif quotidien : {{ $plan->daily_target }} questions.
+            {!! __('emails.plan_digest.body_html', ['remaining' => $daysUntil, 'target' => $plan->daily_target]) !!}
         </p>
 
         <p style="text-align: center;">
-            <a href="{{ url('/study-plans/' . $plan->id) }}" class="cta">Voir mon plan</a>
+            <a href="{{ url('/study-plans/' . $plan->id) }}" class="cta">{{ __('emails.plan_digest.cta') }}</a>
         </p>
 
         <div class="foot">
-            Tu recois ce digest chaque lundi. Tu peux le desactiver depuis la page du plan.
+            {{ __('emails.plan_digest.footer') }}
             <br><br>
             {{ $brandName }}
         </div>

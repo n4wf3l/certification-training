@@ -57,7 +57,9 @@ class CertificationTranslationsSeeder extends Seeder
                 }
 
                 $translations = $cert->translations ?? [];
-                $translations[$locale] = [
+                // Merge (not overwrite) so sibling keys already populated by
+                // CourseTranslationsSeeder (course_blocks) survive a re-run.
+                $translations[$locale] = array_merge($translations[$locale] ?? [], [
                     'title' => $data['title'] ?? null,
                     'description' => $data['description'] ?? null,
                     'long_description' => $data['long_description'] ?? null,
@@ -66,7 +68,7 @@ class CertificationTranslationsSeeder extends Seeder
                     // target_roles est un array de titres de poste, cible aussi
                     // par le localized() du controller show.
                     'target_roles' => $data['target_roles'] ?? null,
-                ];
+                ]);
                 $cert->translations = $translations;
                 $cert->save();
                 $totalCerts++;

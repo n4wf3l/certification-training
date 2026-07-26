@@ -20,7 +20,7 @@ class StreakAtRiskMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Ton streak de {$this->user->current_streak} jours est en danger",
+            subject: __('emails.streak.subject', ['days' => $this->user->current_streak]),
         );
     }
 

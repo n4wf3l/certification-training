@@ -130,46 +130,135 @@ class GamificationService
         return $awarded;
     }
 
+    /**
+     * Nombre requis de mock exams parfaits consecutifs pour debloquer le
+     * certificat CertifLoop. Ratio choisi pour rendre la memorisation
+     * statistiquement impossible : le picker adaptatif deduplique les
+     * questions entre attempts, donc 3 sans-faute d'affilee = 3 pools
+     * differents 100% resolus.
+     */
+    public const CERT_PERFECT_RUNS_REQUIRED = 3;
+
+    /**
+     * Budget quit autorise sur la fenetre des 3 perfects. 1 = un abandon
+     * mid-examen "gratuit" (accident, coupure reseau, changement d'avis).
+     * Le 2e abandon durant le meme streak nuke le streak entier.
+     */
+    public const QUIT_BUDGET_PER_STREAK = 1;
+
+    /**
+     * Regle du certificat CertifLoop : 3 mock exams complets d'affilee
+     * a 100 %, avec au plus 1 abandon (quit budget) durant la fenetre.
+     * Les sessions "practice" (targeted domain) sont exclues car elles
+     * ne testent qu'un sous-ensemble du syllabus.
+     */
     private function awardMasteryBadges(User $user, ?Certification $cert): array
     {
         if (!$cert) return [];
 
-        $questionIds = $cert->questions()->pluck('id');
-        $total = $questionIds->count();
-        if ($total === 0) return [];
+        $state = $this->computeStreakState($user->id, $cert->id);
+        if ($state['perfect_runs'] < self::CERT_PERFECT_RUNS_REQUIRED) return [];
 
-        $mastered = UserQuestionStat::where('user_id', $user->id)
-            ->whereIn('question_id', $questionIds)
-            ->where('correct_streak', '>=', 2)
-            ->count();
+        $badge = $this->tryAward($user, 'master_cert', $cert->id, [
+            'perfect_runs' => $state['perfect_runs'],
+            'quits_used' => $state['quits_used'],
+            'required' => self::CERT_PERFECT_RUNS_REQUIRED,
+        ]);
 
-        $pct = ($mastered / $total) * 100;
-        if ($pct >= 90) {
-            $badge = $this->tryAward($user, 'master_cert', $cert->id, [
-                'mastered' => $mastered,
-                'total' => $total,
-                'pct' => round($pct),
-            ]);
+        // Certificat partageable : on cristallise le meilleur score sur cette cert
+        // (typiquement le total, puisque 3 attempts sans-faute) + le nb de questions
+        // du dernier attempt pour donner un chiffre "sur X" sur le PDF.
+        $lastAttempt = $user->attempts()
+            ->where('certification_id', $cert->id)
+            ->whereNotNull('completed_at')
+            ->whereNull('practice_domain')
+            ->orderByDesc('completed_at')
+            ->first();
 
-            // Trigger l'attribution du certificat partageable si pas deja fait
-            $bestAttempt = $user->attempts()
-                ->where('certification_id', $cert->id)
-                ->whereNotNull('completed_at')
-                ->orderByDesc('score')
-                ->first();
+        UserCertificate::firstOrCreate(
+            ['user_id' => $user->id, 'certification_id' => $cert->id],
+            [
+                'best_score' => $lastAttempt?->score ?? 0,
+                'total_questions' => $lastAttempt?->total_questions ?? 0,
+                // On garde mastery_pct pour retrocompat de la colonne, meme si
+                // la regle est desormais 100 % perfect x 3 : c'est toujours 100
+                // au moment de l'attribution.
+                'mastery_pct' => 100,
+            ]
+        );
 
-            UserCertificate::firstOrCreate(
-                ['user_id' => $user->id, 'certification_id' => $cert->id],
-                [
-                    'best_score' => $bestAttempt?->score ?? 0,
-                    'total_questions' => $bestAttempt?->total_questions ?? 0,
-                    'mastery_pct' => (int) round($pct),
-                ]
-            );
+        return $badge ? ['master_cert'] : [];
+    }
 
-            if ($badge) return ['master_cert'];
+    /**
+     * Etat du streak vers le certificat CertifLoop pour ce (user, cert).
+     *
+     * Algorithme (walk backward through recent non-practice attempts) :
+     *  - Chaque perfect completed -> perfect_runs++
+     *  - Chaque abandoned -> quits_used++ (n'incremente pas perfect_runs
+     *    mais ne casse pas le streak tant que quits_used <= QUIT_BUDGET)
+     *  - Un completed non-parfait -> BREAK immediatement (streak reset naturel)
+     *  - quits_used > QUIT_BUDGET -> BREAK aussi (streak nuked par le 2e quit)
+     *
+     * Retourne :
+     *  - perfect_runs   : nb de sans-faute completes dans la fenetre courante
+     *  - quits_used     : nb d'abandons dans la fenetre courante
+     *  - quit_budget    : constante (1 aujourd'hui)
+     *  - required       : nb de perfects necessaires (3)
+     *  - quits_left     : quit_budget - quits_used, jamais negatif
+     *
+     * Les compteurs perfect_runs / quits_used sont bornes a leurs limites
+     * respectives pour eviter d'exposer des chiffres au-dela du seuil.
+     */
+    public function computeStreakState(int $userId, int $certificationId): array
+    {
+        // Fenetre suffisamment large pour capturer 3 perfects + budget quits
+        $window = self::CERT_PERFECT_RUNS_REQUIRED + self::QUIT_BUDGET_PER_STREAK + 3;
+
+        $recent = Attempt::where('user_id', $userId)
+            ->where('certification_id', $certificationId)
+            ->whereNull('practice_domain')
+            ->where(function ($q) {
+                $q->whereNotNull('completed_at')->orWhereNotNull('abandoned_at');
+            })
+            ->orderByDesc('id') // id desc = ordre insertion desc, plus stable que completed_at qui peut etre null
+            ->limit($window)
+            ->get(['id', 'score', 'total_questions', 'completed_at', 'abandoned_at']);
+
+        $perfectRuns = 0;
+        $quitsUsed = 0;
+
+        foreach ($recent as $a) {
+            if ($a->abandoned_at !== null) {
+                $quitsUsed++;
+                if ($quitsUsed > self::QUIT_BUDGET_PER_STREAK) {
+                    // Le 2e quit casse le streak : on nuke tout ce qu'on a compte
+                    // depuis (ce quit-la remet la fenetre a zero).
+                    $perfectRuns = 0;
+                    $quitsUsed = self::QUIT_BUDGET_PER_STREAK + 1; // freeze pour l'expose
+                    break;
+                }
+                continue;
+            }
+            // Completed attempt
+            if ($a->total_questions > 0 && $a->score === $a->total_questions) {
+                $perfectRuns++;
+                if ($perfectRuns >= self::CERT_PERFECT_RUNS_REQUIRED) break;
+            } else {
+                // Completed mais non-parfait : streak natural reset
+                break;
+            }
         }
-        return [];
+
+        $quitsLeft = max(0, self::QUIT_BUDGET_PER_STREAK - $quitsUsed);
+
+        return [
+            'perfect_runs' => min($perfectRuns, self::CERT_PERFECT_RUNS_REQUIRED),
+            'quits_used' => min($quitsUsed, self::QUIT_BUDGET_PER_STREAK + 1),
+            'quit_budget' => self::QUIT_BUDGET_PER_STREAK,
+            'quits_left' => $quitsLeft,
+            'required' => self::CERT_PERFECT_RUNS_REQUIRED,
+        ];
     }
 
     private function tryAward(User $user, string $key, ?int $certId = null, array $meta = []): ?UserBadge

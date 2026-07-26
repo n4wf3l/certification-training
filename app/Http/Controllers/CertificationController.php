@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certification;
+use App\Models\UserCertificate;
 use App\Models\UserQuestionStat;
+use App\Services\GamificationService;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,7 +47,35 @@ class CertificationController extends Controller
                 'course_updated_at' => $certification->course_updated_at?->toIso8601String(),
             ],
             'mastery' => $mastery,
+            'cert_progress' => $this->certProgress($certification),
         ]);
+    }
+
+    /**
+     * Progression du user vers le certificat CertifLoop pour cette cert.
+     * Rule: 3 mock exams complets d'affilee a 100 %. Renvoie null si guest.
+     */
+    private function certProgress(Certification $certification): ?array
+    {
+        if (!auth()->check()) return null;
+
+        $userId = auth()->id();
+        $state = app(GamificationService::class)->computeStreakState($userId, $certification->id);
+
+        $awarded = UserCertificate::where('user_id', $userId)
+            ->where('certification_id', $certification->id)
+            ->first();
+
+        return [
+            'perfect_runs' => $state['perfect_runs'],
+            'required' => $state['required'],
+            'quits_used' => $state['quits_used'],
+            'quits_left' => $state['quits_left'],
+            'quit_budget' => $state['quit_budget'],
+            'awarded' => $awarded !== null,
+            'awarded_token' => $awarded?->token,
+            'awarded_at' => $awarded?->awarded_at?->toIso8601String(),
+        ];
     }
 
     public function course(Certification $certification): Response
@@ -53,7 +83,7 @@ class CertificationController extends Controller
         abort_unless($certification->is_active, 404);
 
         $payload = $this->basePayload($certification);
-        $payload['course_blocks'] = $certification->course_blocks;
+        $payload['course_blocks'] = $certification->localizedCourseBlocks();
         $payload['course_updated_at'] = $certification->course_updated_at?->toIso8601String();
 
         return Inertia::render('Certification/Course', [

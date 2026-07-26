@@ -20,6 +20,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Bascule UI locale (LocaleSwitcher navbar / footer). Accepte guest + user.
 Route::post('/locale', [\App\Http\Controllers\LocaleController::class, 'update'])->name('locale.update');
 
+// Page CGU + politique de confidentialite (statique, publique, no-auth).
+// Rassemble la promesse "gratuit 12 mois" + inventaire RGPD des donnees traitees.
+// L'email de contact est injecte depuis config('mail.from.address') pour eviter
+// le hardcode dans les strings i18n.
+Route::get('/legal', fn () => Inertia\Inertia::render('Legal', [
+    'contact_email' => config('mail.from.address') ?: 'contact@example.com',
+]))->name('legal');
+
 // Fallback offline (utilise par le service worker quand aucun cache ni reseau)
 Route::get('/offline', fn () => Inertia\Inertia::render('Offline'))->name('offline');
 
@@ -44,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('exam.practice');
     Route::get('/exam/{attempt}', [ExamController::class, 'take'])->name('exam.take');
     Route::post('/exam/{attempt}/submit', [ExamController::class, 'submit'])->name('exam.submit');
+    Route::post('/exam/{attempt}/abandon', [ExamController::class, 'abandon'])->name('exam.abandon');
     Route::get('/exam/{attempt}/result', [ExamController::class, 'result'])->name('exam.result');
     Route::get('/exam/{attempt}/result/pdf', [ExamController::class, 'downloadResult'])->name('exam.result.pdf');
 
@@ -71,6 +80,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
     Route::get('certifications/{certification}/export', [AdminCertificationController::class, 'export'])
         ->name('certifications.export');
+    Route::get('certifications/{certification}/certificate-preview', [AdminCertificationController::class, 'certificatePreview'])
+        ->name('certifications.certificate-preview');
     Route::get('certifications/course-import', [AdminCertificationController::class, 'courseImportForm'])
         ->name('certifications.course-import');
     Route::post('certifications/course-import', [AdminCertificationController::class, 'courseImportStore'])

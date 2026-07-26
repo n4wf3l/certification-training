@@ -1,4 +1,5 @@
 import AppLayout from '@/Layouts/AppLayout';
+import CertProgressCard from '@/Components/CertProgressCard';
 import Icon from '@/Components/Icons';
 import PlatformPromise from '@/Components/PlatformPromise';
 import { useT, useLocale } from '@/lib/i18n';
@@ -162,7 +163,7 @@ function daysUntil(dateStr) {
     return Math.ceil((d - now) / (1000 * 60 * 60 * 24));
 }
 
-export default function Show({ certification, mastery }) {
+export default function Show({ certification, mastery, cert_progress }) {
     const t = useT();
     const locale = useLocale();
     const dateLocaleTag = locale === 'fr' ? 'fr-FR' : 'en-US';
@@ -264,6 +265,9 @@ export default function Show({ certification, mastery }) {
                         </div>
                     )}
                 </div>
+
+                {/* CertifLoop certificate progress card - visible after mastery bar, primes users on the 3-perfect-runs rule */}
+                <CertProgressCard progress={cert_progress} certificationSlug={certification.slug} />
 
                 {/* Validity + retirement blocks */}
                 {(certification.validity_months || certification.validity_note || retiresAt) && (

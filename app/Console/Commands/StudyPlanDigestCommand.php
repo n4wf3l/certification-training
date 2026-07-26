@@ -61,7 +61,9 @@ class StudyPlanDigestCommand extends Command
                 continue;
             }
             try {
-                Mail::to($plan->user->email)->send(new StudyPlanDigestMail($plan, $stats, $brandName));
+                Mail::to($plan->user->email)
+                    ->locale($plan->user->preferred_locale ?: config('app.fallback_locale', 'en'))
+                    ->send(new StudyPlanDigestMail($plan, $stats, $brandName));
                 $sent++;
                 $this->line("  envoye a {$plan->user->email}");
             } catch (\Throwable $e) {

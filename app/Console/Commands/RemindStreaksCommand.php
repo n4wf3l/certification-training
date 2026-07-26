@@ -44,7 +44,9 @@ class RemindStreaksCommand extends Command
                 continue;
             }
             try {
-                Mail::to($user->email)->send(new StreakAtRiskMail($user, $brandName));
+                Mail::to($user->email)
+                    ->locale($user->preferred_locale ?: config('app.fallback_locale', 'en'))
+                    ->send(new StreakAtRiskMail($user, $brandName));
                 $sent++;
                 $this->line("  envoye a {$user->email} (streak {$user->current_streak})");
             } catch (\Throwable $e) {
