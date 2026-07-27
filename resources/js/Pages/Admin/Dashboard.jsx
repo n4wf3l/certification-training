@@ -18,7 +18,7 @@ export default function Dashboard({ stats }) {
     return (
         <AppLayout>
             <Head title={t('admin.dashboard.head_title')} />
-            <div className="mx-auto max-w-7xl space-y-8">
+            <div className="mx-auto max-w-7xl space-y-10">
                 {/* Header */}
                 <div>
                     <div className="badge-brand">
@@ -33,7 +33,9 @@ export default function Dashboard({ stats }) {
                     </p>
                 </div>
 
-                {/* KPIs */}
+                {/* KPIs - 2 cliquables (drill-down existant), 2 informationnels (Users/Attempts
+                    n'ont pas encore de page de gestion, on ne veut pas promettre un clic qui
+                    ne mene nulle part). Style visuellement distinct pour signaler la difference. */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     <Kpi
                         label={t('admin.dashboard.kpi_certifications')}
@@ -63,11 +65,9 @@ export default function Dashboard({ stats }) {
                     />
                 </div>
 
-                {/* Quick actions */}
-                <div>
-                    <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-500">
-                        {t('admin.dashboard.quick_actions')}
-                    </h2>
+                {/* CONTENT section - 4 cards : gestion + import de certifs/Q&A. Regroupe
+                    tout ce qui produit ou modifie du contenu pedagogique. */}
+                <QuickSection title={t('admin.dashboard.section_content')}>
                     <div className="grid gap-4 md:grid-cols-2">
                         <ActionCard
                             href={route('admin.certifications.index')}
@@ -97,24 +97,45 @@ export default function Dashboard({ stats }) {
                             title={t('admin.dashboard.action_import_course_title')}
                             description={t('admin.dashboard.action_import_course_desc')}
                         />
-                        <ActionCard
-                            href={route('admin.settings.edit')}
-                            IconComp={Icon.Shield}
-                            accent="brand"
-                            title={t('admin.dashboard.action_settings_title')}
-                            description={t('admin.dashboard.action_settings_desc')}
-                        />
+                    </div>
+                </QuickSection>
+
+                {/* OPERATIONS section - moderation user (Reports) + config plateforme.
+                    Reports affiche un badge pending pour attirer l'attention si actionnable. */}
+                <QuickSection title={t('admin.dashboard.section_operations')}>
+                    <div className="grid gap-4 md:grid-cols-2">
                         <ActionCard
                             href={route('admin.reports.index')}
-                            IconComp={Icon.Close}
+                            IconComp={Icon.Shield}
                             accent="brand"
                             title={reportsTitle}
                             description={reportsDesc}
+                            badge={pendingReports ? String(stats.pending_reports) : null}
+                            badgeTone="rose"
+                        />
+                        <ActionCard
+                            href={route('admin.settings.edit')}
+                            IconComp={Icon.Shield}
+                            accent="emerald"
+                            title={t('admin.dashboard.action_settings_title')}
+                            description={t('admin.dashboard.action_settings_desc')}
                         />
                     </div>
-                </div>
+                </QuickSection>
             </div>
         </AppLayout>
+    );
+}
+
+function QuickSection({ title, children }) {
+    return (
+        <div>
+            <h2 className="mb-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500 dark:text-ink-400">
+                <span className="h-px w-6 bg-ink-400 dark:bg-ink-600" />
+                {title}
+            </h2>
+            {children}
+        </div>
     );
 }
 
@@ -126,8 +147,13 @@ function Kpi({ label, value, IconComp, accent, href }) {
         amber: 'from-amber-500 to-orange-500',
         rose: 'from-rose-500 to-pink-500',
     };
+    // Interactif => `card-lift` (hover shadow + cursor pointer via <Link>) + affordance
+    // "Open ->" au survol. Informationnel => simple `card`, pas de hover trompeur.
+    const wrapperClass = href
+        ? 'card-lift group relative overflow-hidden p-5'
+        : 'card relative overflow-hidden p-5';
     const content = (
-        <div className="card-lift group relative overflow-hidden p-5">
+        <div className={wrapperClass}>
             <div className={`pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl`} />
             <div className="relative flex items-start justify-between">
                 <div>
@@ -152,10 +178,14 @@ function Kpi({ label, value, IconComp, accent, href }) {
     return href ? <Link href={href}>{content}</Link> : content;
 }
 
-function ActionCard({ href, IconComp, accent, title, description }) {
+function ActionCard({ href, IconComp, accent, title, description, badge = null, badgeTone = 'brand' }) {
     const accents = {
         brand: 'from-brand-500 to-iris-500',
         emerald: 'from-emerald-500 to-teal-500',
+    };
+    const badgeTones = {
+        brand: 'bg-brand-500 text-white',
+        rose: 'bg-rose-500 text-white',
     };
     return (
         <Link
@@ -167,7 +197,14 @@ function ActionCard({ href, IconComp, accent, title, description }) {
                 <IconComp className="h-6 w-6" />
             </div>
             <div className="flex-1">
-                <h3 className="text-base font-bold text-ink-900 dark:text-white">{title}</h3>
+                <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-ink-900 dark:text-white">{title}</h3>
+                    {badge && (
+                        <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${badgeTones[badgeTone]}`}>
+                            {badge}
+                        </span>
+                    )}
+                </div>
                 <p className="mt-1 text-sm text-ink-500">{description}</p>
             </div>
             <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500 transition group-hover:bg-gradient-to-br group-hover:from-brand-500 group-hover:to-iris-500 group-hover:text-white dark:bg-ink-800 dark:text-ink-300">

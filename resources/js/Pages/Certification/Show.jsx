@@ -394,8 +394,18 @@ export default function Show({ certification, mastery, cert_progress }) {
                                 accent="emerald"
                                 IconComp={Icon.Cards}
                                 title={t('cert_show.mode_flashcards_title')}
-                                description={t('cert_show.mode_flashcards_desc')}
-                                meta={t('cert_show.mode_flashcards_meta', { n: certification.available_questions })}
+                                badge={certification.available_questions > 0 ? null : t('cert_show.mode_course_badge_soon')}
+                                disabled={certification.available_questions === 0}
+                                description={
+                                    certification.available_questions > 0
+                                        ? t('cert_show.mode_flashcards_desc')
+                                        : t('cert_show.mode_flashcards_soon_desc')
+                                }
+                                meta={
+                                    certification.available_questions > 0
+                                        ? t('cert_show.mode_flashcards_meta', { n: certification.available_questions })
+                                        : t('cert_show.mode_flashcards_meta_soon')
+                                }
                             />
                         </div>
                         <div className="animate-stagger-in" style={{ animationDelay: '160ms' }}>
@@ -404,8 +414,18 @@ export default function Show({ certification, mastery, cert_progress }) {
                                 accent="brand"
                                 IconComp={Icon.Timer}
                                 title={t('cert_show.mode_exam_title')}
-                                description={t('cert_show.mode_exam_desc')}
-                                meta={t('cert_show.mode_exam_meta', { minutes: certification.duration_minutes, threshold: certification.passing_score, total: certification.total_questions })}
+                                badge={certification.available_questions > 0 ? null : t('cert_show.mode_course_badge_soon')}
+                                disabled={certification.available_questions === 0}
+                                description={
+                                    certification.available_questions > 0
+                                        ? t('cert_show.mode_exam_desc')
+                                        : t('cert_show.mode_exam_soon_desc')
+                                }
+                                meta={
+                                    certification.available_questions > 0
+                                        ? t('cert_show.mode_exam_meta', { minutes: certification.duration_minutes, threshold: certification.passing_score, total: certification.total_questions })
+                                        : t('cert_show.mode_exam_meta_soon')
+                                }
                             />
                         </div>
                     </div>

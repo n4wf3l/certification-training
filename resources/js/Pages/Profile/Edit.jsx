@@ -68,6 +68,26 @@ export default function Edit({ mustVerifyEmail, status }) {
                     <UpdatePasswordForm className="max-w-xl" />
                 </section>
 
+                <section className="card p-6">
+                    <div className="mb-2 flex items-center gap-2">
+                        <Icon.ArrowDown className="h-4 w-4 text-ink-500" />
+                        <h2 className="text-base font-semibold text-ink-900 dark:text-white">
+                            {t('profile.section_data_export')}
+                        </h2>
+                    </div>
+                    <p className="mb-4 text-sm text-ink-600 dark:text-ink-400">
+                        {t('profile.data_export_desc')}
+                    </p>
+                    <a
+                        href={route('profile.export')}
+                        download
+                        className="btn-secondary inline-flex"
+                    >
+                        <Icon.ArrowDown className="h-4 w-4" />
+                        {t('profile.data_export_cta')}
+                    </a>
+                </section>
+
                 <section className="card border-rose-500/20 p-6">
                     <div className="mb-4 flex items-center gap-2">
                         <Icon.Close className="h-4 w-4 text-rose-500" />

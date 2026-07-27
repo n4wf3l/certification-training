@@ -24,5 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Sentry : pousse toutes les exceptions non-catch vers Sentry si
+        // SENTRY_LARAVEL_DSN est defini en env. Silencieux en dev (log only).
+        \Sentry\Laravel\Integration::handles($exceptions);
     })->create();

@@ -35,8 +35,12 @@ Route::get('/offline', fn () => Inertia\Inertia::render('Offline'))->name('offli
 Route::get('/offline-review', fn () => Inertia\Inertia::render('OfflineReview'))->name('offline.review');
 
 // Certificats publics par token (partage LinkedIn / preview OG) - aucune auth
-Route::get('/certificate/{token}', [CertificateController::class, 'show'])->name('certificate.show');
-Route::get('/certificate/{token}/pdf', [CertificateController::class, 'pdf'])->name('certificate.pdf');
+Route::get('/certificate/{token}', [CertificateController::class, 'show'])
+    ->middleware('throttle:certificate-public')
+    ->name('certificate.show');
+Route::get('/certificate/{token}/pdf', [CertificateController::class, 'pdf'])
+    ->middleware('throttle:certificate-public')
+    ->name('certificate.pdf');
 
 Route::prefix('certifications/{certification:slug}')->group(function () {
     Route::get('/', [CertificationController::class, 'show'])->name('certifications.show');
@@ -47,8 +51,10 @@ Route::prefix('certifications/{certification:slug}')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/certifications/{certification:slug}/start', [ExamController::class, 'start'])
+        ->middleware('throttle:exam-start')
         ->name('exam.start');
     Route::post('/certifications/{certification:slug}/practice/{domain}', [ExamController::class, 'practiceStart'])
+        ->middleware('throttle:exam-start')
         ->name('exam.practice');
     Route::get('/exam/{attempt}', [ExamController::class, 'take'])->name('exam.take');
     Route::post('/exam/{attempt}/submit', [ExamController::class, 'submit'])->name('exam.submit');
@@ -66,11 +72,18 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/study-plans/{studyPlan}', [StudyPlanController::class, 'destroy'])->name('study-plans.destroy');
     Route::get('/study-plans/{studyPlan}/calendar.ics', [StudyPlanController::class, 'ics'])->name('study-plans.ics');
 
-    Route::post('/questions/{question}/report', [QuestionReportController::class, 'store'])->name('questions.report');
-    Route::post('/questions/{question}/explain-me-better', [AiExplanationController::class, 'explain'])->name('questions.explain');
+    Route::post('/questions/{question}/report', [QuestionReportController::class, 'store'])
+        ->middleware('throttle:reports')
+        ->name('questions.report');
+    Route::post('/questions/{question}/explain-me-better', [AiExplanationController::class, 'explain'])
+        ->middleware('throttle:ai-explain')
+        ->name('questions.explain');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/export', [ProfileController::class, 'exportData'])
+        ->middleware('throttle:data-export')
+        ->name('profile.export');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

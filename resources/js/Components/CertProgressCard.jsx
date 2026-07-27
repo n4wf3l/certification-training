@@ -67,6 +67,7 @@ export default function CertProgressCard({ progress, certificationSlug }) {
                         </Link>
                         <a
                             href={route('certificate.pdf', awarded_token)}
+                            download
                             className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-500/10 dark:bg-ink-900/40 dark:text-emerald-300"
                         >
                             <Icon.ArrowRight className="h-3.5 w-3.5 -rotate-90" />
