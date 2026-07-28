@@ -241,15 +241,36 @@ class ExamController extends Controller
         $locale = $attempt->locale ?: $canonical;
 
         $questions = $items->map(function (AttemptAnswer $aa) use ($attempt, $isInstant, $locale, $canonical) {
-            $shuffled = $this->shuffledAnswers($aa->question->answers, $this->answerSeed($attempt->id, $aa->question->id));
+            $q = $aa->question;
+            $isMatching = $q->isMatching();
+            $isMulti = $q->isMultiSelect();
+            $shuffled = $isMatching ? [] : $this->shuffledAnswers($q->answers, $this->answerSeed($attempt->id, $q->id));
+
+            // Matching : shuffle the right-side items so the user has to think
+            // (le seed varie par attempt+question pour eviter la memorisation).
+            $matchingPairs = null;
+            if ($isMatching && is_array($q->matching_pairs)) {
+                srand($this->answerSeed($attempt->id, $q->id));
+                $rights = collect($q->matching_pairs)->pluck('right')->all();
+                $rights = collect($rights)->shuffle()->values()->all();
+                srand();
+                $matchingPairs = [
+                    'lefts' => collect($q->matching_pairs)->map(fn ($p) => (string) $p['left'])->all(),
+                    'rights' => $rights,
+                ];
+            }
+
             return [
-                'id' => $aa->question->id,
+                'id' => $q->id,
                 'position' => $aa->position,
-                'topic' => $aa->question->localized($locale, 'topic', $canonical),
-                'scenario' => $aa->question->localized($locale, 'scenario', $canonical),
-                'question_text' => $aa->question->localized($locale, 'question_text', $canonical),
+                'topic' => $q->localized($locale, 'topic', $canonical),
+                'scenario' => $q->localized($locale, 'scenario', $canonical),
+                'question_text' => $q->localized($locale, 'question_text', $canonical),
+                'question_type' => $q->question_type ?? 'multiple_choice',
+                'is_multi_select' => $isMulti,
+                'matching' => $matchingPairs,
                 // Explication uniquement en mode instant (dévoilée après réponse)
-                'explanation' => $isInstant ? $aa->question->localized($locale, 'explanation', $canonical) : null,
+                'explanation' => $isInstant ? $q->localized($locale, 'explanation', $canonical) : null,
                 'answers' => collect($shuffled)->map(fn ($a, $i) => array_filter([
                     'id' => $a->id,
                     'letter' => chr(65 + $i),
@@ -291,6 +312,7 @@ class ExamController extends Controller
                 'title' => $certification->title,
                 'logo_path' => $certification->logo_path,
                 'passing_score' => $attempt->passing_score,
+                'navigation_mode' => $certification->navigation_mode ?? 'free',
             ],
             'questions' => $questions,
             'cert_progress' => $certProgress,
@@ -328,32 +350,43 @@ class ExamController extends Controller
             return redirect()->route('exam.result', $attempt);
         }
 
+        // 3 payload shapes accepted per question :
+        //  - int : single-choice (multi_choice with 1 correct) — legacy
+        //  - int[] : multi-select (multi_choice with 2+ corrects) - user must
+        //    pick exactly the correct set (all-or-nothing)
+        //  - { leftKey: rightKey, ... } : matching (drag-and-drop) — count
+        //    correct pairs
         $data = $request->validate([
             'answers' => 'required|array',
-            'answers.*' => 'nullable|integer|exists:answers,id',
         ]);
 
         DB::transaction(function () use ($attempt, $data) {
             $score = 0;
+            $attempt->load(['attemptAnswers.question.answers']);
 
             foreach ($attempt->attemptAnswers as $aa) {
-                $answerId = $data['answers'][$aa->question_id] ?? null;
-                $isCorrect = false;
+                $payload = $data['answers'][$aa->question_id] ?? null;
+                $question = $aa->question;
+                [$isCorrect, $normalized] = $this->scoreAnswer($question, $payload);
 
-                if ($answerId) {
-                    $answer = Answer::where('id', $answerId)
-                        ->where('question_id', $aa->question_id)
-                        ->first();
-                    $isCorrect = $answer?->is_correct ?? false;
-                }
-
-                $aa->update([
-                    'answer_id' => $answerId,
+                $update = [
+                    'answer_id' => null,
+                    'answer_ids' => null,
+                    'matching_answer' => null,
                     'is_correct' => $isCorrect,
-                ]);
+                ];
+                if ($question->isMatching()) {
+                    $update['matching_answer'] = $normalized ?: null;
+                } else {
+                    $ids = is_array($normalized) ? array_values(array_map('intval', $normalized)) : [];
+                    $update['answer_ids'] = !empty($ids) ? $ids : null;
+                    // Legacy answer_id : premier ID pour compat avec le crowd-stat
+                    $update['answer_id'] = $ids[0] ?? null;
+                }
+                $aa->update($update);
 
                 $this->recordStat($attempt->user_id, $aa->question_id, $isCorrect);
-                $this->recordCrowdStat($aa->question_id, $answerId, $isCorrect);
+                $this->recordCrowdStat($aa->question_id, $update['answer_id'], $isCorrect);
 
                 if ($isCorrect) {
                     $score++;
@@ -422,15 +455,44 @@ class ExamController extends Controller
                 ];
             }
 
+            $q = $aa->question;
+            $isMatching = $q->isMatching();
+
+            // For multi-select and matching : replace the single {chosen, correct}
+            // shape with arrays that reflect the full user pick vs correct set.
+            $chosenList = null;
+            $correctList = null;
+            if (!$isMatching) {
+                $pickedIds = $aa->answer_ids ?: ($aa->answer_id ? [(int) $aa->answer_id] : []);
+                $chosenList = collect($pickedIds)
+                    ->map(fn ($id) => $q->answers->firstWhere('id', $id))
+                    ->filter()
+                    ->map(fn ($a) => [
+                        'id' => $a->id,
+                        'letter' => $letterMap[$a->id] ?? $a->letter,
+                        'text' => $a->localized($locale, 'answer_text', $canonical),
+                        'rationale' => $a->localized($locale, 'rationale', $canonical),
+                    ])->values()->all();
+                $correctList = $q->answers->where('is_correct', true)->map(fn ($a) => [
+                    'id' => $a->id,
+                    'letter' => $letterMap[$a->id] ?? $a->letter,
+                    'text' => $a->localized($locale, 'answer_text', $canonical),
+                    'rationale' => $a->localized($locale, 'rationale', $canonical),
+                ])->values()->all();
+            }
+
             return [
-                'question_id' => $aa->question->id,
+                'question_id' => $q->id,
                 'position' => $aa->position,
-                'question_text' => $aa->question->localized($locale, 'question_text', $canonical),
-                'scenario' => $aa->question->localized($locale, 'scenario', $canonical),
-                'topic' => $aa->question->localized($locale, 'topic', $canonical),
-                'syllabus_domain' => $aa->question->syllabus_domain,
-                'explanation' => $aa->question->localized($locale, 'explanation', $canonical),
+                'question_text' => $q->localized($locale, 'question_text', $canonical),
+                'scenario' => $q->localized($locale, 'scenario', $canonical),
+                'topic' => $q->localized($locale, 'topic', $canonical),
+                'syllabus_domain' => $q->syllabus_domain,
+                'question_type' => $q->question_type ?? 'multiple_choice',
+                'is_multi_select' => $q->isMultiSelect(),
+                'explanation' => $q->localized($locale, 'explanation', $canonical),
                 'is_correct' => $aa->is_correct,
+                // Legacy shape (single-choice) : keep for backwards compat with the current Result.jsx
                 'chosen' => $aa->answer ? [
                     'id' => $aa->answer->id,
                     'letter' => $letterMap[$aa->answer->id] ?? $aa->answer->letter,
@@ -443,6 +505,11 @@ class ExamController extends Controller
                     'text' => $correct->localized($locale, 'answer_text', $canonical),
                     'rationale' => $correct->localized($locale, 'rationale', $canonical),
                 ] : null,
+                // New shape (multi-select, matching)
+                'chosen_list' => $chosenList,
+                'correct_list' => $correctList,
+                'matching_pairs' => $isMatching ? $q->matching_pairs : null,
+                'matching_answer' => $isMatching ? $aa->matching_answer : null,
                 'crowd' => $crowd,
             ];
         });
@@ -685,12 +752,64 @@ class ExamController extends Controller
         return $arr;
     }
 
+    /**
+     * Sample size for a mock exam. Two modes :
+     *  - Range mode : min/max both set, we draw a random integer in that range
+     *    per attempt. Matches Cisco reality where the candidate doesn't know
+     *    the exact count.
+     *  - Fixed mode : legacy, uses total_questions.
+     * Both cap at availableQuestions (can't test more questions than exist).
+     */
+    /**
+     * Score a single question's payload according to its type.
+     * Returns [bool $isCorrect, mixed $normalizedForStorage].
+     *
+     * Multi-select scoring : all-or-nothing (matches Cisco reality). The user
+     * gets 1 pt IF and ONLY IF the picked set equals the correct set exactly.
+     *
+     * Matching scoring : all-or-nothing across the pairs. Even 1 misplaced
+     * connection = 0 pt.
+     */
+    private function scoreAnswer(Question $question, mixed $payload): array
+    {
+        if ($question->isMatching()) {
+            $pairs = $question->matching_pairs ?? [];
+            $expected = collect($pairs)->mapWithKeys(fn ($p) => [(string) $p['left'] => (string) $p['right']])->all();
+            $given = is_array($payload) ? collect($payload)->mapWithKeys(fn ($v, $k) => [(string) $k => (string) $v])->all() : [];
+            $isCorrect = !empty($expected) && count($expected) === count($given)
+                && collect($expected)->every(fn ($v, $k) => ($given[$k] ?? null) === $v);
+            return [$isCorrect, $given];
+        }
+
+        // Multi-choice (single or multi-select) : payload is int or int[]
+        $picked = is_array($payload) ? $payload : ($payload !== null ? [$payload] : []);
+        $picked = collect($picked)->map(fn ($v) => (int) $v)->filter()->unique()->sort()->values()->all();
+
+        // Verify picked answers actually belong to this question
+        $validIds = $question->answers->pluck('id')->map(fn ($id) => (int) $id)->all();
+        $picked = array_values(array_intersect($picked, $validIds));
+
+        $correct = $question->correctAnswerIds();
+        sort($correct);
+        $isCorrect = !empty($correct) && $picked === $correct;
+        return [$isCorrect, $picked];
+    }
+
     private function sampleSize(Certification $certification, int $availableQuestions): int
     {
-        $target = $certification->total_questions ?: $availableQuestions;
+        if ($certification->min_questions && $certification->max_questions && $certification->max_questions >= $certification->min_questions) {
+            $target = random_int($certification->min_questions, $certification->max_questions);
+        } else {
+            $target = $certification->total_questions ?: $availableQuestions;
+        }
         return (int) min($availableQuestions, max(1, $target));
     }
 
+    /**
+     * Proportional passing score : keep the same percentage as the reference
+     * (total_questions/passing_score pair), rescaled to the actual sample size.
+     * Ex : cert declares 100/82 (82 %). Sample = 87. Requis = ceil(82/100*87) = 72.
+     */
     private function scaledPassingScore(Certification $certification, int $sampleSize): int
     {
         $target = $certification->total_questions ?: $sampleSize;

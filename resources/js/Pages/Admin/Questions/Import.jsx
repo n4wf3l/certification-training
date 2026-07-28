@@ -108,40 +108,128 @@ Aucun code-switching : ne melange pas les langues au sein d'une meme question. S
     const formatSection = isMultilingual
         ? `# FORMAT DE SORTIE (STRICT)
 
-Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire. Chaque champ localisable est un objet { code_langue: valeur } couvrant les ${certLanguages.length} langues actives. Structure exacte :
+Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire. Chaque champ localisable est un objet { code_langue: valeur } couvrant les ${certLanguages.length} langues actives.
 
-[
-  {
-    "topic": ${langMap('Theme court en 1-4 mots', 'Short topic in 1-4 words')},
-    "scenario": null,
-    "question": ${langMap("Enonce de la question", 'Question stem')},
-    "explanation": ${langMap('1 a 3 phrases : pourquoi la bonne reponse est la bonne, quel concept du syllabus elle valide.', '1 to 3 sentences: why the correct answer is correct and which syllabus concept it validates.')},
-    "answers": [
-      { "text": ${langMap('Proposition A', 'Answer A')}, "correct": false, "rationale": ${langMap("Piege classique : pourquoi cette reponse semble juste mais ne l'est pas.", 'Classic trap: why this option looks right but is not.')} },
-      { "text": ${langMap('Proposition B', 'Answer B')}, "correct": true, "rationale": ${langMap("Confirme brievement pourquoi c'est la bonne reponse - 1 phrase.", 'Briefly confirm why this is the correct answer - 1 sentence.')} },
-      { "text": ${langMap('Proposition C', 'Answer C')}, "correct": false, "rationale": ${langMap('Explique le distracteur : quelle notion voisine il evoque.', 'Explain the distractor: which neighbouring concept it evokes.')} },
-      { "text": ${langMap('Proposition D', 'Answer D')}, "correct": false, "rationale": ${langMap('Idem - 1 phrase courte.', 'Same - 1 short sentence.')} }
-    ]
-  }
-]`
+Il existe **3 formes de questions** que tu peux produire (voir "Types de questions" plus bas). Le champ \`question_type\` est optionnel : s'il est absent, la question est traitee comme un QCM a choix unique.
+
+## FORME 1 - Choix unique (question_type: "single_choice", ou absent)
+
+Exactement **1 seule** proposition avec \`"correct": true\`.
+
+{
+  "question_type": "single_choice",
+  "topic": ${langMap('Theme court', 'Short topic')},
+  "scenario": null,
+  "question": ${langMap("Enonce", 'Stem')},
+  "explanation": ${langMap('Pourquoi la bonne reponse est la bonne.', 'Why the correct answer is correct.')},
+  "answers": [
+    { "text": ${langMap('Proposition A', 'Answer A')}, "correct": false, "rationale": ${langMap("Piege : ...", 'Trap: ...')} },
+    { "text": ${langMap('Proposition B', 'Answer B')}, "correct": true, "rationale": ${langMap("Confirme la bonne reponse.", 'Confirms the correct answer.')} },
+    { "text": ${langMap('Proposition C', 'Answer C')}, "correct": false, "rationale": ${langMap('Distracteur : ...', 'Distractor: ...')} },
+    { "text": ${langMap('Proposition D', 'Answer D')}, "correct": false, "rationale": ${langMap('Idem', 'Same')} }
+  ]
+}
+
+## FORME 2 - Choix multiples (question_type: "multi_select")
+
+**2 ou 3** propositions avec \`"correct": true\`. Le stem DOIT indiquer combien de reponses choisir : ex. "Choisissez DEUX propositions" / "Select TWO options". Notation tout-ou-rien : le candidat doit cocher exactement le bon sous-ensemble.
+
+{
+  "question_type": "multi_select",
+  "topic": ${langMap('Theme court', 'Short topic')},
+  "scenario": null,
+  "question": ${langMap("Choisissez DEUX affirmations correctes concernant ...", 'Select TWO correct statements about ...')},
+  "explanation": ${langMap('Pourquoi ces deux reponses sont correctes ensemble.', 'Why these two answers are jointly correct.')},
+  "answers": [
+    { "text": ${langMap('Proposition A', 'Answer A')}, "correct": true, "rationale": ${langMap("Confirme A.", 'Confirms A.')} },
+    { "text": ${langMap('Proposition B', 'Answer B')}, "correct": false, "rationale": ${langMap("Distracteur B.", 'Distractor B.')} },
+    { "text": ${langMap('Proposition C', 'Answer C')}, "correct": true, "rationale": ${langMap('Confirme C.', 'Confirms C.')} },
+    { "text": ${langMap('Proposition D', 'Answer D')}, "correct": false, "rationale": ${langMap('Distracteur D.', 'Distractor D.')} },
+    { "text": ${langMap('Proposition E', 'Answer E')}, "correct": false, "rationale": ${langMap('Distracteur E.', 'Distractor E.')} }
+  ]
+}
+
+## FORME 3 - Association (question_type: "matching")
+
+**Pas de tableau \`answers\`.** A la place, un tableau \`matching_pairs\` de **3 a 6 paires** \`{left, right}\`. Chaque \`left\` et \`right\` est un objet { code_langue: valeur } comme les autres champs localisables. Le stem doit indiquer clairement le principe d'appariement (ex. "Associez chaque protocole a sa couche OSI").
+
+{
+  "question_type": "matching",
+  "topic": ${langMap('Theme court', 'Short topic')},
+  "scenario": null,
+  "question": ${langMap("Associez chaque element de gauche a son element correspondant a droite.", 'Match each item on the left to its corresponding item on the right.')},
+  "explanation": ${langMap('Reference au syllabus qui definit ces correspondances.', 'Reference to the syllabus that defines these mappings.')},
+  "matching_pairs": [
+    { "left": ${langMap('Concept 1', 'Concept 1')}, "right": ${langMap('Definition 1', 'Definition 1')} },
+    { "left": ${langMap('Concept 2', 'Concept 2')}, "right": ${langMap('Definition 2', 'Definition 2')} },
+    { "left": ${langMap('Concept 3', 'Concept 3')}, "right": ${langMap('Definition 3', 'Definition 3')} },
+    { "left": ${langMap('Concept 4', 'Concept 4')}, "right": ${langMap('Definition 4', 'Definition 4')} }
+  ]
+}
+
+**Sortie finale : un unique tableau JSON contenant ${count} questions, panachees entre les 3 formes selon la repartition demandee plus bas.**`
         : `# FORMAT DE SORTIE (STRICT)
 
-Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire. Structure exacte :
+Un tableau JSON valide, sans texte avant, sans texte apres, sans balises \`\`\`, sans commentaire.
 
-[
-  {
-    "topic": "Theme court en 1-4 mots",
-    "scenario": null,
-    "question": "Enonce de la question",
-    "explanation": "1 a 3 phrases : pourquoi la bonne reponse est la bonne, quel concept du syllabus elle valide.",
-    "answers": [
-      { "text": "Proposition A", "correct": false, "rationale": "Piege classique : decris precisement pourquoi cette reponse semble juste mais ne l'est pas (concept confondu, terminologie detournee, cas limite mal interprete)." },
-      { "text": "Proposition B", "correct": true, "rationale": "Confirme brievement pourquoi c'est la bonne reponse - 1 phrase, ancree dans le vocabulaire officiel." },
-      { "text": "Proposition C", "correct": false, "rationale": "Explique le distracteur : quelle notion voisine il evoque, pourquoi il n'est pas la bonne reponse dans ce contexte precis." },
-      { "text": "Proposition D", "correct": false, "rationale": "Idem - 1 phrase courte, ne recopie pas le texte de la proposition." }
-    ]
-  }
-]`;
+Il existe **3 formes de questions** que tu peux produire (voir "Types de questions" plus bas). Le champ \`question_type\` est optionnel : s'il est absent, la question est traitee comme un QCM a choix unique.
+
+## FORME 1 - Choix unique (question_type: "single_choice", ou absent)
+
+Exactement **1 seule** proposition avec \`"correct": true\`.
+
+{
+  "question_type": "single_choice",
+  "topic": "Theme court",
+  "scenario": null,
+  "question": "Enonce",
+  "explanation": "Pourquoi la bonne reponse est la bonne.",
+  "answers": [
+    { "text": "Proposition A", "correct": false, "rationale": "Piege : pourquoi cette reponse semble juste mais ne l'est pas." },
+    { "text": "Proposition B", "correct": true, "rationale": "Confirme brievement la bonne reponse." },
+    { "text": "Proposition C", "correct": false, "rationale": "Distracteur." },
+    { "text": "Proposition D", "correct": false, "rationale": "Idem." }
+  ]
+}
+
+## FORME 2 - Choix multiples (question_type: "multi_select")
+
+**2 ou 3** propositions avec \`"correct": true\`. Le stem DOIT indiquer combien de reponses choisir (ex. "Choisissez DEUX propositions"). Notation tout-ou-rien : le candidat doit cocher exactement le bon sous-ensemble.
+
+{
+  "question_type": "multi_select",
+  "topic": "Theme court",
+  "scenario": null,
+  "question": "Choisissez DEUX affirmations correctes concernant ...",
+  "explanation": "Pourquoi ces deux reponses sont correctes ensemble.",
+  "answers": [
+    { "text": "Proposition A", "correct": true, "rationale": "Confirme A." },
+    { "text": "Proposition B", "correct": false, "rationale": "Distracteur B." },
+    { "text": "Proposition C", "correct": true, "rationale": "Confirme C." },
+    { "text": "Proposition D", "correct": false, "rationale": "Distracteur D." },
+    { "text": "Proposition E", "correct": false, "rationale": "Distracteur E." }
+  ]
+}
+
+## FORME 3 - Association (question_type: "matching")
+
+**Pas de tableau \`answers\`.** A la place, un tableau \`matching_pairs\` de **3 a 6 paires** \`{left, right}\`. Le stem doit indiquer clairement le principe d'appariement (ex. "Associez chaque protocole a sa couche OSI").
+
+{
+  "question_type": "matching",
+  "topic": "Theme court",
+  "scenario": null,
+  "question": "Associez chaque element de gauche a son element correspondant a droite.",
+  "explanation": "Reference au syllabus qui definit ces correspondances.",
+  "matching_pairs": [
+    { "left": "Concept 1", "right": "Definition 1" },
+    { "left": "Concept 2", "right": "Definition 2" },
+    { "left": "Concept 3", "right": "Definition 3" },
+    { "left": "Concept 4", "right": "Definition 4" }
+  ]
+}
+
+**Sortie finale : un unique tableau JSON contenant ${count} questions, panachees entre les 3 formes selon la repartition demandee plus bas.**`;
 
     const rule4 = isMultilingual
         ? `4. **Chaque champ localisable est un objet { code_langue: valeur }** couvrant les ${certLanguages.length} langues actives (${certLangsLabel}). Voir "Contrat linguistique multilingue". Une langue manquante = import casse.`
@@ -259,8 +347,11 @@ ${formatSection}
 # RÈGLES
 
 1. Réponds UNIQUEMENT avec le JSON. Aucun texte avant, aucun texte après, aucun bloc de code.
-2. Une seule réponse marquée \`"correct": true\` par question.
-3. 2 à 6 propositions par question (typiquement 4).
+2. **Nombre de réponses correctes** — dépend du \`question_type\` :
+   - \`single_choice\` (ou champ absent) : exactement **1** réponse avec \`"correct": true\`.
+   - \`multi_select\` : **2 ou 3** réponses avec \`"correct": true\`, et le stem indique explicitement le nombre à sélectionner ("Choisissez DEUX…").
+   - \`matching\` : **pas de tableau \`answers\`**, mais un tableau \`matching_pairs\` de **3 à 6** paires \`{left, right}\`.
+3. Propositions par question : 2 à 6 pour \`single_choice\`, 4 à 6 pour \`multi_select\` (pour avoir assez de distracteurs). Ne s'applique pas au \`matching\`.
 ${rule4}
 5. \`topic\` = **nom exact d'un domaine ou sous-domaine du syllabus officiel** (ex : "Principes directeurs", "OSPF LSA types", "IAM policies vs roles", "SLA & OLA"). Pas d'invention de thème hors syllabus.
 6. \`scenario\` = \`null\` pour les questions directes ; sinon 1 à 3 phrases décrivant un contexte **réaliste et propre au métier** ciblé par ${cert} (pas de scénario générique interchangeable).
@@ -275,10 +366,20 @@ ${rule4}
 15. **\`rationale\` obligatoire sur chaque proposition** - 1 phrase par distracteur qui explique **pourquoi ce n'est pas la bonne réponse** (concept voisin confondu, terminologie détournée, cas limite). Sur la bonne réponse, \`rationale\` confirme brièvement pourquoi elle l'emporte. C'est ce qui transforme le quiz en apprentissage réel.
 16. **INTERDIT : tiret cadratin (—, U+2014)** dans TOUS les champs (\`topic\`, \`scenario\`, \`question\`, \`answers[].text\`, \`rationale\`, \`explanation\`). Le tiret cadratin est une signature typique de contenu généré par IA et rend la plateforme robotique. Utilise à la place : le tiret standard (\`-\`), la virgule, les deux-points, les parenthèses ou une phrase complète. Exemple : au lieu de \`"Principe — Focus on Value"\` écris \`"Principe : Focus on Value"\` ou \`"Principe Focus on Value"\`. Au lieu de \`"il est rapide — presque instantané"\` écris \`"il est rapide, presque instantané"\`.
 
-# TYPES À DISTRIBUER ÉQUITABLEMENT
+# TYPES DE QUESTIONS À DISTRIBUER
 
-- **Directes** : "Quelle affirmation est correcte ?" avec 4 propositions.
-- **QCM classiques** : "Parmi les propositions suivantes, laquelle décrit le mieux X ?"
+Sur les ${count} questions, panache **les 3 formes** pour reproduire fidèlement l'expérience de l'examen réel ${cert} :
+
+- **~60-70 % en \`single_choice\`** (une seule bonne réponse) - c'est la forme dominante de la plupart des examens.
+- **~20-30 % en \`multi_select\`** (2-3 bonnes réponses, tout-ou-rien) - obligatoire sur CCNA, Security+, AWS, Azure, ITIL Practitioner. Le stem indique explicitement le nombre à cocher (ex. "Choisissez DEUX", "Select TWO", "Choose THREE").
+- **~5-15 % en \`matching\`** (drag-and-drop d'appariement) - présent sur CCNA (protocoles ↔ couches OSI), ITIL (pratiques ↔ activités du SVC), AWS (services ↔ cas d'usage). Utilise 3 à 6 paires par question.
+
+Adapte la proportion au blueprint : certaines certifs n'ont pas de matching (ITIL Foundation classique), d'autres en ont beaucoup (CCNA, Sec+). Si le blueprint officiel de ${cert} ne mentionne pas explicitement une forme, cantonne-toi aux 2 autres.
+
+# STYLES DE STEMS À PANACHER (indépendant du \`question_type\`)
+
+- **Directes** : "Quelle affirmation est correcte ?" - \`scenario\` = null.
+- **QCM classiques** : "Parmi les propositions suivantes, laquelle décrit le mieux X ?" - \`scenario\` = null.
 - **Scénarios** : contexte concret (utilisateur, incident, service…) + question ciblée. Remplis alors \`scenario\`.
 
 ${exampleSection}
@@ -457,11 +558,30 @@ function analyze(payload, t, certLanguages = [DEFAULT_LANGUAGE]) {
         const preview = pickLocalizedString(q?.question, certLanguages[0]);
         if (!preview) warnings.push(t('admin.questions_import.warning_missing_question'));
 
+        const qType = (q?.question_type === 'matching' || q?.question_type === 'multi_select')
+            ? q.question_type
+            : 'single_choice';
+
         const answers = Array.isArray(q?.answers) ? q.answers : [];
-        if (answers.length < 2 || answers.length > 6) warnings.push(t('admin.questions_import.warning_answers_range', { count: answers.length }));
-        const correct = answers.filter((a) => a?.correct === true).length;
-        if (correct !== 1) warnings.push(t('admin.questions_import.warning_correct_count', { count: correct }));
-        if (answers.some((a) => !pickLocalizedString(a?.text, certLanguages[0]))) warnings.push(t('admin.questions_import.warning_empty_answer'));
+        const matchingPairs = Array.isArray(q?.matching_pairs) ? q.matching_pairs : [];
+
+        if (qType === 'matching') {
+            if (matchingPairs.length < 2 || matchingPairs.length > 8) {
+                warnings.push(t('admin.questions_import.warning_matching_pairs_range', { count: matchingPairs.length }));
+            }
+            if (matchingPairs.some((p) => !pickLocalizedString(p?.left, certLanguages[0]) || !pickLocalizedString(p?.right, certLanguages[0]))) {
+                warnings.push(t('admin.questions_import.warning_matching_empty_pair'));
+            }
+        } else {
+            if (answers.length < 2 || answers.length > 6) warnings.push(t('admin.questions_import.warning_answers_range', { count: answers.length }));
+            const correct = answers.filter((a) => a?.correct === true).length;
+            if (qType === 'multi_select') {
+                if (correct < 2 || correct > 3) warnings.push(t('admin.questions_import.warning_multi_correct_count', { count: correct }));
+            } else {
+                if (correct !== 1) warnings.push(t('admin.questions_import.warning_correct_count', { count: correct }));
+            }
+            if (answers.some((a) => !pickLocalizedString(a?.text, certLanguages[0]))) warnings.push(t('admin.questions_import.warning_empty_answer'));
+        }
 
         // En mode multilingue on verifie que chaque champ contient bien
         // toutes les langues attendues.
@@ -488,16 +608,33 @@ function analyze(payload, t, certLanguages = [DEFAULT_LANGUAGE]) {
                     warnings.push(t('admin.questions_import.warning_missing_langs', { field: `answers[${ai}].text`, langs: missText.join(', ') }));
                 }
             });
+            matchingPairs.forEach((p, pi) => {
+                const missLeft = missingLangs(p?.left, certLanguages, { required: true });
+                if (missLeft.length) {
+                    warnings.push(t('admin.questions_import.warning_missing_langs', { field: `matching_pairs[${pi}].left`, langs: missLeft.join(', ') }));
+                }
+                const missRight = missingLangs(p?.right, certLanguages, { required: true });
+                if (missRight.length) {
+                    warnings.push(t('admin.questions_import.warning_missing_langs', { field: `matching_pairs[${pi}].right`, langs: missRight.join(', ') }));
+                }
+            });
         }
 
         const scenarioPreview = pickLocalizedString(q?.scenario, certLanguages[0]);
-        const kind = scenarioPreview ? t('admin.questions_import.kind_scenario') : t('admin.questions_import.kind_direct');
+        let kind;
+        if (qType === 'matching') {
+            kind = t('admin.questions_import.kind_matching');
+        } else if (qType === 'multi_select') {
+            kind = t('admin.questions_import.kind_multi');
+        } else {
+            kind = scenarioPreview ? t('admin.questions_import.kind_scenario') : t('admin.questions_import.kind_direct');
+        }
         const topicPreview = pickLocalizedString(q?.topic, certLanguages[0]) || '-';
         return {
             index: i,
             topic: topicPreview,
             preview: preview.slice(0, 90) + (preview.length > 90 ? '…' : ''),
-            answers: answers.length,
+            answers: qType === 'matching' ? matchingPairs.length : answers.length,
             kind,
             warnings,
         };

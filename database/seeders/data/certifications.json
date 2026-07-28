@@ -3,34 +3,41 @@
         "title": "CCNA 200-301",
         "slug": "ccna-200-301",
         "logo_path": "logos/NCuRoldHqobcg51eJmOqGz4oGUi5ECmgRnBdbV9F.png",
-        "description": "Cisco Certified Network Associate - routing, switching, sécurité, automatisation.",
-        "long_description": "La CCNA (Cisco Certified Network Associate) est LA porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routing (statique, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port-security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS) et automatisation (Python, REST, JSON, Ansible). C'est la certification Cisco la plus reconnue au monde et le prérequis vers CCNP puis CCIE.",
-        "importance": "La CCNA est explicitement demandée dans la majorité des offres 'Network Engineer', 'NOC Analyst' ou 'Ingénieur systèmes et réseaux' en France comme à l'international. Elle valide un socle technique que les recruteurs prennent au sérieux et débloque les grilles de salaire junior→confirmé.",
+        "description": "Cisco Certified Network Associate - routing, switching, security, automation.",
+        "long_description": "The CCNA (Cisco Certified Network Associate) is THE gateway to networking careers. The 200-301 exam covers the fundamentals: routing (static, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, security (ACL, port-security, basic VPN), wireless infrastructure, IP services (NAT, DHCP, QoS), and automation (Python, REST, JSON, Ansible). It's the most recognised Cisco certification in the world and the prerequisite to CCNP and then CCIE.",
+        "importance": "The CCNA is explicitly required in most 'Network Engineer', 'NOC Analyst', or 'Systems and Networks Engineer' job postings, both in the US and internationally. It validates a technical foundation recruiters take seriously and unlocks the junior-to-mid salary brackets.",
         "target_roles": [
-            "Network Engineer Junior",
-            "Support Réseau N1/N2",
-            "Administrateur infrastructure",
-            "Technicien réseau",
+            "Junior Network Engineer",
+            "Network Support N1/N2",
+            "Infrastructure Administrator",
+            "Network Technician",
             "NOC Analyst",
-            "SysAdmin polyvalent"
+            "Versatile SysAdmin"
         ],
         "duration_minutes": 120,
         "passing_score": 82,
         "total_questions": 100,
+        "min_questions": null,
+        "max_questions": null,
+        "navigation_mode": "sequential_locked",
         "validity_months": 36,
-        "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 825/1000 environ (≈ 82,5 %) - Cisco garde le seuil exact confidentiel. Renouvellement : repasser l'examen, réussir un exam Cisco de niveau supérieur (CCNP, CCIE), ou cumuler 30 CE credits. Aucune période de grâce.",
+        "validity_note": "Valid for 3 years. The official exam uses a scaled score of about 825/1000 (≈ 82.5%) - Cisco keeps the exact threshold confidential. Renewal: retake the exam, pass a higher-level Cisco exam (CCNP, CCIE), or accumulate 30 CE credits. No grace period.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-07-19T21:39:30+00:00",
+        "questions_updated_at": "2026-07-28T21:34:21+00:00",
         "course_blocks": null,
         "course_updated_at": null,
         "syllabus_blueprint": null,
         "is_active": true,
-        "available_languages": ["fr", "en"]
+        "available_languages": [
+            "en",
+            "ja"
+        ],
+        "default_language": "en"
     },
     {
         "title": "CompTIA A+",
         "slug": "comptia-a-plus",
-        "logo_path": null,
+        "logo_path": "logos/ouxKtaiVpgaB58CSQU9HtfzJPsq39yjI4DgWxAS1.png",
         "description": "Certification vendor-neutral de référence pour débuter dans le support IT.",
         "long_description": "La CompTIA A+ valide l'ensemble des fondamentaux du support IT : matériel PC, systèmes d'exploitation (Windows, macOS, Linux, iOS, Android), réseaux, cybersécurité de base, résolution d'incidents et procédures opérationnelles. C'est la seule certification vendor-neutral (non liée à un constructeur) universellement acceptée pour un premier poste dans le support.",
         "importance": "Souvent exigée pour un premier job helpdesk chez les grands comptes (Dell, HP, IBM, ainsi que dans la fonction publique US et de plus en plus en Europe). Elle rassure les recruteurs sur ta capacité à intervenir sur un parc hétérogène dès ton arrivée.",
@@ -44,15 +51,21 @@
         "duration_minutes": 90,
         "passing_score": 70,
         "total_questions": 90,
+        "min_questions": null,
+        "max_questions": null,
+        "navigation_mode": "free",
         "validity_months": 36,
         "validity_note": "CompTIA A+ = deux examens obligatoires (Core 1 : 220-1101, seuil 675/900 = 75 % · Core 2 : 220-1102, seuil 700/900 = 77,7 %). Chaque core dure 90 min pour 90 questions. Valeurs indiquées ici pour Core 2. Valide 3 ans, renouvelable via 20 CEUs (Continuing Education Units) ou une certif CompTIA supérieure. Grâce de 30 jours après expiration pour uploader tes CEUs.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-07-19T19:35:50+00:00",
+        "questions_updated_at": "2026-07-19T19:35:00+00:00",
         "course_blocks": null,
         "course_updated_at": null,
         "syllabus_blueprint": null,
         "is_active": true,
-        "available_languages": ["fr"]
+        "available_languages": [
+            "fr"
+        ],
+        "default_language": "fr"
     },
     {
         "title": "AWS Cloud Practitioner",
@@ -72,15 +85,1078 @@
         "duration_minutes": 90,
         "passing_score": 46,
         "total_questions": 65,
+        "min_questions": null,
+        "max_questions": null,
+        "navigation_mode": "free",
         "validity_months": 36,
         "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 700/1000 (≈ 70 %), affiché ici en équivalent brut sur 65 questions (dont 15 non notées côté AWS). Renouvellement en repassant l'examen, via une certif AWS Associate/Pro/Specialty, ou via AWS Cloud Quest (dispo dans les 6 mois avant expiration).",
         "version_retires_at": null,
         "questions_updated_at": "2026-07-19T19:35:00+00:00",
-        "course_blocks": null,
-        "course_updated_at": null,
+        "course_blocks": [
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Introduction"
+            },
+            {
+                "type": "paragraph",
+                "text": "Au 28 juillet 2026, l'examen en vigueur est **AWS Certified Cloud Practitioner (CLF-C02)**. Cette version a commencé le 19 septembre 2023 et reste celle publiée dans le guide d'examen AWS courant. ([AWS Documentation][1]) "
+            },
+            {
+                "type": "paragraph",
+                "text": "L'examen vise une compréhension fondamentale et transversale du Cloud AWS, sans dépendre d'un rôle technique précis. Il comporte 65 questions à choix simple ou réponses multiples, dure 90 minutes, comprend 50 questions notées et 15 questions non notées, et utilise un score minimal de réussite de 700 sur 1 000. ([Amazon Web Services, Inc.][2]) ([AWS Documentation][1])"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Poids dans le contenu noté"
+                ],
+                "rows": [
+                    {
+                        "label": "Concepts du cloud",
+                        "values": [
+                            "24 %"
+                        ]
+                    },
+                    {
+                        "label": "Sécurité et conformité",
+                        "values": [
+                            "30 %"
+                        ]
+                    },
+                    {
+                        "label": "Technologie et services cloud",
+                        "values": [
+                            "34 %"
+                        ]
+                    },
+                    {
+                        "label": "Facturation, tarification et support",
+                        "values": [
+                            "12 %"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "callout",
+                "variant": "info",
+                "title": "Niveau attendu",
+                "body": "Le candidat doit savoir expliquer la valeur du Cloud AWS, la responsabilité partagée, les bonnes pratiques de sécurité, les principaux services, les coûts et les options de support. Le codage, l'implémentation détaillée, le dépannage approfondi et la conception d'architectures complexes sont hors périmètre du profil cible. ([AWS Documentation][1])"
+            },
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Domaine 1 : Concepts du cloud"
+            },
+            {
+                "type": "key_terms",
+                "items": [
+                    {
+                        "term": "Agilité",
+                        "definition": "Capacité à expérimenter et à déployer rapidement sans attendre l'achat et l'installation d'une infrastructure physique. ([AWS Documentation][3])"
+                    },
+                    {
+                        "term": "Élasticité",
+                        "definition": "Capacité à augmenter ou réduire automatiquement les ressources selon la demande. ([AWS Documentation][3])"
+                    },
+                    {
+                        "term": "Haute disponibilité",
+                        "definition": "Conception visant à maintenir le service malgré la panne d'un composant ou d'un emplacement. ([AWS Documentation][3])"
+                    },
+                    {
+                        "term": "Portée mondiale",
+                        "definition": "Possibilité de déployer des charges de travail dans plusieurs zones géographiques à partir de l'infrastructure mondiale AWS. ([AWS Documentation][3])"
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Ce qu'il décrit"
+                ],
+                "rows": [
+                    {
+                        "label": "Évolutivité",
+                        "values": [
+                            "Capacité d'une architecture à prendre en charge une croissance de charge en ajoutant ou en adaptant des ressources."
+                        ]
+                    },
+                    {
+                        "label": "Élasticité",
+                        "values": [
+                            "Ajustement dynamique des ressources en fonction des variations réelles de la demande."
+                        ]
+                    },
+                    {
+                        "label": "Agilité",
+                        "values": [
+                            "Rapidité d'expérimentation, de mise à disposition et d'évolution des solutions. ([AWS Documentation][3])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "example",
+                "title": "Application de billetterie",
+                "body": "Une billetterie reçoit peu de trafic la plupart du temps, puis une forte demande lors de l'ouverture des ventes. Une architecture élastique augmente les ressources pendant le pic et les réduit ensuite, ce qui évite de payer en permanence pour la capacité maximale. ([AWS Documentation][3])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "AWS Well-Architected Framework"
+            },
+            {
+                "type": "list",
+                "style": "bulleted",
+                "items": [
+                    "Excellence opérationnelle : exploiter, observer et améliorer les systèmes et les processus.",
+                    "Sécurité : protéger les informations, les systèmes et les actifs.",
+                    "Fiabilité : assurer le fonctionnement prévu et la reprise après défaillance.",
+                    "Efficacité des performances : utiliser efficacement les ressources selon les besoins.",
+                    "Optimisation des coûts : obtenir la valeur attendue en évitant les dépenses inutiles.",
+                    "Durabilité : réduire les ressources et les impacts environnementaux inutiles. ([AWS Documentation][3])"
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Pilier principalement concerné"
+                ],
+                "rows": [
+                    {
+                        "label": "Automatiser les changements et apprendre des incidents",
+                        "values": [
+                            "Excellence opérationnelle"
+                        ]
+                    },
+                    {
+                        "label": "Répartir une application entre plusieurs zones de disponibilité",
+                        "values": [
+                            "Fiabilité"
+                        ]
+                    },
+                    {
+                        "label": "Choisir un type d'instance adapté au profil de calcul",
+                        "values": [
+                            "Efficacité des performances"
+                        ]
+                    },
+                    {
+                        "label": "Supprimer les ressources inutilisées et ajuster leur taille",
+                        "values": [
+                            "Optimisation des coûts"
+                        ]
+                    },
+                    {
+                        "label": "Appliquer le moindre privilège et chiffrer les données",
+                        "values": [
+                            "Sécurité"
+                        ]
+                    },
+                    {
+                        "label": "Réduire le gaspillage de calcul et de stockage",
+                        "values": [
+                            "Durabilité ([AWS Documentation][3])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Adoption et migration"
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS Cloud Adoption Framework (AWS CAF) aide les organisations à structurer leur transformation en reliant les objectifs métier, les personnes, la gouvernance, la plateforme, la sécurité et les opérations. Le blueprint met l'accent sur la réduction du risque métier, l'efficacité opérationnelle, la croissance et les résultats environnementaux, sociaux et de gouvernance. ([AWS Documentation][3])"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Approche ou service pertinent"
+                ],
+                "rows": [
+                    {
+                        "label": "Répliquer progressivement une base de données",
+                        "values": [
+                            "AWS Database Migration Service peut maintenir la source opérationnelle pendant une migration."
+                        ]
+                    },
+                    {
+                        "label": "Transférer un volume massif avec une connectivité limitée",
+                        "values": [
+                            "AWS Snow Family permet un transfert physique de données."
+                        ]
+                    },
+                    {
+                        "label": "Recenser des serveurs et leurs dépendances",
+                        "values": [
+                            "AWS Application Discovery Service collecte des informations de découverte."
+                        ]
+                    },
+                    {
+                        "label": "Centraliser le suivi d'un programme de migration",
+                        "values": [
+                            "AWS Migration Hub fournit une vue de suivi. ([AWS Documentation][3]) ([AWS Documentation][4])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Cloud AWS"
+                ],
+                "rows": [
+                    {
+                        "label": "Investissement initial important",
+                        "values": [
+                            "Dépenses variables selon l'utilisation"
+                        ]
+                    },
+                    {
+                        "label": "Capacité achetée à l'avance",
+                        "values": [
+                            "Ressources provisionnées à la demande"
+                        ]
+                    },
+                    {
+                        "label": "Maintenance du matériel par l'organisation",
+                        "values": [
+                            "Infrastructure physique exploitée par AWS"
+                        ]
+                    },
+                    {
+                        "label": "Risque de surdimensionnement durable",
+                        "values": [
+                            "Possibilité de redimensionner et d'arrêter les ressources inutiles. ([AWS Documentation][3])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "Le **redimensionnement** consiste à choisir une capacité correspondant au besoin réel. L'automatisation réduit les tâches manuelles répétitives, et les économies d'échelle d'AWS contribuent à proposer une consommation à l'usage. Il faut aussi considérer les coûts souvent cachés du sur site : énergie, espace, refroidissement, maintenance, licences et personnel. ([AWS Documentation][3])"
+            },
+            {
+                "type": "summary",
+                "title": "À retenir",
+                "items": [
+                    "Le cloud remplace une partie des coûts fixes par des coûts variables.",
+                    "L'élasticité ajuste les ressources dans les deux sens.",
+                    "AWS Well-Architected Framework comprend six piliers.",
+                    "La migration doit être choisie selon les données, le délai, les dépendances et la connectivité.",
+                    "Le redimensionnement et l'automatisation soutiennent l'efficacité économique. ([AWS Documentation][3])"
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Domaine 2 : Sécurité et conformité"
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS est responsable de la **sécurité du cloud**, notamment les centres de données, le matériel, le réseau physique et les couches d'infrastructure sous-jacentes. Le client est responsable de la **sécurité dans le cloud**, avec une portée qui varie selon le service choisi. ([AWS Documentation][5])"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Responsabilité du client"
+                ],
+                "rows": [
+                    {
+                        "label": "Protection physique des centres de données",
+                        "values": [
+                            "Gestion des identités et des autorisations"
+                        ]
+                    },
+                    {
+                        "label": "Maintenance de l'infrastructure matérielle",
+                        "values": [
+                            "Protection et classification des données"
+                        ]
+                    },
+                    {
+                        "label": "Sécurité de l'infrastructure mondiale",
+                        "values": [
+                            "Configuration sécurisée des ressources"
+                        ]
+                    },
+                    {
+                        "label": "Maintenance des couches gérées par le service",
+                        "values": [
+                            "Respect des obligations qui concernent ses usages et ses données. ([AWS Documentation][5])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Responsabilités client typiques"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon EC2",
+                        "values": [
+                            "Système d'exploitation invité, correctifs, applications, groupes de sécurité, identités et données."
+                        ]
+                    },
+                    {
+                        "label": "Amazon RDS",
+                        "values": [
+                            "Configuration de la base, comptes, réseau, chiffrement, sauvegardes choisies et données, tandis qu'AWS gère davantage de couches d'infrastructure."
+                        ]
+                    },
+                    {
+                        "label": "AWS Lambda",
+                        "values": [
+                            "Code, dépendances incluses, autorisations et données, tandis qu'AWS gère les serveurs et l'environnement d'exécution sous-jacent. ([AWS Documentation][5])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "callout",
+                "variant": "danger",
+                "title": "Service géré ne signifie pas sécurité automatique",
+                "body": "Plus AWS gère de couches, moins le client administre d'infrastructure. Le client reste néanmoins responsable des données, des identités, des autorisations et de la configuration qu'il contrôle. ([AWS Documentation][5])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Gouvernance, conformité et journalisation"
+            },
+            {
+                "type": "key_terms",
+                "items": [
+                    {
+                        "term": "AWS Artifact",
+                        "definition": "Portail permettant d'accéder à des rapports de conformité AWS et à certains accords. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "AWS CloudTrail",
+                        "definition": "Service d'audit qui enregistre l'activité des API et les actions réalisées dans un compte. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "AWS Config",
+                        "definition": "Service qui enregistre l'état de configuration des ressources et permet d'évaluer leur conformité à des règles. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "Amazon CloudWatch",
+                        "definition": "Service de surveillance pour les métriques, journaux, alarmes et événements opérationnels. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "AWS Audit Manager",
+                        "definition": "Service qui aide à collecter et organiser des preuves pour des audits. ([AWS Documentation][5])"
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "Le chiffrement **au repos** protège les données stockées. Le chiffrement **en transit** protège les échanges sur le réseau, généralement avec TLS. AWS Key Management Service (AWS KMS) aide à créer et contrôler des clés de chiffrement, tandis qu'AWS CloudHSM fournit des modules matériels dédiés pour certains besoins de contrôle. ([AWS Documentation][5]) ([AWS Documentation][4])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Gestion des identités et des accès"
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS Identity and Access Management (IAM) contrôle l'authentification et l'autorisation dans un compte AWS. Les décisions d'accès reposent sur des identités, des politiques et des ressources. Le principe du moindre privilège consiste à accorder seulement les actions nécessaires sur les ressources nécessaires. ([AWS Documentation][5])"
+            },
+            {
+                "type": "key_terms",
+                "items": [
+                    {
+                        "term": "Utilisateur IAM",
+                        "definition": "Identité durable associée à une personne ou une application lorsque ce modèle est nécessaire. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "Groupe IAM",
+                        "definition": "Ensemble d'utilisateurs auquel des autorisations communes peuvent être attachées. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "Rôle IAM",
+                        "definition": "Identité assumée temporairement par un utilisateur, un service ou une entité d'un autre compte. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "Politique IAM",
+                        "definition": "Document JSON qui définit des autorisations avec des effets Allow ou Deny, des actions, des ressources et éventuellement des conditions. ([AWS Documentation][5])"
+                    },
+                    {
+                        "term": "AWS IAM Identity Center",
+                        "definition": "Service permettant de centraliser l'accès de la main-d'oeuvre à plusieurs comptes et applications. ([AWS Documentation][5])"
+                    }
+                ]
+            },
+            {
+                "type": "steps",
+                "items": [
+                    {
+                        "title": "Protéger l'utilisateur racine",
+                        "body": "Ne pas l'utiliser pour les tâches quotidiennes et activer l'authentification multifacteur. ([AWS Documentation][5])"
+                    },
+                    {
+                        "title": "Éviter les clés racine",
+                        "body": "Ne pas créer de clés d'accès pour l'utilisateur racine, ou les supprimer si elles existent."
+                    },
+                    {
+                        "title": "Créer des identités administratives",
+                        "body": "Utiliser IAM Identity Center ou des rôles et identités adaptés aux opérations courantes."
+                    },
+                    {
+                        "title": "Surveiller l'activité",
+                        "body": "Conserver des journaux et examiner les actions sensibles."
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Caractéristique"
+                ],
+                "rows": [
+                    {
+                        "label": "Politique basée sur l'identité",
+                        "values": [
+                            "Attachée à un utilisateur, un groupe ou un rôle IAM."
+                        ]
+                    },
+                    {
+                        "label": "Politique basée sur une ressource",
+                        "values": [
+                            "Attachée directement à une ressource compatible, par exemple un compartiment Amazon S3."
+                        ]
+                    },
+                    {
+                        "label": "Politique gérée par AWS",
+                        "values": [
+                            "Créée et maintenue par AWS pour des cas généraux."
+                        ]
+                    },
+                    {
+                        "label": "Politique gérée par le client",
+                        "values": [
+                            "Créée par le client pour répondre à ses propres besoins. ([AWS Documentation][5])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Services et ressources de sécurité"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Fonction principale"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon GuardDuty",
+                        "values": [
+                            "Détection de menaces à partir de sources de données et de journaux AWS."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Inspector",
+                        "values": [
+                            "Évaluation automatisée des vulnérabilités de certaines charges de travail."
+                        ]
+                    },
+                    {
+                        "label": "AWS Security Hub",
+                        "values": [
+                            "Agrégation et centralisation de résultats de sécurité provenant de plusieurs services."
+                        ]
+                    },
+                    {
+                        "label": "AWS Shield",
+                        "values": [
+                            "Protection contre les attaques par déni de service distribué."
+                        ]
+                    },
+                    {
+                        "label": "AWS WAF",
+                        "values": [
+                            "Filtrage des requêtes web selon des règles de couche applicative."
+                        ]
+                    },
+                    {
+                        "label": "AWS Firewall Manager",
+                        "values": [
+                            "Gestion centralisée de politiques de sécurité dans plusieurs comptes et ressources. ([AWS Documentation][5])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS Secrets Manager est destiné au stockage, à la récupération et à la rotation de secrets. AWS Systems Manager Parameter Store peut stocker des paramètres de configuration et des valeurs sécurisées. AWS Certificate Manager aide à provisionner et gérer des certificats TLS pour des services intégrés. ([AWS Documentation][4])"
+            },
+            {
+                "type": "summary",
+                "title": "À retenir",
+                "items": [
+                    "AWS protège l'infrastructure du cloud, le client protège ce qu'il configure et place dans le cloud.",
+                    "La portée de la responsabilité client diminue avec les services plus gérés, mais ne disparaît pas.",
+                    "CloudTrail audite les actions, Config suit la configuration et CloudWatch surveille l'exploitation.",
+                    "IAM repose sur les identités, les politiques, les rôles et le moindre privilège.",
+                    "GuardDuty, Inspector, Security Hub, Shield, WAF et Firewall Manager répondent à des besoins différents. ([AWS Documentation][5])"
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Domaine 3 : Technologie et services cloud"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Cas d'utilisation"
+                ],
+                "rows": [
+                    {
+                        "label": "AWS Management Console",
+                        "values": [
+                            "Opération visuelle, exploration ou tâche ponctuelle."
+                        ]
+                    },
+                    {
+                        "label": "AWS CLI",
+                        "values": [
+                            "Automatisation par commandes et scripts."
+                        ]
+                    },
+                    {
+                        "label": "AWS SDK",
+                        "values": [
+                            "Appels AWS intégrés dans le code d'une application."
+                        ]
+                    },
+                    {
+                        "label": "API",
+                        "values": [
+                            "Accès programmatique direct aux opérations d'un service."
+                        ]
+                    },
+                    {
+                        "label": "AWS CloudFormation",
+                        "values": [
+                            "Déploiement répétable d'une infrastructure décrite comme du code. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "mermaid",
+                "code": "flowchart LR\nA[Besoin ponctuel] --> B[Console]\nC[Commande répétable] --> D[CLI]\nE[Logique intégrée à une application] --> F[SDK ou API]\nG[Infrastructure reproductible] --> H[CloudFormation]",
+                "caption": "Choix d'une méthode d'accès ou de déploiement"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Infrastructure mondiale AWS"
+            },
+            {
+                "type": "key_terms",
+                "items": [
+                    {
+                        "term": "Région AWS",
+                        "definition": "Zone géographique distincte qui contient plusieurs zones de disponibilité. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "Zone de disponibilité",
+                        "definition": "Un ou plusieurs centres de données distincts dans une Région, conçus pour limiter les points de défaillance communs. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "Emplacement périphérique",
+                        "definition": "Site utilisé par des services tels qu'Amazon CloudFront pour rapprocher du contenu des utilisateurs. ([AWS Documentation][6])"
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Objectif principal"
+                ],
+                "rows": [
+                    {
+                        "label": "Plusieurs zones de disponibilité",
+                        "values": [
+                            "Haute disponibilité dans une même Région."
+                        ]
+                    },
+                    {
+                        "label": "Plusieurs Régions",
+                        "values": [
+                            "Reprise après sinistre, continuité mondiale, souveraineté des données ou latence géographique."
+                        ]
+                    },
+                    {
+                        "label": "Emplacements périphériques",
+                        "values": [
+                            "Distribution de contenu avec une latence réduite pour les utilisateurs. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Services de calcul"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Modèle de calcul"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon EC2",
+                        "values": [
+                            "Machines virtuelles avec contrôle du système d'exploitation invité."
+                        ]
+                    },
+                    {
+                        "label": "AWS Lambda",
+                        "values": [
+                            "Exécution de code déclenchée par des événements sans gestion de serveurs."
+                        ]
+                    },
+                    {
+                        "label": "AWS Fargate",
+                        "values": [
+                            "Calcul sans serveur pour des conteneurs utilisés avec Amazon ECS ou Amazon EKS."
+                        ]
+                    },
+                    {
+                        "label": "Amazon ECS",
+                        "values": [
+                            "Orchestration de conteneurs avec une solution AWS."
+                        ]
+                    },
+                    {
+                        "label": "Amazon EKS",
+                        "values": [
+                            "Service Kubernetes géré. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "**AWS Auto Scaling** ajuste la capacité afin de soutenir l'élasticité. Les **Elastic Load Balancing** distribuent les demandes entre plusieurs cibles afin d'améliorer la disponibilité et l'utilisation des ressources. Les types d'instances EC2 sont optimisés pour différents profils, par exemple calcul, mémoire ou stockage. ([AWS Documentation][6])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Services de base de données"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Usage principal"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon RDS",
+                        "values": [
+                            "Bases de données relationnelles gérées avec plusieurs moteurs pris en charge."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Aurora",
+                        "values": [
+                            "Base relationnelle compatible avec MySQL ou PostgreSQL, conçue pour AWS."
+                        ]
+                    },
+                    {
+                        "label": "Amazon DynamoDB",
+                        "values": [
+                            "Base NoSQL clé-valeur et document, entièrement gérée."
+                        ]
+                    },
+                    {
+                        "label": "Amazon ElastiCache",
+                        "values": [
+                            "Cache en mémoire pour accélérer les accès aux données. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS Database Migration Service (AWS DMS) aide à déplacer ou répliquer des données entre des bases. AWS Schema Conversion Tool (AWS SCT) aide à convertir des schémas et du code lorsque les moteurs source et cible sont différents. ([AWS Documentation][6])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Réseau et diffusion de contenu"
+            },
+            {
+                "type": "key_terms",
+                "items": [
+                    {
+                        "term": "Amazon VPC",
+                        "definition": "Réseau virtuel logiquement isolé dans lequel le client définit notamment des sous-réseaux, des tables de routage et des passerelles. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "Groupe de sécurité",
+                        "definition": "Pare-feu avec état appliqué à des interfaces réseau ou ressources compatibles. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "ACL réseau",
+                        "definition": "Filtre sans état appliqué au niveau du sous-réseau. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "Amazon Route 53",
+                        "definition": "Service DNS, d'enregistrement de domaines et de vérification de l'état. ([AWS Documentation][6])"
+                    },
+                    {
+                        "term": "AWS Direct Connect",
+                        "definition": "Connexion réseau dédiée entre un site client et AWS. ([AWS Documentation][6])"
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "text": "AWS Site-to-Site VPN crée une connexion chiffrée sur Internet entre un réseau et AWS. AWS Direct Connect fournit une connexion dédiée. Amazon CloudFront met du contenu en cache dans le réseau périphérique, tandis qu'AWS Global Accelerator améliore l'acheminement mondial vers des points de terminaison. AWS Transit Gateway centralise la connexion de plusieurs VPC et réseaux. ([AWS Documentation][6]) ([AWS Documentation][4])"
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Services de stockage"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Type de stockage"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon S3",
+                        "values": [
+                            "Stockage objet accessible par API, adapté aux fichiers, sauvegardes, journaux et contenus."
+                        ]
+                    },
+                    {
+                        "label": "Amazon EBS",
+                        "values": [
+                            "Stockage bloc persistant principalement attaché à Amazon EC2."
+                        ]
+                    },
+                    {
+                        "label": "Instance store",
+                        "values": [
+                            "Stockage bloc temporaire lié à l'hôte d'une instance EC2."
+                        ]
+                    },
+                    {
+                        "label": "Amazon EFS",
+                        "values": [
+                            "Système de fichiers partagé élastique pour des charges Linux."
+                        ]
+                    },
+                    {
+                        "label": "Amazon FSx",
+                        "values": [
+                            "Systèmes de fichiers gérés pour des besoins spécialisés. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Fonction à reconnaître"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon SageMaker AI",
+                        "values": [
+                            "Créer, entraîner et déployer des solutions de machine learning."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Lex",
+                        "values": [
+                            "Créer des interfaces conversationnelles."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Kendra",
+                        "values": [
+                            "Recherche intelligente dans des contenus d'entreprise."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Rekognition",
+                        "values": [
+                            "Analyser des images et des vidéos."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Textract",
+                        "values": [
+                            "Extraire du texte et des données structurées de documents."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Transcribe",
+                        "values": [
+                            "Convertir la parole en texte."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Translate",
+                        "values": [
+                            "Traduire automatiquement du texte. ([AWS Documentation][4])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Cas d'utilisation"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon Athena",
+                        "values": [
+                            "Interroger des données dans Amazon S3 avec SQL sans gérer de serveur."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Kinesis",
+                        "values": [
+                            "Collecter et traiter des données en continu."
+                        ]
+                    },
+                    {
+                        "label": "AWS Glue",
+                        "values": [
+                            "Intégration, préparation et catalogue de données."
+                        ]
+                    },
+                    {
+                        "label": "Amazon QuickSight",
+                        "values": [
+                            "Visualisation et tableaux de bord décisionnels."
+                        ]
+                    },
+                    {
+                        "label": "Amazon Redshift",
+                        "values": [
+                            "Entrepôt de données pour l'analytique. ([AWS Documentation][6]) ([AWS Documentation][4])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Modèle"
+                ],
+                "rows": [
+                    {
+                        "label": "Amazon SQS",
+                        "values": [
+                            "File d'attente pour découpler des composants et conserver des messages."
+                        ]
+                    },
+                    {
+                        "label": "Amazon SNS",
+                        "values": [
+                            "Publication et diffusion de messages vers plusieurs abonnés."
+                        ]
+                    },
+                    {
+                        "label": "Amazon EventBridge",
+                        "values": [
+                            "Bus d'événements pour acheminer des événements selon des règles."
+                        ]
+                    },
+                    {
+                        "label": "AWS Step Functions",
+                        "values": [
+                            "Orchestration visuelle de flux de travail et d'étapes. ([AWS Documentation][6])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "summary",
+                "title": "À retenir",
+                "items": [
+                    "Choisissez Console, CLI, SDK, API ou CloudFormation selon le niveau d'automatisation.",
+                    "Plusieurs zones de disponibilité améliorent la haute disponibilité dans une Région.",
+                    "EC2, Lambda, Fargate, ECS et EKS offrent des niveaux de gestion différents.",
+                    "RDS et Aurora sont relationnels, DynamoDB est NoSQL et ElastiCache est un cache en mémoire.",
+                    "S3 est objet, EBS est bloc, EFS et FSx sont des services de fichiers.",
+                    "SQS, SNS, EventBridge et Step Functions répondent à des modèles d'intégration différents. ([AWS Documentation][6])"
+                ]
+            },
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Domaine 4 : Facturation, tarification et support"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Cas d'utilisation général"
+                ],
+                "rows": [
+                    {
+                        "label": "Instances à la demande",
+                        "values": [
+                            "Charge variable ou imprévisible, sans engagement à long terme."
+                        ]
+                    },
+                    {
+                        "label": "Savings Plans",
+                        "values": [
+                            "Engagement sur un niveau d'utilisation de calcul pour bénéficier d'une remise."
+                        ]
+                    },
+                    {
+                        "label": "Instances réservées",
+                        "values": [
+                            "Avantage tarifaire ou réservation selon le type, la portée et les attributs de l'offre."
+                        ]
+                    },
+                    {
+                        "label": "Instances Spot",
+                        "values": [
+                            "Capacité inutilisée à prix réduit pour des charges interruptibles et flexibles."
+                        ]
+                    },
+                    {
+                        "label": "Hôtes dédiés",
+                        "values": [
+                            "Serveur physique dédié pouvant répondre à certains besoins de licence ou de conformité."
+                        ]
+                    },
+                    {
+                        "label": "Réservation de capacité",
+                        "values": [
+                            "Garantie de disponibilité de capacité EC2 dans une zone de disponibilité, sans constituer à elle seule une remise tarifaire. ([AWS Documentation][7])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "callout",
+                "variant": "warn",
+                "title": "Remise et capacité",
+                "body": "Une réduction tarifaire et une réservation de capacité ne sont pas le même objectif. Analysez si l'énoncé demande de réduire le prix, de garantir la capacité, de respecter une licence liée au serveur physique ou de tolérer des interruptions. ([AWS Documentation][7])"
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Fonction principale"
+                ],
+                "rows": [
+                    {
+                        "label": "AWS Pricing Calculator",
+                        "values": [
+                            "Estimer le coût d'une architecture avant son déploiement."
+                        ]
+                    },
+                    {
+                        "label": "AWS Cost Explorer",
+                        "values": [
+                            "Analyser et visualiser les coûts et l'utilisation historiques, puis explorer des tendances."
+                        ]
+                    },
+                    {
+                        "label": "AWS Budgets",
+                        "values": [
+                            "Définir des seuils de coût ou d'utilisation et recevoir des alertes."
+                        ]
+                    },
+                    {
+                        "label": "AWS Cost and Usage Report",
+                        "values": [
+                            "Obtenir des données détaillées de coûts et d'utilisation."
+                        ]
+                    },
+                    {
+                        "label": "Balises d'allocation des coûts",
+                        "values": [
+                            "Répartir et analyser les coûts selon des dimensions métier après activation appropriée. ([AWS Documentation][7])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "comparison",
+                "columns": [
+                    "Rôle"
+                ],
+                "rows": [
+                    {
+                        "label": "AWS re:Post",
+                        "values": [
+                            "Communauté de questions et réponses techniques."
+                        ]
+                    },
+                    {
+                        "label": "AWS Knowledge Center",
+                        "values": [
+                            "Articles de dépannage et réponses à des questions fréquentes."
+                        ]
+                    },
+                    {
+                        "label": "AWS Prescriptive Guidance",
+                        "values": [
+                            "Modèles, stratégies et guides de mise en oeuvre."
+                        ]
+                    },
+                    {
+                        "label": "AWS Support Center",
+                        "values": [
+                            "Gestion des dossiers de support et accès aux ressources du plan souscrit."
+                        ]
+                    },
+                    {
+                        "label": "AWS Health Dashboard",
+                        "values": [
+                            "Informations sur les événements AWS susceptibles d'affecter les ressources."
+                        ]
+                    },
+                    {
+                        "label": "AWS Trusted Advisor",
+                        "values": [
+                            "Recommandations et vérifications dans des catégories telles que coût, sécurité, performance, tolérance aux pannes et limites de service, selon l'accès disponible. ([AWS Documentation][7])"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "summary",
+                "title": "À retenir",
+                "items": [
+                    "À la demande privilégie la flexibilité, Spot les charges interruptibles et les engagements les usages prévisibles.",
+                    "Une réservation de capacité ne garantit pas automatiquement une remise.",
+                    "Pricing Calculator estime, Cost Explorer analyse et Budgets alerte.",
+                    "Organizations centralise la facturation de plusieurs comptes.",
+                    "Choisissez les ressources et le plan AWS Support selon la criticité et le type d'assistance attendu. ([AWS Documentation][7])"
+                ]
+            }
+        ],
+        "course_updated_at": "2026-07-28T20:03:29+00:00",
         "syllabus_blueprint": null,
         "is_active": true,
-        "available_languages": ["fr"]
+        "available_languages": [
+            "fr"
+        ],
+        "default_language": "fr"
     },
     {
         "title": "ITIL Foundation v5",
@@ -102,11 +1178,13 @@
         "duration_minutes": 60,
         "passing_score": 26,
         "total_questions": 40,
+        "min_questions": null,
+        "max_questions": null,
+        "navigation_mode": "free",
         "validity_months": 36,
         "validity_note": "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
         "version_retires_at": null,
         "questions_updated_at": "2026-07-25T16:39:16+00:00",
-        "available_languages": ["fr", "en"],
         "course_blocks": [
             {
                 "type": "heading",
@@ -1736,6 +2814,17 @@
             "digital-ai-innovation": 10
         },
         "is_active": true,
-        "available_languages": ["en", "fr", "de", "es", "it", "ja", "pl", "pt", "zh"]
+        "available_languages": [
+            "en",
+            "fr",
+            "de",
+            "es",
+            "it",
+            "ja",
+            "pl",
+            "pt",
+            "zh"
+        ],
+        "default_language": "fr"
     }
 ]

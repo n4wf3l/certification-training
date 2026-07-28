@@ -14,7 +14,7 @@ import { useT } from '@/lib/i18n';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
-const ALLOWED_TYPES = ['heading', 'paragraph', 'list', 'callout', 'key_terms', 'steps', 'comparison', 'example', 'code', 'summary'];
+const ALLOWED_TYPES = ['heading', 'paragraph', 'list', 'callout', 'key_terms', 'steps', 'comparison', 'example', 'code', 'summary', 'mermaid'];
 
 // Mirror of app/Http/Controllers/Concerns/SplitsLocalizedBlocks::TRANSLATABLE_PATHS.
 // Used client-side only for previewing multilingual JSON in the admin panel;
@@ -30,6 +30,7 @@ const TRANSLATABLE_PATHS = {
     example:   ['title', 'body'],
     code:      [],
     summary:   ['title', 'items[]'],
+    mermaid:   ['caption'], // code (Mermaid syntax) is mono-lang; caption is translatable
 };
 
 // Deep-clone helper (structuredClone is available in all modern browsers we target).
@@ -138,6 +139,7 @@ Concrètement, chaque champ localisable devient un **objet JSON** dont les clés
 - \`comparison.rows[].label\` : objet. \`.values[]\` : chaque valeur est un objet, ${langMap('valeur', 'value')}.
 - \`example.title\` et \`.body\` : objets.
 - \`summary.title\` et \`summary.items[]\` : objets.
+- \`mermaid.caption\` : objet (légende localisée du diagramme).
 
 **Chaque champ doit contenir une valeur non vide pour CHACUNE des ${certLanguages.length} langues listées.** Manquer une langue casse l'import.
 
@@ -146,6 +148,7 @@ Concrètement, chaque champ localisable devient un **objet JSON** dont les clés
 **Champs mono-lingue** (à laisser en string simple, PAS en objet { lang }) :
 - \`type\`, \`level\`, \`variant\`, \`style\`, \`id\`, \`language\` (code langage pour \`code\`) : ce sont des enums / méta.
 - \`code.content\` : le contenu du snippet reste tel quel dans TOUTES les langues (les commentaires internes peuvent être écrits en anglais universel ; ne les traduis pas).
+- \`mermaid.code\` : la syntaxe Mermaid est neutre linguistiquement. Les labels de nœuds à l'intérieur du diagramme peuvent utiliser des termes techniques universels (acronymes, code) ou l'anglais standard pour rester lisibles multi-langues.
 
 Utilise dans chaque langue le **vocabulaire officiel de l'organisme certificateur pour cette langue** (ex : "Service Value Chain" en EN, "Chaîne de valeur des services" en FR, "Cadena de valor del servicio" en ES). Si l'organisme ne publie pas de traduction officielle pour un terme donné, garde le terme d'origine en italique markdown (\`*terme*\`) plutôt que d'inventer une traduction douteuse.
 
@@ -165,6 +168,7 @@ Cela signifie que TOUS les champs texte des blocs JSON doivent être en ${langLa
 - \`example.title\`, \`example.body\`
 - \`code.content\` (les commentaires et docstrings en ${langLabel} ; les mots-clés du langage restent bien sûr dans la syntaxe du langage)
 - \`summary.title\`, \`summary.items[]\`
+- \`mermaid.caption\` (légende du diagramme, le \`code\` Mermaid lui-même reste en syntaxe technique neutre)
 
 Utilise le **vocabulaire officiel de l'organisme certificateur dans cette langue**. Si l'organisme ne publie pas de traduction officielle pour un terme précis, garde le terme d'origine en italique markdown (\`*terme*\`) et propose entre parenthèses une périphrase courte en ${langLabel} plutôt que d'inventer une traduction douteuse.
 
@@ -239,6 +243,7 @@ Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après,
   { "type": "comparison", "columns": [${langMap('Concept A', 'Concept A')}, ${langMap('Concept B', 'Concept B')}], "rows": [{ "label": ${langMap('Portée', 'Scope')}, "values": [${langMap('…', '…')}, ${langMap('…', '…')}] }] },
   { "type": "example", "title": ${langMap('Cas pratique', 'Case study')}, "body": ${langMap('…', '…')} },
   { "type": "code", "language": "bash", "content": "echo hello" },
+  { "type": "mermaid", "code": "graph TD; A[Application] --> P[Presentation] --> S[Session] --> T[Transport]", "caption": ${langMap('Modèle OSI simplifié', 'Simplified OSI model')} },
   { "type": "summary", "title": ${langMap('Points clés', 'Key points')}, "items": [${langMap('…', '…')}, ${langMap('…', '…')}] }
 ]`
     : `# FORMAT DE SORTIE (STRICT)
@@ -256,6 +261,7 @@ Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après,
   { "type": "comparison", "columns": ["Concept A", "Concept B"], "rows": [{ "label": "Portée", "values": ["…", "…"] }] },
   { "type": "example", "title": "Cas pratique", "body": "…" },
   { "type": "code", "language": "bash", "content": "…" },
+  { "type": "mermaid", "code": "graph TD; A[Application] --> P[Presentation]", "caption": "Modèle OSI simplifié" },
   { "type": "summary", "title": "Points clés", "items": ["…", "…"] }
 ]`
 }
@@ -271,6 +277,7 @@ Un tableau JSON valide de **blocs typés**, sans texte avant, sans texte après,
 - **comparison** : \`columns\` = tableau de noms de colonnes, \`rows\` = liste de \`{ "label": "…", "values": ["…", …] }\`.
 - **example** : \`title\`, \`body\`. Pour un cas concret.
 - **code** : \`language\` (ex: \`"bash"\`, \`"json"\`, \`"yaml"\`), \`content\` (chaîne). Pour CLI, config, snippet.
+- **mermaid** : \`code\` = syntaxe [Mermaid.js](https://mermaid.js.org/) VALIDE (graph TD, flowchart LR, sequenceDiagram, classDiagram, stateDiagram, erDiagram, gantt, pie), \`caption\` = légende courte du diagramme. Utilise ce bloc pour tout ce qui gagne à être visualisé : **topologies réseau** (spine-leaf, star, mesh), **modèles en couches** (OSI, TCP/IP), **flux de protocole** (OSPF LSA propagation, TCP 3-way handshake, DHCP DORA), **arbres de décision** (STP root election), **relations d'entités** (VLAN <-> ports <-> hosts). PRÉFÈRE Mermaid à une longue description textuelle quand un diagramme est plus clair. NE JAMAIS mettre de tiret cadratin dans le code Mermaid. Le code doit être 100 % valide et parsable par mermaid.js version 11.x. Teste mentalement la syntaxe avant de l'inclure.
 - **summary** : \`title\` (défaut "À retenir"), \`items\` = liste de takeaways courts. À placer en fin de section.
 
 # RÈGLES
@@ -382,6 +389,22 @@ function repairUnescapedJsonInStrings(raw) {
     return { repaired: out, count: repairs };
 }
 
+// Devine le type de bloc qu'un objet sans `type` pourrait etre. Utilise pour donner
+// un message d'erreur actionnable au lieu de "missing type" generique. Renvoie un
+// slug qui matche une cle i18n `warning_missing_type_hint_<slug>` ou null.
+function guessMissingBlockType(block) {
+    if (!block || typeof block !== 'object' || Array.isArray(block)) return null;
+    // Pattern le plus frequent : ChatGPT a aplati les rows d'un comparison au top.
+    if ('label' in block && Array.isArray(block.values)) return 'comparison_row';
+    // Pattern step : title + un content descriptif.
+    if ('title' in block && ('content' in block || 'description' in block) && !('items' in block)) return 'step_or_callout';
+    // Pattern list/summary items sans wrapper.
+    if (Array.isArray(block.items) && !('title' in block)) return 'list_or_summary';
+    // Pattern paragraph nu (juste du texte).
+    if (typeof block.text === 'string' && Object.keys(block).length <= 2) return 'paragraph';
+    return null;
+}
+
 function analyze(payload, t) {
     if (!payload.trim()) return { status: 'empty', count: 0, blocks: [], error: null, stats: {}, repaired: null, cleanedPayload: null };
     const extracted = extractTopLevelArray(payload);
@@ -411,7 +434,15 @@ function analyze(payload, t) {
     const warnings = [];
     parsed.forEach((b, i) => {
         if (!b?.type) {
-            warnings.push(t('admin.certs_course_import.warning_missing_type', { n: i + 1 }));
+            // Diagnose le pattern erratique le plus courant : ChatGPT a aplati les
+            // rows d'un bloc comparison au niveau racine au lieu de les nester.
+            // On donne un message actionnable ("wrap dans un comparison") plutot
+            // que le generique "missing type".
+            const hint = guessMissingBlockType(b);
+            const key = hint
+                ? `admin.certs_course_import.warning_missing_type_hint_${hint}`
+                : 'admin.certs_course_import.warning_missing_type';
+            warnings.push(t(key, { n: i + 1 }));
             return;
         }
         if (!ALLOWED_TYPES.includes(b.type)) {

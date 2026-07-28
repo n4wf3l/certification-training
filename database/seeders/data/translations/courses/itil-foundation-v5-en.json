@@ -3,10 +3,9 @@
         "certification_slug": "itil-foundation-v5",
         "locale": "en",
         "canonical_from": "fr",
-        "translated_at": "2026-07-26",
-        "translator": "Claude Opus 4.7",
-        "block_count": 100,
-        "notes": "PeopleCert ITIL 4/5 Foundation official English vocabulary. Full 100-block course translation."
+        "dumped_at": "2026-07-28",
+        "source": "certifloop:dump-seeders",
+        "block_count": 100
     },
     "blocks": [
         {

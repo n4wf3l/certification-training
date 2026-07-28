@@ -35,6 +35,8 @@ trait SplitsLocalizedBlocks
         'example'   => ['title', 'body'],
         'code'      => [],
         'summary'   => ['title', 'items[]'],
+        // mermaid.code = syntax non traduisible (mono-lang), caption = titre du diagramme (traduisible)
+        'mermaid'   => ['caption'],
     ];
 
     /**

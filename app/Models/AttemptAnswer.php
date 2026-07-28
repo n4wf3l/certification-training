@@ -12,11 +12,15 @@ class AttemptAnswer extends Model
         'question_id',
         'position',
         'answer_id',
+        'answer_ids',
+        'matching_answer',
         'is_correct',
     ];
 
     protected $casts = [
         'is_correct' => 'boolean',
+        'answer_ids' => 'array',
+        'matching_answer' => 'array',
     ];
 
     public function attempt(): BelongsTo

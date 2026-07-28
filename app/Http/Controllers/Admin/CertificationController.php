@@ -287,8 +287,31 @@ class CertificationController extends Controller
 
     private const ALLOWED_BLOCK_TYPES = [
         'heading', 'paragraph', 'list', 'callout', 'key_terms',
-        'steps', 'comparison', 'example', 'code', 'summary',
+        'steps', 'comparison', 'example', 'code', 'summary', 'mermaid',
     ];
+
+    /**
+     * Devine le type de bloc qu'un objet sans `type` pourrait etre, pour donner
+     * un message d'erreur actionnable au lieu de "missing type" generique.
+     * Renvoie un slug qui matche une cle flash `course_block_missing_type_hint_<slug>`
+     * ou null si aucun pattern connu ne matche. Mirror de la version JS.
+     */
+    private function guessMissingBlockType(array $block): ?string
+    {
+        if (isset($block['label']) && isset($block['values']) && is_array($block['values'])) {
+            return 'comparison_row';
+        }
+        if (isset($block['title']) && (isset($block['content']) || isset($block['description'])) && !isset($block['items'])) {
+            return 'step_or_callout';
+        }
+        if (isset($block['items']) && is_array($block['items']) && !isset($block['title'])) {
+            return 'list_or_summary';
+        }
+        if (isset($block['text']) && is_string($block['text']) && count($block) <= 2) {
+            return 'paragraph';
+        }
+        return null;
+    }
 
     public function courseImportForm(Request $request): Response
     {
@@ -324,8 +347,15 @@ class CertificationController extends Controller
         $normalized = [];
         foreach ($decoded as $i => $block) {
             if (!is_array($block) || empty($block['type'])) {
+                // Diagnose le pattern erratique le plus courant : ChatGPT a aplati
+                // les rows d'un bloc comparison au niveau racine au lieu de les
+                // nester. On donne un message actionnable au lieu du generique.
+                $hint = $this->guessMissingBlockType(is_array($block) ? $block : []);
+                $flashKey = $hint
+                    ? "flash.course_block_missing_type_hint_{$hint}"
+                    : 'flash.course_block_missing_type';
                 throw ValidationException::withMessages([
-                    'payload' => __('flash.course_block_missing_type', ['n' => $i + 1]),
+                    'payload' => __($flashKey, ['n' => $i + 1]),
                 ]);
             }
             if (!in_array($block['type'], self::ALLOWED_BLOCK_TYPES, true)) {
@@ -389,6 +419,7 @@ class CertificationController extends Controller
             'duration_minutes' => 'required|integer|min:1|max:600',
             'passing_score' => 'required|integer|min:1',
             'total_questions' => 'required|integer|min:1',
+            'navigation_mode' => 'nullable|in:free,sequential_locked',
             'validity_months' => 'nullable|integer|min:1|max:600',
             'validity_note' => 'nullable|string|max:2000',
             'version_retires_at' => 'nullable|date',

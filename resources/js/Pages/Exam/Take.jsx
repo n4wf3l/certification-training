@@ -23,6 +23,26 @@ export default function Take({ attempt, certification, questions, cert_progress 
     const submittingRef = useRef(false);
     const allowLeaveRef = useRef(false);
 
+    // Mode de navigation propre a la certif :
+    //  'free'              : nav libre, retour possible, grille visible (ITIL-like)
+    //  'sequential_locked' : pas de retour, pas de grille, skip autorise (CCNA-like)
+    const isLockedNav = certification.navigation_mode === 'sequential_locked';
+    // Une fois qu'on est passe a la question N, les questions < N sont
+    // definitivement inaccessibles en mode locked. On track la plus haute
+    // question atteinte pour empecher les setCurrent regressifs.
+    const maxReachedRef = useRef(0);
+    useEffect(() => {
+        if (current > maxReachedRef.current) maxReachedRef.current = current;
+    }, [current]);
+    // Wrapper defensif : en mode locked, refuse tout setCurrent < maxReached.
+    const safeSetCurrent = (updater) => {
+        setCurrent((c) => {
+            const next = typeof updater === 'function' ? updater(c) : updater;
+            if (isLockedNav && next < maxReachedRef.current) return c;
+            return next;
+        });
+    };
+
     // Tier de warning affiche dans la modal de sortie :
     //  0 = warning basique (aucun streak en jeu OU practice)
     //  1 = streak >= 1 ET budget quit restant (1er quit "gratuit")
@@ -42,6 +62,22 @@ export default function Take({ attempt, certification, questions, cert_progress 
         const elapsed = Math.floor((Date.now() - startedAt) / 1000);
         return Math.max(0, totalSeconds - elapsed);
     });
+
+    // Intro cinematic : au chargement de l'examen on plonge la page dans le
+    // noir en gardant seulement le compteur qui tourne, puis on fond vers le
+    // layout normal. Skippe si l'utilisateur reprend un examen deja commence
+    // (elapsed > 3 s = ce n'est pas le vrai debut, ex: reload).
+    // phases : 'lock' (plein ecran noir + timer) -> 'reveal' (fade) -> 'done'
+    const [introPhase, setIntroPhase] = useState(() => {
+        const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+        return elapsed > 3 ? 'done' : 'lock';
+    });
+    useEffect(() => {
+        if (introPhase !== 'lock') return;
+        const t1 = setTimeout(() => setIntroPhase('reveal'), 500);
+        const t2 = setTimeout(() => setIntroPhase('done'), 1200);
+        return () => { clearTimeout(t1); clearTimeout(t2); };
+    }, [introPhase]);
 
     useEffect(() => {
         try {
@@ -67,12 +103,17 @@ export default function Take({ attempt, certification, questions, cert_progress 
     useEffect(() => {
         const handler = (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft') setCurrent((c) => Math.max(0, c - 1));
-            if (e.key === 'ArrowRight') setCurrent((c) => Math.min(questions.length - 1, c + 1));
+            if (e.key === 'ArrowLeft') safeSetCurrent((c) => Math.max(0, c - 1));
+            if (e.key === 'ArrowRight') safeSetCurrent((c) => Math.min(questions.length - 1, c + 1));
             const q = questions[current];
-            if (q && /^[1-9]$/.test(e.key)) {
+            // Matching questions : keyboard shortcuts disabled (click-based UI)
+            if (q && q.question_type !== 'matching' && /^[1-9]$/.test(e.key)) {
                 const idx = parseInt(e.key, 10) - 1;
-                if (q.answers[idx]) pick(q.id, q.answers[idx].id);
+                if (q.answers[idx]) {
+                    q.is_multi_select
+                        ? toggleMulti(q.id, q.answers[idx].id)
+                        : pick(q.id, q.answers[idx].id);
+                }
             }
         };
         window.addEventListener('keydown', handler);
@@ -110,17 +151,49 @@ export default function Take({ attempt, certification, questions, cert_progress 
             }
         });
 
+        // Bouton Back du navigateur : par defaut il quitte l'examen sans
+        // declencher le "before" Inertia. On empile un state sentinelle a
+        // l'arrivee sur la page et, a chaque popstate, on le re-empile pour
+        // rester sur l'URL de l'examen tout en ouvrant le modal de sortie.
+        const examUrl = window.location.href;
+        window.history.pushState({ examSentinel: true }, '', examUrl);
+        const onPopState = () => {
+            if (submittingRef.current || allowLeaveRef.current) return;
+            // Re-empile pour bloquer le prochain Back tant que le modal n'est
+            // pas confirme (sinon la barre d'URL "recule" et l'utilisateur voit
+            // deux URL differentes selon qu'il clique Continuer ou Confirmer).
+            window.history.pushState({ examSentinel: true }, '', examUrl);
+            setPendingLeave({
+                url: route('certifications.exam', { certification: certification.slug }),
+                method: 'get',
+            });
+        };
+        window.addEventListener('popstate', onPopState);
+
         return () => {
             window.removeEventListener('beforeunload', beforeUnload);
+            window.removeEventListener('popstate', onPopState);
             removeBefore();
         };
     }, []);
 
     const q = questions[current];
     const totalQuestions = questions.length;
-    const answeredCount = Object.values(answers).filter(Boolean).length;
+
+    // "Answered" detection : depends on question type
+    //  - single-choice : truthy scalar
+    //  - multi-select  : non-empty array
+    //  - matching      : object with at least one key mapped
+    const isAnswered = (qq, val) => {
+        if (val === null || val === undefined) return false;
+        if (qq?.question_type === 'matching') return typeof val === 'object' && Object.keys(val).length > 0;
+        if (qq?.is_multi_select) return Array.isArray(val) && val.length > 0;
+        return !!val;
+    };
+    const answeredCount = questions.filter((qq) => isAnswered(qq, answers[qq.id])).length;
     const progressPct = (answeredCount / totalQuestions) * 100;
 
+    // Single-choice pick : single answer_id, with auto-advance if enabled.
     const pick = (questionId, answerId) => {
         if (isInstant && answers[questionId]) return;
         setAnswers((a) => ({ ...a, [questionId]: answerId }));
@@ -129,13 +202,43 @@ export default function Take({ attempt, certification, questions, cert_progress 
             const idx = questions.findIndex((qq) => qq.id === questionId);
             if (idx >= 0 && idx < questions.length - 1) {
                 setTimeout(() => {
-                    setCurrent((c) => (c === idx ? idx + 1 : c));
+                    safeSetCurrent((c) => (c === idx ? idx + 1 : c));
                     setJustPicked(null);
                 }, 320);
             } else {
                 setTimeout(() => setJustPicked(null), 500);
             }
         }
+    };
+
+    // Multi-select toggle : add/remove from the array. No auto-advance (user
+    // needs to pick multiple items and click Next themselves).
+    const toggleMulti = (questionId, answerId) => {
+        if (isInstant && Array.isArray(answers[questionId]) && answers[questionId].length > 0) return;
+        setAnswers((a) => {
+            const current = Array.isArray(a[questionId]) ? a[questionId] : [];
+            const has = current.includes(answerId);
+            const next = has ? current.filter((x) => x !== answerId) : [...current, answerId];
+            return { ...a, [questionId]: next };
+        });
+    };
+
+    // Matching : record left -> right mapping.
+    const setMatchingPair = (questionId, leftKey, rightKey) => {
+        setAnswers((a) => ({
+            ...a,
+            [questionId]: {
+                ...(typeof a[questionId] === 'object' && a[questionId] !== null ? a[questionId] : {}),
+                [leftKey]: rightKey,
+            },
+        }));
+    };
+    const clearMatchingPair = (questionId, leftKey) => {
+        setAnswers((a) => {
+            const bucket = { ...(typeof a[questionId] === 'object' && a[questionId] !== null ? a[questionId] : {}) };
+            delete bucket[leftKey];
+            return { ...a, [questionId]: bucket };
+        });
     };
 
     const submit = () => {
@@ -179,8 +282,8 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
     const cancelLeave = () => setPendingLeave(null);
 
-    const prevQ = () => setCurrent((c) => Math.max(0, c - 1));
-    const nextQ = () => setCurrent((c) => Math.min(totalQuestions - 1, c + 1));
+    const prevQ = () => safeSetCurrent((c) => Math.max(0, c - 1));
+    const nextQ = () => safeSetCurrent((c) => Math.min(totalQuestions - 1, c + 1));
     const timeCritical = remaining < 60;
 
     return (
@@ -226,11 +329,19 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             </span>
                         )}
                         <div
-                            className={`rounded-xl border px-4 py-2 font-mono text-lg font-bold tabular-nums transition ${
+                            className={`relative rounded-xl border px-4 py-2 font-mono text-lg font-bold tabular-nums ${
                                 timeCritical
                                     ? 'border-rose-500/40 bg-rose-500/10 text-rose-600 dark:text-rose-300 animate-pulse'
                                     : 'border-brand-500/20 bg-brand-500/5 text-brand-600 dark:text-brand-300'
-                            }`}
+                            } ${introPhase !== 'done' ? 'z-[70]' : ''}`}
+                            style={{
+                                boxShadow: introPhase === 'lock'
+                                    ? '0 0 0 100vmax rgba(3,7,18,0.75), 0 0 44px 8px rgba(122,132,255,0.55)'
+                                    : introPhase === 'reveal'
+                                        ? '0 0 0 100vmax rgba(3,7,18,0), 0 0 0 0 rgba(122,132,255,0)'
+                                        : undefined,
+                                transition: 'box-shadow 700ms ease-out, border-color 200ms ease-out, color 200ms ease-out',
+                            }}
                         >
                             {formatTime(remaining)}
                         </div>
@@ -261,14 +372,40 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 {q.scenario}
                             </div>
                         )}
-                        <h2 className="mb-8 text-2xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
+                        <h2 className="mb-4 text-2xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
                             {q.question_text}
                         </h2>
+                        {q.question_type === 'matching' ? (
+                            <p className="mb-6 rounded-xl border-l-4 border-brand-500 bg-brand-500/5 p-3 text-sm text-ink-700 dark:text-ink-200">
+                                {t('exam_take.matching_hint')}
+                            </p>
+                        ) : q.is_multi_select ? (
+                            <p className="mb-6 rounded-xl border-l-4 border-amber-500 bg-amber-500/5 p-3 text-sm font-medium text-amber-800 dark:text-amber-200">
+                                {t('exam_take.multi_select_hint', { n: q.answers.filter((a) => a.is_correct === true).length || 2 })}
+                            </p>
+                        ) : null}
+
+                        {q.question_type === 'matching' && q.matching ? (
+                            <MatchingBoard
+                                question={q}
+                                answer={answers[q.id]}
+                                onSet={(l, r) => setMatchingPair(q.id, l, r)}
+                                onClear={(l) => clearMatchingPair(q.id, l)}
+                                isInstant={isInstant}
+                                t={t}
+                            />
+                        ) : (
                         <div className="space-y-3">
                             {q.answers.map((a, idx) => {
-                                const selected = answers[q.id] === a.id;
-                                const flashing = justPicked === q.id && selected && answerMode === 'auto';
-                                const revealed = isInstant && !!answers[q.id];
+                                const pickedArr = Array.isArray(answers[q.id]) ? answers[q.id] : null;
+                                const selected = q.is_multi_select
+                                    ? (pickedArr?.includes(a.id) ?? false)
+                                    : answers[q.id] === a.id;
+                                const answeredNow = q.is_multi_select
+                                    ? (pickedArr?.length ?? 0) > 0
+                                    : !!answers[q.id];
+                                const flashing = justPicked === q.id && selected && answerMode === 'auto' && !q.is_multi_select;
+                                const revealed = isInstant && answeredNow;
                                 const isCorrect = a.is_correct === true;
                                 const isSelectedWrong = selected && revealed && !isCorrect;
 
@@ -296,7 +433,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                     <button
                                         key={a.id}
                                         type="button"
-                                        onClick={() => pick(q.id, a.id)}
+                                        onClick={() => q.is_multi_select ? toggleMulti(q.id, a.id) : pick(q.id, a.id)}
                                         disabled={revealed}
                                         className={`${className} ${revealed ? 'cursor-default' : ''}`}
                                     >
@@ -330,8 +467,9 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 );
                             })}
                         </div>
+                        )}
 
-                        {isInstant && answers[q.id] && q.explanation && (
+                        {isInstant && isAnswered(q, answers[q.id]) && q.explanation && (
                             <div className="mt-6 rounded-2xl border border-brand-500/30 bg-brand-500/5 p-4">
                                 <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-300">
                                     <Icon.Sparkles className="h-3.5 w-3.5" />
@@ -344,14 +482,20 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         )}
 
                         <div className="mt-8 flex items-center justify-between">
-                            <button
-                                onClick={prevQ}
-                                disabled={current === 0}
-                                className="btn-secondary"
-                            >
-                                <Icon.ArrowLeft className="h-4 w-4" />
-                                {t('exam_take.prev')}
-                            </button>
+                            {isLockedNav ? (
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-ink-400">
+                                    {t('exam_take.locked_nav_hint')}
+                                </span>
+                            ) : (
+                                <button
+                                    onClick={prevQ}
+                                    disabled={current === 0}
+                                    className="btn-secondary"
+                                >
+                                    <Icon.ArrowLeft className="h-4 w-4" />
+                                    {t('exam_take.prev')}
+                                </button>
+                            )}
                             {current < totalQuestions - 1 ? (
                                 <button onClick={nextQ} className="btn-primary">
                                     {t('exam_take.next')}
@@ -367,38 +511,56 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     </div>
 
                     <div className="space-y-3 lg:sticky lg:top-24 lg:self-start">
-                        <div className="card p-4">
-                            <div className="mb-3 flex items-center justify-between">
-                                <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-                                    {t('exam_take.nav_label')}
+                        {isLockedNav ? (
+                            <div className="card p-4">
+                                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
+                                    {t('exam_take.locked_nav_label')}
                                 </div>
-                                <div className="text-xs font-mono text-ink-500">
-                                    {answeredCount}/{totalQuestions}
+                                <div className="mb-3 flex items-baseline justify-between font-mono">
+                                    <span className="text-3xl font-bold text-ink-900 dark:text-white tabular-nums">
+                                        {current + 1}
+                                        <span className="text-lg text-ink-400"> / {totalQuestions}</span>
+                                    </span>
+                                    <span className="text-xs text-ink-500">{answeredCount} {t('exam_take.locked_nav_answered_short')}</span>
+                                </div>
+                                <p className="text-xs leading-relaxed text-ink-500 dark:text-ink-400">
+                                    {t('exam_take.locked_nav_help')}
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="card p-4">
+                                <div className="mb-3 flex items-center justify-between">
+                                    <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                                        {t('exam_take.nav_label')}
+                                    </div>
+                                    <div className="text-xs font-mono text-ink-500">
+                                        {answeredCount}/{totalQuestions}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-5 gap-1.5 lg:grid-cols-4">
+                                    {questions.map((qq, idx) => {
+                                        const answered = !!answers[qq.id];
+                                        const isCurrent = idx === current;
+                                        return (
+                                            <button
+                                                key={qq.id}
+                                                onClick={() => safeSetCurrent(idx)}
+                                                title={t('exam_take.nav_question_title', { n: qq.position })}
+                                                className={`aspect-square rounded-lg text-xs font-mono font-semibold transition ${
+                                                    isCurrent
+                                                        ? 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow ring-2 ring-brand-500/50'
+                                                        : answered
+                                                        ? 'bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/25 dark:text-emerald-300'
+                                                        : 'bg-ink-100 text-ink-500 hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700'
+                                                }`}
+                                            >
+                                                {qq.position}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             </div>
-                            <div className="grid grid-cols-5 gap-1.5 lg:grid-cols-4">
-                                {questions.map((qq, idx) => {
-                                    const answered = !!answers[qq.id];
-                                    const isCurrent = idx === current;
-                                    return (
-                                        <button
-                                            key={qq.id}
-                                            onClick={() => setCurrent(idx)}
-                                            title={t('exam_take.nav_question_title', { n: qq.position })}
-                                            className={`aspect-square rounded-lg text-xs font-mono font-semibold transition ${
-                                                isCurrent
-                                                    ? 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow ring-2 ring-brand-500/50'
-                                                    : answered
-                                                    ? 'bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/25 dark:text-emerald-300'
-                                                    : 'bg-ink-100 text-ink-500 hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700'
-                                            }`}
-                                        >
-                                            {qq.position}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                        )}
                         <button
                             onClick={submit}
                             disabled={submitting}
@@ -406,11 +568,13 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         >
                             {submitting ? t('exam_take.submitting') : t('exam_take.finish')}
                         </button>
-                        <div className="rounded-xl border border-ink-200 bg-white/50 p-3 text-xs text-ink-500 dark:border-ink-800 dark:bg-ink-900/30">
-                            <div className="mb-1 font-semibold text-ink-700 dark:text-ink-300">{t('exam_take.shortcuts_title')}</div>
-                            <div>{t('exam_take.shortcut_arrows')}</div>
-                            <div>{t('exam_take.shortcut_numbers')}</div>
-                        </div>
+                        {!isLockedNav && (
+                            <div className="rounded-xl border border-ink-200 bg-white/50 p-3 text-xs text-ink-500 dark:border-ink-800 dark:bg-ink-900/30">
+                                <div className="mb-1 font-semibold text-ink-700 dark:text-ink-300">{t('exam_take.shortcuts_title')}</div>
+                                <div>{t('exam_take.shortcut_arrows')}</div>
+                                <div>{t('exam_take.shortcut_numbers')}</div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -519,5 +683,120 @@ export default function Take({ attempt, certification, questions, cert_progress 
                 document.body
             )}
         </AppLayout>
+    );
+}
+
+/**
+ * MatchingBoard : click-based pair-matching UI.
+ * Left column shows the fixed left items. Right column shows the shuffled right
+ * items. Click a left item to select, then click a right item to pair. Click a
+ * left item that already has a pair to clear it. Two-column layout keeps it
+ * simple and reliable across mobile/desktop (no drag lib required).
+ */
+function MatchingBoard({ question, answer, onSet, onClear, isInstant, t }) {
+    const lefts = question.matching?.lefts ?? [];
+    const rights = question.matching?.rights ?? [];
+    const picks = typeof answer === 'object' && answer !== null ? answer : {};
+    const [selectedLeft, setSelectedLeft] = useState(null);
+
+    // Locked once we're in instant-feedback mode and the answer is committed
+    const locked = isInstant && Object.keys(picks).length >= lefts.length;
+
+    // right -> array of leftKeys that map to it (usually 1, but flexibly display all)
+    const rightToLefts = Object.entries(picks).reduce((acc, [l, r]) => {
+        if (!r) return acc;
+        acc[r] = [...(acc[r] || []), l];
+        return acc;
+    }, {});
+
+    const onLeftClick = (l) => {
+        if (locked) return;
+        if (picks[l]) {
+            onClear(l);
+            setSelectedLeft(null);
+            return;
+        }
+        setSelectedLeft(selectedLeft === l ? null : l);
+    };
+    const onRightClick = (r) => {
+        if (locked) return;
+        if (!selectedLeft) return;
+        onSet(selectedLeft, r);
+        setSelectedLeft(null);
+    };
+
+    return (
+        <div className="grid gap-6 sm:grid-cols-2">
+            <div>
+                <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-ink-500">
+                    {t('exam_take.matching_left')}
+                </div>
+                <ul className="space-y-2">
+                    {lefts.map((l) => {
+                        const paired = picks[l];
+                        const isSelected = selectedLeft === l;
+                        return (
+                            <li key={l}>
+                                <button
+                                    type="button"
+                                    onClick={() => onLeftClick(l)}
+                                    disabled={locked}
+                                    className={`w-full rounded-xl border-2 p-3 text-left text-sm transition ${
+                                        paired
+                                            ? 'border-emerald-500 bg-emerald-500/10'
+                                            : isSelected
+                                                ? 'border-brand-500 bg-brand-500/10 shadow-glow'
+                                                : 'border-ink-200 bg-white hover:border-brand-500/40 dark:border-ink-800 dark:bg-ink-900/40'
+                                    }`}
+                                >
+                                    <div className="font-medium text-ink-900 dark:text-white">{l}</div>
+                                    {paired && (
+                                        <div className="mt-1 flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
+                                            <Icon.ArrowRight className="h-3 w-3" />
+                                            <span>{paired}</span>
+                                            <span className="ml-auto text-[10px] opacity-70">{t('exam_take.matching_click_to_clear')}</span>
+                                        </div>
+                                    )}
+                                </button>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+            <div>
+                <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-ink-500">
+                    {t('exam_take.matching_right')}
+                </div>
+                <ul className="space-y-2">
+                    {rights.map((r) => {
+                        const usedBy = rightToLefts[r] ?? [];
+                        const available = usedBy.length === 0;
+                        return (
+                            <li key={r}>
+                                <button
+                                    type="button"
+                                    onClick={() => onRightClick(r)}
+                                    disabled={locked || !selectedLeft}
+                                    className={`w-full rounded-xl border-2 p-3 text-left text-sm transition ${
+                                        !available
+                                            ? 'border-emerald-500/60 bg-emerald-500/5 opacity-70'
+                                            : selectedLeft
+                                                ? 'border-brand-500/40 bg-brand-500/5 hover:bg-brand-500/10'
+                                                : 'border-ink-200 bg-white dark:border-ink-800 dark:bg-ink-900/40'
+                                    } ${!selectedLeft && available ? 'cursor-not-allowed opacity-50' : ''}`}
+                                >
+                                    <div className="font-medium text-ink-900 dark:text-white">{r}</div>
+                                    {!available && (
+                                        <div className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+                                            ← {usedBy.join(', ')}
+                                        </div>
+                                    )}
+                                </button>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </div>
     );
 }

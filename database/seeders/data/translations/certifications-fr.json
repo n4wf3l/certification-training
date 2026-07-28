@@ -1,0 +1,25 @@
+{
+    "meta": {
+        "locale": "fr",
+        "canonical_from": "fr",
+        "dumped_at": "2026-07-28",
+        "source": "certifloop:dump-seeders"
+    },
+    "certifications": {
+        "ccna-200-301": {
+            "title": "CCNA 200-301",
+            "description": "Cisco Certified Network Associate - routing, switching, sécurité, automatisation.",
+            "long_description": "La CCNA (Cisco Certified Network Associate) est LA porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routing (statique, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port-security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS) et automatisation (Python, REST, JSON, Ansible). C'est la certification Cisco la plus reconnue au monde et le prérequis vers CCNP puis CCIE.",
+            "importance": "La CCNA est explicitement demandée dans la majorité des offres 'Network Engineer', 'NOC Analyst' ou 'Ingénieur systèmes et réseaux' en France comme à l'international. Elle valide un socle technique que les recruteurs prennent au sérieux et débloque les grilles de salaire junior→confirmé.",
+            "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 825/1000 environ (≈ 82,5 %) - Cisco garde le seuil exact confidentiel. Renouvellement : repasser l'examen, réussir un exam Cisco de niveau supérieur (CCNP, CCIE), ou cumuler 30 CE credits. Aucune période de grâce.",
+            "target_roles": [
+                "Network Engineer Junior",
+                "Support Réseau N1/N2",
+                "Administrateur infrastructure",
+                "Technicien réseau",
+                "NOC Analyst",
+                "SysAdmin polyvalent"
+            ]
+        }
+    }
+}

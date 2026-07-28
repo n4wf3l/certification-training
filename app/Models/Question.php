@@ -19,12 +19,30 @@ class Question extends Model
         'scenario',
         'question_text',
         'explanation',
+        'question_type',
+        'matching_pairs',
         'translations',
     ];
 
     protected $casts = [
         'translations' => 'array',
+        'matching_pairs' => 'array',
     ];
+
+    public function correctAnswerIds(): array
+    {
+        return $this->answers->where('is_correct', true)->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
+
+    public function isMultiSelect(): bool
+    {
+        return $this->question_type === 'multiple_choice' && $this->answers->where('is_correct', true)->count() > 1;
+    }
+
+    public function isMatching(): bool
+    {
+        return $this->question_type === 'matching';
+    }
 
     public function certification(): BelongsTo
     {

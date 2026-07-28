@@ -601,6 +601,12 @@ export default function Result({ attempt, certification, details, mastery, compa
                                     <p className="mb-3 text-sm font-medium text-ink-900 dark:text-white">{currentDetail.question_text}</p>
 
                                     <div className="space-y-2 text-sm">
+                                        {currentDetail.question_type === 'matching' ? (
+                                            <MatchingResult detail={currentDetail} t={t} />
+                                        ) : currentDetail.is_multi_select ? (
+                                            <MultiSelectResult detail={currentDetail} t={t} />
+                                        ) : (
+                                        <>
                                         <div className={`rounded-lg border p-3 ${
                                             currentDetail.is_correct
                                                 ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-200'
@@ -633,6 +639,8 @@ export default function Result({ attempt, certification, details, mastery, compa
                                                     </div>
                                                 )}
                                             </div>
+                                        )}
+                                        </>
                                         )}
 
                                         {currentDetail.explanation && (
@@ -781,5 +789,115 @@ export default function Result({ attempt, certification, details, mastery, compa
                 document.body
             )}
         </AppLayout>
+    );
+}
+
+/**
+ * Multi-select result feedback : show what the user picked (with per-item
+ * correct/wrong marker) side-by-side with the expected set. All-or-nothing
+ * scoring means users need to see WHICH item they missed or wrongly added.
+ */
+function MultiSelectResult({ detail, t }) {
+    const chosen = detail.chosen_list ?? [];
+    const correct = detail.correct_list ?? [];
+    const correctIds = new Set(correct.map((a) => a.id));
+    const chosenIds = new Set(chosen.map((a) => a.id));
+
+    return (
+        <div className="space-y-2">
+            <div className={`rounded-lg border p-3 ${
+                detail.is_correct
+                    ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-200'
+                    : 'border-rose-500/30 bg-rose-500/10 text-rose-800 dark:text-rose-200'
+            }`}>
+                <div className="text-[10px] font-semibold uppercase tracking-wider opacity-70">
+                    {t('exam_result.multi_your_picks', { n: chosen.length })}
+                </div>
+                {chosen.length === 0 ? (
+                    <div className="mt-1 italic opacity-70">{t('exam_result.not_answered')}</div>
+                ) : (
+                    <ul className="mt-1 space-y-1">
+                        {chosen.map((a) => (
+                            <li key={a.id} className="flex items-start gap-2">
+                                <span className={`mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded ${
+                                    correctIds.has(a.id) ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                                }`}>
+                                    <Icon.Check className="h-3 w-3" />
+                                </span>
+                                <span>{a.letter}. {a.text}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+            {!detail.is_correct && (
+                <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-emerald-800 dark:text-emerald-200">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider opacity-70">
+                        {t('exam_result.multi_expected_picks', { n: correct.length })}
+                    </div>
+                    <ul className="mt-1 space-y-1">
+                        {correct.map((a) => (
+                            <li key={a.id} className="flex items-start gap-2">
+                                <span className={`mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded ${
+                                    chosenIds.has(a.id) ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'
+                                }`}>
+                                    {chosenIds.has(a.id) ? <Icon.Check className="h-3 w-3" /> : <Icon.Bolt className="h-3 w-3" />}
+                                </span>
+                                <span>{a.letter}. {a.text}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+}
+
+/**
+ * Matching result : two-column comparison of user pairs vs expected pairs.
+ * Each row shows the left item and both the picked right (with color) and
+ * the correct right if different.
+ */
+function MatchingResult({ detail, t }) {
+    const expected = Object.fromEntries((detail.matching_pairs ?? []).map((p) => [p.left, p.right]));
+    const given = detail.matching_answer ?? {};
+
+    return (
+        <div className={`rounded-lg border p-3 ${
+            detail.is_correct
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-200'
+                : 'border-rose-500/30 bg-rose-500/10 text-rose-800 dark:text-rose-200'
+        }`}>
+            <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider opacity-70">
+                {t('exam_result.matching_summary')}
+            </div>
+            <ul className="space-y-1.5 text-xs">
+                {Object.entries(expected).map(([left, expectedRight]) => {
+                    const userRight = given[left] ?? null;
+                    const isRight = userRight === expectedRight;
+                    return (
+                        <li key={left} className="grid grid-cols-[auto_1fr_auto_1fr] items-center gap-1.5">
+                            <span className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded ${
+                                isRight ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                            }`}>
+                                {isRight ? <Icon.Check className="h-3 w-3" /> : <Icon.Close className="h-3 w-3" />}
+                            </span>
+                            <span className="font-medium">{left}</span>
+                            <Icon.ArrowRight className="h-3 w-3 opacity-60" />
+                            <span>
+                                <span className={isRight ? '' : 'line-through opacity-70'}>
+                                    {userRight ?? '—'}
+                                </span>
+                                {!isRight && (
+                                    <span className="ml-2 font-semibold text-emerald-700 dark:text-emerald-300">
+                                        {expectedRight}
+                                    </span>
+                                )}
+                            </span>
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
     );
 }

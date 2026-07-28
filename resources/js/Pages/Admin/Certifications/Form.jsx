@@ -30,6 +30,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
         duration_minutes: certification?.duration_minutes ?? 60,
         passing_score: certification?.passing_score ?? 26,
         total_questions: certification?.total_questions ?? 40,
+        navigation_mode: certification?.navigation_mode ?? 'free',
         validity_months: certification?.validity_months ?? '',
         validity_note: certification?.validity_note ?? '',
         version_retires_at: certification?.version_retires_at
@@ -371,6 +372,60 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     value={data.total_questions}
                                     onChange={(e) => setData('total_questions', +e.target.value)}
                                 />
+                            </Field>
+                        </div>
+                        <div className="mt-4">
+                            <Field
+                                label={t('admin.certs_form.field_navigation_mode')}
+                                error={errors.navigation_mode}
+                            >
+                                <p className="mb-2 text-xs text-ink-500 dark:text-ink-400">
+                                    {data.navigation_mode === 'sequential_locked'
+                                        ? t('admin.certs_form.field_navigation_mode_help_locked')
+                                        : t('admin.certs_form.field_navigation_mode_help_free')}
+                                </p>
+                                <div className="grid gap-2 sm:grid-cols-2">
+                                    <label className={`cursor-pointer rounded-xl border-2 p-3 transition ${
+                                        data.navigation_mode === 'free'
+                                            ? 'border-brand-500 bg-brand-500/5'
+                                            : 'border-ink-200 hover:border-ink-300 dark:border-ink-800'
+                                    }`}>
+                                        <input
+                                            type="radio"
+                                            name="navigation_mode"
+                                            value="free"
+                                            checked={data.navigation_mode === 'free'}
+                                            onChange={() => setData('navigation_mode', 'free')}
+                                            className="sr-only"
+                                        />
+                                        <div className="text-sm font-semibold text-ink-900 dark:text-white">
+                                            {t('admin.certs_form.field_navigation_mode_free_title')}
+                                        </div>
+                                        <div className="mt-1 text-xs text-ink-500">
+                                            {t('admin.certs_form.field_navigation_mode_free_subtitle')}
+                                        </div>
+                                    </label>
+                                    <label className={`cursor-pointer rounded-xl border-2 p-3 transition ${
+                                        data.navigation_mode === 'sequential_locked'
+                                            ? 'border-brand-500 bg-brand-500/5'
+                                            : 'border-ink-200 hover:border-ink-300 dark:border-ink-800'
+                                    }`}>
+                                        <input
+                                            type="radio"
+                                            name="navigation_mode"
+                                            value="sequential_locked"
+                                            checked={data.navigation_mode === 'sequential_locked'}
+                                            onChange={() => setData('navigation_mode', 'sequential_locked')}
+                                            className="sr-only"
+                                        />
+                                        <div className="text-sm font-semibold text-ink-900 dark:text-white">
+                                            {t('admin.certs_form.field_navigation_mode_locked_title')}
+                                        </div>
+                                        <div className="mt-1 text-xs text-ink-500">
+                                            {t('admin.certs_form.field_navigation_mode_locked_subtitle')}
+                                        </div>
+                                    </label>
+                                </div>
                             </Field>
                         </div>
                     </section>

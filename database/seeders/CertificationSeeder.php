@@ -50,6 +50,9 @@ class CertificationSeeder extends Seeder
                     'duration_minutes' => $data['duration_minutes'] ?? 60,
                     'passing_score' => $data['passing_score'] ?? 26,
                     'total_questions' => $data['total_questions'] ?? 40,
+                    'min_questions' => $data['min_questions'] ?? null,
+                    'max_questions' => $data['max_questions'] ?? null,
+                    'navigation_mode' => $data['navigation_mode'] ?? 'free',
                     'validity_months' => $data['validity_months'] ?? null,
                     'validity_note' => $data['validity_note'] ?? null,
                     'version_retires_at' => $data['version_retires_at'] ?? null,
@@ -59,6 +62,9 @@ class CertificationSeeder extends Seeder
                     'syllabus_blueprint' => $data['syllabus_blueprint'] ?? null,
                     'is_active' => $data['is_active'] ?? true,
                     'available_languages' => $data['available_languages'] ?? ['fr'],
+                    // Canonical language for the flat columns. Legacy snapshots
+                    // predating this field fall back to 'fr' (existing content).
+                    'default_language' => $data['default_language'] ?? 'fr',
                 ]
             );
 
@@ -81,6 +87,8 @@ class CertificationSeeder extends Seeder
                     'scenario' => $qData['scenario'] ?? null,
                     'question_text' => $qData['question_text'],
                     'explanation' => $qData['explanation'] ?? null,
+                    'question_type' => $qData['question_type'] ?? 'multiple_choice',
+                    'matching_pairs' => $qData['matching_pairs'] ?? null,
                 ]);
                 foreach ($qData['answers'] as $aData) {
                     Answer::create([

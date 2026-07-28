@@ -17,8 +17,21 @@ class SettingSeeder extends Seeder
             return;
         }
 
-        $settings = json_decode(File::get($file), true) ?: [];
+        $raw = json_decode(File::get($file), true) ?: [];
         Storage::disk('public')->makeDirectory('brand');
+
+        // Accept both shapes :
+        //   [{"key": "x", "value": "y"}, ...]   (array of pairs, historique)
+        //   {"x": "y", "z": "w"}                (map, produit par certifloop:dump-seeders)
+        $pairs = [];
+        if (array_is_list($raw)) {
+            $pairs = $raw;
+        } else {
+            foreach ($raw as $key => $value) {
+                $pairs[] = ['key' => $key, 'value' => $value];
+            }
+        }
+        $settings = $pairs;
 
         foreach ($settings as $setting) {
             // Si un logo de marque est référencé, restaure le fichier

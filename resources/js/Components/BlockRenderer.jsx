@@ -1,5 +1,6 @@
 import Icon from '@/Components/Icons';
 import { useT } from '@/lib/i18n';
+import { useEffect, useId, useRef, useState } from 'react';
 
 // Inline text renderer - supports **bold**, *italic*, `code`, [text](url)
 function renderInline(text) {
@@ -244,6 +245,85 @@ function Code({ language, content }) {
     );
 }
 
+/**
+ * Mermaid diagram block. Lazy-loads mermaid.js only when this component
+ * mounts (so pages without diagrams don't pay the ~150 KB gzipped cost).
+ * Renders to SVG using mermaid.render(), catches parse errors gracefully
+ * and shows a code fallback so the diagram source is never lost.
+ */
+function Mermaid({ code = '', caption = '' }) {
+    const t = useT();
+    const containerRef = useRef(null);
+    const uid = useId().replace(/[^a-z0-9]/gi, '');
+    const [error, setError] = useState(null);
+    const [svg, setSvg] = useState(null);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        (async () => {
+            try {
+                const mod = await import('mermaid');
+                const mermaid = mod.default || mod;
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+                    fontFamily: 'inherit',
+                    securityLevel: 'strict',
+                });
+                const { svg: rendered } = await mermaid.render('mmd-' + uid, code);
+                if (!cancelled) {
+                    setSvg(rendered);
+                    setError(null);
+                }
+            } catch (e) {
+                if (!cancelled) {
+                    setError(e?.message || String(e));
+                    setSvg(null);
+                }
+            }
+        })();
+
+        return () => { cancelled = true; };
+    }, [code, uid]);
+
+    return (
+        <figure className="mt-6 overflow-hidden rounded-2xl border border-ink-200 bg-white dark:border-ink-800 dark:bg-ink-900/40">
+            <div className="border-b border-ink-200 bg-ink-50/60 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-ink-500 dark:border-ink-800 dark:bg-ink-900/60">
+                {t('block_renderer.mermaid_label')}
+            </div>
+            <div className="flex justify-center p-4">
+                {error ? (
+                    <div className="w-full">
+                        <div className="mb-2 rounded-lg border border-rose-500/30 bg-rose-500/5 px-3 py-2 text-xs text-rose-600 dark:text-rose-300">
+                            {t('block_renderer.mermaid_error')} <span className="font-mono">{error}</span>
+                        </div>
+                        <pre className="overflow-x-auto rounded-lg bg-ink-950 p-3 font-mono text-[11px] leading-relaxed text-ink-100">
+                            {code}
+                        </pre>
+                    </div>
+                ) : svg ? (
+                    <div
+                        ref={containerRef}
+                        className="mermaid-svg max-w-full [&_svg]:h-auto [&_svg]:max-w-full"
+                        // Mermaid returns sanitized SVG (securityLevel:'strict'), safe to inline
+                        dangerouslySetInnerHTML={{ __html: svg }}
+                    />
+                ) : (
+                    <div className="py-8 font-mono text-xs text-ink-400">
+                        {t('block_renderer.mermaid_loading')}
+                    </div>
+                )}
+            </div>
+            {caption && (
+                <figcaption className="border-t border-ink-200 bg-ink-50/40 px-4 py-2 text-center text-sm italic text-ink-600 dark:border-ink-800 dark:bg-ink-900/40 dark:text-ink-400">
+                    {renderInline(String(caption))}
+                </figcaption>
+            )}
+        </figure>
+    );
+}
+
 function Summary({ title = 'À retenir', items = [] }) {
     return (
         <div className="mt-8 rounded-2xl border border-ink-900 bg-ink-900 p-6 text-white dark:border-white dark:bg-white dark:text-ink-900">
@@ -286,6 +366,8 @@ function Block({ block }) {
             return <Code language={block.language} content={block.content} />;
         case 'summary':
             return <Summary title={block.title} items={block.items} />;
+        case 'mermaid':
+            return <Mermaid code={block.code} caption={block.caption} />;
         default:
             return null;
     }

@@ -21,38 +21,47 @@ class QuestionController extends Controller
     public function index(Request $request): Response
     {
         $certificationId = $request->integer('certification_id');
-        $certifications = Certification::orderBy('title')->get(['id', 'title', 'logo_path']);
+        $certifications = Certification::orderBy('title')->get(['id', 'title', 'logo_path', 'default_language']);
 
-        $questionsQuery = Question::query()->with('answers', 'certification:id,title,logo_path');
+        $questionsQuery = Question::query()->with('answers', 'certification:id,title,logo_path,default_language');
         if ($certificationId) {
             $questionsQuery->where('certification_id', $certificationId);
         }
         $questions = $questionsQuery->orderBy('certification_id')->orderBy('position')->get();
 
+        // UI locale drives which translation is shown in the list preview. Falls
+        // back to the cert's canonical language when the current locale has no
+        // translation for that field.
+        $locale = app()->getLocale();
+
         return Inertia::render('Admin/Questions/Index', [
             'certifications' => $certifications,
             'selected_certification_id' => $certificationId ?: null,
-            'questions' => $questions->map(fn (Question $q) => [
-                'id' => $q->id,
-                'position' => $q->position,
-                'topic' => $q->topic,
-                'scenario' => $q->scenario,
-                'question_text' => $q->question_text,
-                'explanation' => $q->explanation,
-                'certification' => [
-                    'id' => $q->certification->id,
-                    'title' => $q->certification->title,
-                    'logo_path' => $q->certification->logo_path,
-                ],
-                'answers_count' => $q->answers->count(),
-                'correct_letter' => optional($q->answers->firstWhere('is_correct', true))->letter,
-                'answers' => $q->answers->map(fn ($a) => [
-                    'letter' => $a->letter,
-                    'text' => $a->answer_text,
-                    'rationale' => $a->rationale,
-                    'is_correct' => $a->is_correct,
-                ]),
-            ]),
+            'preview_locale' => $locale,
+            'questions' => $questions->map(function (Question $q) use ($locale) {
+                $canonical = $q->certification->default_language ?? 'fr';
+                return [
+                    'id' => $q->id,
+                    'position' => $q->position,
+                    'topic' => $q->localized($locale, 'topic', $canonical),
+                    'scenario' => $q->localized($locale, 'scenario', $canonical),
+                    'question_text' => $q->localized($locale, 'question_text', $canonical),
+                    'explanation' => $q->localized($locale, 'explanation', $canonical),
+                    'certification' => [
+                        'id' => $q->certification->id,
+                        'title' => $q->certification->title,
+                        'logo_path' => $q->certification->logo_path,
+                    ],
+                    'answers_count' => $q->answers->count(),
+                    'correct_letter' => optional($q->answers->firstWhere('is_correct', true))->letter,
+                    'answers' => $q->answers->map(fn ($a) => [
+                        'letter' => $a->letter,
+                        'text' => $a->localized($locale, 'answer_text', $canonical),
+                        'rationale' => $a->localized($locale, 'rationale', $canonical),
+                        'is_correct' => $a->is_correct,
+                    ]),
+                ];
+            }),
         ]);
     }
 
@@ -265,11 +274,28 @@ class QuestionController extends Controller
 
         $normalized = [];
         foreach ($decoded as $i => $item) {
+            // Normalize question_type: only "multi_select" and "matching" are non-default.
+            $rawType = $item['question_type'] ?? null;
+            $qType = in_array($rawType, ['multi_select', 'matching'], true) ? $rawType : 'single_choice';
+            // Persist "multiple_choice" for both single_choice and multi_select
+            // (existing storage enum). "matching" is stored as-is.
+            $storedType = $qType === 'matching' ? 'matching' : 'multiple_choice';
+
             $answers = $item['answers'] ?? [];
-            if (!is_array($answers) || count($answers) < 2 || count($answers) > 6) {
-                throw ValidationException::withMessages([
-                    'payload' => __('flash.questions_row_bad_shape', ['n' => $i + 1]),
-                ]);
+            $matchingPairs = $item['matching_pairs'] ?? [];
+
+            if ($qType === 'matching') {
+                if (!is_array($matchingPairs) || count($matchingPairs) < 2 || count($matchingPairs) > 8) {
+                    throw ValidationException::withMessages([
+                        'payload' => __('flash.questions_row_bad_shape', ['n' => $i + 1]),
+                    ]);
+                }
+            } else {
+                if (!is_array($answers) || count($answers) < 2 || count($answers) > 6) {
+                    throw ValidationException::withMessages([
+                        'payload' => __('flash.questions_row_bad_shape', ['n' => $i + 1]),
+                    ]);
+                }
             }
 
             // Question text is either a string (single-lang) or an object { lang: string } (multilingual)
@@ -294,35 +320,73 @@ class QuestionController extends Controller
             );
 
             $cleanAnswers = [];
-            $correctCount = 0;
-            foreach ($answers as $a) {
-                [$textCanonical, $textTranslations] = $this->localizeStringField(
-                    $a['text'] ?? null, $canonical, $availableLangs, $i + 1, 'answer text', required: true,
-                );
-                if ($textCanonical === '') {
-                    throw ValidationException::withMessages([
-                        'payload' => __('flash.questions_row_empty_answer', ['n' => $i + 1]),
-                    ]);
+            $cleanPairs = null;
+
+            if ($qType === 'matching') {
+                // matching stores canonical pairs on the question, translations
+                // in the translations map under key 'matching_pairs'.
+                $canonicalPairs = [];
+                $pairTranslations = []; // [lang => [ ['left','right'], ...]]
+                foreach ($matchingPairs as $pi => $pair) {
+                    [$leftCanonical, $leftTranslations] = $this->localizeStringField(
+                        $pair['left'] ?? null, $canonical, $availableLangs, $i + 1, 'matching left', required: true,
+                    );
+                    [$rightCanonical, $rightTranslations] = $this->localizeStringField(
+                        $pair['right'] ?? null, $canonical, $availableLangs, $i + 1, 'matching right', required: true,
+                    );
+                    $canonicalPairs[] = ['left' => $leftCanonical, 'right' => $rightCanonical];
+                    foreach ($leftTranslations as $lang => $val) {
+                        $pairTranslations[$lang][$pi]['left'] = $val;
+                    }
+                    foreach ($rightTranslations as $lang => $val) {
+                        $pairTranslations[$lang][$pi]['right'] = $val;
+                    }
                 }
-                [$rationaleCanonical, $rationaleTranslations] = $this->localizeStringField(
-                    $a['rationale'] ?? null, $canonical, $availableLangs, $i + 1, 'rationale', required: false,
-                );
-                $correct = (bool) ($a['correct'] ?? false);
-
-                $cleanAnswers[] = [
-                    'text' => $textCanonical,
-                    'text_translations' => $textTranslations,
-                    'correct' => $correct,
-                    'rationale' => $rationaleCanonical,
-                    'rationale_translations' => $rationaleTranslations,
+                $cleanPairs = [
+                    'canonical' => $canonicalPairs,
+                    'translations' => $pairTranslations,
                 ];
-                if ($correct) $correctCount++;
-            }
+                // Still create the 2 canonical answers for correct/incorrect scoring
+                // placeholder? No — matching questions have no answers.
+            } else {
+                $correctCount = 0;
+                foreach ($answers as $a) {
+                    [$textCanonical, $textTranslations] = $this->localizeStringField(
+                        $a['text'] ?? null, $canonical, $availableLangs, $i + 1, 'answer text', required: true,
+                    );
+                    if ($textCanonical === '') {
+                        throw ValidationException::withMessages([
+                            'payload' => __('flash.questions_row_empty_answer', ['n' => $i + 1]),
+                        ]);
+                    }
+                    [$rationaleCanonical, $rationaleTranslations] = $this->localizeStringField(
+                        $a['rationale'] ?? null, $canonical, $availableLangs, $i + 1, 'rationale', required: false,
+                    );
+                    $correct = (bool) ($a['correct'] ?? false);
 
-            if ($correctCount !== 1) {
-                throw ValidationException::withMessages([
-                    'payload' => __('flash.questions_row_wrong_correct_count', ['n' => $i + 1, 'count' => $correctCount]),
-                ]);
+                    $cleanAnswers[] = [
+                        'text' => $textCanonical,
+                        'text_translations' => $textTranslations,
+                        'correct' => $correct,
+                        'rationale' => $rationaleCanonical,
+                        'rationale_translations' => $rationaleTranslations,
+                    ];
+                    if ($correct) $correctCount++;
+                }
+
+                if ($qType === 'multi_select') {
+                    if ($correctCount < 2 || $correctCount > 3) {
+                        throw ValidationException::withMessages([
+                            'payload' => __('flash.questions_row_wrong_correct_count', ['n' => $i + 1, 'count' => $correctCount]),
+                        ]);
+                    }
+                } else {
+                    if ($correctCount !== 1) {
+                        throw ValidationException::withMessages([
+                            'payload' => __('flash.questions_row_wrong_correct_count', ['n' => $i + 1, 'count' => $correctCount]),
+                        ]);
+                    }
+                }
             }
 
             // Merge per-field translation buckets into a single translations map per row.
@@ -332,6 +396,12 @@ class QuestionController extends Controller
                 'scenario' => $scenarioTranslations,
                 'explanation' => $explanationTranslations,
             ]);
+            // Inject matching_pairs translations into the question translations map.
+            if ($cleanPairs && !empty($cleanPairs['translations'])) {
+                foreach ($cleanPairs['translations'] as $lang => $pairs) {
+                    $questionTranslationsMerged[$lang]['matching_pairs'] = $pairs;
+                }
+            }
 
             $normalized[] = [
                 'topic' => $topicCanonical,
@@ -340,6 +410,8 @@ class QuestionController extends Controller
                 'explanation' => $explanationCanonical,
                 'translations' => $questionTranslationsMerged,
                 'answers' => $cleanAnswers,
+                'question_type' => $storedType,
+                'matching_pairs' => $cleanPairs['canonical'] ?? null,
             ];
         }
 
@@ -356,6 +428,8 @@ class QuestionController extends Controller
                     'question_text' => $q['question'],
                     'explanation' => $q['explanation'] ?? null,
                     'translations' => $q['translations'] ?: null,
+                    'question_type' => $q['question_type'],
+                    'matching_pairs' => $q['matching_pairs'],
                 ]);
 
                 foreach ($q['answers'] as $idx => $a) {
