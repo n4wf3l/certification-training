@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
+            // SecurityHeaders en tete : pose les headers de securite sur toutes
+            // les reponses web (nosniff, X-Frame-Options, Referrer-Policy, HSTS si HTTPS).
+            \App\Http\Middleware\SecurityHeaders::class,
             // SetLocale AVANT HandleInertiaRequests pour que la locale resolue
             // soit disponible quand HandleInertiaRequests partage le dict au front.
             \App\Http\Middleware\SetLocale::class,

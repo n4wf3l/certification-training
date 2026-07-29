@@ -35,7 +35,9 @@ export default function Take({ attempt, certification, questions, cert_progress 
         if (current > maxReachedRef.current) maxReachedRef.current = current;
     }, [current]);
     // Wrapper defensif : en mode locked, refuse tout setCurrent < maxReached.
+    // Bloque aussi toute navigation une fois le timer expire (frozen).
     const safeSetCurrent = (updater) => {
+        if (frozenRef.current) return;
         setCurrent((c) => {
             const next = typeof updater === 'function' ? updater(c) : updater;
             if (isLockedNav && next < maxReachedRef.current) return c;
@@ -62,6 +64,21 @@ export default function Take({ attempt, certification, questions, cert_progress 
         const elapsed = Math.floor((Date.now() - startedAt) / 1000);
         return Math.max(0, totalSeconds - elapsed);
     });
+
+    // Timer expire : on gele toutes les interactions (clic reponse, nav, raccourcis)
+    // avant meme que le POST submit ne parte. Evite le tir groupe "clic + expire".
+    const [frozen, setFrozen] = useState(false);
+    const frozenRef = useRef(false);
+    useEffect(() => { frozenRef.current = frozen; }, [frozen]);
+
+    // Mode locked (CCNA-like) : une reponse n'est "committee" qu'apres Next.
+    // Le set des question IDs committees est envoye tel quel au submit ; la
+    // selection en cours (non-committee) est perdue si le timer expire.
+    const [committedIds, setCommittedIds] = useState(() => new Set());
+
+    // Warning 15 minutes (mode free = ITIL-like). Trigger une fois, non bloquant.
+    const [warn15Open, setWarn15Open] = useState(false);
+    const warn15FiredRef = useRef(false);
 
     // Intro cinematic : au chargement de l'examen on plonge la page dans le
     // noir en gardant seulement le compteur qui tourne, puis on fond vers le
@@ -91,9 +108,18 @@ export default function Take({ attempt, certification, questions, cert_progress 
             const elapsed = Math.floor((Date.now() - startedAt) / 1000);
             const rem = Math.max(0, totalSeconds - elapsed);
             setRemaining(rem);
+            // 15-min warning (mode free uniquement, matches PeopleCert/ITIL)
+            if (!warn15FiredRef.current && !isLockedNav && rem > 0 && rem <= 15 * 60) {
+                warn15FiredRef.current = true;
+                setWarn15Open(true);
+            }
             if (rem <= 0) {
                 clearInterval(timer);
-                submit();
+                // Gele l'UI AVANT d'appeler submit : les selections restees non
+                // committees en mode locked seront ignorees par l'appel submit(true).
+                setFrozen(true);
+                frozenRef.current = true;
+                submit(true);
             }
         }, 1000);
         return () => clearInterval(timer);
@@ -102,6 +128,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
     useEffect(() => {
         const handler = (e) => {
+            if (frozenRef.current) return;
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if (e.key === 'ArrowLeft') safeSetCurrent((c) => Math.max(0, c - 1));
             if (e.key === 'ArrowRight') safeSetCurrent((c) => Math.min(questions.length - 1, c + 1));
@@ -195,6 +222,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
     // Single-choice pick : single answer_id, with auto-advance if enabled.
     const pick = (questionId, answerId) => {
+        if (frozenRef.current) return;
         if (isInstant && answers[questionId]) return;
         setAnswers((a) => ({ ...a, [questionId]: answerId }));
         if (answerMode === 'auto' && !isInstant) {
@@ -214,6 +242,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
     // Multi-select toggle : add/remove from the array. No auto-advance (user
     // needs to pick multiple items and click Next themselves).
     const toggleMulti = (questionId, answerId) => {
+        if (frozenRef.current) return;
         if (isInstant && Array.isArray(answers[questionId]) && answers[questionId].length > 0) return;
         setAnswers((a) => {
             const current = Array.isArray(a[questionId]) ? a[questionId] : [];
@@ -225,6 +254,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
     // Matching : record left -> right mapping.
     const setMatchingPair = (questionId, leftKey, rightKey) => {
+        if (frozenRef.current) return;
         setAnswers((a) => ({
             ...a,
             [questionId]: {
@@ -234,6 +264,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
         }));
     };
     const clearMatchingPair = (questionId, leftKey) => {
+        if (frozenRef.current) return;
         setAnswers((a) => {
             const bucket = { ...(typeof a[questionId] === 'object' && a[questionId] !== null ? a[questionId] : {}) };
             delete bucket[leftKey];
@@ -241,13 +272,30 @@ export default function Take({ attempt, certification, questions, cert_progress 
         });
     };
 
-    const submit = () => {
+    // fromTimer = true : le timer a expire, on n'auto-commit PAS la selection
+    // en cours (matches CCNA reality : reponse selectionnee sans Next = perdue).
+    // fromTimer = false : soumission manuelle (Finish/last-question Next), on
+    // commit la selection courante si elle est repondue.
+    const submit = (fromTimer = false) => {
         if (submittingRef.current) return;
         submittingRef.current = true;
         setSubmitting(true);
+
+        let payloadAnswers = answers;
+        if (isLockedNav) {
+            const committedNow = new Set(committedIds);
+            if (!fromTimer) {
+                const qq = questions[current];
+                if (qq && isAnswered(qq, answers[qq.id])) committedNow.add(qq.id);
+            }
+            payloadAnswers = Object.fromEntries(
+                Object.entries(answers).filter(([qid]) => committedNow.has(Number(qid)))
+            );
+        }
+
         router.post(
             route('exam.submit', attempt.id),
-            { answers },
+            { answers: payloadAnswers },
             { onFinish: () => setSubmitting(false) }
         );
     };
@@ -282,8 +330,28 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
     const cancelLeave = () => setPendingLeave(null);
 
-    const prevQ = () => safeSetCurrent((c) => Math.max(0, c - 1));
-    const nextQ = () => safeSetCurrent((c) => Math.min(totalQuestions - 1, c + 1));
+    const prevQ = () => {
+        if (frozenRef.current) return;
+        safeSetCurrent((c) => Math.max(0, c - 1));
+    };
+    const nextQ = () => {
+        if (frozenRef.current) return;
+        // En mode locked, cliquer Next commit definitivement la selection
+        // courante (si repondue). Une question skip (non repondue) reste
+        // non-committee = comptera 0 point a la correction.
+        if (isLockedNav) {
+            const qq = questions[current];
+            if (qq && isAnswered(qq, answers[qq.id])) {
+                setCommittedIds((s) => {
+                    if (s.has(qq.id)) return s;
+                    const next = new Set(s);
+                    next.add(qq.id);
+                    return next;
+                });
+            }
+        }
+        safeSetCurrent((c) => Math.min(totalQuestions - 1, c + 1));
+    };
     const timeCritical = remaining < 60;
 
     return (
@@ -489,7 +557,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             ) : (
                                 <button
                                     onClick={prevQ}
-                                    disabled={current === 0}
+                                    disabled={current === 0 || frozen}
                                     className="btn-secondary"
                                 >
                                     <Icon.ArrowLeft className="h-4 w-4" />
@@ -497,12 +565,12 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 </button>
                             )}
                             {current < totalQuestions - 1 ? (
-                                <button onClick={nextQ} className="btn-primary">
+                                <button onClick={nextQ} disabled={frozen} className="btn-primary">
                                     {t('exam_take.next')}
                                     <Icon.ArrowRight className="h-4 w-4" />
                                 </button>
                             ) : (
-                                <button onClick={submit} disabled={submitting} className="btn-primary bg-gradient-to-r from-emerald-500 to-teal-500">
+                                <button onClick={() => submit(false)} disabled={submitting || frozen} className="btn-primary bg-gradient-to-r from-emerald-500 to-teal-500">
                                     {submitting ? t('exam_take.submitting') : t('exam_take.finish_exam')}
                                     <Icon.Check className="h-4 w-4" />
                                 </button>
@@ -562,8 +630,8 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             </div>
                         )}
                         <button
-                            onClick={submit}
-                            disabled={submitting}
+                            onClick={() => submit(false)}
+                            disabled={submitting || frozen}
                             className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 !py-3"
                         >
                             {submitting ? t('exam_take.submitting') : t('exam_take.finish')}
@@ -678,6 +746,54 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 {t('exam_take.exit_quit')}
                             </button>
                         </div>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {/* Warning 15 minutes restantes (ITIL-like, mode free) */}
+            {warn15Open && typeof document !== 'undefined' && createPortal(
+                <div
+                    className="fixed inset-0 z-[110] flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
+                    onClick={() => setWarn15Open(false)}
+                >
+                    <div className="card w-full max-w-md animate-scale-in p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="mb-4 flex items-center gap-3">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-amber-500/15 text-amber-500">
+                                <Icon.Bolt className="h-5 w-5" />
+                            </div>
+                            <h3 className="text-lg font-bold text-ink-900 dark:text-white">
+                                {t('exam_take.warn15_title')}
+                            </h3>
+                        </div>
+                        <p className="mb-5 text-sm text-ink-600 dark:text-ink-300">
+                            {t('exam_take.warn15_body')}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => setWarn15Open(false)}
+                            className="btn-primary w-full"
+                        >
+                            {t('exam_take.warn15_ok')}
+                        </button>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {/* Overlay "temps ecoule" - gele l'UI pendant le POST auto-submit */}
+            {frozen && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 z-[120] flex items-center justify-center bg-ink-950/80 p-4 backdrop-blur-sm animate-fade-in">
+                    <div className="card w-full max-w-md p-6 text-center">
+                        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-rose-500/15 text-rose-500">
+                            <Icon.Close className="h-6 w-6" />
+                        </div>
+                        <h3 className="mb-2 text-lg font-bold text-ink-900 dark:text-white">
+                            {t('exam_take.time_up_title')}
+                        </h3>
+                        <p className="text-sm text-ink-600 dark:text-ink-300">
+                            {isLockedNav ? t('exam_take.time_up_body_locked') : t('exam_take.time_up_body_free')}
+                        </p>
                     </div>
                 </div>,
                 document.body

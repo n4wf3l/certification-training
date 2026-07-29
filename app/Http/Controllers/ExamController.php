@@ -72,6 +72,11 @@ class ExamController extends Controller
      * En langue canonique : tout est eligible (colonnes directes).
      * En langue traduite : uniquement les questions dont translations->{locale}
      * contient question_text (proxy pour "traduction significative disponible").
+     *
+     * Defense en profondeur : $locale est valide contre un allow-list strict avant
+     * d'etre injecte dans le path json_extract, et le path lui-meme est passe en
+     * parameter binding SQL. Un caller qui oublierait de valider $locale plus haut
+     * ne peut pas ouvrir une injection SQL via cette fonction.
      */
     private function eligibleQuestionsQuery(Certification $certification, string $locale)
     {
@@ -80,8 +85,15 @@ class ExamController extends Controller
         if ($locale === $canonical) {
             return $query;
         }
+        // Allow-list stricte : code ISO 639-1 (2 lettres) + optionnel region ISO 3166 (2 lettres).
+        // Refuser tout autre format = query qui ne matche rien (pas d'erreur, juste vide).
+        if (!preg_match('/^[a-z]{2}(-[A-Z]{2})?$/', $locale)) {
+            return $query->whereRaw('0 = 1');
+        }
+        // Path json_extract passe en binding parametrise pour eviter toute
+        // interpolation directe dans la string SQL, meme apres validation.
         return $query->whereNotNull('translations')
-            ->whereRaw("json_extract(translations, '$.\"" . $locale . "\".question_text') IS NOT NULL");
+            ->whereRaw("json_extract(translations, ?) IS NOT NULL", ["\$.\"{$locale}\".question_text"]);
     }
 
     public function start(Request $request, Certification $certification): RedirectResponse
