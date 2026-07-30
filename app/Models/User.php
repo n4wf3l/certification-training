@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCertificate::class);
     }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(QuestionBookmark::class);
+    }
 }

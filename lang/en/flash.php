@@ -34,6 +34,15 @@ return [
     'study_plan_created' => 'Study plan created.',
     'study_plan_deleted' => 'Plan deleted.',
 
+    'admin_users_role_updated' => 'Role updated for :email (now :role).',
+    'admin_users_deleted' => 'Account :email deleted permanently.',
+    'admin_users_cannot_change_own_role' => 'You cannot change your own role.',
+    'admin_users_cannot_delete_self' => 'You cannot delete your own account from the admin panel.',
+
+    'bookmark_added' => 'Question added to your bookmarks.',
+    'bookmark_removed' => 'Bookmark removed.',
+    'bookmark_note_updated' => 'Note updated.',
+
     'report_duplicate' => 'You already reported this question recently - thanks, we are looking into it.',
     'report_submitted' => 'Report saved. Thanks - an admin will review it.',
     'report_updated' => 'Report updated.',

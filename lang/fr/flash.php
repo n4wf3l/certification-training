@@ -34,6 +34,15 @@ return [
     'study_plan_created' => 'Plan de révision créé.',
     'study_plan_deleted' => 'Plan supprimé.',
 
+    'admin_users_role_updated' => 'Rôle mis à jour pour :email (désormais :role).',
+    'admin_users_deleted' => 'Compte :email supprimé définitivement.',
+    'admin_users_cannot_change_own_role' => 'Tu ne peux pas modifier ton propre rôle.',
+    'admin_users_cannot_delete_self' => 'Tu ne peux pas supprimer ton propre compte depuis le panneau admin.',
+
+    'bookmark_added' => 'Question ajoutée à tes favoris.',
+    'bookmark_removed' => 'Favori retiré.',
+    'bookmark_note_updated' => 'Note mise à jour.',
+
     'report_duplicate' => 'Tu as déjà signalé cette question récemment - merci, on regarde.',
     'report_submitted' => 'Signalement enregistré. Merci - un admin va regarder.',
     'report_updated' => 'Signalement mis à jour.',

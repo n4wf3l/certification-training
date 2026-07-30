@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\CertificationController as AdminCertificationCont
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
 use App\Http\Controllers\Admin\ReportsController as AdminReportsController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AiExplanationController;
+use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ExamController;
@@ -79,6 +81,17 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('throttle:ai-explain')
         ->name('questions.explain');
 
+    // Favoris user (bookmarks) : marquer une question a revoir hors examen.
+    // Toggle : le meme POST cree ou supprime selon l'etat courant.
+    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+    Route::post('/questions/{question}/bookmark', [BookmarkController::class, 'toggle'])
+        ->middleware('throttle:60,1')
+        ->name('bookmarks.toggle');
+    Route::patch('/bookmarks/{bookmark}/note', [BookmarkController::class, 'updateNote'])
+        ->name('bookmarks.updateNote');
+    Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])
+        ->name('bookmarks.destroy');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/export', [ProfileController::class, 'exportData'])
@@ -106,6 +119,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('reports', [AdminReportsController::class, 'index'])->name('reports.index');
     Route::patch('reports/{report}', [AdminReportsController::class, 'update'])->name('reports.update');
+
+    // Gestion utilisateurs : liste + recherche + promote/demote + delete.
+    // Volontairement pas de resource route complete (pas d'edit par admin des
+    // champs email/name de l'user - respect de la souverainete personnelle).
+    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::patch('users/{user}/role', [AdminUserController::class, 'toggleRole'])->name('users.toggleRole');
+    Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 });
 
 require __DIR__.'/auth.php';
