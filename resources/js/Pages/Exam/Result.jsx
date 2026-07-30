@@ -2,6 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import ReportQuestionButton from '@/Components/ReportQuestionButton';
 import ExplainMeButton from '@/Components/ExplainMeButton';
+import BookmarkToggle from '@/Components/BookmarkToggle';
 import { saveExamToCache } from '@/lib/offlineCache';
 import { useT } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
@@ -683,7 +684,12 @@ export default function Result({ attempt, certification, details, mastery, compa
                                             </div>
                                         )}
 
-                                        <div className="flex justify-end pt-2">
+                                        <div className="flex justify-end gap-2 pt-2">
+                                            <BookmarkToggle
+                                                questionId={currentDetail.question_id}
+                                                initialBookmarked={currentDetail.is_bookmarked}
+                                                t={t}
+                                            />
                                             <ReportQuestionButton
                                                 questionId={currentDetail.question_id}
                                                 attemptId={attempt.id}

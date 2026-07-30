@@ -123,6 +123,14 @@ function UserMenu({ user, isAdmin }) {
                             <Icon.Timer className="h-4 w-4 text-ink-500" />
                             {t('user_menu.my_plans')}
                         </Link>
+                        <Link
+                            href={route('bookmarks.index')}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-700 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800/70"
+                        >
+                            <Icon.Sparkles className="h-4 w-4 text-ink-500" />
+                            {t('user_menu.my_bookmarks')}
+                        </Link>
                         {isAdmin && (
                             <Link
                                 href={route('admin.dashboard')}

@@ -437,7 +437,16 @@ class ExamController extends Controller
         $canonical = $attempt->certification->default_language ?? 'en';
         $locale = $attempt->locale ?: $canonical;
 
-        $details = $attempt->attemptAnswers->sortBy('position')->values()->map(function (AttemptAnswer $aa) use ($attempt, $locale, $canonical) {
+        // Bookmarks du user pour toutes les questions vues dans cet examen : loaded
+        // en une seule query pour eviter N+1 dans la map ci-dessous. Utilise par le
+        // BookmarkToggle pour afficher le bon etat initial sans clic.
+        $questionIds = $attempt->attemptAnswers->pluck('question_id')->all();
+        $bookmarkedIds = \App\Models\QuestionBookmark::where('user_id', $attempt->user_id)
+            ->whereIn('question_id', $questionIds)
+            ->pluck('question_id')
+            ->flip();
+
+        $details = $attempt->attemptAnswers->sortBy('position')->values()->map(function (AttemptAnswer $aa) use ($attempt, $locale, $canonical, $bookmarkedIds) {
             $correct = $aa->question->answers->firstWhere('is_correct', true);
             // Rebuild the same shuffled order used during the exam so displayed letters match
             $shuffled = $this->shuffledAnswers($aa->question->answers, $this->answerSeed($attempt->id, $aa->question->id));
@@ -502,6 +511,7 @@ class ExamController extends Controller
                 'syllabus_domain' => $q->syllabus_domain,
                 'question_type' => $q->question_type ?? 'multiple_choice',
                 'is_multi_select' => $q->isMultiSelect(),
+                'is_bookmarked' => $bookmarkedIds->has($q->id),
                 'explanation' => $q->localized($locale, 'explanation', $canonical),
                 'is_correct' => $aa->is_correct,
                 // Legacy shape (single-choice) : keep for backwards compat with the current Result.jsx

@@ -56,6 +56,7 @@ export default function Dashboard({ stats }) {
                         value={stats.users}
                         IconComp={Icon.User}
                         accent="amber"
+                        href={route('admin.users.index')}
                     />
                     <Kpi
                         label={t('admin.dashboard.kpi_attempts')}
@@ -100,10 +101,18 @@ export default function Dashboard({ stats }) {
                     </div>
                 </QuickSection>
 
-                {/* OPERATIONS section - moderation user (Reports) + config plateforme.
-                    Reports affiche un badge pending pour attirer l'attention si actionnable. */}
+                {/* OPERATIONS section - moderation user (Reports) + gestion users + config
+                    plateforme. Reports affiche un badge pending pour attirer l'attention si
+                    actionnable. */}
                 <QuickSection title={t('admin.dashboard.section_operations')}>
                     <div className="grid gap-4 md:grid-cols-2">
+                        <ActionCard
+                            href={route('admin.users.index')}
+                            IconComp={Icon.User}
+                            accent="brand"
+                            title={t('admin.dashboard.action_users_title')}
+                            description={t('admin.dashboard.action_users_desc')}
+                        />
                         <ActionCard
                             href={route('admin.reports.index')}
                             IconComp={Icon.Shield}
