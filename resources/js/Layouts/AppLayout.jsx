@@ -169,11 +169,15 @@ export default function AppLayout({ header, children, full = false, ambient = tr
     const locale = useLocale();
     useFlashToasts();
 
-    const nav = [
-        { href: route('home'), label: t('nav.certifications'), icon: Icon.Book, active: route().current('home') },
+    const otherTabs = [
         ...(user && user.has_attempts ? [{ href: route('stats.index'), label: t('nav.my_stats'), icon: Icon.Chart, active: route().current('stats.*') }] : []),
         ...(isAdmin ? [{ href: route('admin.dashboard'), label: t('nav.dashboard'), icon: Icon.Shield, active: route().current('admin.*'), accent: true }] : []),
     ];
+    // "Certifications" mene a l'accueil, comme le logo : seul, il fait doublon.
+    // Il n'apparait que s'il y a un autre onglet (Mes stats, Dashboard) pour s'y reperer.
+    const nav = otherTabs.length
+        ? [{ href: route('home'), label: t('nav.certifications'), icon: Icon.Book, active: route().current('home') }, ...otherTabs]
+        : [];
 
     const year = new Date().getFullYear();
 
