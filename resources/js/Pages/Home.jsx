@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import HeroQuizTeaser from '@/Components/HeroQuizTeaser';
 import Icon from '@/Components/Icons';
+import StepDemo from '@/Components/StepDemo';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, usePage } from '@inertiajs/react';
 
@@ -279,6 +280,11 @@ export default function Home({ certifications, teaser_questions = null }) {
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                             {t('home.step1_body')}
                         </p>
+                        <StepDemo
+                            src="/media/how-it-works/step1.mp4"
+                            poster="/media/how-it-works/step1.jpg"
+                            label={t('home.step1_video')}
+                        />
                     </div>
                     <div>
                         <div className="font-mono text-xs font-medium text-ink-400">02</div>
@@ -289,6 +295,11 @@ export default function Home({ certifications, teaser_questions = null }) {
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                             {t('home.step2_body')}
                         </p>
+                        <StepDemo
+                            src="/media/how-it-works/step2.mp4"
+                            poster="/media/how-it-works/step2.jpg"
+                            label={t('home.step2_video')}
+                        />
                     </div>
                     <div>
                         <div className="font-mono text-xs font-medium text-ink-400">03</div>
@@ -299,6 +310,11 @@ export default function Home({ certifications, teaser_questions = null }) {
                         <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                             {t('home.step3_body')}
                         </p>
+                        <StepDemo
+                            src="/media/how-it-works/step3.mp4"
+                            poster="/media/how-it-works/step3.jpg"
+                            label={t('home.step3_video')}
+                        />
                     </div>
                 </div>
 

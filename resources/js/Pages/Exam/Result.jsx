@@ -79,7 +79,8 @@ function attemptOrdinal(t, n) {
     if (n === 1) return t('exam_result.attempt_ordinal_1');
     if (n === 2) return t('exam_result.attempt_ordinal_2');
     if (n === 3) return t('exam_result.attempt_ordinal_3');
-    return t('exam_result.attempt_ordinal_n', { n });
+    // Suffixe colle au nombre ("5e", "5th") : un placeholder ":ne" serait lu comme la variable "ne".
+    return `${n}${t('exam_result.attempt_ordinal_suffix')}`;
 }
 
 function ComparisonCard({ comparison, currentDuration }) {
