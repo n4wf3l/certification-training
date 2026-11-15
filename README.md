@@ -147,8 +147,18 @@ Open http://localhost:8000 and log in with the demo accounts:
 
 | Role  | Email              | Password |
 |-------|--------------------|----------|
-| Admin | `admin@demo.test`  | `password` |
-| User  | `user@demo.test`   | `password` |
+| Admin | `admin@example.com`  | `password` |
+| User  | `user@example.com`   | `password` |
+
+These demo accounts are only created outside production.
+
+### Production
+
+Start from `.env.production.example`. In production (`APP_ENV=production`):
+
+- no demo account is seeded; the first admin comes from `ADMIN_EMAIL` / `ADMIN_PASSWORD` (12+ characters) on `php artisan db:seed --force`, and an existing admin is never overwritten;
+- `APP_DEBUG=false`, a real mailer (password reset, email verification, reminders), a permanent `php artisan queue:work` and the scheduler cron are required;
+- the OpenAI key set in `/admin/settings` is stored encrypted with `APP_KEY`: changing `APP_KEY` means re-entering it.
 
 ## Environment configuration
 

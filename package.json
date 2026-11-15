@@ -25,5 +25,11 @@
         "@fontsource/inter": "^5.3.0",
         "@fontsource/jetbrains-mono": "^5.3.0",
         "mermaid": "^11.16.0"
+    },
+    "overrides": {
+        "katex": "^0.19.1",
+        "workbox-build": {
+            "glob": "^14.0.2"
+        }
     }
 }

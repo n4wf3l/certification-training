@@ -1184,7 +1184,7 @@
         "validity_months": 36,
         "validity_note": "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-07-25T16:39:16+00:00",
+        "questions_updated_at": "2026-10-28T21:59:20+00:00",
         "course_blocks": [
             {
                 "type": "heading",
@@ -2804,14 +2804,14 @@
         ],
         "course_updated_at": "2026-07-19T20:55:14+00:00",
         "syllabus_blueprint": {
-            "foundations": 15,
+            "foundations": 30,
             "guiding-principles": 15,
             "four-dimensions": 10,
-            "itil-value-system": 10,
-            "lifecycle-activities": 15,
-            "practices": 20,
-            "continual-improvement": 5,
-            "digital-ai-innovation": 10
+            "lifecycle-activities": 10,
+            "itil-value-system": 8,
+            "practices": 15,
+            "continual-improvement": 7,
+            "digital-ai-innovation": 5
         },
         "is_active": true,
         "available_languages": [
