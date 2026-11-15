@@ -23,7 +23,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/locale', [\App\Http\Controllers\LocaleController::class, 'update'])->name('locale.update');
 
 // Page CGU + politique de confidentialite (statique, publique, no-auth).
-// Rassemble la promesse "gratuit et open source" + inventaire RGPD des donnees traitees.
+// Rassemble la mention "gratuit pour l'instant, payant possible plus tard" + inventaire RGPD des donnees traitees.
 // L'email de contact est injecte depuis config('mail.from.address') pour eviter
 // le hardcode dans les strings i18n.
 Route::get('/legal', fn () => Inertia\Inertia::render('Legal', [
