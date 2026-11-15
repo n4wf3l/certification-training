@@ -1,9 +1,10 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import { useT } from '@/lib/i18n';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword, redirect_to }) {
     const t = useT();
+    const isLocal = usePage().props.app_is_local;
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -126,7 +127,8 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                 {t('auth.terms_notice')}
             </p>
 
-            {/* Dev-only : comptes de test */}
+            {/* Comptes de test : uniquement en local (ils n'existent pas en production). */}
+            {isLocal && (
             <div className="mt-8 rounded-2xl border border-dashed border-brand-500/30 bg-brand-500/5 p-4">
                 <div className="mb-3 flex items-center gap-2">
                     <span className="badge-brand">
@@ -168,6 +170,7 @@ export default function Login({ status, canResetPassword, redirect_to }) {
                     ))}
                 </div>
             </div>
+            )}
         </GuestLayout>
     );
 }

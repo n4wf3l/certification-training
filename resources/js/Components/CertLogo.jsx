@@ -11,7 +11,7 @@ export default function CertLogo({ certification, size = 'md', className = '' })
             <img
                 src={`/storage/${certification.logo_path}`}
                 alt={certification.title || 'logo'}
-                className={`${dims} shrink-0 rounded-lg object-contain ${className}`}
+                className={`${dims} shrink-0 rounded-lg object-contain dark:bg-white dark:p-0.5 ${className}`}
             />
         );
     }

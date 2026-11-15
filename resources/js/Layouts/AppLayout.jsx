@@ -360,13 +360,6 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 {t('footer.tagline')}
                             </p>
                             <div className="mt-5 flex flex-wrap items-center gap-2">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-300">
-                                    <span className="relative flex h-1.5 w-1.5">
-                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                    </span>
-                                    {t('footer.status_operational')}
-                                </span>
                                 <LocaleSwitcher variant="inline" />
                             </div>
                         </div>
@@ -478,7 +471,9 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                     <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-ink-200/60 pt-6 text-xs text-ink-500 dark:border-ink-800/60 dark:text-ink-400 sm:flex-row">
                         <div className="flex items-center gap-2">
                             <span>© {year} {settings?.brand_name || 'CertifLoop'}.</span>
-                            <span>{t('footer.rights')}</span>
+                            <a href="https://github.com/n4wf3l/certification-training" target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-ink-900 hover:underline dark:hover:text-white">
+                                {t('footer.rights')}
+                            </a>
                         </div>
                         <div className="flex items-center gap-4">
                             <span className="inline-flex items-center gap-1.5">

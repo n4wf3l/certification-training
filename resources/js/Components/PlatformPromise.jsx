@@ -1,13 +1,8 @@
 import Icon from '@/Components/Icons';
-import { useT, useLocale } from '@/lib/i18n';
-
-const FREE_UNTIL_USERS = 10000;
+import { useT } from '@/lib/i18n';
 
 export default function PlatformPromise({ compact = false }) {
     const t = useT();
-    const locale = useLocale();
-    const numberLocale = locale === 'fr' ? 'fr-FR' : 'en-US';
-    const usersLabel = FREE_UNTIL_USERS.toLocaleString(numberLocale);
 
     if (compact) {
         return (
@@ -19,10 +14,7 @@ export default function PlatformPromise({ compact = false }) {
                         {t('platform_promise.kicker')}
                     </span>
                     <span className="text-sm text-ink-700 dark:text-ink-200">
-                        {t('platform_promise.compact_body_pre')}{' '}
-                        <span className="font-mono font-bold text-ink-900 dark:text-white">{usersLabel}</span>{' '}
-                        {t('platform_promise.compact_body_users')}{' '}
-                        {t('platform_promise.compact_body_mid')} PeopleCert / Cisco / CompTIA / AWS.
+                        {t('platform_promise.compact_body')} PeopleCert / Cisco / CompTIA / AWS.
                     </span>
                 </div>
             </div>
@@ -50,7 +42,7 @@ export default function PlatformPromise({ compact = false }) {
                             {t('platform_promise.title_pre')} <span className="gradient-text">{t('platform_promise.title_highlight')}</span> {t('platform_promise.title_post')}
                         </h2>
                         <p className="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-400">
-                            {t('platform_promise.subtitle', { phase: t('platform_promise.subtitle_phase'), n: usersLabel })}
+                            {t('platform_promise.subtitle', { phase: t('platform_promise.subtitle_phase') })}
                         </p>
                     </div>
                 </div>

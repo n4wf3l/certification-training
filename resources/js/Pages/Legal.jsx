@@ -20,7 +20,7 @@ function Section({ title, children }) {
 
 const SOURCE_URL = 'https://github.com/n4wf3l/certification-training';
 
-export default function Legal({ contact_email = 'contact@example.com' }) {
+export default function Legal({ contact_email = 'contact@example.com', publisher = {} }) {
     const t = useT();
     return (
         <AppLayout ambient={false}>
@@ -69,6 +69,20 @@ export default function Legal({ contact_email = 'contact@example.com' }) {
                 </div>
 
                 <Section title={t('legal.who_title')}>
+                    {/* Identite de l'editeur (PUBLISHER_* dans .env) : obligatoire en Belgique / UE. */}
+                    {Object.keys(publisher).length > 0 && (
+                        <ul className="space-y-1">
+                            {publisher.name && <li>{t('legal.publisher_name')} <strong>{publisher.name}</strong></li>}
+                            {publisher.company_id && <li>{t('legal.publisher_company_id')} {publisher.company_id}</li>}
+                            {publisher.address && <li>{t('legal.publisher_address')} {publisher.address}</li>}
+                            <li>
+                                {t('legal.publisher_contact')}{' '}
+                                <a href={`mailto:${contact_email}`} className="font-semibold text-brand-500 underline underline-offset-2 hover:text-brand-400">
+                                    {contact_email}
+                                </a>
+                            </li>
+                        </ul>
+                    )}
                     <p>{t('legal.who_body')}</p>
                 </Section>
 

@@ -11,7 +11,7 @@ function Logo({ certification }) {
             <img
                 src={`/storage/${certification.logo_path}`}
                 alt={certification.title}
-                className="h-12 w-12 object-contain"
+                className="h-12 w-12 rounded-md object-contain dark:bg-white dark:p-1"
             />
         );
     }
@@ -73,7 +73,7 @@ function CertificationRow({ certification, index }) {
             <div className="col-span-6 grid grid-cols-3 gap-4 font-mono text-xs sm:col-span-5">
                 <div>
                     <div className="text-[15px] font-medium text-ink-900 dark:text-white">
-                        {certification.available_questions}
+                        {ready ? certification.available_questions : '-'}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-ink-400">
                         {t('home.row_col_questions')}
@@ -90,8 +90,13 @@ function CertificationRow({ certification, index }) {
                 </div>
                 <div>
                     <div className="text-[15px] font-medium text-ink-900 dark:text-white">
-                        {certification.passing_score}
-                        <span className="text-ink-400">/{certification.total_questions}</span>
+                        {/* Seuil non affiche tant que la certif n'est pas en ligne : il n'est pas encore verifie. */}
+                        {ready ? (
+                            <>
+                                {certification.passing_score}
+                                <span className="text-ink-400">/{certification.total_questions}</span>
+                            </>
+                        ) : '-'}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-ink-400">
                         {t('home.row_col_threshold')}
@@ -147,7 +152,7 @@ function LogoCarousel({ certifications }) {
                         <img
                             src={`/storage/${c.logo_path}`}
                             alt=""
-                            className="max-h-14 w-auto max-w-[220px] object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                            className="max-h-14 w-auto max-w-[220px] rounded-lg object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 dark:bg-white dark:p-2"
                             loading="lazy"
                         />
                     </div>
@@ -197,7 +202,7 @@ export default function Home({ certifications, teaser_questions = null }) {
 
                         <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
                             {t('home.hero_subtitle_pre')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_1')}</span>
-                            {t('home.hero_subtitle_mid')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_2')}</span>
+                            {' '}{t('home.hero_subtitle_mid')} <span className="font-semibold text-ink-900 dark:text-white">{t('home.hero_subtitle_strong_2')}</span>
                             {t('home.hero_subtitle_post')}
                         </p>
 

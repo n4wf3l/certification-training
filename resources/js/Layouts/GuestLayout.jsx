@@ -34,7 +34,7 @@ function BrandLogo({ settings, size = 'md', className = '' }) {
 
 export default function GuestLayout({ children, title, subtitle }) {
     useFlashToasts();
-    const settings = usePage().props.settings;
+    const { settings, app_is_local: isLocal } = usePage().props;
     const t = useT();
     const features = [
         { Icon: Icon.Refresh, title: t('guest.feature_repetition_title'), desc: t('guest.feature_repetition_desc') },
@@ -94,9 +94,12 @@ export default function GuestLayout({ children, title, subtitle }) {
                         </ul>
                     </div>
 
-                    <div className="relative text-xs text-ink-400">
-                        {t('guest.test_accounts')} <span className="font-mono text-ink-200">admin@example.com</span> · <span className="font-mono text-ink-200">user@example.com</span> - {t('guest.test_accounts_password')} <span className="font-mono text-ink-200">password</span>
-                    </div>
+                    {/* Comptes de demo : uniquement en local (ils n'existent pas en production). */}
+                    {isLocal && (
+                        <div className="relative text-xs text-ink-400">
+                            {t('guest.test_accounts')} <span className="font-mono text-ink-200">admin@example.com</span> · <span className="font-mono text-ink-200">user@example.com</span> - {t('guest.test_accounts_password')} <span className="font-mono text-ink-200">password</span>
+                        </div>
+                    )}
                 </div>
 
                 {/* RIGHT - Form panel */}

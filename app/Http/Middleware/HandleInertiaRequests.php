@@ -50,7 +50,10 @@ class HandleInertiaRequests extends Middleware
             // Feature flags calcules cote serveur. Le front s'en sert pour afficher
             // "Bientot disponible" plutot que de laisser l'user cliquer sur une
             // fonctionnalite qui va echouer avec un message d'erreur technique.
+            // Environnement local : seul cas ou les comptes de demo sont affiches.
+            'app_is_local' => app()->environment('local'),
             'features' => fn () => [
+                'payments' => (bool) config('certifloop.payments_enabled'),
                 'ai_explain' => ! empty(\App\Models\Setting::get('openai_api_key'))
                     && (int) \App\Models\Setting::get('openai_daily_limit_per_user', 10) > 0,
             ],

@@ -1,6 +1,6 @@
 import Icon from '@/Components/Icons';
 import { useLocale, useT } from '@/lib/i18n';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
 const LS_PICKS = 'hero_quiz.picks';
@@ -25,6 +25,7 @@ function writeLS(key, value) {
 export default function HeroQuizTeaser({ questions: initialQuestions }) {
     const t = useT();
     const locale = useLocale();
+    const payments = Boolean(usePage().props.features?.payments);
     const [questions] = useState(() => {
         const cached = readLS(lsQuestionsKey(locale), null);
         if (Array.isArray(cached) && cached.length > 0) return cached;
@@ -71,7 +72,8 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-70" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
                     </span>
-                    {t('hero_quiz.trial_badge', { n: total })}
+                    {/* "Essai" seulement quand un paiement existe : sinon il n'y a rien a essayer. */}
+                    {t(payments ? 'hero_quiz.trial_badge' : 'hero_quiz.preview_badge', { n: total })}
                 </div>
                 <p className="text-sm text-ink-700 dark:text-ink-200">
                     {t('hero_quiz.body_prefix')}
@@ -87,7 +89,7 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                 <div className="flex items-center justify-between border-b border-ink-200/60 px-4 py-2.5 dark:border-ink-800/60">
                     <div className="flex items-center gap-2 min-w-0">
                         {question.certification.logo_path ? (
-                            <img src={`/storage/${question.certification.logo_path}`} alt="" className="h-6 w-6 shrink-0 object-contain" />
+                            <img src={`/storage/${question.certification.logo_path}`} alt="" className="h-6 w-6 shrink-0 rounded object-contain dark:bg-white dark:p-0.5" />
                         ) : (
                             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gradient-to-br from-brand-500 to-iris-500 text-[9px] font-bold text-white">
                                 {question.certification.title.slice(0, 2).toUpperCase()}

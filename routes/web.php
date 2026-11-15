@@ -28,6 +28,7 @@ Route::post('/locale', [\App\Http\Controllers\LocaleController::class, 'update']
 // le hardcode dans les strings i18n.
 Route::get('/legal', fn () => Inertia\Inertia::render('Legal', [
     'contact_email' => config('mail.from.address') ?: 'contact@example.com',
+    'publisher' => array_filter(config('certifloop.publisher', [])),
 ]))->name('legal');
 
 // Fallback offline (utilise par le service worker quand aucun cache ni reseau)
