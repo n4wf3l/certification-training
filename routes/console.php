@@ -16,3 +16,6 @@ Schedule::command('study-plan:remind')->dailyAt('19:15');
 
 // Digest hebdomadaire des plans : lundi matin 8h
 Schedule::command('study-plan:digest')->weeklyOn(1, '08:00');
+
+// Comptes sans visite depuis 60 jours : prevenance a J-7, puis suppression. Chaque nuit a 3h.
+Schedule::command('accounts:purge-inactive')->dailyAt('03:00');

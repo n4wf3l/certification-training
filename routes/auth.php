@@ -16,7 +16,7 @@ Route::middleware('guest')->group(function () {
         ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store'])
-        ->middleware('throttle:auth');
+        ->middleware(['throttle:auth', 'throttle:register']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');

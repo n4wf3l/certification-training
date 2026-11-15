@@ -164,6 +164,19 @@ CertifLoop runs out of the box with SQLite and Laravel's log-mail driver — zer
 | `OPENAI_MODEL`              | Model name for AI explanations                         | `gpt-4o-mini`  |
 | `AI_EXPLAIN_DAILY_LIMIT`    | Max AI calls per user per day (0 = disabled)           | `10`           |
 
+## Privacy, retention and abuse protection
+
+CertifLoop is open source (MIT) and does not track anyone. Users may sign up under a nickname.
+
+- **No IP address, location or device data is stored.** The `database` session driver is replaced by `App\Support\AnonymousDatabaseSessionHandler`, which leaves `ip_address` and `user_agent` empty. Rate limits key guests on an HMAC of the IP (`App\Support\ClientKey`), which expires with the limit window (one hour at most).
+- **Fonts are self-hosted** (`@fontsource`), so the browser contacts no third party.
+- **Inactive accounts are deleted.** `accounts:purge-inactive` runs every night at 03:00. It emails a warning after 53 days without a visit and deletes the account and all its data after 60 days. Admins are never deleted. Use `--dry-run` to preview. A signed-in visit resets the clock (`TouchLastSeen`, at most one write per day).
+- **Abuse limits.** A global limit of 240 requests per minute per client, sign-ups limited to 3 per hour per client and 200 per day for the whole site, plus the existing limits on login, exams, reports, AI and exports.
+- **On the server:**
+  - real DDoS protection belongs upstream (Cloudflare or `limit_req` in nginx);
+  - turn off or anonymise web server access logs (nginx `access_log off;` or a format without `$remote_addr`), otherwise the IPs end up there;
+  - behind a proxy, configure trusted proxies so that limits apply per visitor and not to the proxy.
+
 ## Development workflow
 
 **Common commands**
