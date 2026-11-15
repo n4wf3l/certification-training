@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             // SecurityHeaders en tete : pose les headers de securite sur toutes
             // les reponses web (nosniff, X-Frame-Options, Referrer-Policy, HSTS si HTTPS).
             \App\Http\Middleware\SecurityHeaders::class,
+            // Filet anti-abus global (RateLimiter 'global', AppServiceProvider).
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':global',
+            // Derniere visite (1 ecriture / jour max) pour la purge des comptes inactifs.
+            \App\Http\Middleware\TouchLastSeen::class,
             // SetLocale AVANT HandleInertiaRequests pour que la locale resolue
             // soit disponible quand HandleInertiaRequests partage le dict au front.
             \App\Http\Middleware\SetLocale::class,

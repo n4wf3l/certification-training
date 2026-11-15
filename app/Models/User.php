@@ -35,6 +35,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_activity_date' => 'date',
+            'last_seen_at' => 'datetime',
+            'inactivity_warned_at' => 'datetime',
             'current_streak' => 'integer',
             'longest_streak' => 'integer',
             'total_xp' => 'integer',

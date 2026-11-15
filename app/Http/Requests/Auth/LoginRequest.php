@@ -81,6 +81,7 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        // Empreinte HMAC de l'IP, jamais l'IP en clair (voir App\Support\ClientKey).
+        return Str::transliterate(Str::lower($this->string('email')).'|'.\App\Support\ClientKey::anonymousIp($this));
     }
 }

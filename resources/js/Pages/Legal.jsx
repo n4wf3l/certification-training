@@ -18,6 +18,8 @@ function Section({ title, children }) {
     );
 }
 
+const SOURCE_URL = 'https://github.com/n4wf3l/certification-training';
+
 export default function Legal({ contact_email = 'contact@example.com' }) {
     const t = useT();
     return (
@@ -40,7 +42,7 @@ export default function Legal({ contact_email = 'contact@example.com' }) {
                         {t('legal.subtitle')}
                     </p>
                     <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-ink-400">
-                        {t('legal.last_updated', { date: '2026-07-26' })}
+                        {t('legal.last_updated', { date: '2026-11-15' })}
                     </p>
                 </div>
 
@@ -70,6 +72,21 @@ export default function Legal({ contact_email = 'contact@example.com' }) {
                     <p>{t('legal.who_body')}</p>
                 </Section>
 
+                <Section title={t('legal.opensource_title')}>
+                    <p>
+                        {t('legal.opensource_body')}{' '}
+                        <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-500 underline underline-offset-2 hover:text-brand-400">
+                            {t('legal.opensource_link')}
+                        </a>
+                    </p>
+                    <ul className="ml-4 list-disc space-y-1.5">
+                        <li>{t('legal.tracking_item_ip')}</li>
+                        <li>{t('legal.tracking_item_location')}</li>
+                        <li>{t('legal.tracking_item_device')}</li>
+                        <li>{t('legal.tracking_item_pseudo')}</li>
+                    </ul>
+                </Section>
+
                 <Section title={t('legal.data_title')}>
                     <p>{t('legal.data_intro')}</p>
                     <ul className="ml-4 list-disc space-y-1.5">
@@ -79,6 +96,14 @@ export default function Legal({ contact_email = 'contact@example.com' }) {
                         <li>{t('legal.data_item_4')}</li>
                     </ul>
                     <p>{t('legal.data_never')}</p>
+                </Section>
+
+                <Section title={t('legal.retention_title')}>
+                    <p>{t('legal.retention_body')}</p>
+                </Section>
+
+                <Section title={t('legal.abuse_title')}>
+                    <p>{t('legal.abuse_body')}</p>
                 </Section>
 
                 <Section title={t('legal.rights_title')}>

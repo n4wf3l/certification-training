@@ -34,4 +34,12 @@ return [
         'cta'                   => 'Voir mon plan',
         'footer'                => 'Tu reçois ce digest chaque lundi. Tu peux le désactiver depuis la page du plan.',
     ],
+    'inactive' => [
+        'subject'      => 'Ton compte sera supprimé dans :days jours',
+        'title'        => 'Salut :name,',
+        'body_1_html'  => 'Tu ne t\'es pas connecté depuis près de deux mois. CertifLoop sert à passer des examens blancs : les comptes sans visite pendant <strong>60 jours</strong> sont supprimés avec toutes leurs données. Le tien le sera dans <strong>:days jours</strong>.',
+        'body_2'       => 'Pour le garder, il suffit de te connecter une fois. Si tu n\'en as plus besoin, tu n\'as rien à faire.',
+        'cta'          => 'Garder mon compte',
+        'footer'       => 'Tu reçois cet email une seule fois, avant la suppression automatique de ton compte inactif.',
+    ],
 ];

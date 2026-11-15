@@ -34,4 +34,12 @@ return [
         'cta'                   => 'View my plan',
         'footer'                => 'You receive this digest every Monday. You can disable it from the plan page.',
     ],
+    'inactive' => [
+        'subject'      => 'Your account will be deleted in :days days',
+        'title'        => 'Hi :name,',
+        'body_1_html'  => 'You have not signed in for almost two months. CertifLoop is for taking mock exams: accounts with no visit for <strong>60 days</strong> are deleted with all their data. Yours will be deleted in <strong>:days days</strong>.',
+        'body_2'       => 'To keep it, just sign in once. If you no longer need it, there is nothing to do.',
+        'cta'          => 'Keep my account',
+        'footer'       => 'You receive this email only once, before your inactive account is deleted automatically.',
+    ],
 ];

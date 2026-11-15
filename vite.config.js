@@ -41,17 +41,11 @@ export default defineConfig({
                 ],
             },
             workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                // Polices auto-hebergees (@fontsource) : seul le sous-ensemble latin est
+                // mis en cache hors ligne, les autres alphabets se chargent a la demande.
+                globIgnores: ['**/*-{cyrillic,cyrillic-ext,greek,greek-ext,vietnamese}-*'],
                 runtimeCaching: [
-                    {
-                        urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-                        handler: 'CacheFirst',
-                        options: {
-                            cacheName: 'google-fonts',
-                            expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-                            cacheableResponse: { statuses: [0, 200] },
-                        },
-                    },
                     {
                         urlPattern: /\/storage\/logos\/.*/i,
                         handler: 'StaleWhileRevalidate',
