@@ -2,6 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import HeroQuizTeaser from '@/Components/HeroQuizTeaser';
 import Icon from '@/Components/Icons';
 import StepDemo from '@/Components/StepDemo';
+import ExamClock from '@/Components/ExamClock';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link, usePage } from '@inertiajs/react';
 
@@ -186,7 +187,10 @@ export default function Home({ certifications, teaser_questions = null }) {
             <section className="border-b border-ink-200 pb-16 pt-6 dark:border-ink-800 sm:pt-10">
                 <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
                     <div>
-                        <SectionLabel>{t('home.hero_kicker')}</SectionLabel>
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <SectionLabel>{t('home.hero_kicker')}</SectionLabel>
+                            <ExamClock label={t('home.hero_clock_label')} />
+                        </div>
 
                         <h1 className="mt-8 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
                             {t('home.hero_title_1')}<br />
@@ -206,7 +210,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                             {t('home.hero_subtitle_post')}
                         </p>
 
-                        <div className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-6">
+                        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 sm:flex sm:flex-wrap sm:items-end sm:gap-x-10">
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
                                     {ready.length}
@@ -215,7 +219,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     {t('home.stat_certifications')}
                                 </div>
                             </div>
-                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div className="hidden h-10 w-px bg-ink-200 dark:bg-ink-800 sm:block" />
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
                                     {totalQuestions}
@@ -224,7 +228,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     {t('home.stat_questions')}
                                 </div>
                             </div>
-                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div className="hidden h-10 w-px bg-ink-200 dark:bg-ink-800 sm:block" />
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
                                     {lastUpdate ? new Date(lastUpdate).toLocaleDateString(dateLocaleTag, { day: '2-digit', month: 'short' }) : '-'}
@@ -233,7 +237,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     {t('home.stat_last_update')}
                                 </div>
                             </div>
-                            <div className="h-10 w-px bg-ink-200 dark:bg-ink-800" />
+                            <div className="hidden h-10 w-px bg-ink-200 dark:bg-ink-800 sm:block" />
                             <div>
                                 <div className="font-mono text-3xl font-medium text-ink-900 dark:text-white">
                                     {t('home.stat_free')}
@@ -257,8 +261,8 @@ export default function Home({ certifications, teaser_questions = null }) {
                         </div>
                     </div>
 
-                    {/* Colonne droite : teaser Q/R (guest) ou carrousel logos (user connecté) */}
-                    <div className="hidden lg:block">
+                    {/* Colonne droite : teaser Q/R (guest, visible aussi sur mobile) ou carrousel logos (user connecté, grands écrans) */}
+                    <div className={showTeaser ? 'block' : 'hidden lg:block'}>
                         {showTeaser ? (
                             <HeroQuizTeaser questions={teaser_questions} />
                         ) : (
@@ -286,8 +290,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                             {t('home.step1_body')}
                         </p>
                         <StepDemo
-                            src="/media/how-it-works/step1.mp4"
-                            poster="/media/how-it-works/step1.jpg"
+                            name="step1"
                             label={t('home.step1_video')}
                         />
                     </div>
@@ -301,8 +304,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                             {t('home.step2_body')}
                         </p>
                         <StepDemo
-                            src="/media/how-it-works/step2.mp4"
-                            poster="/media/how-it-works/step2.jpg"
+                            name="step2"
                             label={t('home.step2_video')}
                         />
                     </div>
@@ -316,8 +318,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                             {t('home.step3_body')}
                         </p>
                         <StepDemo
-                            src="/media/how-it-works/step3.mp4"
-                            poster="/media/how-it-works/step3.jpg"
+                            name="step3"
                             label={t('home.step3_video')}
                         />
                     </div>

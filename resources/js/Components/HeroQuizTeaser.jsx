@@ -139,9 +139,9 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                                         type="button"
                                         onClick={() => pick(a.letter)}
                                         disabled={answered}
-                                        className={`flex w-full items-start gap-2.5 rounded-lg border p-2.5 text-left text-sm transition ${style}`}
+                                        className={`flex w-full items-start gap-2.5 rounded-lg border p-2.5 text-left text-sm transition ${style} ${answered && isChosen && !isRight ? 'answer-shake' : ''}`}
                                     >
-                                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded font-mono text-[10px] font-bold ${
+                                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded font-mono text-[10px] font-bold ${answered && (isRight || isChosen) ? 'answer-flip' : ''} ${
                                             answered && isRight ? 'bg-emerald-500 text-white'
                                             : answered && isChosen ? 'bg-rose-500 text-white'
                                             : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'

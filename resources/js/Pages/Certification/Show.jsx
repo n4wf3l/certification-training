@@ -4,6 +4,7 @@ import Icon from '@/Components/Icons';
 import PlatformPromise from '@/Components/PlatformPromise';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 
 function Logo({ certification, size = 'lg' }) {
     if (certification.logo_path) {
@@ -163,6 +164,54 @@ function daysUntil(dateStr) {
     return Math.ceil((d - now) / (1000 * 60 * 60 * 24));
 }
 
+// En-tete facon convocation d'examen : les infos qui decident, et le bouton.
+function Convocation({ certification }) {
+    const t = useT();
+    const facts = [
+        [t('cert_show.convocation_duration'), `${certification.duration_minutes} min`],
+        [t('cert_show.convocation_questions'), certification.total_questions],
+        [t('cert_show.convocation_pass'), `${certification.passing_score}/${certification.total_questions}`],
+    ];
+    return (
+        <div className="mt-6 flex flex-col gap-5 border-t border-dashed border-ink-300 pt-5 dark:border-ink-700 sm:flex-row sm:items-end sm:justify-between">
+            <dl className="grid grid-cols-3 gap-6">
+                {facts.map(([label, value]) => (
+                    <div key={label}>
+                        <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">{label}</dt>
+                        <dd className="mt-1 whitespace-nowrap font-mono text-xl font-semibold text-ink-900 dark:text-white sm:text-2xl">{value}</dd>
+                    </div>
+                ))}
+            </dl>
+            <Link href={route('certifications.exam', certification.slug)} className="btn-primary justify-center">
+                {t('cert_show.convocation_cta')}
+                <Icon.ArrowRight className="h-4 w-4" />
+            </Link>
+        </div>
+    );
+}
+
+// Texte long coupe a 4 lignes, deplie sur demande.
+function ExpandableText({ text }) {
+    const t = useT();
+    const [open, setOpen] = useState(false);
+    const long = text.length > 320;
+    return (
+        <div>
+            <p className={`leading-relaxed text-ink-700 dark:text-ink-200 ${long && !open ? 'line-clamp-4' : ''}`}>{text}</p>
+            {long && (
+                <button
+                    type="button"
+                    onClick={() => setOpen((v) => !v)}
+                    aria-expanded={open}
+                    className="mt-2 text-sm font-semibold text-brand-600 underline-offset-2 hover:underline dark:text-brand-300"
+                >
+                    {open ? t('cert_show.read_less') : t('cert_show.read_more')}
+                </button>
+            )}
+        </div>
+    );
+}
+
 export default function Show({ certification, mastery, cert_progress }) {
     const t = useT();
     const locale = useLocale();
@@ -249,6 +298,9 @@ export default function Show({ certification, mastery, cert_progress }) {
                                     {certification.description}
                                 </p>
                             )}
+                            {certification.available_questions > 0 && (
+                                <Convocation certification={certification} />
+                            )}
                         </div>
                     </div>
                     {mastery && mastery.total > 0 && (
@@ -265,92 +317,6 @@ export default function Show({ certification, mastery, cert_progress }) {
                         </div>
                     )}
                 </div>
-
-                {/* CertifLoop certificate progress card - visible after mastery bar, primes users on the 3-perfect-runs rule */}
-                <CertProgressCard progress={cert_progress} certificationSlug={certification.slug} />
-
-                {/* Validity + retirement blocks */}
-                {(certification.validity_months || certification.validity_note || retiresAt) && (
-                    <div className="grid gap-5 md:grid-cols-2">
-                        {(certification.validity_months || certification.validity_note) && (
-                            <div className="card relative overflow-hidden p-5">
-                                <div className="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-brand-500 opacity-10 blur-2xl" />
-                                <div className="relative flex items-start gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow">
-                                        <Icon.Timer className="h-5 w-5" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-                                            {t('cert_show.validity_kicker')}
-                                        </div>
-                                        <div className="mt-1 font-mono text-2xl font-bold text-ink-900 dark:text-white">
-                                            {validity ? t('cert_show.validity_valid', { duration: validity }) : t('cert_show.validity_no_expiration')}
-                                        </div>
-                                        {certification.validity_note && (
-                                            <p className="mt-2 text-sm text-ink-600 dark:text-ink-400">
-                                                {certification.validity_note}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        {retiresAt && (
-                            <RetirementCard
-                                label={retiresAtLabel}
-                                days={daysToRetire}
-                                urgency={retireUrgency}
-                            />
-                        )}
-                    </div>
-                )}
-
-                {/* About / importance / roles */}
-                {(certification.long_description || certification.importance || (certification.target_roles && certification.target_roles.length > 0)) && (
-                    <div className="grid gap-5 lg:grid-cols-3">
-                        {certification.long_description && (
-                            <div className="card p-6 lg:col-span-2">
-                                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
-                                    <Icon.Book className="h-4 w-4" />
-                                    {t('cert_show.about_title')}
-                                </h3>
-                                <p className="text-ink-700 leading-relaxed dark:text-ink-200">
-                                    {certification.long_description}
-                                </p>
-                                {certification.importance && (
-                                    <div className="mt-5 rounded-xl border-l-4 border-brand-500 bg-brand-500/5 p-4">
-                                        <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-500">
-                                            <Icon.Target className="h-3.5 w-3.5" />
-                                            {t('cert_show.why_title')}
-                                        </div>
-                                        <p className="text-sm text-ink-700 dark:text-ink-200">
-                                            {certification.importance}
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        {certification.target_roles && certification.target_roles.length > 0 && (
-                            <div className="card p-6">
-                                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
-                                    <Icon.Trophy className="h-4 w-4" />
-                                    {t('cert_show.roles_title')}
-                                </h3>
-                                <ul className="space-y-2">
-                                    {certification.target_roles.map((role) => (
-                                        <li
-                                            key={role}
-                                            className="flex items-start gap-2 rounded-lg border border-ink-200/60 bg-white/50 p-2.5 text-sm text-ink-700 dark:border-ink-800/60 dark:bg-ink-900/40 dark:text-ink-200"
-                                        >
-                                            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
-                                            {role}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                )}
 
                 {/* Modes */}
                 <div>
@@ -430,6 +396,90 @@ export default function Show({ certification, mastery, cert_progress }) {
                         </div>
                     </div>
                 </div>
+
+                {/* CertifLoop certificate progress card - visible after mastery bar, primes users on the 3-perfect-runs rule */}
+                <CertProgressCard progress={cert_progress} certificationSlug={certification.slug} />
+
+                {/* Validity + retirement blocks */}
+                {(certification.validity_months || certification.validity_note || retiresAt) && (
+                    <div className={`grid gap-5 ${retiresAt && (certification.validity_months || certification.validity_note) ? 'md:grid-cols-2' : ''}`}>
+                        {(certification.validity_months || certification.validity_note) && (
+                            <div className="card relative overflow-hidden p-5">
+                                <div className="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-brand-500 opacity-10 blur-2xl" />
+                                <div className="relative flex items-start gap-4">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow">
+                                        <Icon.Timer className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                                            {t('cert_show.validity_kicker')}
+                                        </div>
+                                        <div className="mt-1 font-mono text-2xl font-bold text-ink-900 dark:text-white">
+                                            {validity ? t('cert_show.validity_valid', { duration: validity }) : t('cert_show.validity_no_expiration')}
+                                        </div>
+                                        {certification.validity_note && (
+                                            <p className="mt-2 text-sm text-ink-600 dark:text-ink-400">
+                                                {certification.validity_note}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {retiresAt && (
+                            <RetirementCard
+                                label={retiresAtLabel}
+                                days={daysToRetire}
+                                urgency={retireUrgency}
+                            />
+                        )}
+                    </div>
+                )}
+
+                {/* About / importance / roles */}
+                {(certification.long_description || certification.importance || (certification.target_roles && certification.target_roles.length > 0)) && (
+                    <div className="grid gap-5 lg:grid-cols-3">
+                        {certification.long_description && (
+                            <div className="card p-6 lg:col-span-2">
+                                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
+                                    <Icon.Book className="h-4 w-4" />
+                                    {t('cert_show.about_title')}
+                                </h3>
+                                <ExpandableText text={certification.long_description} />
+                                {certification.importance && (
+                                    <div className="mt-5 rounded-xl border-l-4 border-brand-500 bg-brand-500/5 p-4">
+                                        <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-500">
+                                            <Icon.Target className="h-3.5 w-3.5" />
+                                            {t('cert_show.why_title')}
+                                        </div>
+                                        <p className="text-sm text-ink-700 dark:text-ink-200">
+                                            {certification.importance}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {certification.target_roles && certification.target_roles.length > 0 && (
+                            <div className="card p-6">
+                                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
+                                    <Icon.Trophy className="h-4 w-4" />
+                                    {t('cert_show.roles_title')}
+                                </h3>
+                                <ul className="space-y-2">
+                                    {certification.target_roles.map((role) => (
+                                        <li
+                                            key={role}
+                                            className="flex items-start gap-2 rounded-lg border border-ink-200/60 bg-white/50 p-2.5 text-sm text-ink-700 dark:border-ink-800/60 dark:bg-ink-900/40 dark:text-ink-200"
+                                        >
+                                            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
+                                            {role}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {/* Platform promise (compact) */}
                 <PlatformPromise compact />

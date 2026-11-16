@@ -167,6 +167,23 @@
     to   { transform: translateY(-50%); }
 }
 
+/* Correction d'une reponse : la lettre bascule comme une case qu'on retourne,
+   une mauvaise reponse tremble. Coupe par la regle reduced-motion ci-dessous. */
+@keyframes answer-flip {
+    0%   { transform: perspective(200px) rotateY(0); }
+    50%  { transform: perspective(200px) rotateY(90deg); }
+    100% { transform: perspective(200px) rotateY(0); }
+}
+@keyframes answer-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+}
+.answer-flip  { animation: answer-flip .45s cubic-bezier(.22,1,.36,1) both; }
+.answer-shake { animation: answer-shake .4s ease-out both; }
+
 /* Respecte les préférences utilisateur */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

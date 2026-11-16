@@ -71,6 +71,7 @@ export default {
     home: {
         page_title: 'Certifications',
         hero_kicker: 'Prep · ITIL · CCNA',
+        hero_clock_label: 'Clock',
         hero_title_1: 'Pass your IT cert',
         hero_title_2: 'like you\'re already',
         hero_title_3: 'in the exam room.',
@@ -614,6 +615,12 @@ export default {
     },
     cert_show: {
         breadcrumb_back: 'Certifications',
+        convocation_duration: 'Duration',
+        convocation_questions: 'Questions',
+        convocation_pass: 'Pass mark',
+        convocation_cta: 'Take a mock exam',
+        read_more: 'Read more',
+        read_less: 'Show less',
         badge_questions: ':n questions',
         badge_questions_up_to_date: 'Questions up to date · :date',
         badge_valid_for: 'Valid :duration',

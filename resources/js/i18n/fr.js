@@ -70,6 +70,7 @@ export default {
     home: {
         page_title: 'Certifications',
         hero_kicker: 'Prep · ITIL · CCNA',
+        hero_clock_label: 'Chrono',
         hero_title_1: 'Passe ta certif IT',
         hero_title_2: 'comme si t\'étais déjà',
         hero_title_3: 'dans la salle d\'examen.',
@@ -596,6 +597,12 @@ export default {
     },
     cert_show: {
         breadcrumb_back: 'Certifications',
+        convocation_duration: 'Durée',
+        convocation_questions: 'Questions',
+        convocation_pass: 'Seuil',
+        convocation_cta: 'Passer un examen blanc',
+        read_more: 'Lire la suite',
+        read_less: 'Réduire',
         badge_questions: ':n questions',
         badge_questions_up_to_date: 'Questions à jour · :date',
         badge_valid_for: 'Valide :duration',
