@@ -51,4 +51,5 @@ return [
     'exam_no_questions_language' => "Aucune question disponible dans cette langue pour l'instant.",
     'exam_no_questions_domain_language' => 'Aucune question disponible dans ce domaine pour cette langue.',
     'ai_api_unreachable' => "Impossible de contacter l'API OpenAI. Réessaie plus tard.",
+    'register_rejected' => "L'inscription n'a pas pu aboutir. Recharge la page et réessaie.",
 ];

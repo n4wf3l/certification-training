@@ -58,7 +58,8 @@ Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
         Route::get('/examen', [ExamController::class, 'show'])->name('certifications.exam');
     });
 
-    Route::middleware(['auth'])->group(function () {
+    // Adresse e-mail confirmee obligatoire pour tout ce qui ecrit en base ou lance un examen.
+    Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/certifications/{certification:slug}/start', [ExamController::class, 'start'])
             ->middleware('throttle:exam-start')
             ->name('exam.start');
@@ -98,7 +99,10 @@ Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
             ->name('bookmarks.updateNote');
         Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])
             ->name('bookmarks.destroy');
+    });
 
+    // Profil accessible sans confirmation : corriger son adresse, exporter ou supprimer son compte.
+    Route::middleware(['auth'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/profile/export', [ProfileController::class, 'exportData'])
@@ -107,7 +111,7 @@ Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'edit'])->name('settings.edit');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');

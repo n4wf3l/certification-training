@@ -10,6 +10,7 @@ export default function Register({ redirect_to }) {
         email: '',
         password: '',
         password_confirmation: '',
+        website: '', // piege anti-robot, invisible pour les humains
     });
 
     const submit = (e) => {
@@ -65,6 +66,19 @@ export default function Register({ redirect_to }) {
             </div>
 
             <form onSubmit={submit} className="space-y-5">
+                {/* Piege anti-robot : hors ecran, hors tabulation, ignore par les lecteurs d'ecran. */}
+                <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                    <label htmlFor="website">Website</label>
+                    <input
+                        id="website"
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={data.website}
+                        onChange={(e) => setData('website', e.target.value)}
+                    />
+                </div>
                 <div>
                     <label className="field-label" htmlFor="name">{t('auth.field_name')}</label>
                     <input

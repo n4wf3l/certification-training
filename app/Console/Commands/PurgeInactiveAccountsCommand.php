@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Mail;
 /**
  * CertifLoop sert a passer des examens blancs, pas a stocker des comptes dormants.
  *
+ *  - Adresse jamais confirmee 7 jours apres l'inscription : compte supprime.
+ *
  *  - J+53 sans visite : email de prevenance (une seule fois).
  *  - J+60 sans visite : le compte et toutes ses donnees sont supprimes
  *    (tentatives, stats, favoris, plans, certificats : cascade en base).
@@ -25,6 +27,8 @@ class PurgeInactiveAccountsCommand extends Command
 
     public const WARNING_DAYS_BEFORE = 7;
 
+    public const UNVERIFIED_DAYS = 7;
+
     protected $signature = 'accounts:purge-inactive
                             {--dry-run : Lister sans envoyer ni supprimer}';
 
@@ -34,6 +38,24 @@ class PurgeInactiveAccountsCommand extends Command
     {
         $dryRun = (bool) $this->option('dry-run');
         $brandName = Setting::get('brand_name') ?: 'CertifLoop';
+
+        // 0. Adresse jamais confirmee 7 jours apres l'inscription : compte supprime
+        //    (robots, fautes de frappe). Pas d'e-mail : l'adresse n'est pas fiable.
+        $unverified = User::where('role', '!=', 'admin')
+            ->whereNull('email_verified_at')
+            ->where('created_at', '<', now()->subDays(self::UNVERIFIED_DAYS))
+            ->get();
+        foreach ($unverified as $user) {
+            if ($dryRun) {
+                $this->line("  [dry] non confirme #{$user->id}");
+                continue;
+            }
+            DB::transaction(function () use ($user) {
+                DB::table('sessions')->where('user_id', $user->id)->delete();
+                $user->delete();
+            });
+        }
+        $this->info(($dryRun ? '[dry] ' : '')."Comptes jamais confirmes supprimes : {$unverified->count()}");
 
         // 1. Suppression : aucune visite depuis 60 jours.
         $deleteBefore = now()->subDays(self::INACTIVE_DAYS);

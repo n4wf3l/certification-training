@@ -18,7 +18,7 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
-        $response = $this->post('/register', [
+        $response = $this->withSession(['register_form_at' => now()->subSeconds(10)->timestamp])->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -26,6 +26,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('home', absolute: false));
+        $response->assertRedirect(route('verification.notice'));
     }
 }

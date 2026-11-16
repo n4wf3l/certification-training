@@ -51,4 +51,5 @@ return [
     'exam_no_questions_language' => 'No questions available in this language yet.',
     'exam_no_questions_domain_language' => 'No questions available in this domain for this language.',
     'ai_api_unreachable' => 'Unable to reach the OpenAI API. Please try again later.',
+    'register_rejected' => 'Sign-up could not be completed. Reload the page and try again.',
 ];

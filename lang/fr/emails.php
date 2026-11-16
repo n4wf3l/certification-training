@@ -42,4 +42,12 @@ return [
         'cta'          => 'Garder mon compte',
         'footer'       => 'Tu reçois cet email une seule fois, avant la suppression automatique de ton compte inactif.',
     ],
+    'verify' => [
+        'subject'      => 'Confirme ton adresse e-mail',
+        'title'        => 'Bienvenue :name,',
+        'body_1'       => 'Il reste une étape : confirme ton adresse pour débloquer les examens blancs, les stats et les favoris.',
+        'cta'          => 'Confirmer mon adresse',
+        'expires'      => 'Ce lien est valable :minutes minutes. Sans confirmation sous 7 jours, le compte est supprimé.',
+        'footer'       => 'Tu n\'as pas créé de compte ? Ignore simplement cet e-mail.',
+    ],
 ];

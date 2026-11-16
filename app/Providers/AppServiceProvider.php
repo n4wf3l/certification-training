@@ -27,6 +27,19 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureRateLimiters();
 
+        // E-mail de confirmation d'adresse : gabarit du site, dans la langue de la page
+        // d'inscription (le lien garde aussi le prefixe /en le cas echeant).
+        \Illuminate\Auth\Notifications\VerifyEmail::toMailUsing(function ($notifiable, string $url) {
+            return (new \Illuminate\Notifications\Messages\MailMessage)
+                ->subject(__('emails.verify.subject'))
+                ->view('emails.verify-email', [
+                    'url' => $url,
+                    'user' => $notifiable,
+                    'minutes' => (int) config('auth.verification.expire', 60),
+                    'brandName' => Setting::get('brand_name') ?: 'CertifLoop',
+                ]);
+        });
+
         // Sessions en base sans IP ni user-agent (voir /legal). Remplace le driver
         // "database" de Laravel, qui les enregistre par defaut.
         Session::extend('database', function ($app) {

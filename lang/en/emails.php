@@ -42,4 +42,12 @@ return [
         'cta'          => 'Keep my account',
         'footer'       => 'You receive this email only once, before your inactive account is deleted automatically.',
     ],
+    'verify' => [
+        'subject'      => 'Confirm your email address',
+        'title'        => 'Welcome :name,',
+        'body_1'       => 'One step left: confirm your address to unlock mock exams, stats and bookmarks.',
+        'cta'          => 'Confirm my address',
+        'expires'      => 'This link is valid for :minutes minutes. Accounts not confirmed within 7 days are deleted.',
+        'footer'       => 'Did not create an account? Just ignore this email.',
+    ],
 ];
