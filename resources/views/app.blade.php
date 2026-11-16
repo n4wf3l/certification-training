@@ -16,12 +16,13 @@
         <meta property="og:site_name" content="{{ $brandName ?? 'CertifLoop' }}">
         <meta property="og:title" content="{{ __('meta.og_title') }}">
         <meta property="og:description" content="{{ __('meta.description') }}">
-        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:url" content="{{ \App\Support\LocaleUrl::alternates(request())[app()->getLocale()] ?? url()->current() }}">
         <meta property="og:image" content="{{ asset('og-image.png') }}">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:locale" content="{{ app()->getLocale() === 'fr' ? 'fr_BE' : 'en_US' }}">
         <meta name="twitter:card" content="summary_large_image">
+        @include('partials.seo')
         <script>window.__BRAND_NAME__ = @json($brandName ?? 'CertifLoop');</script>
 
         {{-- Pre-boot theme resolution : evite le FOUC en appliquant la classe

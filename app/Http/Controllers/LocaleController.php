@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\SetLocale;
-use Illuminate\Http\RedirectResponse;
+use App\Support\LocaleUrl;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 /**
- * Endpoint POST /locale utilise par le LocaleSwitcher : persiste le choix
- * en session + cookie + user.preferred_locale (si connecte). SetLocale reprend
- * ensuite cette valeur a chaque requete.
+ * Endpoint POST /locale utilise par le LocaleSwitcher : memorise le choix
+ * (cookie + preference du compte) puis renvoie vers la meme page dans la
+ * nouvelle langue (racine = francais, /en/... = anglais).
  */
 class LocaleController extends Controller
 {
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request)
     {
         $data = $request->validate([
             'locale' => 'required|string|in:' . implode(',', SetLocale::SUPPORTED),
         ]);
         $locale = $data['locale'];
 
-        // Session : sera lue en priorite par SetLocale au prochain hit
         $request->session()->put('ui_locale', $locale);
 
         // User authentifie : persiste en DB pour tous les devices
@@ -29,9 +29,21 @@ class LocaleController extends Controller
             $user->save();
         }
 
-        // Cookie fallback : 1 an, guest garde sa preference entre sessions
+        // Cookie : 1 an, le visiteur garde sa preference entre sessions
         cookie()->queue(cookie()->forever('ui_locale', $locale));
 
-        return back();
+        // Meme page, dans l'autre langue (seulement pour une page de ce site).
+        // Inertia::location force un rechargement complet : les liens (Ziggy) suivent la nouvelle langue.
+        $previous = url()->previous();
+        $host = parse_url(url('/'), PHP_URL_HOST);
+        if (parse_url($previous, PHP_URL_HOST) !== $host) {
+            return Inertia::location(LocaleUrl::to('/', $locale));
+        }
+        $path = parse_url($previous, PHP_URL_PATH) ?: '/';
+        $query = parse_url($previous, PHP_URL_QUERY);
+        $base = LocaleUrl::basePath(Request::create($path));
+        $target = LocaleUrl::to($base, $locale);
+
+        return Inertia::location($query ? $target.'?'.$query : $target);
     }
 }

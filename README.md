@@ -278,13 +278,17 @@ Result: fail 10 questions today, and tomorrow's session brings those 10 back in 
 
 ## Internationalisation
 
-CertifLoop ships with **English (primary)** and **French (secondary)**. Adding a new locale takes three steps:
+CertifLoop ships with **French (default, at the root)** and **English (under `/en`)**. Adding a new locale takes three steps:
 
 1. Copy `resources/js/i18n/en.js` to `resources/js/i18n/xx.js` and translate the ~1000 keys.
 2. Copy `lang/en/flash.php` to `lang/xx/flash.php` for backend messages.
 3. Add `xx` to `SUPPORTED` in `app/Http/Middleware/SetLocale.php`.
 
-Locale is resolved on every request via a six-level priority chain: `?lang=` query → session → `user.preferred_locale` → cookie → `Accept-Language` header → app fallback. Users can switch language from the navbar dropdown or the footer switcher.
+**One URL per language.** French is served at the root (`/legal`) and English under `/en` (`/en/legal`), so search engines can index both. The page language comes from its URL (`App\Support\LocaleUrl`). Each page carries a canonical link and `hreflang` alternates, `/sitemap.xml` lists both languages, and `/robots.txt` keeps private areas out of the index. A visitor who explicitly picked English (switcher cookie or account preference) is redirected from French URLs to the `/en` version, and the old `?lang=en` links redirect too. Routes are registered under the request's language prefix, so do not run `php artisan route:cache`.
+
+**Structured data.** The home page outputs `WebSite` and `ItemList` JSON-LD, and each certification page outputs `Course` and `BreadcrumbList` (`resources/views/partials/seo.blade.php`). Account, admin and exam pages are `noindex`.
+
+Adding a language also means adding its code to `LocaleUrl::PREFIXED`.
 
 **Content translations** (certification titles, questions, courses) are stored as JSON blobs on the model row via a `translations` column, with a `Certification::localized($locale, $field)` accessor that falls back cleanly when a translation is missing.
 

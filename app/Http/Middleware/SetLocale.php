@@ -2,71 +2,81 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\LocaleUrl;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Resout la locale UI de la requete courante selon la priorite suivante :
+ * La langue d'une page vient de son adresse : racine = francais, /en/... = anglais
+ * (App\Support\LocaleUrl). C'est ce qui permet a Google d'indexer les deux langues.
  *
- * 1. ?lang=xx dans la query string (override explicite pour partage de liens)
- * 2. session()->get('ui_locale') (preference persistee cote client via LocaleController)
- * 3. user->preferred_locale (user authentifie avec preference DB)
- * 4. cookie 'ui_locale' (fallback guest apres switch)
- * 5. Accept-Language header (best-guess navigateur)
- * 6. config('app.fallback_locale') / 'en' (defaut plateforme)
+ * Confort : un visiteur qui a explicitement choisi l'anglais (cookie du
+ * LocaleSwitcher ou preference de son compte) et qui arrive sur une adresse
+ * francaise est redirige vers la version /en. Les robots, sans cookie, voient
+ * chaque adresse dans sa propre langue. L'ancien ?lang=xx redirige vers la bonne adresse.
  *
- * La valeur est stockee dans app()->getLocale() pour Laravel translator, et
- * partagee via Inertia (HandleInertiaRequests) au front pour le t() helper.
+ * Hors pages (POST /locale, robots.txt, sitemap.xml) : la langue de la session.
  */
 class SetLocale
 {
     public const SUPPORTED = ['en', 'fr'];
 
+    /** Chemins servis hors prefixe de langue. */
+    private const UNPREFIXED = ['locale', 'robots.txt', 'sitemap.xml'];
+
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $this->resolveLocale($request);
-        app()->setLocale($locale);
-        // Persiste en session pour que les redirects gardent la locale (le
-        // middleware retourne la meme valeur au prochain hit).
-        $request->session()->put('ui_locale', $locale);
+        if (in_array($request->path(), self::UNPREFIXED, true)) {
+            $fromSession = $request->session()->get('ui_locale');
+            app()->setLocale($this->storedPreference($request)
+                ?? (is_string($fromSession) && $this->isSupported($fromSession) ? $fromSession : LocaleUrl::DEFAULT));
+
+            return $next($request);
+        }
+
+        $fromUrl = LocaleUrl::fromRequest($request) ?? LocaleUrl::DEFAULT;
+
+        if ($request->isMethod('GET')) {
+            // Ancien format de lien partage : ?lang=en -> /en/...
+            $fromQuery = $request->query('lang');
+            if (is_string($fromQuery) && $this->isSupported($fromQuery)) {
+                return $this->redirectTo($request, strtolower($fromQuery));
+            }
+
+            // Preference explicite pour l'anglais, sur une adresse francaise.
+            if ($fromUrl === LocaleUrl::DEFAULT && $this->storedPreference($request) === 'en') {
+                return $this->redirectTo($request, 'en');
+            }
+        }
+
+        app()->setLocale($fromUrl);
+        $request->session()->put('ui_locale', $fromUrl);
+
         return $next($request);
     }
 
-    private function resolveLocale(Request $request): string
+    /** Choix explicite du visiteur : compte, puis cookie du LocaleSwitcher. */
+    private function storedPreference(Request $request): ?string
     {
-        // 1. Query string ?lang=xx
-        $fromQuery = $request->query('lang');
-        if (is_string($fromQuery) && $this->isSupported($fromQuery)) {
-            return $fromQuery;
-        }
-
-        // 2. Session (persisted user choice)
-        $fromSession = $request->session()->get('ui_locale');
-        if (is_string($fromSession) && $this->isSupported($fromSession)) {
-            return $fromSession;
-        }
-
-        // 3. User preference in DB
         $user = $request->user();
         if ($user && is_string($user->preferred_locale) && $this->isSupported($user->preferred_locale)) {
             return $user->preferred_locale;
         }
-
-        // 4. Cookie (guest fallback across sessions)
         $fromCookie = $request->cookie('ui_locale');
-        if (is_string($fromCookie) && $this->isSupported($fromCookie)) {
-            return $fromCookie;
-        }
 
-        // 5. Accept-Language header
-        $preferred = $request->getPreferredLanguage(self::SUPPORTED);
-        if (is_string($preferred) && $this->isSupported($preferred)) {
-            return $preferred;
-        }
+        return is_string($fromCookie) && $this->isSupported($fromCookie) ? $fromCookie : null;
+    }
 
-        // 6. Platform default
-        return config('app.fallback_locale', 'en');
+    private function redirectTo(Request $request, string $locale): Response
+    {
+        $query = collect($request->query())->except('lang')->all();
+        $url = LocaleUrl::to(LocaleUrl::basePath($request), $locale);
+
+        $target = $query ? $url.'?'.http_build_query($query) : $url;
+
+        // Visite Inertia : rechargement complet, pour que les liens (Ziggy) suivent la langue.
+        return $request->header('X-Inertia') ? \Inertia\Inertia::location($target) : redirect()->to($target);
     }
 
     private function isSupported(string $code): bool

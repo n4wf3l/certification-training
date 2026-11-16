@@ -17,116 +17,123 @@ use App\Http\Controllers\StatsController;
 use App\Http\Controllers\StudyPlanController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
+// Hors prefixe de langue : servis tels quels pour les deux langues.
 // Bascule UI locale (LocaleSwitcher navbar / footer). Accepte guest + user.
 Route::post('/locale', [\App\Http\Controllers\LocaleController::class, 'update'])->name('locale.update');
+Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
 
-// Page CGU + politique de confidentialite (statique, publique, no-auth).
-// Rassemble la mention "gratuit pour l'instant, payant possible plus tard" + inventaire RGPD des donnees traitees.
-// L'email de contact est injecte depuis config('mail.from.address') pour eviter
-// le hardcode dans les strings i18n.
-Route::get('/legal', fn () => Inertia\Inertia::render('Legal', [
-    'contact_email' => config('mail.from.address') ?: 'contact@example.com',
-    'publisher' => array_filter(config('certifloop.publisher', [])),
-]))->name('legal');
+// Une adresse par langue : francais a la racine, anglais sous /en (App\Support\LocaleUrl).
+Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Fallback offline (utilise par le service worker quand aucun cache ni reseau)
-Route::get('/offline', fn () => Inertia\Inertia::render('Offline'))->name('offline');
 
-// Vue offline-review : liste des questions cachees en local
-Route::get('/offline-review', fn () => Inertia\Inertia::render('OfflineReview'))->name('offline.review');
+    // Page CGU + politique de confidentialite (statique, publique, no-auth).
+    // Rassemble la mention "gratuit pour l'instant, payant possible plus tard" + inventaire RGPD des donnees traitees.
+    // L'email de contact est injecte depuis config('mail.from.address') pour eviter
+    // le hardcode dans les strings i18n.
+    Route::get('/legal', fn () => Inertia\Inertia::render('Legal', [
+        'contact_email' => config('mail.from.address') ?: 'contact@example.com',
+        'publisher' => array_filter(config('certifloop.publisher', [])),
+    ]))->name('legal');
 
-// Certificats publics par token (partage LinkedIn / preview OG) - aucune auth
-Route::get('/certificate/{token}', [CertificateController::class, 'show'])
-    ->middleware('throttle:certificate-public')
-    ->name('certificate.show');
-Route::get('/certificate/{token}/pdf', [CertificateController::class, 'pdf'])
-    ->middleware('throttle:certificate-public')
-    ->name('certificate.pdf');
+    // Fallback offline (utilise par le service worker quand aucun cache ni reseau)
+    Route::get('/offline', fn () => Inertia\Inertia::render('Offline'))->name('offline');
 
-Route::prefix('certifications/{certification:slug}')->group(function () {
-    Route::get('/', [CertificationController::class, 'show'])->name('certifications.show');
-    Route::get('/cours', [CertificationController::class, 'course'])->name('certifications.course');
-    Route::get('/flashcards', [CertificationController::class, 'flashcards'])->name('certifications.flashcards');
-    Route::get('/examen', [ExamController::class, 'show'])->name('certifications.exam');
+    // Vue offline-review : liste des questions cachees en local
+    Route::get('/offline-review', fn () => Inertia\Inertia::render('OfflineReview'))->name('offline.review');
+
+    // Certificats publics par token (partage LinkedIn / preview OG) - aucune auth
+    Route::get('/certificate/{token}', [CertificateController::class, 'show'])
+        ->middleware('throttle:certificate-public')
+        ->name('certificate.show');
+    Route::get('/certificate/{token}/pdf', [CertificateController::class, 'pdf'])
+        ->middleware('throttle:certificate-public')
+        ->name('certificate.pdf');
+
+    Route::prefix('certifications/{certification:slug}')->group(function () {
+        Route::get('/', [CertificationController::class, 'show'])->name('certifications.show');
+        Route::get('/cours', [CertificationController::class, 'course'])->name('certifications.course');
+        Route::get('/flashcards', [CertificationController::class, 'flashcards'])->name('certifications.flashcards');
+        Route::get('/examen', [ExamController::class, 'show'])->name('certifications.exam');
+    });
+
+    Route::middleware(['auth'])->group(function () {
+        Route::post('/certifications/{certification:slug}/start', [ExamController::class, 'start'])
+            ->middleware('throttle:exam-start')
+            ->name('exam.start');
+        Route::post('/certifications/{certification:slug}/practice/{domain}', [ExamController::class, 'practiceStart'])
+            ->middleware('throttle:exam-start')
+            ->name('exam.practice');
+        Route::get('/exam/{attempt}', [ExamController::class, 'take'])->name('exam.take');
+        Route::post('/exam/{attempt}/submit', [ExamController::class, 'submit'])->name('exam.submit');
+        Route::post('/exam/{attempt}/abandon', [ExamController::class, 'abandon'])->name('exam.abandon');
+        Route::get('/exam/{attempt}/result', [ExamController::class, 'result'])->name('exam.result');
+        Route::get('/exam/{attempt}/result/pdf', [ExamController::class, 'downloadResult'])->name('exam.result.pdf');
+
+        Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
+
+        // Study plans (revision organisee jusqu'a une date d'examen precise)
+        Route::get('/study-plans', [StudyPlanController::class, 'index'])->name('study-plans.index');
+        Route::get('/study-plans/create', [StudyPlanController::class, 'create'])->name('study-plans.create');
+        Route::post('/study-plans', [StudyPlanController::class, 'store'])->name('study-plans.store');
+        Route::get('/study-plans/{studyPlan}', [StudyPlanController::class, 'show'])->name('study-plans.show');
+        Route::delete('/study-plans/{studyPlan}', [StudyPlanController::class, 'destroy'])->name('study-plans.destroy');
+        Route::get('/study-plans/{studyPlan}/calendar.ics', [StudyPlanController::class, 'ics'])->name('study-plans.ics');
+
+        Route::post('/questions/{question}/report', [QuestionReportController::class, 'store'])
+            ->middleware('throttle:reports')
+            ->name('questions.report');
+        Route::post('/questions/{question}/explain-me-better', [AiExplanationController::class, 'explain'])
+            ->middleware('throttle:ai-explain')
+            ->name('questions.explain');
+
+        // Favoris user (bookmarks) : marquer une question a revoir hors examen.
+        // Toggle : le meme POST cree ou supprime selon l'etat courant.
+        Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+        Route::post('/questions/{question}/bookmark', [BookmarkController::class, 'toggle'])
+            ->middleware('throttle:60,1')
+            ->name('bookmarks.toggle');
+        Route::patch('/bookmarks/{bookmark}/note', [BookmarkController::class, 'updateNote'])
+            ->name('bookmarks.updateNote');
+        Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])
+            ->name('bookmarks.destroy');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile/export', [ProfileController::class, 'exportData'])
+            ->middleware('throttle:data-export')
+            ->name('profile.export');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'edit'])->name('settings.edit');
+        Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+        Route::get('certifications/{certification}/export', [AdminCertificationController::class, 'export'])
+            ->name('certifications.export');
+        Route::get('certifications/{certification}/certificate-preview', [AdminCertificationController::class, 'certificatePreview'])
+            ->name('certifications.certificate-preview');
+        Route::get('certifications/course-import', [AdminCertificationController::class, 'courseImportForm'])
+            ->name('certifications.course-import');
+        Route::post('certifications/course-import', [AdminCertificationController::class, 'courseImportStore'])
+            ->name('certifications.course-import.store');
+        Route::resource('certifications', AdminCertificationController::class)->except(['show']);
+        Route::get('questions/import', [AdminQuestionController::class, 'importForm'])->name('questions.import');
+        Route::post('questions/import', [AdminQuestionController::class, 'importStore'])->name('questions.import.store');
+        Route::resource('questions', AdminQuestionController::class)->except(['show']);
+
+        Route::get('reports', [AdminReportsController::class, 'index'])->name('reports.index');
+        Route::patch('reports/{report}', [AdminReportsController::class, 'update'])->name('reports.update');
+
+        // Gestion utilisateurs : liste + recherche + promote/demote + delete.
+        // Volontairement pas de resource route complete (pas d'edit par admin des
+        // champs email/name de l'user - respect de la souverainete personnelle).
+        Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::patch('users/{user}/role', [AdminUserController::class, 'toggleRole'])->name('users.toggleRole');
+        Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    });
+
+    require __DIR__.'/auth.php';
 });
-
-Route::middleware(['auth'])->group(function () {
-    Route::post('/certifications/{certification:slug}/start', [ExamController::class, 'start'])
-        ->middleware('throttle:exam-start')
-        ->name('exam.start');
-    Route::post('/certifications/{certification:slug}/practice/{domain}', [ExamController::class, 'practiceStart'])
-        ->middleware('throttle:exam-start')
-        ->name('exam.practice');
-    Route::get('/exam/{attempt}', [ExamController::class, 'take'])->name('exam.take');
-    Route::post('/exam/{attempt}/submit', [ExamController::class, 'submit'])->name('exam.submit');
-    Route::post('/exam/{attempt}/abandon', [ExamController::class, 'abandon'])->name('exam.abandon');
-    Route::get('/exam/{attempt}/result', [ExamController::class, 'result'])->name('exam.result');
-    Route::get('/exam/{attempt}/result/pdf', [ExamController::class, 'downloadResult'])->name('exam.result.pdf');
-
-    Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
-
-    // Study plans (revision organisee jusqu'a une date d'examen precise)
-    Route::get('/study-plans', [StudyPlanController::class, 'index'])->name('study-plans.index');
-    Route::get('/study-plans/create', [StudyPlanController::class, 'create'])->name('study-plans.create');
-    Route::post('/study-plans', [StudyPlanController::class, 'store'])->name('study-plans.store');
-    Route::get('/study-plans/{studyPlan}', [StudyPlanController::class, 'show'])->name('study-plans.show');
-    Route::delete('/study-plans/{studyPlan}', [StudyPlanController::class, 'destroy'])->name('study-plans.destroy');
-    Route::get('/study-plans/{studyPlan}/calendar.ics', [StudyPlanController::class, 'ics'])->name('study-plans.ics');
-
-    Route::post('/questions/{question}/report', [QuestionReportController::class, 'store'])
-        ->middleware('throttle:reports')
-        ->name('questions.report');
-    Route::post('/questions/{question}/explain-me-better', [AiExplanationController::class, 'explain'])
-        ->middleware('throttle:ai-explain')
-        ->name('questions.explain');
-
-    // Favoris user (bookmarks) : marquer une question a revoir hors examen.
-    // Toggle : le meme POST cree ou supprime selon l'etat courant.
-    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
-    Route::post('/questions/{question}/bookmark', [BookmarkController::class, 'toggle'])
-        ->middleware('throttle:60,1')
-        ->name('bookmarks.toggle');
-    Route::patch('/bookmarks/{bookmark}/note', [BookmarkController::class, 'updateNote'])
-        ->name('bookmarks.updateNote');
-    Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])
-        ->name('bookmarks.destroy');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profile/export', [ProfileController::class, 'exportData'])
-        ->middleware('throttle:data-export')
-        ->name('profile.export');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'edit'])->name('settings.edit');
-    Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
-    Route::get('certifications/{certification}/export', [AdminCertificationController::class, 'export'])
-        ->name('certifications.export');
-    Route::get('certifications/{certification}/certificate-preview', [AdminCertificationController::class, 'certificatePreview'])
-        ->name('certifications.certificate-preview');
-    Route::get('certifications/course-import', [AdminCertificationController::class, 'courseImportForm'])
-        ->name('certifications.course-import');
-    Route::post('certifications/course-import', [AdminCertificationController::class, 'courseImportStore'])
-        ->name('certifications.course-import.store');
-    Route::resource('certifications', AdminCertificationController::class)->except(['show']);
-    Route::get('questions/import', [AdminQuestionController::class, 'importForm'])->name('questions.import');
-    Route::post('questions/import', [AdminQuestionController::class, 'importStore'])->name('questions.import.store');
-    Route::resource('questions', AdminQuestionController::class)->except(['show']);
-
-    Route::get('reports', [AdminReportsController::class, 'index'])->name('reports.index');
-    Route::patch('reports/{report}', [AdminReportsController::class, 'update'])->name('reports.update');
-
-    // Gestion utilisateurs : liste + recherche + promote/demote + delete.
-    // Volontairement pas de resource route complete (pas d'edit par admin des
-    // champs email/name de l'user - respect de la souverainete personnelle).
-    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::patch('users/{user}/role', [AdminUserController::class, 'toggleRole'])->name('users.toggleRole');
-    Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
-});
-
-require __DIR__.'/auth.php';

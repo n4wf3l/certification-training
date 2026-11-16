@@ -36,8 +36,10 @@ Remplir au minimum :
 php artisan migrate --force
 php artisan db:seed --force      # certifications et questions, aucun compte de démo en production
 php artisan storage:link
-php artisan config:cache && php artisan route:cache && php artisan view:cache
+php artisan config:cache && php artisan view:cache
 ```
+
+Ne pas lancer `php artisan route:cache`. Les routes sont enregistrées sous le préfixe de langue de chaque requête (racine en français, `/en/…` en anglais) : un cache figerait un seul préfixe et les pages `/en` répondraient 404.
 
 ## 4. Worker, scheduler et nginx
 
