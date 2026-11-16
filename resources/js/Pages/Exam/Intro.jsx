@@ -25,7 +25,7 @@ function Logo({ certification, size = 'lg' }) {
         .join('')
         .toUpperCase();
     return (
-        <div className={`${size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-16 w-16 text-lg'} flex items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-iris-500 font-bold text-white shadow-glow`}>
+        <div className={`${size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-16 w-16 text-lg'} flex items-center justify-center rounded-2xl bg-brand-500 font-bold text-white shadow-glow`}>
             {initials}
         </div>
     );
@@ -222,7 +222,6 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                     sans scroll. Les stats detaillees et les reglages sont en dessous
                     pour ceux qui veulent regarder / personnaliser avant de lancer. */}
                 <div className="card relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-40 bg-radial-brand pointer-events-none" />
                     <div className="relative p-6 sm:p-8">
                         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div className="flex min-w-0 items-start gap-5">

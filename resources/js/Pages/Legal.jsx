@@ -49,7 +49,7 @@ export default function Legal({ contact_email = 'contact@example.com', publisher
                 {/* Promesse gratuite : mise en carte visible pour renforcer la valeur
                     contractuelle. Un utilisateur qui vient verifier la promesse doit
                     la trouver immediatement, pas noyee au milieu du texte. */}
-                <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-brand-500/5 p-6">
+                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6">
                     <div className="flex items-start gap-4">
                         <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm">
                             <Icon.Shield className="h-5 w-5" />

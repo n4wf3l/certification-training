@@ -82,7 +82,7 @@ export default function Edit({ settings }) {
                                     {shownLogo ? (
                                         <img src={shownLogo} alt={t('admin.settings.logo_alt')} className="h-full w-full object-contain" />
                                     ) : (
-                                        <span className="flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-white">
+                                        <span className="flex h-full w-full items-center justify-center rounded-xl bg-brand-500 text-white">
                                             <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M4 14 8 10l4 4 8-8" />
                                             </svg>
@@ -142,7 +142,7 @@ export default function Edit({ settings }) {
                                     {progress && (
                                         <div className="mt-2 h-1 w-full rounded bg-ink-200 dark:bg-ink-800">
                                             <div
-                                                className="h-1 rounded bg-gradient-to-r from-brand-500 to-iris-500 transition-all"
+                                                className="h-1 rounded bg-brand-500 transition-all"
                                                 style={{ width: `${progress.percentage}%` }}
                                             />
                                         </div>

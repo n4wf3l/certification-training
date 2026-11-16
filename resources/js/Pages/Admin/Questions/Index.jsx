@@ -30,7 +30,7 @@ function CertLogo({ certification, size = 'md' }) {
         .join('')
         .toUpperCase();
     return (
-        <div className={`${dims} flex shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 font-mono font-bold tracking-tighter text-white`}>
+        <div className={`${dims} flex shrink-0 items-center justify-center rounded-lg bg-brand-500 font-mono font-bold tracking-tighter text-white`}>
             {initials}
         </div>
     );

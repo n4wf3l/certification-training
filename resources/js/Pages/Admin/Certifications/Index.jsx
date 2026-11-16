@@ -173,7 +173,6 @@ function CertCard({ certification: c, onDelete }) {
 
     return (
         <div className="card-lift group relative flex flex-col overflow-hidden">
-            <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-brand-500 opacity-10 blur-2xl" />
 
             <div className="relative flex items-start gap-3 p-5">
                 {c.logo_path ? (
@@ -183,7 +182,7 @@ function CertCard({ certification: c, onDelete }) {
                         className="h-12 w-12 shrink-0 object-contain"
                     />
                 ) : (
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-sm font-bold text-white shadow-glow">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-sm font-bold text-white shadow-glow">
                         {c.title
                             .replace(/[^A-Za-z0-9 ]/g, '')
                             .split(' ')
@@ -231,7 +230,7 @@ function CertCard({ certification: c, onDelete }) {
                             readiness >= 100
                                 ? 'bg-emerald-500'
                                 : readiness >= 50
-                                ? 'bg-gradient-to-r from-brand-500 to-iris-500'
+                                ? 'bg-brand-500'
                                 : 'bg-amber-500'
                         }`}
                         style={{ width: `${readiness}%` }}

@@ -64,8 +64,7 @@ export default {
         cta_pick_cert: 'Choisir une certification',
         cta_get_started: 'Commencer',
         rights: 'Open source · licence MIT.',
-        made_with: 'Fait avec',
-        made_for: 'pour les futurs certifiés',
+        legal_link: 'Conditions et confidentialité',
     },
     home: {
         page_title: 'Certifications',

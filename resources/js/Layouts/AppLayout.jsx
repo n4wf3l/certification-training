@@ -24,13 +24,12 @@ function BrandMark({ size = 'sm', settings }) {
             <span className={`relative flex ${cfg.box} items-center justify-center overflow-hidden rounded-xl transition-transform duration-300 group-hover:scale-105 ${
                 logoUrl
                     ? 'bg-white shadow-sm dark:bg-ink-900'
-                    : 'bg-gradient-to-br from-brand-500 via-brand-500 to-iris-500 shadow-glow'
+                    : 'bg-brand-500 shadow-glow'
             }`}>
                 {logoUrl ? (
                     <img src={logoUrl} alt="" className="h-full w-full object-contain p-1" />
                 ) : (
                     <>
-                        <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/25 to-transparent opacity-70" />
                         <svg viewBox="0 0 24 24" className={`relative ${cfg.icon} text-white`} fill="none">
                             <path d="M4 14 8 10l4 4 8-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -74,9 +73,8 @@ function UserMenu({ user, isAdmin }) {
                 aria-haspopup="menu"
                 aria-expanded={open}
             >
-                <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-iris-500 text-[10px] font-bold text-white shadow-inset-line">
+                <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white shadow-inset-line">
                     {initials}
-                    <span className="absolute inset-0 rounded-full bg-gradient-to-br from-white/25 to-transparent" />
                 </span>
                 <span className="hidden font-semibold text-ink-700 dark:text-ink-200 sm:inline">{user.name}</span>
                 {isAdmin && (
@@ -92,7 +90,7 @@ function UserMenu({ user, isAdmin }) {
                     role="menu"
                     className="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right animate-scale-in overflow-hidden rounded-2xl border border-ink-200/70 bg-white/95 shadow-xl backdrop-blur-xl dark:border-ink-800/70 dark:bg-ink-900/95"
                 >
-                    <div className="border-b border-ink-200/60 bg-gradient-to-br from-brand-500/5 to-iris-500/5 px-4 py-3 dark:border-ink-800/60">
+                    <div className="border-b border-ink-200/60 bg-brand-500/5 px-4 py-3 dark:border-ink-800/60">
                         <div className="text-sm font-semibold text-ink-900 dark:text-white">{user.name}</div>
                         <div className="mt-0.5 truncate text-xs text-ink-500 dark:text-ink-400">{user.email}</div>
                     </div>
@@ -186,9 +184,6 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             {/* Ambient background */}
             {ambient && (
                 <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-                    <div className="absolute inset-0 bg-radial-brand opacity-70" />
-                    <div className="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-brand-500/10 blur-3xl" />
-                    <div className="absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-iris-500/10 blur-3xl" />
                 </div>
             )}
 
@@ -207,7 +202,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                     className={`relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
                                         item.active
                                             ? item.accent
-                                                ? 'bg-gradient-to-r from-brand-500/10 to-iris-500/10 text-brand-600 ring-1 ring-brand-500/20 dark:text-brand-300'
+                                                ? 'bg-brand-500/10 text-brand-600 ring-1 ring-brand-500/20 dark:text-brand-300'
                                                 : 'bg-ink-100 text-ink-900 dark:bg-ink-800/70 dark:text-white'
                                             : item.accent
                                             ? 'text-brand-600 hover:bg-brand-500/10 dark:text-brand-300'
@@ -217,7 +212,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                     <item.icon className="h-3.5 w-3.5" />
                                     {item.label}
                                     {item.active && (
-                                        <span className="absolute -bottom-[13px] left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500 to-iris-500" />
+                                        <span className="absolute -bottom-[13px] left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-brand-500" />
                                     )}
                                 </Link>
                             ))}
@@ -242,7 +237,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 </Link>
                                 <Link
                                     href={route('register')}
-                                    className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-brand-500 to-iris-500 px-4 py-1.5 text-sm font-semibold text-white shadow-glow transition hover:shadow-glow-lg hover:-translate-y-px"
+                                    className="group inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white shadow-glow transition hover:shadow-glow-lg hover:-translate-y-px"
                                 >
                                     {t('nav.get_started')}
                                     <Icon.ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -263,7 +258,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                 </div>
 
                 {/* Gradient underline */}
-                <div className="pointer-events-none h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent" />
+                <div className="pointer-events-none h-px bg-ink-200 dark:bg-ink-800" />
 
                 {mobileOpen && (
                     <div className="animate-fade-up border-t border-ink-200/60 bg-white/70 px-4 py-4 backdrop-blur-xl md:hidden dark:border-ink-800/60 dark:bg-ink-950/70">
@@ -284,11 +279,11 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 </Link>
                             ))}
                         </div>
-                        <div className="my-3 h-px bg-gradient-to-r from-transparent via-ink-300 to-transparent dark:via-ink-700" />
+                        <div className="my-3 h-px bg-ink-200 dark:bg-ink-800" />
                         {user ? (
                             <div className="flex flex-col gap-1">
-                                <div className="flex items-center gap-3 rounded-lg bg-gradient-to-br from-brand-500/5 to-iris-500/5 px-3 py-2.5">
-                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-iris-500 text-[11px] font-bold text-white">
+                                <div className="flex items-center gap-3 rounded-lg bg-brand-500/5 px-3 py-2.5">
+                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500 text-[11px] font-bold text-white">
                                         {user.name.slice(0, 2).toUpperCase()}
                                     </span>
                                     <div className="min-w-0 flex-1">
@@ -310,7 +305,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                 <Link href={route('login')} onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-ink-100 dark:hover:bg-ink-800/60">
                                     {t('nav.log_in')}
                                 </Link>
-                                <Link href={route('register')} onClick={() => setMobileOpen(false)} className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-brand-500 to-iris-500 px-4 py-2.5 text-sm font-semibold text-white shadow-glow">
+                                <Link href={route('register')} onClick={() => setMobileOpen(false)} className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white shadow-glow">
                                     {t('nav.get_started')}
                                     <Icon.ArrowRight className="h-3.5 w-3.5" />
                                 </Link>
@@ -345,11 +340,9 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             <footer className="relative mt-24 overflow-hidden border-t border-ink-200/60 dark:border-ink-800/60">
                 {/* Ambient orbs */}
                 <div className="pointer-events-none absolute inset-0 -z-10">
-                    <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-brand-500/5 blur-3xl" />
-                    <div className="absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-iris-500/5 blur-3xl" />
                 </div>
                 {/* Gradient shine at top */}
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-ink-200 dark:bg-ink-800" />
 
                 <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
                     <div className="grid gap-10 md:grid-cols-12">
@@ -446,7 +439,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                             <div className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">
                                 {t('footer.section_cta')}
                             </div>
-                            <div className="mt-4 rounded-2xl border border-ink-200 bg-gradient-to-br from-brand-500/5 to-iris-500/5 p-4 dark:border-ink-800">
+                            <div className="mt-4 rounded-2xl border border-ink-200 bg-brand-500/5 p-4 dark:border-ink-800">
                                 <p className="text-xs leading-relaxed text-ink-600 dark:text-ink-300">
                                     {t('footer.cta_body')}
                                 </p>
@@ -476,15 +469,9 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                             </a>
                         </div>
                         <div className="flex items-center gap-4">
-                            <span className="inline-flex items-center gap-1.5">
-                                {t('footer.made_with')}
-                                <Icon.Heart className="h-3 w-3 text-rose-500" />
-                                {t('footer.made_for')}
-                            </span>
-                            <span className="hidden h-3 w-px bg-ink-300 dark:bg-ink-700 sm:inline-block" />
-                            <span className="hidden font-mono text-[11px] text-ink-400 sm:inline-block dark:text-ink-500">
-                                v1.0
-                            </span>
+                            <Link href={route('legal')} className="underline-offset-2 hover:text-ink-900 hover:underline dark:hover:text-white">
+                                {t('footer.legal_link')}
+                            </Link>
                         </div>
                     </div>
                 </div>

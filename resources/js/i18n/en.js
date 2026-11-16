@@ -65,8 +65,7 @@ export default {
         cta_pick_cert: 'Pick a certification',
         cta_get_started: 'Get started',
         rights: 'Open source · MIT license.',
-        made_with: 'Made with',
-        made_for: 'for future certified professionals',
+        legal_link: 'Terms and privacy',
     },
     home: {
         page_title: 'Certifications',

@@ -22,7 +22,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                         <span className="text-ink-700 dark:text-ink-300">{t('profile.breadcrumb_profile')}</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-iris-500 text-lg font-bold text-white shadow-glow">
+                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500 text-lg font-bold text-white shadow-glow">
                             {(user?.name || '?')
                                 .split(' ')
                                 .map((p) => p[0])

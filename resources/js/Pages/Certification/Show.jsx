@@ -25,7 +25,7 @@ function Logo({ certification, size = 'lg' }) {
         .join('')
         .toUpperCase();
     return (
-        <div className={`${size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-14 w-14 text-lg'} flex items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-iris-500 font-bold text-white shadow-glow`}>
+        <div className={`${size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-14 w-14 text-lg'} flex items-center justify-center rounded-2xl bg-brand-500 font-bold text-white shadow-glow`}>
             {initials}
         </div>
     );
@@ -33,9 +33,9 @@ function Logo({ certification, size = 'lg' }) {
 
 function ModeCard({ href, disabled, IconComp, title, description, meta, accent, badge }) {
     const accents = {
-        brand: 'from-brand-500 to-iris-500',
-        emerald: 'from-emerald-500 to-teal-500',
-        amber: 'from-amber-500 to-orange-500',
+        brand: 'bg-brand-500',
+        emerald: 'bg-emerald-500',
+        amber: 'bg-amber-500',
     };
     const Wrapper = disabled ? 'div' : Link;
     const wrapperProps = disabled ? {} : { href };
@@ -49,18 +49,15 @@ function ModeCard({ href, disabled, IconComp, title, description, meta, accent, 
                     : 'card-lift hover:border-brand-500/40'
             }`}
         >
-            <div className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl transition group-hover:opacity-30`} />
-
-            <div className="mb-5 flex items-start justify-between">
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${accents[accent]} text-white shadow-glow`}>
-                    <IconComp className="h-6 w-6" />
-                </div>
+            {/* Filet de couleur en haut plutot qu'une pastille d'icone : sobre, lisible. */}
+            <span className={`absolute inset-x-0 top-0 h-1 ${accents[accent]}`} aria-hidden="true" />
+            <div className="flex items-start justify-between gap-3">
+                <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-ink-900 dark:text-white">
+                    <IconComp className="h-5 w-5 text-ink-400" />
+                    {title}
+                </h3>
                 {badge && <span className="badge-warn">{badge}</span>}
             </div>
-
-            <h3 className="text-xl font-bold tracking-tight text-ink-900 dark:text-white">
-                {title}
-            </h3>
             <p className="mt-2 flex-1 text-sm text-ink-500 dark:text-ink-400">
                 {description}
             </p>
@@ -68,7 +65,7 @@ function ModeCard({ href, disabled, IconComp, title, description, meta, accent, 
             <div className="mt-5 flex items-center justify-between border-t border-ink-200/60 pt-4 dark:border-ink-800/60">
                 <span className="text-xs font-medium text-ink-500">{meta}</span>
                 {!disabled && (
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink-100 text-ink-500 transition group-hover:bg-gradient-to-br group-hover:from-brand-500 group-hover:to-iris-500 group-hover:text-white dark:bg-ink-800 dark:text-ink-300">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink-100 text-ink-500 transition group-hover:bg-brand-500 group-hover:text-white dark:bg-ink-800 dark:text-ink-300">
                         <Icon.ArrowRight className="h-4 w-4" />
                     </span>
                 )}
@@ -93,14 +90,14 @@ function RetirementCard({ label, days, urgency }) {
     const t = useT();
     const themes = {
         past: {
-            accent: 'from-rose-600 to-red-600',
+            accent: 'bg-rose-600',
             ring: 'bg-rose-500',
             title: t('cert_show.retire_past_title'),
             main: t('cert_show.retire_past_main', { date: label }),
             note: t('cert_show.retire_past_note'),
         },
         critical: {
-            accent: 'from-rose-500 to-orange-500',
+            accent: 'bg-rose-500',
             ring: 'bg-rose-500',
             title: t('cert_show.retire_critical_title'),
             main: days === 1
@@ -109,14 +106,14 @@ function RetirementCard({ label, days, urgency }) {
             note: t('cert_show.retire_critical_note', { date: label }),
         },
         warning: {
-            accent: 'from-amber-500 to-orange-500',
+            accent: 'bg-amber-500',
             ring: 'bg-amber-500',
             title: t('cert_show.retire_warning_title'),
             main: t('cert_show.retire_warning_main', { date: label }),
             note: t('cert_show.retire_warning_note', { months: Math.round(days / 30) }),
         },
         ok: {
-            accent: 'from-emerald-500 to-teal-500',
+            accent: 'bg-emerald-500',
             ring: 'bg-emerald-500',
             title: t('cert_show.retire_ok_title'),
             main: t('cert_show.retire_ok_main', { date: label }),
@@ -127,9 +124,8 @@ function RetirementCard({ label, days, urgency }) {
 
     return (
         <div className="card relative overflow-hidden p-5">
-            <div className={`pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full ${theme.ring} opacity-10 blur-2xl`} />
             <div className="relative flex items-start gap-4">
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${theme.accent} text-white shadow-glow`}>
+                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${theme.accent} text-white shadow-glow`}>
                     <Icon.Timer className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
@@ -249,7 +245,6 @@ export default function Show({ certification, mastery, cert_progress }) {
             <div className="mx-auto max-w-5xl space-y-8">
                 {/* Header */}
                 <div className="card relative overflow-hidden">
-                    <div className="pointer-events-none absolute inset-0 bg-radial-brand opacity-50" />
                     <div className="relative flex flex-col items-start gap-6 p-8 sm:flex-row sm:items-center">
                         <Logo certification={certification} />
                         <div className="flex-1">
@@ -405,9 +400,8 @@ export default function Show({ certification, mastery, cert_progress }) {
                     <div className={`grid gap-5 ${retiresAt && (certification.validity_months || certification.validity_note) ? 'md:grid-cols-2' : ''}`}>
                         {(certification.validity_months || certification.validity_note) && (
                             <div className="card relative overflow-hidden p-5">
-                                <div className="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-brand-500 opacity-10 blur-2xl" />
                                 <div className="relative flex items-start gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-white shadow-glow">
                                         <Icon.Timer className="h-5 w-5" />
                                     </div>
                                     <div className="flex-1">
@@ -447,7 +441,7 @@ export default function Show({ certification, mastery, cert_progress }) {
                                 </h3>
                                 <ExpandableText text={certification.long_description} />
                                 {certification.importance && (
-                                    <div className="mt-5 rounded-xl border-l-4 border-brand-500 bg-brand-500/5 p-4">
+                                    <div className="mt-5 rounded-lg border border-ink-200 p-4 dark:border-ink-800">
                                         <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-500">
                                             <Icon.Target className="h-3.5 w-3.5" />
                                             {t('cert_show.why_title')}

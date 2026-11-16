@@ -66,10 +66,9 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-500/10 via-iris-500/5 to-transparent p-4">
+            <div className="rounded-2xl border border-brand-500/20 bg-brand-500/10 p-4">
                 <div className="mb-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-600 dark:text-brand-300">
                     <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-70" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
                     </span>
                     {/* "Essai" seulement quand un paiement existe : sinon il n'y a rien a essayer. */}
@@ -91,7 +90,7 @@ export default function HeroQuizTeaser({ questions: initialQuestions }) {
                         {question.certification.logo_path ? (
                             <img src={`/storage/${question.certification.logo_path}`} alt="" className="h-6 w-6 shrink-0 rounded object-contain dark:bg-white dark:p-0.5" />
                         ) : (
-                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-gradient-to-br from-brand-500 to-iris-500 text-[9px] font-bold text-white">
+                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-brand-500 text-[9px] font-bold text-white">
                                 {question.certification.title.slice(0, 2).toUpperCase()}
                             </div>
                         )}

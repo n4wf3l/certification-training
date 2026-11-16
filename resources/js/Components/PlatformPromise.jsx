@@ -7,7 +7,6 @@ export default function PlatformPromise({ compact = false }) {
     if (compact) {
         return (
             <div className="card relative overflow-hidden p-5">
-                <div className="pointer-events-none absolute inset-0 bg-radial-brand opacity-30" />
                 <div className="relative flex flex-wrap items-center gap-3">
                     <span className="badge-brand font-semibold">
                         <Icon.Sparkles className="h-3.5 w-3.5" />
@@ -30,7 +29,6 @@ export default function PlatformPromise({ compact = false }) {
 
     return (
         <section className="card relative overflow-hidden">
-            <div className="pointer-events-none absolute inset-0 bg-radial-brand opacity-40" />
             <div className="relative border-b border-ink-200/60 p-6 dark:border-ink-800/60">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
@@ -53,7 +51,7 @@ export default function PlatformPromise({ compact = false }) {
                         key={p.title}
                         className="flex items-start gap-3 rounded-xl border border-ink-200/60 bg-white/60 p-4 dark:border-ink-800/60 dark:bg-ink-900/40"
                     >
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-white shadow-glow">
                             <p.Icon className="h-4 w-4" />
                         </span>
                         <div>

@@ -43,10 +43,9 @@
         pointer-events: none;
         background-image:
             radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0),
-            radial-gradient(ellipse 60% 40% at 80% -10%, rgba(18, 204, 176, 0.12), transparent 70%),
-            radial-gradient(ellipse 50% 30% at 20% -5%, rgba(139, 92, 246, 0.08), transparent 70%);
-        background-size: 24px 24px, 100% 100%, 100% 100%;
-        background-repeat: repeat, no-repeat, no-repeat;
+            none;
+        background-size: 24px 24px;
+        background-repeat: repeat;
     }
     html.dark body::after {
         content: '';
@@ -73,7 +72,6 @@
     html.dark ::selection {
         background: rgba(18, 204, 176, 0.35);
         color: #ffffff;
-        text-shadow: 0 0 8px rgba(18, 204, 176, 0.6);
     }
 }
 
@@ -82,7 +80,7 @@
         @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-ink-950 disabled:opacity-50 disabled:cursor-not-allowed;
     }
     .btn-primary {
-        @apply btn bg-gradient-to-r from-brand-500 to-iris-500 text-white shadow-glow hover:shadow-glow-lg hover:-translate-y-px active:translate-y-0;
+        @apply btn bg-brand-400 text-ink-950 hover:bg-brand-300 active:bg-brand-500;
     }
     .btn-secondary {
         @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-100 dark:hover:bg-ink-800;
@@ -91,10 +89,10 @@
         @apply btn text-ink-600 hover:bg-ink-100 dark:text-ink-300 dark:hover:bg-ink-800;
     }
     .card {
-        @apply rounded-2xl border border-ink-200 bg-white shadow-sm dark:border-ink-800/60 dark:bg-ink-900/40 dark:backdrop-blur-xl;
+        @apply rounded-lg border border-ink-200 bg-white dark:border-ink-800 dark:bg-ink-900;
     }
     .card-lift {
-        @apply card transition-all duration-200 hover:-translate-y-1 hover:shadow-xl dark:hover:border-ink-700;
+        @apply card transition-colors duration-150 hover:border-ink-400 dark:hover:border-ink-600;
     }
     .field-label {
         @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink-500 dark:text-ink-400;
@@ -103,7 +101,7 @@
         @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder-ink-400 shadow-sm outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 dark:border-ink-800 dark:bg-ink-950/60 dark:text-ink-100 dark:placeholder-ink-500 dark:focus:border-brand-500;
     }
     .glass-nav {
-        @apply sticky top-0 z-40 border-b border-ink-200/60 bg-white/70 backdrop-blur-xl dark:border-ink-800/60 dark:bg-ink-950/60;
+        @apply sticky top-0 z-40 border-b border-ink-200 bg-white dark:border-ink-800 dark:bg-ink-950;
     }
     .badge {
         @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium;
@@ -124,9 +122,7 @@
         @apply badge border-ink-200 bg-ink-100 text-ink-600 dark:border-ink-800 dark:bg-ink-800/60 dark:text-ink-300;
     }
     .gradient-text {
-        @apply bg-gradient-to-r from-brand-400 via-iris-500 to-brand-500 bg-clip-text text-transparent;
-        background-size: 200% 100%;
-        animation: shimmer 8s ease-in-out infinite;
+        @apply text-brand-600 dark:text-brand-400;
     }
     .divider-dot {
         @apply mx-3 h-1 w-1 rounded-full bg-ink-400/60;

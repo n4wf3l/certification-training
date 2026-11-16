@@ -364,7 +364,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         {certification.logo_path ? (
                             <img src={`/storage/${certification.logo_path}`} alt="" className="h-9 w-9 object-contain" />
                         ) : (
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 text-xs font-bold text-white">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-xs font-bold text-white">
                                 {certification.title.slice(0, 2).toUpperCase()}
                             </div>
                         )}
@@ -417,7 +417,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                 </div>
                 <div className="h-0.5 w-full bg-ink-100 dark:bg-ink-800">
                     <div
-                        className="h-full bg-gradient-to-r from-brand-500 to-iris-500 transition-all"
+                        className="h-full bg-brand-500 transition-all"
                         style={{ width: `${progressPct}%` }}
                     />
                 </div>
@@ -492,7 +492,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                     }
                                 } else if (selected) {
                                     className += `border-brand-500 bg-brand-500/10 shadow-glow ${flashing ? 'scale-[0.99]' : ''}`;
-                                    letterBg = 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow';
+                                    letterBg = 'bg-brand-500 text-white shadow-glow';
                                 } else {
                                     className += 'border-ink-200 bg-white hover:border-brand-500/40 hover:bg-brand-500/5 dark:border-ink-800 dark:bg-ink-900/40 dark:hover:bg-ink-800/60';
                                 }
@@ -570,7 +570,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                     <Icon.ArrowRight className="h-4 w-4" />
                                 </button>
                             ) : (
-                                <button onClick={() => submit(false)} disabled={submitting || frozen} className="btn-primary bg-gradient-to-r from-emerald-500 to-teal-500">
+                                <button onClick={() => submit(false)} disabled={submitting || frozen} className="btn-primary bg-emerald-500">
                                     {submitting ? t('exam_take.submitting') : t('exam_take.finish_exam')}
                                     <Icon.Check className="h-4 w-4" />
                                 </button>
@@ -616,7 +616,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                                 title={t('exam_take.nav_question_title', { n: qq.position })}
                                                 className={`aspect-square rounded-lg text-xs font-mono font-semibold transition ${
                                                     isCurrent
-                                                        ? 'bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow ring-2 ring-brand-500/50'
+                                                        ? 'bg-brand-500 text-white shadow-glow ring-2 ring-brand-500/50'
                                                         : answered
                                                         ? 'bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/25 dark:text-emerald-300'
                                                         : 'bg-ink-100 text-ink-500 hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700'
@@ -632,7 +632,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         <button
                             onClick={() => submit(false)}
                             disabled={submitting || frozen}
-                            className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 !py-3"
+                            className="btn-primary w-full bg-emerald-500 !py-3"
                         >
                             {submitting ? t('exam_take.submitting') : t('exam_take.finish')}
                         </button>

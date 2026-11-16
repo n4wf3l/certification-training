@@ -327,7 +327,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                 {/* Certificate mechanic callout : explains the 3-perfect-runs rule
                     and positions the CertifLoop certificate as proof of readiness
                     rather than a participation trophy. */}
-                <div className="mt-16 rounded-3xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 via-iris-500/5 to-transparent p-8 sm:p-10">
+                <div className="mt-16 rounded-3xl border border-brand-500/30 bg-brand-500/10 p-8 sm:p-10">
                     <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
                         <div>
                             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
@@ -350,7 +350,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                                     key={n}
                                     className="rounded-2xl border border-brand-500/20 bg-white/60 p-4 text-center backdrop-blur-sm dark:border-ink-800 dark:bg-ink-900/40"
                                 >
-                                    <div className="bg-gradient-to-br from-brand-500 to-iris-500 bg-clip-text font-mono text-4xl font-bold text-transparent">
+                                    <div className="bg-brand-500 bg-clip-text font-mono text-4xl font-bold text-transparent">
                                         {t(`home_cert_callout.stat_${n}_value`)}
                                     </div>
                                     <div className="mt-2 text-[10px] font-medium uppercase leading-tight tracking-wider text-ink-500 dark:text-ink-400">

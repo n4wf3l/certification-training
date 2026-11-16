@@ -25,14 +25,13 @@ function formatDuration(seconds) {
 
 function KPI({ label, value, sub, accent = 'brand' }) {
     const accents = {
-        brand: 'from-brand-500 to-iris-500',
-        emerald: 'from-emerald-500 to-teal-500',
-        amber: 'from-amber-500 to-orange-500',
-        rose: 'from-rose-500 to-pink-500',
+        brand: 'bg-brand-500',
+        emerald: 'bg-emerald-500',
+        amber: 'bg-amber-500',
+        rose: 'bg-rose-500',
     };
     return (
         <div className="card relative overflow-hidden p-5">
-            <div className={`pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl`} />
             <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">{label}</div>
             <div className="mt-2 font-mono text-3xl font-extrabold text-ink-900 dark:text-white">
                 {value}
@@ -54,7 +53,7 @@ function EvolutionCard({ evolution }) {
                     {certification.logo_path ? (
                         <img src={`/storage/${certification.logo_path}`} alt="" className="h-10 w-10 object-contain" />
                     ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 text-xs font-bold text-white">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500 text-xs font-bold text-white">
                             {certification.title.slice(0, 2).toUpperCase()}
                         </div>
                     )}
@@ -147,7 +146,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                         </div>
                         <div className="grid gap-3 sm:grid-cols-2">
                             {certificates.map((c) => (
-                                <div key={c.token} className="rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/5 to-white p-4 dark:from-brand-500/10 dark:to-ink-900/40">
+                                <div key={c.token} className="rounded-lg border border-brand-500/30 bg-brand-500/5 p-4">
                                     <div className="mb-2 flex items-start justify-between gap-2">
                                         <div className="min-w-0 flex-1">
                                             <div className="font-mono text-[10px] font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-300">
@@ -222,7 +221,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                                     {badges.map((b) => (
                                         <div key={`${b.key}-${b.certification?.slug ?? 'x'}`} className="flex items-start gap-3 rounded-lg border border-ink-200 bg-white p-3 dark:border-ink-800 dark:bg-ink-900/40">
-                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-glow">
+                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white shadow-glow">
                                                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z" />
                                                     <path d="M17 4h3v2a3 3 0 0 1-3 3M7 4H4v2a3 3 0 0 0 3 3" />
@@ -295,7 +294,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                                                 {a.certification.logo_path ? (
                                                     <img src={`/storage/${a.certification.logo_path}`} alt="" className="h-8 w-8 object-contain" />
                                                 ) : (
-                                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 text-[10px] font-bold text-white">
+                                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-[10px] font-bold text-white">
                                                         {a.certification.title.slice(0, 2).toUpperCase()}
                                                     </div>
                                                 )}

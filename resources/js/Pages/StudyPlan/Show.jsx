@@ -86,7 +86,7 @@ export default function Show({ plan, progress }) {
                     </div>
                     <div className="h-3 w-full overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
                         <div
-                            className={`h-full transition-all ${progress.pct >= 100 ? 'bg-emerald-500' : 'bg-gradient-to-r from-brand-500 to-iris-500'}`}
+                            className={`h-full transition-all ${progress.pct >= 100 ? 'bg-emerald-500' : 'bg-brand-500'}`}
                             style={{ width: `${progress.pct}%` }}
                         />
                     </div>

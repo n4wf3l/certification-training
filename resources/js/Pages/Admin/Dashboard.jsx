@@ -163,7 +163,6 @@ function Kpi({ label, value, IconComp, accent, href }) {
         : 'card relative overflow-hidden p-5';
     const content = (
         <div className={wrapperClass}>
-            <div className={`pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl`} />
             <div className="relative flex items-start justify-between">
                 <div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
@@ -201,7 +200,6 @@ function ActionCard({ href, IconComp, accent, title, description, badge = null, 
             href={href}
             className="card-lift group relative flex items-start gap-4 overflow-hidden p-5"
         >
-            <div className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gradient-to-br ${accents[accent]} opacity-10 blur-2xl transition group-hover:opacity-30`} />
             <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${accents[accent]} text-white shadow-glow`}>
                 <IconComp className="h-6 w-6" />
             </div>
@@ -216,7 +214,7 @@ function ActionCard({ href, IconComp, accent, title, description, badge = null, 
                 </div>
                 <p className="mt-1 text-sm text-ink-500">{description}</p>
             </div>
-            <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500 transition group-hover:bg-gradient-to-br group-hover:from-brand-500 group-hover:to-iris-500 group-hover:text-white dark:bg-ink-800 dark:text-ink-300">
+            <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500 transition group-hover:bg-brand-500 group-hover:text-white dark:bg-ink-800 dark:text-ink-300">
                 <Icon.ArrowRight className="h-4 w-4" />
             </div>
         </Link>

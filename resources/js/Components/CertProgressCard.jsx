@@ -41,8 +41,7 @@ export default function CertProgressCard({ progress, certificationSlug }) {
             ? new Date(awarded_at).toLocaleDateString(dateTag, { year: 'numeric', month: 'long', day: 'numeric' })
             : '';
         return (
-            <div className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-500/10 via-brand-500/5 to-transparent p-5 dark:border-emerald-400/40">
-                <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-emerald-500/20 blur-2xl" />
+            <div className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-emerald-500/5 p-5 dark:border-emerald-400/40">
                 <div className="relative">
                     <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-300">
                         <Icon.Shield className="h-3.5 w-3.5" />
@@ -103,7 +102,7 @@ export default function CertProgressCard({ progress, certificationSlug }) {
                         key={i}
                         className={`h-2 flex-1 rounded-full transition ${
                             i < perfect_runs
-                                ? 'bg-gradient-to-r from-brand-500 to-iris-500 shadow-glow'
+                                ? 'bg-brand-500 shadow-glow'
                                 : 'bg-ink-200 dark:bg-ink-800'
                         }`}
                     />

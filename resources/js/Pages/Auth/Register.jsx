@@ -33,7 +33,7 @@ export default function Register({ redirect_to }) {
             {/* Promise card - answers "is it really free?" upfront to reduce mid-form dropoff.
                 Placed before the fields so hesitant visitors see the commitment before typing.
                 4 items = only claims verified in the codebase (see /legal for the written promise). */}
-            <div className="mb-6 overflow-hidden rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-brand-500/5">
+            <div className="mb-6 overflow-hidden rounded-xl border border-emerald-500/30 bg-emerald-500/5">
                 <div className="flex items-start gap-3 p-4">
                     <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-white shadow-sm">
                         <Icon.Shield className="h-4 w-4" />

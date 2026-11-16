@@ -14,8 +14,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans],
-                mono: ['"JetBrains Mono"', ...defaultTheme.fontFamily.mono],
+                sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
+                mono: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.mono],
             },
             colors: {
                 ink: {
@@ -51,12 +51,12 @@ export default {
             backgroundImage: {
                 'grid-dark': "linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px)",
                 'grid-light': "linear-gradient(rgba(15,23,42,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.05) 1px, transparent 1px)",
-                'radial-brand': 'radial-gradient(ellipse at top, rgba(18,204,176,.25), transparent 60%)',
-                'aurora': 'conic-gradient(from 180deg at 50% 50%, #12ccb0 0deg, #06b6d4 120deg, #22d3ee 240deg, #12ccb0 360deg)',
+                'radial-brand': 'none',
+                'aurora': 'none',
             },
             boxShadow: {
-                'glow': '0 0 40px -8px rgba(18, 204, 176, 0.40)',
-                'glow-lg': '0 0 80px -12px rgba(6, 182, 212, 0.45)',
+                'glow': 'none',
+                'glow-lg': 'none',
                 'inset-line': 'inset 0 1px 0 0 rgba(255,255,255,.06)',
             },
             keyframes: {

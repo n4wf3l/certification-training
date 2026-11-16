@@ -14,7 +14,7 @@ function BrandLogo({ settings, size = 'md', className = '' }) {
     return (
         <span className={`inline-flex items-center gap-2 ${className}`}>
             <span className={`relative flex ${dims} items-center justify-center overflow-hidden rounded-xl ${
-                logoUrl ? 'bg-white shadow-sm' : 'bg-gradient-to-br from-brand-500 to-iris-500 shadow-glow-lg'
+                logoUrl ? 'bg-white shadow-sm' : 'bg-brand-500 shadow-glow-lg'
             }`}>
                 {logoUrl ? (
                     <img src={logoUrl} alt="" className="h-full w-full object-contain p-1" />
@@ -48,7 +48,6 @@ export default function GuestLayout({ children, title, subtitle }) {
                 <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-between lg:p-12">
                     {/* Background layers */}
                     <div className="absolute inset-0 bg-ink-950" />
-                    <div className="absolute inset-0 bg-radial-brand opacity-90" />
                     <div
                         className="absolute inset-0 opacity-[0.06]"
                         style={{
@@ -58,8 +57,6 @@ export default function GuestLayout({ children, title, subtitle }) {
                         }}
                     />
                     {/* Orb */}
-                    <div className="absolute -right-24 top-1/3 h-96 w-96 rounded-full bg-gradient-to-br from-brand-500 to-iris-500 opacity-30 blur-3xl" />
-                    <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl" />
 
                     <div className="relative">
                         <Link href={route('home')} className="text-white">

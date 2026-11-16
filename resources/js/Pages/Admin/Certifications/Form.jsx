@@ -678,7 +678,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                                     {progress && (
                                         <div className="mt-2 h-1 w-full rounded bg-ink-200 dark:bg-ink-800">
                                             <div
-                                                className="h-1 rounded bg-gradient-to-r from-brand-500 to-iris-500"
+                                                className="h-1 rounded bg-brand-500"
                                                 style={{ width: `${progress.percentage}%` }}
                                             />
                                         </div>

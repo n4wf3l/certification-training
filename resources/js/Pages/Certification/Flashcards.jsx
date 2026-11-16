@@ -111,7 +111,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                     </div>
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
                         <div
-                            className="h-full bg-gradient-to-r from-brand-500 to-iris-500 transition-all"
+                            className="h-full bg-brand-500 transition-all"
                             style={{ width: `${((index + 1) / total) * 100}%` }}
                         />
                     </div>

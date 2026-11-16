@@ -26,7 +26,7 @@ export default function CertLogo({ certification, size = 'md', className = '' })
         .toUpperCase();
 
     return (
-        <div className={`${dims} flex shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-iris-500 font-mono font-bold tracking-tighter text-white ${className}`}>
+        <div className={`${dims} flex shrink-0 items-center justify-center rounded-lg bg-brand-500 font-mono font-bold tracking-tighter text-white ${className}`}>
             {initials || '?'}
         </div>
     );

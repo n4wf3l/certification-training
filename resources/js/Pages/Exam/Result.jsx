@@ -89,7 +89,7 @@ function ComparisonCard({ comparison, currentDuration }) {
         return (
             <div className="card p-6">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-iris-500 text-white shadow-glow">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-white shadow-glow">
                         <Icon.Sparkles className="h-5 w-5" />
                     </div>
                     <div>
@@ -311,11 +311,9 @@ function CertProgressBanner({ progress }) {
 
     if (progress.just_awarded && progress.awarded_token) {
         return (
-            <div className="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-500/15 via-brand-500/10 to-iris-500/10 p-6 shadow-glow-lg">
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/30 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-iris-500/20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-emerald-500/5 p-6 shadow-glow-lg">
                 <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-brand-500 text-white shadow-glow">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-glow">
                         <Icon.Shield className="h-7 w-7" />
                     </div>
                     <div className="flex-1">
@@ -342,7 +340,7 @@ function CertProgressBanner({ progress }) {
     if (step !== 1 && step !== 2) return null;
 
     return (
-        <div className="rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 to-transparent p-5">
+        <div className="rounded-2xl border border-brand-500/30 bg-brand-500/10 p-5">
             <div className="flex items-start gap-3">
                 <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 text-brand-600 dark:text-brand-300">
                     <Icon.Shield className="h-5 w-5" />
@@ -360,7 +358,7 @@ function CertProgressBanner({ progress }) {
                                 key={i}
                                 className={`h-1.5 w-8 rounded-full transition ${
                                     i < step
-                                        ? 'bg-gradient-to-r from-brand-500 to-iris-500 shadow-glow'
+                                        ? 'bg-brand-500 shadow-glow'
                                         : 'bg-ink-200 dark:bg-ink-800'
                                 }`}
                             />
