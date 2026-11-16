@@ -154,6 +154,8 @@ These demo accounts are only created outside production.
 
 ### Production
 
+Step-by-step server guide (nginx without access logs, systemd queue worker and scheduler, first admin with `php artisan admin:create`): [deploy/README.md](deploy/README.md).
+
 Start from `.env.production.example`. In production (`APP_ENV=production`):
 
 - no demo account is seeded; the first admin comes from `ADMIN_EMAIL` / `ADMIN_PASSWORD` (12+ characters) on `php artisan db:seed --force`, and an existing admin is never overwritten;

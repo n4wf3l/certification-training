@@ -1,0 +1,17 @@
+# Worker permanent de la file d'attente (emails : reinitialisation du mot de passe,
+# prevenance avant suppression, rappels). Redemarre seul s'il s'arrete.
+# Installe par deploy/install.sh (__APP_DIR__, __USER__ et __PHP__ y sont remplaces).
+[Unit]
+Description=CertifLoop queue worker
+After=network.target
+
+[Service]
+User=__USER__
+Group=__USER__
+WorkingDirectory=__APP_DIR__
+ExecStart=__PHP__ artisan queue:work --sleep=3 --tries=3 --max-time=3600
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

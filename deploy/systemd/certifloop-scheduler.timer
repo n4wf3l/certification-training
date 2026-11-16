@@ -1,0 +1,11 @@
+# Equivalent systemd du cron "* * * * * php artisan schedule:run".
+[Unit]
+Description=CertifLoop scheduler, chaque minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+AccuracySec=1s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

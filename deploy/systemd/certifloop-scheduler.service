@@ -1,0 +1,12 @@
+# Une passe du scheduler Laravel (routes/console.php) : rappels, digest hebdo et
+# suppression des comptes inactifs (accounts:purge-inactive, chaque nuit a 3h).
+# Lance chaque minute par certifloop-scheduler.timer.
+[Unit]
+Description=CertifLoop scheduler (schedule:run)
+
+[Service]
+Type=oneshot
+User=__USER__
+Group=__USER__
+WorkingDirectory=__APP_DIR__
+ExecStart=__PHP__ artisan schedule:run
