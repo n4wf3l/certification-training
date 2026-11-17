@@ -324,7 +324,7 @@ export default function Show({ certification, mastery, cert_progress }) {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                    <div className={`grid grid-cols-1 gap-5 ${certification.has_subnetting ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
                         <div className="animate-stagger-in" style={{ animationDelay: '0ms' }}>
                             <ModeCard
                                 href={route('certifications.course', certification.slug)}
@@ -389,6 +389,18 @@ export default function Show({ certification, mastery, cert_progress }) {
                                 }
                             />
                         </div>
+                        {certification.has_subnetting && (
+                            <div className="animate-stagger-in" style={{ animationDelay: '240ms' }}>
+                                <ModeCard
+                                    href={route('certifications.subnetting', certification.slug)}
+                                    accent="emerald"
+                                    IconComp={Icon.Target}
+                                    title={t('cert_show.mode_subnetting_title')}
+                                    description={t('cert_show.mode_subnetting_desc')}
+                                    meta={t('cert_show.mode_subnetting_meta')}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
 

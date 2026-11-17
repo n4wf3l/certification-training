@@ -55,6 +55,7 @@ Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
         Route::get('/', [CertificationController::class, 'show'])->name('certifications.show');
         Route::get('/cours', [CertificationController::class, 'course'])->name('certifications.course');
         Route::get('/flashcards', [CertificationController::class, 'flashcards'])->name('certifications.flashcards');
+        Route::get('/subnetting', [CertificationController::class, 'subnetting'])->name('certifications.subnetting');
         Route::get('/examen', [ExamController::class, 'show'])->name('certifications.exam');
     });
 

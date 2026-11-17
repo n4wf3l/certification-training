@@ -45,6 +45,7 @@ class CertificationController extends Controller
                 'available_questions' => $availableQuestions,
                 'has_course' => is_array($certification->course_blocks) && count($certification->course_blocks) > 0,
                 'course_updated_at' => $certification->course_updated_at?->toIso8601String(),
+                'has_subnetting' => self::hasSubnetting($certification),
             ],
             'mastery' => $mastery,
             'cert_progress' => $this->certProgress($certification),
@@ -113,6 +114,24 @@ class CertificationController extends Controller
             'certification' => $this->basePayload($certification),
             'cards' => $questions,
         ]);
+    }
+
+    /**
+     * Entrainement au subnetting illimite : exercices generes dans le navigateur
+     * (resources/js/lib/subnetting.js), sans compte ni ecriture en base.
+     */
+    public function subnetting(Certification $certification): Response
+    {
+        abort_unless($certification->is_active && self::hasSubnetting($certification), 404);
+
+        return Inertia::render('Certification/Subnetting', [
+            'certification' => $this->basePayload($certification),
+        ]);
+    }
+
+    public static function hasSubnetting(Certification $certification): bool
+    {
+        return in_array($certification->slug, config('certifloop.subnetting_certifications', []), true);
     }
 
     private function basePayload(Certification $certification): array

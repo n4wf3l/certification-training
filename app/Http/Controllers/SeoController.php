@@ -53,6 +53,9 @@ class SeoController extends Controller
             $paths[$base] = $updated;
             $paths["$base/examen"] = $updated;
             $paths["$base/flashcards"] = $updated;
+            if (CertificationController::hasSubnetting($cert)) {
+                $paths["$base/subnetting"] = now();
+            }
             if (is_array($cert->course_blocks) && count($cert->course_blocks) > 0) {
                 $paths["$base/cours"] = $updated;
             }

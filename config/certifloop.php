@@ -14,6 +14,12 @@ return [
     | et dans l'UE). Les champs vides ne sont pas affiches. Le contact vient de
     | MAIL_FROM_ADDRESS.
     */
+    /*
+    | Certifications qui proposent l'entrainement au subnetting illimite
+    | (/certifications/<slug>/subnetting).
+    */
+    'subnetting_certifications' => ['ccna-200-301'],
+
     'publisher' => [
         'name' => env('PUBLISHER_NAME'),
         'company_id' => env('PUBLISHER_COMPANY_ID'),
