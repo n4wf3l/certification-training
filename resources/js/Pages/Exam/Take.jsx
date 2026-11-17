@@ -355,12 +355,18 @@ export default function Take({ attempt, certification, questions, cert_progress 
     const timeCritical = remaining < 60;
 
     return (
-        <AppLayout full>
+        <AppLayout full immersive>
             <Head title={t('exam_take.page_title', { title: certification.title })} />
 
             <div className="glass-nav border-b-0">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-                    <div className="flex items-center gap-3">
+                <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 sm:px-6 sm:py-3">
+                    {/* Mobile : barre minimale, la question et le chrono seulement. */}
+                    <div className="font-mono text-sm tabular-nums text-ink-900 sm:hidden dark:text-white">
+                        <span className="font-bold">{q.position}</span>
+                        <span className="text-ink-400">/{totalQuestions}</span>
+                        <span className="ml-3 text-xs text-ink-500">{answeredCount} {t('exam_take.locked_nav_answered_short')}</span>
+                    </div>
+                    <div className="hidden items-center gap-3 sm:flex">
                         {certification.logo_path ? (
                             <img src={`/storage/${certification.logo_path}`} alt="" className="h-9 w-9 rounded-md object-contain dark:bg-white dark:p-0.5" />
                         ) : (
@@ -397,7 +403,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             </span>
                         )}
                         <div
-                            className={`relative rounded-xl border px-4 py-2 font-mono text-lg font-bold tabular-nums ${
+                            className={`relative rounded-xl border px-3 py-1 font-mono text-base font-bold tabular-nums sm:px-4 sm:py-2 sm:text-lg ${
                                 timeCritical
                                     ? 'border-rose-500/40 bg-rose-500/10 text-rose-600 dark:text-rose-300 animate-pulse'
                                     : 'border-brand-500/20 bg-brand-500/5 text-brand-600 dark:text-brand-300'
@@ -423,11 +429,11 @@ export default function Take({ attempt, certification, questions, cert_progress 
                 </div>
             </div>
 
-            <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+            <div className="mx-auto max-w-6xl px-4 pb-8 pt-4 sm:px-6 sm:pt-8">
                 <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
-                    <div className="card p-6 sm:p-10 animate-fade-up" key={q.id}>
+                    <div className="sm:card sm:p-10 animate-fade-up" key={q.id}>
                         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                            <div className="badge-brand">
+                            <div className="badge-brand hidden sm:inline-flex">
                                 {t('exam_take.question_progress', { n: q.position, total: totalQuestions })}
                             </div>
                             {q.topic && (
@@ -440,7 +446,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 {q.scenario}
                             </div>
                         )}
-                        <h2 className="mb-4 text-2xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
+                        <h2 className="mb-4 text-xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
                             {q.question_text}
                         </h2>
                         {q.question_type === 'matching' ? (
@@ -580,7 +586,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
 
                     <div className="space-y-3 lg:sticky lg:top-24 lg:self-start">
                         {isLockedNav ? (
-                            <div className="card p-4">
+                            <div className="hidden sm:card sm:block sm:p-4">
                                 <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
                                     {t('exam_take.locked_nav_label')}
                                 </div>
@@ -596,7 +602,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 </p>
                             </div>
                         ) : (
-                            <div className="card p-4">
+                            <div className="sm:card sm:p-4">
                                 <div className="mb-3 flex items-center justify-between">
                                     <div className="text-xs font-semibold uppercase tracking-wider text-ink-500">
                                         {t('exam_take.nav_label')}
@@ -637,7 +643,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             {submitting ? t('exam_take.submitting') : t('exam_take.finish')}
                         </button>
                         {!isLockedNav && (
-                            <div className="rounded-xl border border-ink-200 bg-white/50 p-3 text-xs text-ink-500 dark:border-ink-800 dark:bg-ink-900/30">
+                            <div className="hidden rounded-xl border border-ink-200 bg-white/50 p-3 text-xs lg:block text-ink-500 dark:border-ink-800 dark:bg-ink-900/30">
                                 <div className="mb-1 font-semibold text-ink-700 dark:text-ink-300">{t('exam_take.shortcuts_title')}</div>
                                 <div>{t('exam_take.shortcut_arrows')}</div>
                                 <div>{t('exam_take.shortcut_numbers')}</div>

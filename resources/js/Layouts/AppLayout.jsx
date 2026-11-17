@@ -157,7 +157,7 @@ function UserMenu({ user, isAdmin }) {
     );
 }
 
-export default function AppLayout({ header, children, full = false, ambient = true }) {
+export default function AppLayout({ header, children, full = false, ambient = true, immersive = false }) {
     const page = usePage();
     const { auth, settings } = page.props;
     const user = auth?.user;
@@ -188,7 +188,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             )}
 
             {/* NAVBAR */}
-            <nav className="glass-nav">
+            <nav className={`glass-nav ${immersive ? 'hidden md:block' : ''}`}>
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-8">
                         <Link href={route('home')} className="shrink-0">
@@ -337,7 +337,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             <PwaInstallPrompt />
 
             {/* FOOTER */}
-            <footer className="relative mt-24 overflow-hidden border-t border-ink-200/60 dark:border-ink-800/60">
+            <footer className={`relative mt-24 overflow-hidden border-t ${immersive ? 'hidden md:block' : ''} border-ink-200/60 dark:border-ink-800/60`}>
                 {/* Ambient orbs */}
                 <div className="pointer-events-none absolute inset-0 -z-10">
                 </div>
