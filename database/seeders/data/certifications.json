@@ -23,7 +23,7 @@
         "validity_months": 36,
         "validity_note": "Valid for 3 years. The official exam uses a scaled score of about 825/1000 (≈ 82.5%) - Cisco keeps the exact threshold confidential. Renewal: retake the exam, pass a higher-level Cisco exam (CCNP, CCIE), or accumulate 30 CE credits. No grace period.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-11-17T17:31:58+00:00",
+        "questions_updated_at": "2026-11-17T18:11:08+00:00",
         "course_blocks": null,
         "course_updated_at": null,
         "syllabus_blueprint": {
