@@ -56,7 +56,8 @@ export default function PwaInstallPrompt() {
         }
     };
 
-    if (dismissed) return null;
+    // Jamais pendant un examen : le bandeau recouvrirait les reponses sur mobile.
+    if (dismissed || route().current('exam.*')) return null;
 
     if (isIos && visitCount >= 3) {
         return (

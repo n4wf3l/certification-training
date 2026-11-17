@@ -8,7 +8,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="{{ $brandName ?? 'CertifLoop' }}">
-        <link rel="apple-touch-icon" href="/pwa-icon-192.svg">
+        {{-- iOS n'accepte pas le SVG pour l'icone d'ecran d'accueil : PNG 180x180 plein bord. --}}
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
         <title inertia>{{ $brandName ?? 'CertifLoop' }}</title>
         <meta name="description" content="{{ __('meta.description') }}">
@@ -42,7 +43,8 @@
         {{-- Favicon : logo custom si upload, sinon un SVG inline avec le logo par défaut --}}
         @if(!empty($brandLogoUrl))
             <link rel="icon" href="{{ $brandLogoUrl }}">
-            <link rel="apple-touch-icon" href="{{ $brandLogoUrl }}">
+            {{-- Pas d'apple-touch-icon ici : un logo transparent devient un fond noir sur iOS.
+                 L'icone d'ecran d'accueil reste /apple-touch-icon.png (fond plein). --}}
         @else
             <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2312ccb0'/%3E%3Cpath d='M4 14 8 10l4 4 8-8' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
         @endif

@@ -51,7 +51,7 @@ function EvolutionCard({ evolution }) {
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink-200/60 px-5 py-4 dark:border-ink-800/60">
                 <div className="flex items-center gap-3">
                     {certification.logo_path ? (
-                        <img src={`/storage/${certification.logo_path}`} alt="" className="h-10 w-10 object-contain" />
+                        <img src={`/storage/${certification.logo_path}`} alt="" className="h-10 w-10 rounded-md object-contain dark:bg-white dark:p-0.5" />
                     ) : (
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500 text-xs font-bold text-white">
                             {certification.title.slice(0, 2).toUpperCase()}
@@ -292,7 +292,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                                         <td className="px-5 py-3">
                                             <div className="flex items-center gap-3">
                                                 {a.certification.logo_path ? (
-                                                    <img src={`/storage/${a.certification.logo_path}`} alt="" className="h-8 w-8 object-contain" />
+                                                    <img src={`/storage/${a.certification.logo_path}`} alt="" className="h-8 w-8 rounded-md object-contain dark:bg-white dark:p-0.5" />
                                                 ) : (
                                                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-[10px] font-bold text-white">
                                                         {a.certification.title.slice(0, 2).toUpperCase()}

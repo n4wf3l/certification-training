@@ -3,7 +3,7 @@ import Icon from '@/Components/Icons';
 import BlockRenderer from '@/Components/BlockRenderer';
 import { useT, useLocale } from '@/lib/i18n';
 import { Head, Link } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 function extractToc(blocks) {
     if (!Array.isArray(blocks)) return [];
@@ -35,6 +35,7 @@ export default function Course({ certification }) {
     const withIds = useMemo(() => assignHeadingIds(blocks), [blocks]);
     const toc = useMemo(() => extractToc(withIds), [withIds]);
     const [activeId, setActiveId] = useState(toc[0]?.id ?? null);
+    const mobileTocRef = useRef(null);
 
     useEffect(() => {
         if (!toc.length) return;
@@ -133,10 +134,38 @@ export default function Course({ certification }) {
                     </div>
                 </div>
 
-                <div className="mt-12 grid gap-10 lg:grid-cols-12">
+                {/* min-w-0 : sans lui, un bloc de code ou un tableau large elargit toute la grille sur mobile. */}
+                <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12">
                     {toc.length > 0 && (
-                        <aside className="lg:col-span-3">
-                            <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
+                        <aside className="min-w-0 lg:col-span-3">
+                            {/* Mobile : sommaire replie, pour arriver tout de suite au cours. */}
+                            <details ref={mobileTocRef} className="rounded-lg border border-ink-200 p-4 dark:border-ink-800 lg:hidden">
+                                <summary className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500">
+                                    {t('course.toc_label')} ({toc.length})
+                                </summary>
+                                <div onClick={() => { if (mobileTocRef.current) mobileTocRef.current.open = false; }}>
+                                    <ul className="mt-4 space-y-1.5 text-sm">
+                                        {toc.map((tocItem) => {
+                                            const active = tocItem.id === activeId;
+                                            return (
+                                                <li key={tocItem.id} className={tocItem.level === 2 ? 'ml-3' : ''}>
+                                                    <a
+                                                        href={`#${tocItem.id}`}
+                                                        className={`block border-l-2 py-1 pl-3 transition ${
+                                                            active
+                                                                ? 'border-ink-900 font-semibold text-ink-900 dark:border-white dark:text-white'
+                                                                : 'border-ink-200 text-ink-500 hover:text-ink-900 dark:border-ink-800 dark:hover:text-white'
+                                                        }`}
+                                                    >
+                                                        {tocItem.text}
+                                                    </a>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            </details>
+                            <div className="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto lg:block">
                                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500">
                                     {t('course.toc_label')}
                                 </div>
@@ -163,7 +192,7 @@ export default function Course({ certification }) {
                         </aside>
                     )}
 
-                    <article className={toc.length > 0 ? 'lg:col-span-9' : 'lg:col-span-12'}>
+                    <article className={`min-w-0 ${toc.length > 0 ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
                         <div className="max-w-3xl">
                             <BlockRenderer blocks={withIds} />
                         </div>

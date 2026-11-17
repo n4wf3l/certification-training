@@ -25,19 +25,12 @@ export default defineConfig({
                 start_url: '/',
                 lang: 'fr',
                 categories: ['education', 'productivity'],
+                // PNG d'abord : plusieurs navigateurs n'installent pas une PWA avec seulement du SVG.
                 icons: [
-                    {
-                        src: '/pwa-icon-192.svg',
-                        sizes: '192x192',
-                        type: 'image/svg+xml',
-                        purpose: 'any',
-                    },
-                    {
-                        src: '/pwa-icon-512.svg',
-                        sizes: '512x512',
-                        type: 'image/svg+xml',
-                        purpose: 'any maskable',
-                    },
+                    { src: '/pwa-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+                    { src: '/pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+                    { src: '/pwa-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+                    { src: '/pwa-icon-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
                 ],
             },
             workbox: {

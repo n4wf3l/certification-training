@@ -12,7 +12,7 @@ function Logo({ certification, size = 'lg' }) {
             <img
                 src={`/storage/${certification.logo_path}`}
                 alt={certification.title}
-                className={`${size === 'lg' ? 'h-24 w-24' : 'h-16 w-16'} object-contain`}
+                className={`${size === 'lg' ? 'h-24 w-24' : 'h-16 w-16'} rounded-lg object-contain dark:bg-white dark:p-1.5`}
             />
         );
     }

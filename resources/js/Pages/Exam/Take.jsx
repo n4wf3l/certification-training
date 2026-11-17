@@ -362,7 +362,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
                     <div className="flex items-center gap-3">
                         {certification.logo_path ? (
-                            <img src={`/storage/${certification.logo_path}`} alt="" className="h-9 w-9 object-contain" />
+                            <img src={`/storage/${certification.logo_path}`} alt="" className="h-9 w-9 rounded-md object-contain dark:bg-white dark:p-0.5" />
                         ) : (
                             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-xs font-bold text-white">
                                 {certification.title.slice(0, 2).toUpperCase()}
