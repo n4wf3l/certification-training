@@ -33,6 +33,13 @@ const DOMAIN_KEY_MAP = {
     practices: 'domain_practices',
     'continual-improvement': 'domain_continual',
     'digital-ai-innovation': 'domain_digital_ai',
+    // CCNA 200-301 v1.1
+    'network-fundamentals': 'domain_network_fundamentals',
+    'network-access': 'domain_network_access',
+    'ip-connectivity': 'domain_ip_connectivity',
+    'ip-services': 'domain_ip_services',
+    'security-fundamentals': 'domain_security_fundamentals',
+    'automation-programmability': 'domain_automation',
 };
 
 function ProgressRing({ percentage, passed, size = 180 }) {

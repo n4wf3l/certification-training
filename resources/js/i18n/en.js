@@ -368,6 +368,12 @@ export default {
         domain_practices: 'Practices',
         domain_continual: 'Continual improvement',
         domain_digital_ai: 'Digital & AI',
+        domain_network_fundamentals: 'Network Fundamentals',
+        domain_network_access: 'Network Access',
+        domain_ip_connectivity: 'IP Connectivity',
+        domain_ip_services: 'IP Services',
+        domain_security_fundamentals: 'Security Fundamentals',
+        domain_automation: 'Automation and Programmability',
         // Mastery card
         mastery_title: 'Your pool mastery',
         mastery_subtitle: 'A question is mastered after 2 consecutive correct answers.',
