@@ -14,6 +14,8 @@ const FOCUS_KEY_MAP = {
     practices: 'focus_practices',
     'continual-improvement': 'focus_continual',
     'digital-ai-innovation': 'focus_digital_ai',
+    'value-streams': 'focus_value_streams',
+    'other-frameworks': 'focus_other_frameworks',
     exam: 'focus_exam',
 };
 

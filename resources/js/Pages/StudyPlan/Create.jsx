@@ -12,13 +12,12 @@ export default function Create({ certifications, existing_plan_cert_ids = [] }) 
     const focusOptions = [
         { value: '', label: t('study_plan.focus_placeholder') },
         { value: 'foundations', label: t('study_plan.focus_foundations') },
-        { value: 'guiding-principles', label: t('study_plan.focus_guiding_principles') },
         { value: 'four-dimensions', label: t('study_plan.focus_four_dimensions') },
-        { value: 'itil-value-system', label: t('study_plan.focus_value_system') },
         { value: 'lifecycle-activities', label: t('study_plan.focus_lifecycle') },
-        { value: 'practices', label: t('study_plan.focus_practices') },
-        { value: 'continual-improvement', label: t('study_plan.focus_continual') },
+        { value: 'itil-value-system', label: t('study_plan.focus_value_system') },
+        { value: 'value-streams', label: t('study_plan.focus_value_streams') },
         { value: 'digital-ai-innovation', label: t('study_plan.focus_digital_ai') },
+        { value: 'other-frameworks', label: t('study_plan.focus_other_frameworks') },
         { value: 'exam', label: t('study_plan.focus_exam') },
     ];
     const availableCerts = useMemo(

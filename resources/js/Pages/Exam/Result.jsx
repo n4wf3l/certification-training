@@ -5,6 +5,7 @@ import ExplainMeButton from '@/Components/ExplainMeButton';
 import BookmarkToggle from '@/Components/BookmarkToggle';
 import { saveExamToCache } from '@/lib/offlineCache';
 import { useT } from '@/lib/i18n';
+import { domainLabel } from '@/lib/domains';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -24,23 +25,6 @@ function formatDelta(seconds) {
     return `${m}m${String(s).padStart(2, '0')}s`;
 }
 
-const DOMAIN_KEY_MAP = {
-    foundations: 'domain_foundations',
-    'guiding-principles': 'domain_guiding_principles',
-    'four-dimensions': 'domain_four_dimensions',
-    'itil-value-system': 'domain_value_system',
-    'lifecycle-activities': 'domain_lifecycle',
-    practices: 'domain_practices',
-    'continual-improvement': 'domain_continual',
-    'digital-ai-innovation': 'domain_digital_ai',
-    // CCNA 200-301 v1.1
-    'network-fundamentals': 'domain_network_fundamentals',
-    'network-access': 'domain_network_access',
-    'ip-connectivity': 'domain_ip_connectivity',
-    'ip-services': 'domain_ip_services',
-    'security-fundamentals': 'domain_security_fundamentals',
-    'automation-programmability': 'domain_automation',
-};
 
 function ProgressRing({ percentage, passed, size = 180 }) {
     const t = useT();
@@ -231,8 +215,7 @@ function DomainBreakdownCard({ breakdown, certificationSlug }) {
             </div>
             <div className="space-y-2">
                 {breakdown.map((d) => {
-                    const dictKey = DOMAIN_KEY_MAP[d.domain];
-                    const label = dictKey ? t(`exam_result.${dictKey}`) : d.domain;
+                    const label = domainLabel(t, d.domain);
                     const color = d.pct >= 70 ? 'emerald' : d.pct >= 40 ? 'amber' : 'rose';
                     const canPractice = d.pct < 100;
                     return (
@@ -605,7 +588,7 @@ export default function Result({ attempt, certification, details, mastery, compa
                                             {currentDetail.scenario}
                                         </p>
                                     )}
-                                    <p className="mb-3 text-sm font-medium text-ink-900 dark:text-white">{currentDetail.question_text}</p>
+                                    <p className="mb-3 whitespace-pre-line text-sm font-medium text-ink-900 dark:text-white">{currentDetail.question_text}</p>
 
                                     <div className="space-y-2 text-sm">
                                         {currentDetail.question_type === 'matching' ? (

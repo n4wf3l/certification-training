@@ -3,11 +3,11 @@
         "certification_slug": "itil-foundation-v5",
         "locale": "en",
         "canonical_from": "fr",
-        "dumped_at": "2026-10-28",
+        "dumped_at": "2026-11-23",
         "source": "certifloop:dump-seeders",
         "coverage": {
-            "questions_translated": 415,
-            "questions_total": 415
+            "questions_translated": 426,
+            "questions_total": 426
         }
     },
     "questions": {
@@ -63,7 +63,7 @@
             "topic": "Value co-creation",
             "scenario": "A provider makes a cloud platform available, while the customer remains responsible for configuring user accounts and securing their data.",
             "question_text": "Which concept does this situation best illustrate?",
-            "explanation": "ITIL 4 replaces the old \"provider produces, customer consumes\" model with co-creation: both parties actively contribute to producing value, and each retains some responsibilities and some risks.",
+            "explanation": "ITIL replaces the old \"provider produces, customer consumes\" model with co-creation: both parties actively contribute to producing value, and each retains some responsibilities and some risks.",
             "answers": {
                 "A": {
                     "text": "Value is created by the provider and then delivered to the consumer",
@@ -495,15 +495,15 @@
             "topic": "ITIL practices",
             "scenario": null,
             "question_text": "Which statement best describes an ITIL practice?",
-            "explanation": "ITIL defines a practice as \"a set of organisational resources designed for performing work or accomplishing an objective\". It includes people, processes, tools, and information - not just a procedure.",
+            "explanation": "ITIL (Version 5) defines a management practice as \"a set of organizational capabilities designed for performing work or accomplishing an objective\". Each practice draws on the four dimensions: people, information and technology, partners, value streams and processes.",
             "answers": {
                 "A": {
                     "text": "A set of interrelated activities that transform inputs into outputs",
                     "rationale": "That is the definition of a process, which is only one of the resources of a practice."
                 },
                 "B": {
-                    "text": "A set of organisational resources designed for performing work or accomplishing an objective",
-                    "rationale": "Exact wording of the official definition of a practice."
+                    "text": "A set of organizational capabilities designed for performing work or accomplishing an objective",
+                    "rationale": "ITIL (Version 5) definition of a management practice."
                 },
                 "C": {
                     "text": "A series of steps an organisation undertakes to create and deliver products and services to a consumer",
@@ -875,54 +875,6 @@
                 }
             }
         },
-        "37": {
-            "topic": "Practice - Problem management",
-            "scenario": "Several similar incidents occur regularly. Incidents are resolved temporarily but the cause remains unknown.",
-            "question_text": "Which practice should mainly be used to reduce the likelihood of recurrence?",
-            "explanation": "When several identical incidents recur, Problem Management takes over: it analyses the root cause to eliminate the source, whereas Incident Management only restores the service case by case.",
-            "answers": {
-                "A": {
-                    "text": "Incident management",
-                    "rationale": "Incident management aims to restore service quickly, but it does not mainly seek to identify and address the cause of recurrence."
-                },
-                "B": {
-                    "text": "Problem management",
-                    "rationale": "Exact wording - root cause analysis = Problem Management."
-                },
-                "C": {
-                    "text": "Service level management",
-                    "rationale": "Service Level Management frames commitments, not technical causes."
-                },
-                "D": {
-                    "text": "Supplier management",
-                    "rationale": "Supplier Management manages supplier relationships, not recurring incidents."
-                }
-            }
-        },
-        "38": {
-            "topic": "Practice - Incident management",
-            "scenario": "A critical service becomes unavailable. The immediate objective is to restore its operation as quickly as possible.",
-            "question_text": "Which practice is mainly involved?",
-            "explanation": "Official definition of the Incident Management practice: \"restore normal service operation as quickly as possible\". The objective is not to find the cause (that is Problem Management) but to restore the service.",
-            "answers": {
-                "A": {
-                    "text": "Incident management",
-                    "rationale": "Exact wording of the practice's objective."
-                },
-                "B": {
-                    "text": "Problem management",
-                    "rationale": "Problem Management targets the root cause - a different objective, medium-term."
-                },
-                "C": {
-                    "text": "IT asset management",
-                    "rationale": "IT Asset Management manages the asset lifecycle, off-topic."
-                },
-                "D": {
-                    "text": "Relationship management",
-                    "rationale": "Relationship Management concerns stakeholders, not technical restoration."
-                }
-            }
-        },
         "39": {
             "topic": "Automation and AI",
             "scenario": "An organisation wants to use artificial intelligence to automatically process sensitive requests.",
@@ -975,7 +927,7 @@
             "topic": "Value co-creation",
             "scenario": null,
             "question_text": "Which statement best describes value co-creation?",
-            "explanation": "ITIL 4 replaces the vertical \"provider produces, customer consumes\" model with co-creation: value emerges from active collaboration between multiple stakeholders (customer, provider, partners, users).",
+            "explanation": "ITIL replaces the vertical \"provider produces, customer consumes\" model with co-creation: value emerges from active collaboration between multiple stakeholders (customer, provider, partners, users).",
             "answers": {
                 "A": {
                     "text": "The provider produces value before delivering the service",
@@ -1551,15 +1503,15 @@
             "topic": "Practice - definition",
             "scenario": null,
             "question_text": "Which statement best describes a practice?",
-            "explanation": "ITIL defines a practice as \"a set of organisational resources designed for performing work or accomplishing an objective\". It includes people, processes, information, and tools.",
+            "explanation": "ITIL (Version 5) defines a management practice as \"a set of organizational capabilities designed for performing work or accomplishing an objective\". Each practice draws on the four dimensions: people, information and technology, partners, value streams and processes.",
             "answers": {
                 "A": {
                     "text": "A documented set of work instructions stating who does what and when",
                     "rationale": "That describes a procedure, which is only one element of a practice."
                 },
                 "B": {
-                    "text": "A set of organisational resources designed for performing work or accomplishing an objective",
-                    "rationale": "Exact wording of the official definition."
+                    "text": "A set of organizational capabilities designed for performing work or accomplishing an objective",
+                    "rationale": "ITIL (Version 5) definition of a management practice."
                 },
                 "C": {
                     "text": "A tool used by the service desk to log and track tickets",
@@ -1715,54 +1667,6 @@
                 }
             }
         },
-        "72": {
-            "topic": "Practice - Incident management - objective",
-            "scenario": null,
-            "question_text": "What is the main objective of incident management?",
-            "explanation": "Official objective of the Incident Management practice: \"restore normal service operation as quickly as possible and minimise business impact\". No cause analysis (that is Problem Management).",
-            "answers": {
-                "A": {
-                    "text": "Identify the root causes of incidents and manage known errors",
-                    "rationale": "That is the purpose of problem management."
-                },
-                "B": {
-                    "text": "Restore normal service operation as quickly as possible",
-                    "rationale": "Exact wording of the official objective."
-                },
-                "C": {
-                    "text": "Assess risks and authorise changes to proceed",
-                    "rationale": "That is the purpose of change enablement."
-                },
-                "D": {
-                    "text": "Handle user requests for standard service actions",
-                    "rationale": "That is the purpose of service request management."
-                }
-            }
-        },
-        "73": {
-            "topic": "Practice - Change enablement",
-            "scenario": "A change is assessed to determine its benefits, risks, and impacts before authorisation.",
-            "question_text": "What is the main objective of this assessment?",
-            "explanation": "Official objective of Change Enablement: \"maximise the number of successful changes by properly assessing risks, authorising changes to proceed, and managing the schedule\". It is an enabler, not a blocker.",
-            "answers": {
-                "A": {
-                    "text": "Reduce the number of changes made to the live environment",
-                    "rationale": "The aim is successful changes, not fewer changes."
-                },
-                "B": {
-                    "text": "Have the change approved by the governing body",
-                    "rationale": "Change authority depends on the change type; governance does not handle day-to-day work."
-                },
-                "C": {
-                    "text": "Enable successful changes by properly assessing risks",
-                    "rationale": "Exact wording of the official objective."
-                },
-                "D": {
-                    "text": "Restore normal service operation after a failed change",
-                    "rationale": "That is the purpose of incident management, not of assessing a change."
-                }
-            }
-        },
         "74": {
             "topic": "Measures - contract vs outcome",
             "scenario": "A supplier meets the contractual deadlines, but users still cannot achieve their business objectives.",
@@ -1811,30 +1715,6 @@
                 }
             }
         },
-        "76": {
-            "topic": "Service catalogue",
-            "scenario": "A team receives many identical requests by email. Users do not always know which services are available.",
-            "question_text": "Which action would most improve the user experience according to ITIL?",
-            "explanation": "A service catalogue lists and describes the services available to consumers, along with access conditions and the associated workflow. It is the direct ITIL solution to a flood of identical, misdirected requests.",
-            "answers": {
-                "A": {
-                    "text": "Create a service catalogue with the available requests",
-                    "rationale": "Exact wording - the catalogue makes services visible and categorised."
-                },
-                "B": {
-                    "text": "Ask users to send their requests through their manager",
-                    "rationale": "Adding an intermediary does not help users know which services are available."
-                },
-                "C": {
-                    "text": "Prioritise urgent requests and queue the other emails by arrival",
-                    "rationale": "Prioritising does not fix the lack of visibility on available services."
-                },
-                "D": {
-                    "text": "Create a new SLA for request response times",
-                    "rationale": "An SLA sets targets but does not show users which services are available."
-                }
-            }
-        },
         "77": {
             "topic": "Improvement",
             "scenario": "A team successfully closes a project but does not document any lessons learned.",
@@ -1856,198 +1736,6 @@
                 "D": {
                     "text": "Users lose access to the service",
                     "rationale": "Service access is not affected by missing post-project documentation."
-                }
-            }
-        },
-        "78": {
-            "topic": "Change control",
-            "scenario": "A critical security update must be applied immediately to limit a significant risk.",
-            "question_text": "How should this change be handled?",
-            "explanation": "ITIL distinguishes three change types: standard (pre-approved, low risk), normal (formal validation), emergency (business or security urgency, accelerated but formalised procedure). A critical vulnerability calls for the emergency procedure.",
-            "answers": {
-                "A": {
-                    "text": "As a standard pre-authorised change",
-                    "rationale": "A standard change is pre-authorised and low risk, which does not fit an urgent, significant risk."
-                },
-                "B": {
-                    "text": "As an emergency change",
-                    "rationale": "An emergency change must be implemented quickly through a dedicated procedure."
-                },
-                "C": {
-                    "text": "As a service request",
-                    "rationale": "A service request does not change the system's state - off-topic."
-                },
-                "D": {
-                    "text": "As a problem",
-                    "rationale": "A problem is an identified cause of incidents, not a change to authorise."
-                }
-            }
-        },
-        "79": {
-            "topic": "Service Desk",
-            "scenario": null,
-            "question_text": "Which statement best describes the role of the Service Desk?",
-            "explanation": "The Service Desk is the Single Point of Contact between users and the service provider. It logs, categorises, prioritises, and routes incidents and requests.",
-            "answers": {
-                "A": {
-                    "text": "Manage the technical infrastructure and platforms",
-                    "rationale": "That belongs to infrastructure and platform management."
-                },
-                "B": {
-                    "text": "Serve as the point of contact between users and the service provider",
-                    "rationale": "The service desk is the entry point and single point of contact between users and the provider."
-                },
-                "C": {
-                    "text": "Assess the risks of changes and authorise them to proceed",
-                    "rationale": "That belongs to change enablement."
-                },
-                "D": {
-                    "text": "Set clear business-based targets for the levels of service delivered to users",
-                    "rationale": "That belongs to service level management."
-                }
-            }
-        },
-        "80": {
-            "topic": "Availability",
-            "scenario": "A service meets its expected response time but is unavailable for several hours each week.",
-            "question_text": "Which practice should mainly be involved in this situation?",
-            "explanation": "Availability Management measures a service's ability to be operational and usable when needed. Recurring downtime is directly within its scope.",
-            "answers": {
-                "A": {
-                    "text": "Availability management",
-                    "rationale": "Exact wording - Availability Management practice."
-                },
-                "B": {
-                    "text": "Service request management",
-                    "rationale": "Service Request Management handles catalogue requests, not availability."
-                },
-                "C": {
-                    "text": "Knowledge management",
-                    "rationale": "Knowledge Management manages information, not availability."
-                },
-                "D": {
-                    "text": "Financial management",
-                    "rationale": "Service Financial Management manages costs, not availability."
-                }
-            }
-        },
-        "81": {
-            "topic": "Knowledge",
-            "scenario": null,
-            "question_text": "What is the main objective of knowledge management?",
-            "explanation": "Official objective of Knowledge Management: \"maintain and improve the effective, efficient, and practical use of information and knowledge across the organisation\" - the right information in the right place, at the right time.",
-            "answers": {
-                "A": {
-                    "text": "Ensure that the right information is available at the right time",
-                    "rationale": "Exact wording - KM targets availability of the right information at the right time."
-                },
-                "B": {
-                    "text": "Produce the technical documentation for new releases",
-                    "rationale": "Documentation is an output; knowledge management targets effective use of information."
-                },
-                "C": {
-                    "text": "Maintain accurate information about configuration items and their relationships",
-                    "rationale": "That is the purpose of service configuration management."
-                },
-                "D": {
-                    "text": "Automate the processes that handle information",
-                    "rationale": "Automation can help but is not the purpose of knowledge management."
-                }
-            }
-        },
-        "82": {
-            "topic": "Availability",
-            "scenario": null,
-            "question_text": "Which measure best reflects the availability of a service?",
-            "explanation": "The standard availability measure is the percentage of time the service is usable during its agreed service time (Availability = Uptime / Agreed Service Time x 100).",
-            "answers": {
-                "A": {
-                    "text": "The number of changes approved each month",
-                    "rationale": "That is a change enablement indicator, not availability."
-                },
-                "B": {
-                    "text": "The percentage of time the service is usable",
-                    "rationale": "Exact wording - standard definition of availability."
-                },
-                "C": {
-                    "text": "The average time taken to resolve incidents",
-                    "rationale": "Resolution time influences availability but does not measure it directly."
-                },
-                "D": {
-                    "text": "The number of registered users of the service",
-                    "rationale": "The number of users measures adoption, not availability."
-                }
-            }
-        },
-        "83": {
-            "topic": "Relationships",
-            "scenario": "A supplier regularly modifies its offering without notifying the organisation.",
-            "question_text": "Which practice would mainly help avoid this type of situation?",
-            "explanation": "A supplier that unilaterally modifies its offering falls under Supplier Management: this practice frames contractual relationships with third parties (SLAs, obligations, change communication).",
-            "answers": {
-                "A": {
-                    "text": "Relationship management",
-                    "rationale": "Relationship Management handles internal/consumer stakeholders, not external suppliers."
-                },
-                "B": {
-                    "text": "Supplier management",
-                    "rationale": "Exact wording - Supplier Management frames supplier obligations."
-                },
-                "C": {
-                    "text": "Asset management",
-                    "rationale": "IT Asset Management manages the asset lifecycle, not the contractual relationship."
-                },
-                "D": {
-                    "text": "Configuration management",
-                    "rationale": "Service Configuration Management manages CIs and their technical relationships, not contracts."
-                }
-            }
-        },
-        "84": {
-            "topic": "Assets",
-            "scenario": null,
-            "question_text": "What is the main objective of IT asset management?",
-            "explanation": "Official objective of IT Asset Management: plan and manage the full lifecycle of assets to maximise their value, control costs, manage risks (compliance, security), and make the right acquisition / retirement decisions.",
-            "answers": {
-                "A": {
-                    "text": "Optimise the value, costs, and risks related to assets",
-                    "rationale": "Exact wording - value/cost/risk trilogy = ITAM definition."
-                },
-                "B": {
-                    "text": "Restore normal service operation after asset failures",
-                    "rationale": "That is the purpose of incident management."
-                },
-                "C": {
-                    "text": "Maintain information on configuration items and their relationships",
-                    "rationale": "That is the purpose of service configuration management, distinct from asset management."
-                },
-                "D": {
-                    "text": "Set clear business-based targets for service levels",
-                    "rationale": "That is the purpose of service level management."
-                }
-            }
-        },
-        "85": {
-            "topic": "Configuration",
-            "scenario": "Two teams have different lists of the production servers, which causes errors during changes.",
-            "question_text": "Which practice should be reinforced?",
-            "explanation": "Two divergent views of the production CIs (Configuration Items) = failure of Service Configuration Management: the CMDB / CMS must serve as the single, up-to-date reference; otherwise changes cause errors.",
-            "answers": {
-                "A": {
-                    "text": "Service configuration management",
-                    "rationale": "Exact wording - SCM guarantees a unified and reliable view of CIs."
-                },
-                "B": {
-                    "text": "Incident management",
-                    "rationale": "Incident Management handles observed outages, not the configuration source of truth."
-                },
-                "C": {
-                    "text": "IT asset management",
-                    "rationale": "It tracks asset lifecycle and costs, not the configuration relationships used during changes."
-                },
-                "D": {
-                    "text": "Infrastructure and platform management",
-                    "rationale": "It manages infrastructure, but a reliable record of CIs and relationships is configuration management."
                 }
             }
         },
@@ -2147,30 +1835,6 @@
                 }
             }
         },
-        "90": {
-            "topic": "Continual improvement",
-            "scenario": "Several teams each propose their own improvements without coordination.",
-            "question_text": "Which action best fits ITIL?",
-            "explanation": "ITIL 4 recommends maintaining a shared register of improvement opportunities (Continual Improvement Register - CIR): centralise, prioritise, avoid duplication between teams, and give visibility to governance.",
-            "answers": {
-                "A": {
-                    "text": "Create and maintain a shared register of improvement opportunities",
-                    "rationale": "Exact wording - CIR = standard ITIL practice for continual improvement."
-                },
-                "B": {
-                    "text": "Let the teams prioritise and run their own improvements separately",
-                    "rationale": "This keeps the lack of coordination described in the scenario."
-                },
-                "C": {
-                    "text": "Pause improvements until the next governance review",
-                    "rationale": "Pausing improvements loses value without fixing coordination."
-                },
-                "D": {
-                    "text": "Ask the service desk to select and approve the improvements to deliver",
-                    "rationale": "The service desk has no such role; a shared register enables joint prioritisation."
-                }
-            }
-        },
         "91": {
             "topic": "Service consumer",
             "scenario": null,
@@ -2267,78 +1931,6 @@
                 }
             }
         },
-        "95": {
-            "topic": "Requests",
-            "scenario": "A user wants access to an application recently approved for their team.",
-            "question_text": "Which element should mainly determine how this request is handled?",
-            "explanation": "Service Requests are handled through predefined procedures documented in the catalogue and orchestration workflow - the very essence of Service Request Management (standardisation, predictability).",
-            "answers": {
-                "A": {
-                    "text": "The organisation's predefined procedures",
-                    "rationale": "Exact wording - predefined procedures drive the handling."
-                },
-                "B": {
-                    "text": "The requester's position in the organisation chart",
-                    "rationale": "Hierarchical position should not determine how a standard request is handled."
-                },
-                "C": {
-                    "text": "The cost of IT hardware",
-                    "rationale": "Off-topic - hardware cost does not steer the handling."
-                },
-                "D": {
-                    "text": "The network supplier",
-                    "rationale": "The network supplier has no direct influence on the workflow of an access request."
-                }
-            }
-        },
-        "96": {
-            "topic": "Change control",
-            "scenario": "Two changes are planned simultaneously on the same critical infrastructure.",
-            "question_text": "Which risk must be assessed as a priority?",
-            "explanation": "Two changes planned at the same time on the same critical infrastructure = risk #1 = conflict (unexpected side effects, unplanned downtime). Change Enablement must detect this conflict and arbitrate.",
-            "answers": {
-                "A": {
-                    "text": "The potential conflict between the changes",
-                    "rationale": "Exact wording - conflict = priority risk to assess."
-                },
-                "B": {
-                    "text": "The number of available technicians",
-                    "rationale": "Number of technicians = secondary risk, not a priority."
-                },
-                "C": {
-                    "text": "The number of registered users",
-                    "rationale": "Number of users = potential impact measure, not a conflict."
-                },
-                "D": {
-                    "text": "The duration of supplier contracts",
-                    "rationale": "Contract duration = not the immediate topic."
-                }
-            }
-        },
-        "97": {
-            "topic": "Relationships",
-            "scenario": null,
-            "question_text": "What is the main objective of relationship management?",
-            "explanation": "Official objective of Relationship Management: establish and maintain links with stakeholders (customers, users, sponsors, communities) to understand their needs and expectations continuously.",
-            "answers": {
-                "A": {
-                    "text": "Establish and maintain an understanding of stakeholder needs",
-                    "rationale": "Exact wording of the official objective."
-                },
-                "B": {
-                    "text": "Assess the risks of changes and authorise them",
-                    "rationale": "That is the purpose of change enablement."
-                },
-                "C": {
-                    "text": "Restore normal service operation after incidents",
-                    "rationale": "That is the purpose of incident management."
-                },
-                "D": {
-                    "text": "Set clear business-based targets for the service levels delivered",
-                    "rationale": "That is the purpose of service level management."
-                }
-            }
-        },
         "98": {
             "topic": "Suppliers",
             "scenario": "An organisation depends heavily on a single provider for a critical service.",
@@ -2384,78 +1976,6 @@
                 "D": {
                     "text": "It is delivered as one large transformation project",
                     "rationale": "ITIL recommends progressing iteratively, not through one big project."
-                }
-            }
-        },
-        "100": {
-            "topic": "Service Desk",
-            "scenario": "A technical team wants the service desk to systematically forward every ticket without any initial diagnosis.",
-            "question_text": "Which answer best matches best practice?",
-            "explanation": "The Service Desk is a Single Point of Contact AND performs first-level handling (triage, simple resolution, escalation when needed). It is neither a mere pass-through nor a universal solver.",
-            "answers": {
-                "A": {
-                    "text": "It provides the point of contact and does first-level handling where appropriate",
-                    "rationale": "The service desk is the single point of contact and handles at first level what it can."
-                },
-                "B": {
-                    "text": "It logs and forwards tickets, leaving the diagnosis to the technical teams",
-                    "rationale": "That is exactly the team's request; good practice includes first-level handling."
-                },
-                "C": {
-                    "text": "It acts as the problem management team, investigating the root causes of incidents",
-                    "rationale": "Investigating causes belongs to problem management, not the service desk."
-                },
-                "D": {
-                    "text": "It resolves incidents itself, without escalating to the technical teams",
-                    "rationale": "The service desk escalates when needed; it does not resolve everything alone."
-                }
-            }
-        },
-        "101": {
-            "topic": "Availability",
-            "scenario": "An interruption is planned to carry out an approved maintenance.",
-            "question_text": "How does this interruption generally influence the availability measure?",
-            "explanation": "The impact of planned maintenance on the availability measure depends on rules defined in the service agreement: some maintenances are excluded from the calculation (Agreed Service Time), others are not. No universal rule.",
-            "answers": {
-                "A": {
-                    "text": "According to the measurement rules defined by the organisation",
-                    "rationale": "Exact wording - depends on the agreed rules."
-                },
-                "B": {
-                    "text": "It is excluded from the measure by default as planned downtime",
-                    "rationale": "Treatment depends on the agreed rules, not a default exclusion."
-                },
-                "C": {
-                    "text": "It is counted as a major incident in the measure",
-                    "rationale": "A planned, approved maintenance is not an incident."
-                },
-                "D": {
-                    "text": "It suspends the service level agreement during the maintenance window",
-                    "rationale": "The SLA remains in force; it states how planned downtime is counted."
-                }
-            }
-        },
-        "102": {
-            "topic": "Knowledge",
-            "scenario": "A team regularly resolves the same incident but never documents the solution.",
-            "question_text": "Which consequence is the most likely?",
-            "explanation": "Not capitalising on a recurring solution forces re-solving every time - loss of time, quality, dependency on individual expertise. Contrary to ITIL Knowledge Management.",
-            "answers": {
-                "A": {
-                    "text": "A loss of efficiency during future handling",
-                    "rationale": "Exact wording - systematic loss of efficiency."
-                },
-                "B": {
-                    "text": "An automatic improvement of resolution times",
-                    "rationale": "Absurd - without memory, times do not mechanically improve."
-                },
-                "C": {
-                    "text": "A reduction in the number of users",
-                    "rationale": "No logical link."
-                },
-                "D": {
-                    "text": "Better governance",
-                    "rationale": "No link - governance does not improve because of missing technical documentation."
                 }
             }
         },
@@ -3085,9 +2605,9 @@
         },
         "129": {
             "topic": "Internal and external factors",
-            "scenario": "A new regulation requires reducing the carbon footprint of data centres and publishing emission indicators.",
-            "question_text": "Which PESTLE factor is the most directly concerned by the emissions reduction objective?",
-            "explanation": "Reducing the carbon footprint and emissions mainly falls under the environmental factor. The regulation also has a legal dimension, but the question targets the ecological purpose of the requirement.",
+            "scenario": "The organization commits to reducing the carbon footprint of its data centres and the energy consumption of its services.",
+            "question_text": "Which PESTLE factor is most directly concerned by this commitment?",
+            "explanation": "Reducing carbon footprint and energy consumption falls under the environmental PESTLE factor.",
             "answers": {
                 "A": {
                     "text": "Environmental",
@@ -4031,7 +3551,7 @@
                 },
                 "B": {
                     "text": "Management practice",
-                    "rationale": "A practice is a set of organisational resources designed for performing work."
+                    "rationale": "A practice is a set of organizational capabilities designed for performing work."
                 },
                 "C": {
                     "text": "Value stream",
@@ -4064,78 +3584,6 @@
                 "D": {
                     "text": "It is held by the organisation that manages the resources to provide the service",
                     "rationale": "This describes the service provider role."
-                }
-            }
-        },
-        "170": {
-            "topic": "Service relationship",
-            "scenario": null,
-            "question_text": "Which elements together make up a service relationship?",
-            "explanation": "A service relationship includes service provision, service consumption, and the ongoing management of the relationship between the parties. These elements support value co-creation.",
-            "answers": {
-                "A": {
-                    "text": "Service provision, service consumption, and service relationship management",
-                    "rationale": "These three elements form the service relationship in ITIL."
-                },
-                "B": {
-                    "text": "Utility, warranty, user experience, and sustainability",
-                    "rationale": "These are the four value characteristics, not the components of a service relationship."
-                },
-                "C": {
-                    "text": "Transfer of goods, access to resources, and service actions",
-                    "rationale": "These are the forms of service interaction, not the components of the relationship."
-                },
-                "D": {
-                    "text": "The sponsor, customer, and user roles within the service consumer organisation",
-                    "rationale": "These are the consumer sub-roles, not the components of the service relationship."
-                }
-            }
-        },
-        "171": {
-            "topic": "Service provision",
-            "scenario": "A provider manages its resources, gives access to a platform, performs agreed backups, and reports on service levels.",
-            "question_text": "Which set of activities is mainly described?",
-            "explanation": "Service provision includes managing the provider's resources, granting access, performing the agreed actions, and managing service levels. It represents the provider's contribution to the relationship.",
-            "answers": {
-                "A": {
-                    "text": "Service provision",
-                    "rationale": "All the activities cited are performed by the provider within the service relationship."
-                },
-                "B": {
-                    "text": "Service consumption",
-                    "rationale": "Consumption mainly describes the activities and resources mobilised on the consumer's side."
-                },
-                "C": {
-                    "text": "Incident management",
-                    "rationale": "No unplanned interruption requiring restoration is described."
-                },
-                "D": {
-                    "text": "Value stream mapping",
-                    "rationale": "The scenario describes execution of the service, not its representation as a flow."
-                }
-            }
-        },
-        "172": {
-            "topic": "Service consumption",
-            "scenario": "A company assigns employees to use a platform, receives the agreed actions from the provider, and uses the resources it has access to.",
-            "question_text": "Which set of activities is mainly described?",
-            "explanation": "Service consumption covers managing the consumer's resources, using the accessible resources, and receiving the agreed actions or goods. It complements service provision.",
-            "answers": {
-                "A": {
-                    "text": "Service consumption",
-                    "rationale": "The activities described are performed on the consumer's side to use the service."
-                },
-                "B": {
-                    "text": "Service provision",
-                    "rationale": "Provision concerns the activities and resources managed by the provider."
-                },
-                "C": {
-                    "text": "Service design",
-                    "rationale": "The scenario concerns ongoing use rather than defining a future solution."
-                },
-                "D": {
-                    "text": "Governance",
-                    "rationale": "Governance evaluates, directs, and monitors rather than directly using the service."
                 }
             }
         },
@@ -4691,30 +4139,6 @@
                 }
             }
         },
-        "196": {
-            "topic": "Incidents",
-            "scenario": "A monitoring tool detects a degradation before any user reports it.",
-            "question_text": "Which statement about recording this situation is correct?",
-            "explanation": "An incident can be detected and reported by a user, a technical team, a supplier, or a monitoring tool. The source of the report does not change the need to log and manage it as an incident when an interruption or degradation is present.",
-            "answers": {
-                "A": {
-                    "text": "The incident can be recorded even if it was detected automatically",
-                    "rationale": "Automatic detection is a valid source for reporting an incident."
-                },
-                "B": {
-                    "text": "It should be logged as an incident once a user reports it",
-                    "rationale": "Waiting for a user delays restoration; monitoring is a valid detection source."
-                },
-                "C": {
-                    "text": "It should be logged as a problem because users are not affected yet",
-                    "rationale": "A problem is a cause or potential cause; an observed degradation is an incident."
-                },
-                "D": {
-                    "text": "It should be logged as a service request for the monitoring team",
-                    "rationale": "A degradation is not a predefined user request."
-                }
-            }
-        },
         "197": {
             "topic": "Collaborate and promote visibility",
             "scenario": "A manager invites every person in the company to every meeting to demonstrate maximum collaboration.",
@@ -4935,7 +4359,7 @@
             "topic": "Management practices",
             "scenario": null,
             "question_text": "What lets an organisation consistently execute its digital product and service management activities?",
-            "explanation": "Management practices bring together the organisational resources needed to perform work or achieve an objective. They contribute to lifecycle activities, the value chain, and value streams.",
+            "explanation": "Management practices bring together the organizational capabilities needed to perform work or achieve an objective. They contribute to lifecycle activities, the value chain, and value streams.",
             "answers": {
                 "A": {
                     "text": "The management practices",
@@ -5531,30 +4955,6 @@
                 }
             }
         },
-        "231": {
-            "topic": "Strategy implementation",
-            "scenario": "A digital strategy plans for a personalised experience, but the approved investments only concern reducing infrastructure costs.",
-            "question_text": "Which problem must be corrected as a priority?",
-            "explanation": "Implementing a strategy requires aligning investments, initiatives, and decisions with the desired strategic outcomes. A strategy not reflected in resource allocation remains essentially declarative.",
-            "answers": {
-                "A": {
-                    "text": "The lack of alignment between investments and strategic outcomes",
-                    "rationale": "The approved resources do not directly support the announced personalisation."
-                },
-                "B": {
-                    "text": "The absence of a sufficient number of guiding principles",
-                    "rationale": "The principles exist independently of this allocation inconsistency."
-                },
-                "C": {
-                    "text": "The fact that the strategy contains an experience objective",
-                    "rationale": "Experience can legitimately be a strategic outcome."
-                },
-                "D": {
-                    "text": "The use of a digital strategy alongside a business strategy",
-                    "rationale": "This complementarity is appropriate when both strategies are aligned."
-                }
-            }
-        },
         "232": {
             "topic": "AI governance",
             "scenario": "A team uses an AI model to automate the classification of requests, but no rule defines the allowed decisions, the acceptable risks, or the responsibilities.",
@@ -5576,102 +4976,6 @@
                 "D": {
                     "text": "The removal of human intervention from the process",
                     "rationale": "Responsible governance may on the contrary require human oversight."
-                }
-            }
-        },
-        "233": {
-            "topic": "AI transparency",
-            "scenario": "An AI automatically refuses certain access requests. Neither users nor managers can understand the factors that influenced the refusals.",
-            "question_text": "Which governance principle must be reinforced as a priority?",
-            "explanation": "Transparency makes the use, data, and functioning of an AI system sufficiently understandable. It supports contestability, oversight, and accountability of decisions.",
-            "answers": {
-                "A": {
-                    "text": "Transparency of decisions and their main factors",
-                    "rationale": "Stakeholders must have sufficient information to understand and review the refusals."
-                },
-                "B": {
-                    "text": "Increasing the volume of automated decisions",
-                    "rationale": "Higher usage does not solve the absence of explanations."
-                },
-                "C": {
-                    "text": "Removing activity logs",
-                    "rationale": "Removing traces would further reduce the ability to control the system."
-                },
-                "D": {
-                    "text": "Transferring ownership of the model to users",
-                    "rationale": "Ownership is not necessary to provide appropriate transparency."
-                }
-            }
-        },
-        "234": {
-            "topic": "AI accountability",
-            "scenario": "When an AI system produces a harmful decision, the business team claims the vendor is responsible, while the vendor claims the model decided by itself.",
-            "question_text": "Which measure best matches responsible governance?",
-            "explanation": "The organisation must clearly assign responsibility for decisions, oversight, and responses to AI-related incidents. An automated system cannot itself bear organisational accountability.",
-            "answers": {
-                "A": {
-                    "text": "Define human owners accountable for decisions, controls, and consequences",
-                    "rationale": "Explicit accountability prevents an automated decision from becoming an accountability gap."
-                },
-                "B": {
-                    "text": "Treat the vendor as accountable for decisions made with its model",
-                    "rationale": "The vendor can share responsibilities by contract, but the using organisation must keep accountable owners."
-                },
-                "C": {
-                    "text": "Leave responsibilities undocumented to keep flexibility in incident response",
-                    "rationale": "Ambiguous responsibilities increase risks and slow down response."
-                },
-                "D": {
-                    "text": "Assign responsibility for each decision to the end user concerned",
-                    "rationale": "The user does not control the system's design, data, and rules."
-                }
-            }
-        },
-        "235": {
-            "topic": "Human oversight",
-            "scenario": "An AI recommends automatically suspending a critical service when it detects an anomaly, but some false positives could cause a significant outage.",
-            "question_text": "Which control is the most appropriate?",
-            "explanation": "Human oversight must be proportionate to the possible consequences and to the system's uncertainty. High-impact decisions may require validation or the possibility of human intervention.",
-            "answers": {
-                "A": {
-                    "text": "Require human validation before high-impact suspensions",
-                    "rationale": "The control preserves the benefits of automated detection while reducing the risk of harmful decisions."
-                },
-                "B": {
-                    "text": "Allow the AI to suspend services without human intervention",
-                    "rationale": "False positives could then cause major consequences."
-                },
-                "C": {
-                    "text": "Stop using AI to detect anomalies on critical services",
-                    "rationale": "Proportionate oversight may be preferable to abandoning the capability."
-                },
-                "D": {
-                    "text": "Ask users to restore the service themselves",
-                    "rationale": "This action transfers the risk without controlling the initial decision."
-                }
-            }
-        },
-        "236": {
-            "topic": "Data and AI",
-            "scenario": "An incident prediction model is trained with incomplete, outdated data containing unnecessary personal information.",
-            "question_text": "Which action should be prioritised before extending its use?",
-            "explanation": "The quality of AI outputs strongly depends on suitable, accurate, and representative data. Governance must also limit personal data to what is necessary and protect it properly.",
-            "answers": {
-                "A": {
-                    "text": "Improve data quality and apply confidentiality and minimisation requirements",
-                    "rationale": "This action addresses both the model's reliability and the risks related to personal data."
-                },
-                "B": {
-                    "text": "Add more data without checking its relevance",
-                    "rationale": "Greater volume can amplify quality defects and privacy risks."
-                },
-                "C": {
-                    "text": "Hide the model's name in the user interface",
-                    "rationale": "This measure corrects neither the inadequate data nor its excessive use."
-                },
-                "D": {
-                    "text": "Deploy the model and evaluate the data after several incidents",
-                    "rationale": "Risks must be addressed before extended and potentially harmful use."
                 }
             }
         },
@@ -5934,7 +5238,7 @@
                     "rationale": "This resembles service request management; the concept is much broader."
                 },
                 "D": {
-                    "text": "The set of organisational resources designed to perform work or achieve an objective",
+                    "text": "The set of organizational capabilities designed to perform work or achieve an objective",
                     "rationale": "This is the definition of a management practice."
                 }
             }
@@ -8579,30 +7883,6 @@
                 }
             }
         },
-        "358": {
-            "topic": "Term - Workaround",
-            "scenario": null,
-            "question_text": "Which term describes a solution that reduces or eliminates the impact of an incident or problem without fully resolving it?",
-            "explanation": "A workaround reduces or eliminates the impact of an incident or problem for which a full resolution is not yet available. It is often documented with the related known error.",
-            "answers": {
-                "A": {
-                    "text": "A known error",
-                    "rationale": "A known error is the analysed problem, not the measure that limits its impact."
-                },
-                "B": {
-                    "text": "A standard change",
-                    "rationale": "A standard change is a low-risk pre-authorized change, not a temporary measure."
-                },
-                "C": {
-                    "text": "A release",
-                    "rationale": "A release makes a version available; it does not work around an incident."
-                },
-                "D": {
-                    "text": "A workaround",
-                    "rationale": "This is the ITIL definition of a workaround."
-                }
-            }
-        },
         "359": {
             "topic": "Term - Event",
             "scenario": null,
@@ -8675,102 +7955,6 @@
                 }
             }
         },
-        "362": {
-            "topic": "Change - Emergency change",
-            "scenario": null,
-            "question_text": "Which type of change must be implemented as soon as possible, for example to resolve an incident?",
-            "explanation": "An emergency change must be implemented as soon as possible, for example to resolve an incident or fix a security vulnerability. It is still assessed and authorized, but through an expedited process and a dedicated change authority.",
-            "answers": {
-                "A": {
-                    "text": "Emergency change",
-                    "rationale": "This is the type of change to implement as soon as possible."
-                },
-                "B": {
-                    "text": "Normal change",
-                    "rationale": "A normal change follows the usual scheduling and authorization."
-                },
-                "C": {
-                    "text": "Standard change",
-                    "rationale": "A standard change is pre-authorized and low risk, with no notion of urgency."
-                },
-                "D": {
-                    "text": "Major change",
-                    "rationale": "\"Major change\" is not one of the three ITIL change types."
-                }
-            }
-        },
-        "363": {
-            "topic": "Change - Normal change",
-            "scenario": null,
-            "question_text": "Which type of change needs to be scheduled, assessed and authorized following a defined process before it is implemented?",
-            "explanation": "A normal change needs to be scheduled, assessed and authorized following the standard process. Depending on its risk, the change authority may range from local approval to an executive decision.",
-            "answers": {
-                "A": {
-                    "text": "Standard change",
-                    "rationale": "A standard change is already pre-authorized and is not reassessed."
-                },
-                "B": {
-                    "text": "Emergency change",
-                    "rationale": "An emergency change follows an expedited process, not the usual path."
-                },
-                "C": {
-                    "text": "Normal change",
-                    "rationale": "This is the change type that goes through the full scheduling and authorization process."
-                },
-                "D": {
-                    "text": "Minor change",
-                    "rationale": "\"Minor change\" is not one of the three ITIL change types."
-                }
-            }
-        },
-        "364": {
-            "topic": "Change - Change authority",
-            "scenario": null,
-            "question_text": "What is the name for the person or group responsible for authorizing a change to proceed?",
-            "explanation": "The change authority is the person or group that authorizes a change. ITIL recommends placing it as close as possible to the team concerned, and adapting it to the type and risk of the change.",
-            "answers": {
-                "A": {
-                    "text": "The sponsor",
-                    "rationale": "The sponsor authorizes the budget for consuming a service, not changes."
-                },
-                "B": {
-                    "text": "The governing body",
-                    "rationale": "The governing body directs and controls the organization; it does not authorize each change."
-                },
-                "C": {
-                    "text": "The service desk",
-                    "rationale": "The service desk is the users' point of contact, not a change authority."
-                },
-                "D": {
-                    "text": "The change authority",
-                    "rationale": "This is the role that authorizes changes."
-                }
-            }
-        },
-        "365": {
-            "topic": "Practice - Change enablement - purpose",
-            "scenario": null,
-            "question_text": "Which practice aims to maximize successful changes by ensuring risks are properly assessed and changes are authorized?",
-            "explanation": "Change enablement maximizes the number of successful changes by assessing risks, authorizing changes and managing the change schedule. Release and deployment management make components available and move them.",
-            "answers": {
-                "A": {
-                    "text": "Release management",
-                    "rationale": "It makes new and changed services and features available."
-                },
-                "B": {
-                    "text": "Change enablement",
-                    "rationale": "This is the purpose of the change enablement practice."
-                },
-                "C": {
-                    "text": "Deployment management",
-                    "rationale": "It moves components to environments, without authorizing changes."
-                },
-                "D": {
-                    "text": "Problem management",
-                    "rationale": "It addresses the causes of incidents, not change authorization."
-                }
-            }
-        },
         "366": {
             "topic": "Term - Service request",
             "scenario": null,
@@ -8792,366 +7976,6 @@
                 "D": {
                     "text": "A normal change",
                     "rationale": "A normal change requires assessment and authorization; it is not a routine agreed action."
-                }
-            }
-        },
-        "367": {
-            "topic": "Practice - Service request management - purpose",
-            "scenario": null,
-            "question_text": "Which practice supports the agreed quality of a service by handling predefined, user-initiated service requests effectively?",
-            "explanation": "Service request management supports the agreed quality of a service by handling predefined user requests effectively and in a user-friendly way. The service desk is the point of contact that receives these requests, but it is not the practice that handles them end to end.",
-            "answers": {
-                "A": {
-                    "text": "Service request management",
-                    "rationale": "This is the purpose of service request management."
-                },
-                "B": {
-                    "text": "Service desk",
-                    "rationale": "The service desk captures demand, but the stated purpose belongs to service request management."
-                },
-                "C": {
-                    "text": "Incident management",
-                    "rationale": "It restores service after an interruption, not agreed requests."
-                },
-                "D": {
-                    "text": "Relationship management",
-                    "rationale": "It nurtures links with stakeholders, not the handling of requests."
-                }
-            }
-        },
-        "368": {
-            "topic": "Practice - Service desk - purpose",
-            "scenario": null,
-            "question_text": "Which practice acts as the entry point and single point of contact between the service provider and its users?",
-            "explanation": "The service desk is the provider's entry point and single point of contact for users. It captures demand for incident resolution and service requests, which other practices then handle.",
-            "answers": {
-                "A": {
-                    "text": "Service desk",
-                    "rationale": "This is the purpose of the service desk practice."
-                },
-                "B": {
-                    "text": "Service level management",
-                    "rationale": "It sets service level targets; it is not a point of contact."
-                },
-                "C": {
-                    "text": "Incident management",
-                    "rationale": "It restores service but is not the users' entry point."
-                },
-                "D": {
-                    "text": "Relationship management",
-                    "rationale": "It works with stakeholders at strategic and tactical levels."
-                }
-            }
-        },
-        "369": {
-            "topic": "Practice - Service level management - purpose",
-            "scenario": null,
-            "question_text": "Which practice sets clear business-based targets for service levels so that service delivery can be assessed?",
-            "explanation": "Service level management sets clear business-based targets, then allows delivery to be assessed, monitored and managed against them. Measurement and reporting provides data but does not set service targets.",
-            "answers": {
-                "A": {
-                    "text": "Supplier management",
-                    "rationale": "It manages suppliers and their performance, not service targets."
-                },
-                "B": {
-                    "text": "Measurement and reporting",
-                    "rationale": "It reduces uncertainty for decision-making without setting service levels."
-                },
-                "C": {
-                    "text": "Service level management",
-                    "rationale": "This is the purpose of service level management."
-                },
-                "D": {
-                    "text": "Relationship management",
-                    "rationale": "It nurtures links with stakeholders without setting service targets."
-                }
-            }
-        },
-        "370": {
-            "topic": "Practice - Relationship management - purpose",
-            "scenario": null,
-            "question_text": "Which practice establishes and nurtures the links between the organization and its stakeholders at strategic and tactical levels?",
-            "explanation": "Relationship management establishes and nurtures links with stakeholders at strategic and tactical levels, identifying and analysing their needs. Supplier management is limited to relationships with suppliers.",
-            "answers": {
-                "A": {
-                    "text": "Supplier management",
-                    "rationale": "It focuses on suppliers, not on stakeholders in general."
-                },
-                "B": {
-                    "text": "Relationship management",
-                    "rationale": "This is the purpose of relationship management."
-                },
-                "C": {
-                    "text": "Service desk",
-                    "rationale": "The service desk is the operational point of contact for users."
-                },
-                "D": {
-                    "text": "Service level management",
-                    "rationale": "It sets and tracks service level targets."
-                }
-            }
-        },
-        "371": {
-            "topic": "Term - IT asset",
-            "scenario": null,
-            "question_text": "Which term refers to any financially valuable component that can contribute to the delivery of an IT product or service?",
-            "explanation": "An IT asset is any financially valuable component that can contribute to delivering an IT product or service. A configuration item is defined by the need to manage it in order to deliver a service, not by its financial value.",
-            "answers": {
-                "A": {
-                    "text": "A configuration item",
-                    "rationale": "A configuration item is defined by the need to manage it, not by financial value."
-                },
-                "B": {
-                    "text": "A release",
-                    "rationale": "A release is a version made available for use."
-                },
-                "C": {
-                    "text": "A good",
-                    "rationale": "A good is an item whose ownership is transferred to the consumer."
-                },
-                "D": {
-                    "text": "An IT asset",
-                    "rationale": "This is the ITIL definition of an IT asset."
-                }
-            }
-        },
-        "372": {
-            "topic": "Term - Configuration item",
-            "scenario": null,
-            "question_text": "What is any component that needs to be managed in order to deliver an IT service called?",
-            "explanation": "A configuration item (CI) is any component that needs to be managed in order to deliver an IT service. Information about CIs and their relationships is maintained by service configuration management.",
-            "answers": {
-                "A": {
-                    "text": "An IT asset",
-                    "rationale": "An IT asset is defined by its financial value."
-                },
-                "B": {
-                    "text": "A configuration item",
-                    "rationale": "This is the ITIL definition of a configuration item."
-                },
-                "C": {
-                    "text": "A service offering",
-                    "rationale": "A service offering describes services for a target group."
-                },
-                "D": {
-                    "text": "A product",
-                    "rationale": "A product is a configuration of resources designed to offer value."
-                }
-            }
-        },
-        "373": {
-            "topic": "Practice - Service configuration management - purpose",
-            "scenario": null,
-            "question_text": "Which practice ensures that accurate and reliable information about services and the CIs that support them is available when needed?",
-            "explanation": "Service configuration management provides accurate and reliable information about the configuration of services and the supporting CIs, including their relationships. IT asset management focuses mainly on the lifecycle and financial value of assets.",
-            "answers": {
-                "A": {
-                    "text": "Service configuration management",
-                    "rationale": "This is the purpose of service configuration management."
-                },
-                "B": {
-                    "text": "IT asset management",
-                    "rationale": "It manages the lifecycle and value of assets, not configuration information."
-                },
-                "C": {
-                    "text": "Infrastructure and platform management",
-                    "rationale": "It oversees the infrastructure and platforms used, not configuration information."
-                },
-                "D": {
-                    "text": "Deployment management",
-                    "rationale": "It moves components to environments."
-                }
-            }
-        },
-        "374": {
-            "topic": "Practice - Monitoring and event management - purpose",
-            "scenario": null,
-            "question_text": "Which practice systematically observes services and their components, and records and reports selected changes of state?",
-            "explanation": "Monitoring and event management observes services and components, then records and reports the changes of state identified as events. Some events then trigger incident management.",
-            "answers": {
-                "A": {
-                    "text": "Incident management",
-                    "rationale": "It restores service after an interruption; it does not monitor."
-                },
-                "B": {
-                    "text": "Capacity and performance management",
-                    "rationale": "It aims to achieve agreed performance and meet demand, not to record events."
-                },
-                "C": {
-                    "text": "Service level management",
-                    "rationale": "It sets service targets; it does not observe components."
-                },
-                "D": {
-                    "text": "Monitoring and event management",
-                    "rationale": "This is the purpose of this practice."
-                }
-            }
-        },
-        "375": {
-            "topic": "Practice - Release management - purpose",
-            "scenario": null,
-            "question_text": "Which practice has the purpose of making new and changed services and features available for use?",
-            "explanation": "Release management makes new and changed services and features available for use. Deployment management moves components to environments, and the two can happen at different times.",
-            "answers": {
-                "A": {
-                    "text": "Deployment management",
-                    "rationale": "It moves components to environments without necessarily making them available."
-                },
-                "B": {
-                    "text": "Change enablement",
-                    "rationale": "It assesses and authorizes changes."
-                },
-                "C": {
-                    "text": "Release management",
-                    "rationale": "This is the official purpose of release management."
-                },
-                "D": {
-                    "text": "Service validation and testing",
-                    "rationale": "It checks that products and services meet requirements."
-                }
-            }
-        },
-        "376": {
-            "topic": "Practice - Deployment management - purpose",
-            "scenario": null,
-            "question_text": "Which practice moves new or changed hardware, software, documentation or other components to live or other environments?",
-            "explanation": "Deployment management moves new or changed components to live or other environments (test, staging). A deployment can precede the release, which makes the feature available to users.",
-            "answers": {
-                "A": {
-                    "text": "Release management",
-                    "rationale": "It makes features available; it does not move components."
-                },
-                "B": {
-                    "text": "IT asset management",
-                    "rationale": "It manages the asset lifecycle, not moving them to environments."
-                },
-                "C": {
-                    "text": "Deployment management",
-                    "rationale": "This is the purpose of deployment management."
-                },
-                "D": {
-                    "text": "Change enablement",
-                    "rationale": "It authorizes changes but does not deploy them."
-                }
-            }
-        },
-        "377": {
-            "topic": "Practice - Information security management - purpose",
-            "scenario": null,
-            "question_text": "Which practice protects the information needed by the organization to conduct its business?",
-            "explanation": "Information security management protects the information needed to conduct business, including its confidentiality, integrity and availability. In Version 5 it belongs to the product and service management practices group.",
-            "answers": {
-                "A": {
-                    "text": "Service continuity management",
-                    "rationale": "It maintains availability and performance in the event of a disaster."
-                },
-                "B": {
-                    "text": "Risk management",
-                    "rationale": "It deals with risks in general, not specifically protecting information."
-                },
-                "C": {
-                    "text": "Availability management",
-                    "rationale": "It targets agreed service availability levels."
-                },
-                "D": {
-                    "text": "Information security management",
-                    "rationale": "This is the purpose of this practice."
-                }
-            }
-        },
-        "378": {
-            "topic": "Practice - Supplier management - purpose",
-            "scenario": null,
-            "question_text": "Which practice ensures suppliers and their performance are managed to support the seamless provision of products and services?",
-            "explanation": "Supplier management manages suppliers and their performance to support seamless, quality provision. Relationship management, which is broader, nurtures links with stakeholders in general.",
-            "answers": {
-                "A": {
-                    "text": "Supplier management",
-                    "rationale": "This is the purpose of supplier management."
-                },
-                "B": {
-                    "text": "Relationship management",
-                    "rationale": "It covers stakeholders in general, not supplier performance."
-                },
-                "C": {
-                    "text": "Portfolio management",
-                    "rationale": "It ensures the right mix of programmes, projects and products."
-                },
-                "D": {
-                    "text": "Service level management",
-                    "rationale": "It sets service targets towards customers."
-                }
-            }
-        },
-        "379": {
-            "topic": "Practice - Continual improvement - purpose",
-            "scenario": null,
-            "question_text": "Which practice aligns the organization's practices and services with changing business needs through ongoing improvement?",
-            "explanation": "The continual improvement practice aligns practices and services with changing business needs by continually improving products, services, practices and anything involved in managing them. Continual improvement is also a component of the ITIL Value System.",
-            "answers": {
-                "A": {
-                    "text": "Strategy management",
-                    "rationale": "It formulates goals and direction, not ongoing improvement."
-                },
-                "B": {
-                    "text": "Continual improvement",
-                    "rationale": "This is the purpose of the continual improvement practice."
-                },
-                "C": {
-                    "text": "Organizational change management",
-                    "rationale": "It addresses the human side of changes."
-                },
-                "D": {
-                    "text": "Portfolio management",
-                    "rationale": "It balances the investment mix, not ongoing improvement."
-                }
-            }
-        },
-        "380": {
-            "topic": "Practice - Problem management - purpose",
-            "scenario": null,
-            "question_text": "Which practice reduces the likelihood and impact of incidents by identifying their actual and potential causes?",
-            "explanation": "Problem management reduces the likelihood and impact of incidents by identifying actual and potential causes, and managing workarounds and known errors. Incident management restores service.",
-            "answers": {
-                "A": {
-                    "text": "Incident management",
-                    "rationale": "It restores service quickly, without investigating causes."
-                },
-                "B": {
-                    "text": "Monitoring and event management",
-                    "rationale": "It detects and reports changes of state, not causes."
-                },
-                "C": {
-                    "text": "Problem management",
-                    "rationale": "This is the purpose of problem management."
-                },
-                "D": {
-                    "text": "Change enablement",
-                    "rationale": "It authorizes changes, including those that resolve problems."
-                }
-            }
-        },
-        "381": {
-            "topic": "Practice - Incident management - purpose",
-            "scenario": null,
-            "question_text": "Which practice minimizes the negative impact of incidents by restoring normal service operation as quickly as possible?",
-            "explanation": "Incident management minimizes the negative impact of incidents by restoring normal service operation as quickly as possible. It differs from problem management (causes) and the service desk (point of contact).",
-            "answers": {
-                "A": {
-                    "text": "Incident management",
-                    "rationale": "This is the official purpose of incident management."
-                },
-                "B": {
-                    "text": "Problem management",
-                    "rationale": "It addresses causes, not immediate restoration."
-                },
-                "C": {
-                    "text": "Service desk",
-                    "rationale": "The service desk is the point of contact, not the restoration practice."
-                },
-                "D": {
-                    "text": "Service continuity management",
-                    "rationale": "It prepares the response to disasters, not to everyday incidents."
                 }
             }
         },
@@ -9231,7 +8055,7 @@
             "topic": "Lifecycle - Build",
             "scenario": null,
             "question_text": "Which lifecycle activity develops, configures, integrates and tests the components of the solution?",
-            "explanation": "Build develops, configures, integrates and tests the components and the solution; testing and CI/CD belong here. Acquire is limited to obtaining resources.",
+            "explanation": "\"Build\" creates, configures and tests the technology solutions that make up the product; testing and continuous integration (CI) belong here. Continuous delivery and continuous deployment belong to \"Transition\". \"Acquire\" only obtains the resources.",
             "answers": {
                 "A": {
                     "text": "Acquire",
@@ -9326,8 +8150,8 @@
         "389": {
             "topic": "Lifecycle - Support",
             "scenario": null,
-            "question_text": "Which lifecycle activity resolves incidents and problems to restore normal operation?",
-            "explanation": "Support resolves incidents and problems and restores normal operation; its key terms are incident, problem, error and known error. Its findings can feed a new Discover activity.",
+            "question_text": "Which lifecycle activity restores normal operation of products and delivery of services when needed?",
+            "explanation": "\"Support\" restores normal operation of products and delivery of services when needed. Its key terms are disaster, problem, error and known error; event and incident are defined with \"Operate\".",
             "answers": {
                 "A": {
                     "text": "Operate",
@@ -9351,7 +8175,7 @@
             "topic": "Lifecycle - Operate",
             "scenario": null,
             "question_text": "Which lifecycle activity are the terms event, monitoring, observability and SRE mainly associated with?",
-            "explanation": "Events, monitoring, reliability, SRE and observability are the key terms of the Operate activity, which runs live systems. Incidents and problems belong rather to Support.",
+            "explanation": "Event, incident, reliability, SRE and observability are the key terms of \"Operate\", which runs the product to ensure agreed performance. Problem, error, known error and disaster belong to \"Support\".",
             "answers": {
                 "A": {
                     "text": "Support",
@@ -9859,7 +8683,7 @@
             "answers": {
                 "A": {
                     "text": "Management practices",
-                    "rationale": "They are sets of organizational resources for performing work."
+                    "rationale": "They are sets of organizational capabilities for performing work."
                 },
                 "B": {
                     "text": "Guiding principles",
@@ -9968,6 +8792,1446 @@
                 "D": {
                     "text": "Service management practices",
                     "rationale": "This is the name of an ITIL 4 group, replaced in Version 5."
+                }
+            }
+        },
+        "416": {
+            "topic": "ITIL Product and Service Lifecycle - definition",
+            "scenario": null,
+            "question_text": "What is the ITIL Product and Service Lifecycle?",
+            "explanation": "The ITIL Product and Service Lifecycle describes the eight activities that organizations perform to manage digital products and services throughout their shared lifecycle. These activities are not performed as a fixed cycle.",
+            "answers": {
+                "A": {
+                    "text": "Eight activities to manage digital products and services across their shared lifecycle",
+                    "rationale": "That is the model: eight management activities, from discover to support, across the shared product and service lifecycle."
+                },
+                "B": {
+                    "text": "A series of stages that each product must pass through once, in a fixed order",
+                    "rationale": "Lifecycle activities are neither sequential nor linear."
+                },
+                "C": {
+                    "text": "A seven-step model for planning and implementing improvements",
+                    "rationale": "This describes the ITIL Continual Improvement Model, not the lifecycle."
+                },
+                "D": {
+                    "text": "The set of components of the ITIL Value System and how they interact",
+                    "rationale": "The value system groups principles, governance, value chain, practices and continual improvement; it is not the lifecycle."
+                }
+            }
+        },
+        "417": {
+            "topic": "ITIL Product and Service Lifecycle - definition",
+            "scenario": null,
+            "question_text": "Which statements about the ITIL Product and Service Lifecycle are CORRECT?\n1. It covers only the operation of services already in production\n2. It includes eight lifecycle management activities\n3. Its activities must always start with discover and end with support\n4. Moving through the lifecycle, the focus shifts between digital product and digital service management",
+            "explanation": "The ITIL lifecycle has eight activities and shows the duality between product and service management. It is not limited to operation and imposes no order.",
+            "answers": {
+                "A": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are correct: the model has eight activities, from discover to support; the model shows this product / service duality."
+                },
+                "B": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: the lifecycle runs from discovering needs to support."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: the activities are neither sequential nor linear."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: the lifecycle runs from discovering needs to support. Statement 3 is false: the activities are neither sequential nor linear."
+                }
+            }
+        },
+        "418": {
+            "topic": "Value and value co-creation",
+            "scenario": null,
+            "question_text": "Which statement BEST describes how value is created according to ITIL?",
+            "explanation": "ITIL holds that value is co-created through active collaboration between providers, consumers and other stakeholders. The consumer is not a mere recipient.",
+            "answers": {
+                "A": {
+                    "text": "The provider creates value and then delivers it to the consumer, who receives it",
+                    "rationale": "This is the one-way view that ITIL considers outdated."
+                },
+                "B": {
+                    "text": "Value is created at the moment the consumer pays for the service",
+                    "rationale": "Payment is not what creates value; value lies in perceived benefits."
+                },
+                "C": {
+                    "text": "Value is defined by the provider in its service catalogue",
+                    "rationale": "Value depends on stakeholders’ perception, not on a provider definition."
+                },
+                "D": {
+                    "text": "Providers, consumers and other stakeholders actively co-create value together",
+                    "rationale": "This is the value co-creation concept described by ITIL."
+                }
+            }
+        },
+        "419": {
+            "topic": "Value and value co-creation",
+            "scenario": null,
+            "question_text": "Which statements about value and value co-creation are CORRECT?\n1. Value is the perceived benefits, usefulness and importance of something\n2. Value is set by the provider, whatever the consumer’s perception\n3. Collaboration may take the form of defining requirements and designing solutions\n4. The consumer plays no role in creating value for themselves",
+            "explanation": "Value is perceived by stakeholders and co-created with them, for example by defining requirements or designing solutions together.",
+            "answers": {
+                "A": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are correct: this is the definition of value; these are forms of co-creation cited by ITIL."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: value depends on the stakeholders’ perception. Statement 4 is false: ITIL rejects this view: value is co-created."
+                },
+                "C": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: value depends on the stakeholders’ perception."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: ITIL rejects this view: value is co-created."
+                }
+            }
+        },
+        "420": {
+            "topic": "Service consumer and digital product vendor",
+            "scenario": null,
+            "question_text": "What is the difference between a service consumer and a digital product vendor?",
+            "explanation": "The digital product vendor creates and continually improves digital products and related offerings; the service consumer procures and uses services.",
+            "answers": {
+                "A": {
+                    "text": "The vendor creates and improves digital products; the consumer procures and uses services",
+                    "rationale": "This is the split of roles described by ITIL."
+                },
+                "B": {
+                    "text": "The vendor authorizes the consumption budget; the consumer defines requirements",
+                    "rationale": "Authorizing the budget is the sponsor role, on the consumer side, not the vendor’s."
+                },
+                "C": {
+                    "text": "The vendor is always external; the consumer is always internal to the organization",
+                    "rationale": "These roles can be external or within the same organization."
+                },
+                "D": {
+                    "text": "The vendor uses the services; the consumer delivers and supports them",
+                    "rationale": "It is the reverse: delivery and support belong to the service provider."
+                }
+            }
+        },
+        "421": {
+            "topic": "Service consumer and digital product vendor",
+            "scenario": "A town council subscribes to an online appointment-booking application. A software company creates this application and continually improves it.",
+            "question_text": "What role does the town council play in relation to the software company?",
+            "explanation": "The council procures and uses a service based on the company’s product, so it is a service consumer. The company, which creates and improves the product, is the digital product vendor.",
+            "answers": {
+                "A": {
+                    "text": "Digital product vendor",
+                    "rationale": "That is the software company’s role: it creates and improves the application."
+                },
+                "B": {
+                    "text": "Service provider",
+                    "rationale": "The council neither delivers nor supports this service; it uses it."
+                },
+                "C": {
+                    "text": "Digital product vendor and service provider",
+                    "rationale": "Both roles are held by the company, not by the council."
+                },
+                "D": {
+                    "text": "Service consumer",
+                    "rationale": "The council procures and uses the service: that is the consumer role."
+                }
+            }
+        },
+        "422": {
+            "topic": "Four dimensions - organizations and people",
+            "scenario": null,
+            "question_text": "Why is the 'organizations and people' dimension important?",
+            "explanation": "This dimension makes sure that the organization’s structure, roles, competencies and culture support value creation through products and services.",
+            "answers": {
+                "A": {
+                    "text": "It ensures that roles, competencies and culture support the creation of value",
+                    "rationale": "That is what this dimension covers: people, their roles and the organization’s culture."
+                },
+                "B": {
+                    "text": "It defines the technologies, data and tools needed for the services",
+                    "rationale": "This belongs to the information and technology dimension."
+                },
+                "C": {
+                    "text": "It governs contracts and relationships with other organizations",
+                    "rationale": "This belongs to the partners and suppliers dimension."
+                },
+                "D": {
+                    "text": "It describes the steps that lead from demand to value",
+                    "rationale": "This belongs to the value streams and processes dimension."
+                }
+            }
+        },
+        "423": {
+            "topic": "Four dimensions - importance of each dimension",
+            "scenario": null,
+            "question_text": "Which statements about the Four Dimensions of Product and Service Management are CORRECT?\n1. The value streams and processes dimension is only about IT tools\n2. The ITIL AI Capability Model (6C) sits within the information and technology dimension\n3. The organizations and people dimension excludes organizational culture\n4. The partners and suppliers dimension covers relationships with the other organizations involved",
+            "explanation": "Each dimension covers a distinct aspect: technology and AI for information and technology, other organizations for partners and suppliers.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: it is about how activities work together to create value."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 3 is false: culture is part of this dimension."
+                },
+                "C": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are correct: the 6C model belongs to this dimension; this is what this dimension covers."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: it is about how activities work together to create value. Statement 3 is false: culture is part of this dimension."
+                }
+            }
+        },
+        "424": {
+            "topic": "Product and Service Lifecycle activities",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nThe ITIL Product and Service Lifecycle activities are discover, design, [ ? ], build, transition, operate, deliver and support.",
+            "explanation": "The eight activities are discover, design, acquire, build, transition, operate, deliver and support.",
+            "answers": {
+                "A": {
+                    "text": "plan",
+                    "rationale": "'Plan' was an ITIL 4 value chain activity, replaced in v5."
+                },
+                "B": {
+                    "text": "engage",
+                    "rationale": "'Engage' was an ITIL 4 value chain activity, replaced in v5."
+                },
+                "C": {
+                    "text": "improve",
+                    "rationale": "Continual improvement is a value system component, not a v5 lifecycle activity."
+                },
+                "D": {
+                    "text": "acquire",
+                    "rationale": "Acquire means procuring or allocating the resources required to build the product."
+                }
+            }
+        },
+        "425": {
+            "topic": "Product and Service Lifecycle activities",
+            "scenario": null,
+            "question_text": "Which are ITIL Product and Service Lifecycle activities?\n1. Transition\n2. Obtain/build\n3. Design and transition\n4. Operate",
+            "explanation": "Transition and operate are among the eight v5 activities. 'Obtain/build' and 'design and transition' are ITIL 4 value chain activities.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: this was an ITIL 4 activity; v5 replaces it with acquire and build."
+                },
+                "B": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: this was an ITIL 4 activity; v5 has two separate activities, design and transition."
+                },
+                "C": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: this was an ITIL 4 activity; v5 replaces it with acquire and build. Statement 3 is false: this was an ITIL 4 activity; v5 has two separate activities, design and transition."
+                },
+                "D": {
+                    "text": "1 and 4",
+                    "rationale": "Statements 1 and 4 are correct: transition deploys the new product into the live environment; operate runs the product to ensure agreed performance."
+                }
+            }
+        },
+        "426": {
+            "topic": "Digital product and service management (DPSM)",
+            "scenario": null,
+            "question_text": "What is digital product and service management?",
+            "explanation": "Digital product and service management (DPSM) is a set of specialized organizational capabilities for enabling value for customers in the form of digital products and services.",
+            "answers": {
+                "A": {
+                    "text": "A set of technical practices for developing and deploying software",
+                    "rationale": "DPSM is not limited to software development; it aims at value for customers."
+                },
+                "B": {
+                    "text": "A system by which an organization is directed and controlled",
+                    "rationale": "This is the definition of governance."
+                },
+                "C": {
+                    "text": "Specialized capabilities for enabling value through digital products and services",
+                    "rationale": "This is the definition of DPSM."
+                },
+                "D": {
+                    "text": "A series of steps to create and deliver products and services to consumers",
+                    "rationale": "This is the definition of a value stream."
+                }
+            }
+        },
+        "427": {
+            "topic": "Continual improvement - definition",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nContinual improvement is a [ ? ] organizational activity performed at all levels to ensure that an organization’s performance continually meets stakeholders’ expectations.",
+            "explanation": "Continual improvement is a recurring activity, performed at all levels, from strategic to operational.",
+            "answers": {
+                "A": {
+                    "text": "one-off",
+                    "rationale": "A one-off effort is not enough: continual improvement recurs."
+                },
+                "B": {
+                    "text": "management-only",
+                    "rationale": "It is performed at all levels, not only by management."
+                },
+                "C": {
+                    "text": "annual",
+                    "rationale": "The definition sets no fixed period."
+                },
+                "D": {
+                    "text": "recurring",
+                    "rationale": "This is the term used in the definition."
+                }
+            }
+        },
+        "428": {
+            "topic": "Good",
+            "scenario": null,
+            "question_text": "What is a good in digital product and service management?",
+            "explanation": "A good is a tangible resource transferred from the provider to the consumer, together with ownership and the associated rights and responsibilities.",
+            "answers": {
+                "A": {
+                    "text": "A resource the consumer uses under agreed terms, without taking ownership",
+                    "rationale": "That is access to a resource: ownership is not transferred."
+                },
+                "B": {
+                    "text": "An action performed by the provider to address a consumer’s need",
+                    "rationale": "That is a service action."
+                },
+                "C": {
+                    "text": "A tangible resource transferred to the consumer with ownership, rights and responsibilities",
+                    "rationale": "This is what defines a good: transfer of ownership."
+                },
+                "D": {
+                    "text": "A result for a stakeholder enabled by one or more outputs",
+                    "rationale": "This is the definition of an outcome."
+                }
+            }
+        },
+        "429": {
+            "topic": "Service offering and service interactions",
+            "scenario": null,
+            "question_text": "Which statement about a service offering is CORRECT?",
+            "explanation": "A service offering describes one or more services designed to address the needs of a target consumer group; it may combine goods, access to resources and service actions.",
+            "answers": {
+                "A": {
+                    "text": "It can contain only one type of element: a good, an access or an action",
+                    "rationale": "An offering may combine several types of elements."
+                },
+                "B": {
+                    "text": "It describes services for a target group and may combine goods, access and actions",
+                    "rationale": "This is what defines a service offering."
+                },
+                "C": {
+                    "text": "It is written by the consumer to state its requirements to the provider",
+                    "rationale": "The offering is described by the provider, for a target consumer group."
+                },
+                "D": {
+                    "text": "It replaces service interactions, which then become unnecessary",
+                    "rationale": "Interactions between provider and consumer are still needed to co-create value."
+                }
+            }
+        },
+        "430": {
+            "topic": "Utility, warranty, experience, sustainability and value co-creation",
+            "scenario": "A service offers all the requested functions and meets the agreed availability. Yet users find it confusing and stop using it.",
+            "question_text": "Which statement BEST explains this situation?",
+            "explanation": "None of the four factors is more important than the others: a bad experience can wipe out the benefits of utility and warranty.",
+            "answers": {
+                "A": {
+                    "text": "Utility and warranty are enough: experience will follow by itself",
+                    "rationale": "ITIL says the opposite: focusing on some factors does not take care of the others."
+                },
+                "B": {
+                    "text": "The service lacks warranty because it is not fit for use",
+                    "rationale": "The agreed availability is met, so warranty is there. The issue is experience."
+                },
+                "C": {
+                    "text": "A bad experience can wipe out the benefits of utility and warranty",
+                    "rationale": "This is the case described: utility and warranty are present, but experience destroys perceived value."
+                },
+                "D": {
+                    "text": "The service lacks utility because it does not offer the required functions",
+                    "rationale": "The service offers all required functions, so utility is there."
+                }
+            }
+        },
+        "431": {
+            "topic": "Types of service relationship",
+            "scenario": null,
+            "question_text": "Which type of service relationship is based on standard products and services, with limited interaction between provider and consumer?",
+            "explanation": "A basic relationship is based on standard products and services. A cooperative relationship adds customization and joint improvement; a collaborative relationship is a strategic partnership.",
+            "answers": {
+                "A": {
+                    "text": "Collaborative relationship",
+                    "rationale": "It involves a strategic partnership and shared goals."
+                },
+                "B": {
+                    "text": "Basic relationship",
+                    "rationale": "It is based on standard products and services."
+                },
+                "C": {
+                    "text": "Cooperative relationship",
+                    "rationale": "It goes beyond the standard, with customization and joint improvement."
+                },
+                "D": {
+                    "text": "Sponsorship relationship",
+                    "rationale": "This type does not exist; sponsor is a consumer-side role."
+                }
+            }
+        },
+        "432": {
+            "topic": "Service journey",
+            "scenario": null,
+            "question_text": "What is a service journey?",
+            "explanation": "The service journey represents, end to end, the steps and interactions of a consumer with a provider and its products and services. It is not necessarily linear.",
+            "answers": {
+                "A": {
+                    "text": "A documented agreement that sets the expected service levels",
+                    "rationale": "This is a service level agreement (SLA)."
+                },
+                "B": {
+                    "text": "The visual representation of the internal steps of a value stream",
+                    "rationale": "This is value stream mapping."
+                },
+                "C": {
+                    "text": "The eight activities the provider performs to manage its products",
+                    "rationale": "These are the Product and Service Lifecycle activities."
+                },
+                "D": {
+                    "text": "The end-to-end interactions of a consumer with a provider",
+                    "rationale": "This is the service journey, seen from both consumer and provider."
+                }
+            }
+        },
+        "433": {
+            "topic": "Service provider and service consumer",
+            "scenario": null,
+            "question_text": "Which statement correctly distinguishes a service provider from a service consumer?",
+            "explanation": "The service provider is responsible for delivering and supporting services; the consumer procures and uses services. One organization can play both roles in different relationships.",
+            "answers": {
+                "A": {
+                    "text": "An organization is either a provider or a consumer, never both",
+                    "rationale": "Organizations consume from several providers and provide to several consumers."
+                },
+                "B": {
+                    "text": "The provider delivers and supports; the consumer procures and uses",
+                    "rationale": "This is the split of roles described by ITIL."
+                },
+                "C": {
+                    "text": "The provider creates value alone; the consumer simply receives it",
+                    "rationale": "Value is co-created by both parties."
+                },
+                "D": {
+                    "text": "The consumer creates and improves the digital products used by the provider",
+                    "rationale": "Creating and improving digital products belongs to the digital product vendor."
+                }
+            }
+        },
+        "434": {
+            "topic": "The Four Dimensions",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nThe Four Dimensions of Product and Service Management are organizations and people, information and technology, partners and suppliers, and [ ? ].",
+            "explanation": "The four dimensions are organizations and people, information and technology, partners and suppliers, and value streams and processes.",
+            "answers": {
+                "A": {
+                    "text": "governance and compliance",
+                    "rationale": "Governance is a value system component, not a dimension."
+                },
+                "B": {
+                    "text": "products and services",
+                    "rationale": "The dimensions apply to products and services; this is not one of them."
+                },
+                "C": {
+                    "text": "value streams and processes",
+                    "rationale": "This is the fourth dimension."
+                },
+                "D": {
+                    "text": "value chain and practices",
+                    "rationale": "These are components of the ITIL Value System."
+                }
+            }
+        },
+        "435": {
+            "topic": "Understanding the Product and Service Lifecycle",
+            "scenario": null,
+            "question_text": "Which statement about the ITIL Product and Service Lifecycle activities is CORRECT?",
+            "explanation": "From the organizational perspective, the eight lifecycle activities form a value chain. They are not performed as a cycle.",
+            "answers": {
+                "A": {
+                    "text": "Each one matches exactly one management practice",
+                    "rationale": "Activities are supported by several practices, with no one-to-one match."
+                },
+                "B": {
+                    "text": "They replace management practices in the value system",
+                    "rationale": "Value chain and practices are two separate value system components."
+                },
+                "C": {
+                    "text": "They are performed by the service consumer",
+                    "rationale": "They are performed by the organization acting as vendor and provider."
+                },
+                "D": {
+                    "text": "From the organizational perspective, they form a value chain",
+                    "rationale": "This is how ITIL links the lifecycle and the value chain."
+                }
+            }
+        },
+        "436": {
+            "topic": "Utility, warranty, experience and sustainability",
+            "scenario": null,
+            "question_text": "Which statements about utility, warranty, experience and sustainability are CORRECT?\n1. Utility is fitness for use\n2. Warranty is the assurance that a product or service will meet agreed requirements\n3. Experience is the sum of functional and emotional interactions as perceived by a customer or user\n4. Sustainability is only about environmental impact",
+            "explanation": "Warranty is the assurance of meeting agreed requirements, and experience is the sum of perceived functional and emotional interactions.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: utility is fitness for purpose."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statements 2 and 3 are correct: this is the definition of warranty; this is the definition of experience."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: it also covers social progress and economic growth."
+                },
+                "D": {
+                    "text": "1 and 4",
+                    "rationale": "Statement 1 is false: utility is fitness for purpose. Statement 4 is false: it also covers social progress and economic growth."
+                }
+            }
+        },
+        "437": {
+            "topic": "Sponsor, customer and user roles",
+            "scenario": null,
+            "question_text": "Which statements about service consumer roles are CORRECT?\n1. The customer defines requirements and takes responsibility for outcomes of consumption\n2. The user authorizes the budget for service consumption\n3. The sponsor is the role that uses the service day to day\n4. One person can hold the customer, user and sponsor roles",
+            "explanation": "The customer defines requirements and owns outcomes; the customer, user and sponsor roles can be separate or combined.",
+            "answers": {
+                "A": {
+                    "text": "1 and 4",
+                    "rationale": "Statements 1 and 4 are correct: this is the definition of the customer role; these roles can be separate or combined."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: that is the sponsor role. Statement 3 is false: that is the user role."
+                },
+                "C": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: that is the sponsor role."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: that is the user role."
+                }
+            }
+        },
+        "438": {
+            "topic": "Non-sequential lifecycle activities",
+            "scenario": null,
+            "question_text": "Which statements about the ITIL Product and Service Lifecycle activities are CORRECT?\n1. Each activity is performed only once in a product’s life\n2. The activities are neither sequential nor linear\n3. Design can start only once discover is fully complete\n4. The activities can be used iteratively and combined in value streams",
+            "explanation": "Lifecycle activities follow no fixed order: they can be repeated and combined in different value streams.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: the activities can be repeated iteratively."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are correct: they are not performed as a fixed cycle; they combine in many ways depending on needs."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: no strict order is imposed between the activities."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: the activities can be repeated iteratively. Statement 3 is false: no strict order is imposed between the activities."
+                }
+            }
+        },
+        "439": {
+            "topic": "Output and outcome",
+            "scenario": null,
+            "question_text": "Which statements about outputs and outcomes are CORRECT?\n1. An output is a result for a stakeholder enabled by one or more outcomes\n2. A delivered software feature is an outcome, even if nobody uses it\n3. An outcome is a result for a stakeholder enabled by one or more outputs\n4. An output is a tangible or intangible deliverable of an activity",
+            "explanation": "An output is a deliverable of an activity; an outcome is what the stakeholder achieves thanks to one or more outputs.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: the definition is reversed: an outcome is enabled by outputs. Statement 2 is false: a delivered feature is an output; the outcome is what it enables for the stakeholder."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: a delivered feature is an output; the outcome is what it enables for the stakeholder."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statements 3 and 4 are correct: this is the definition of an outcome; this is the definition of an output."
+                },
+                "D": {
+                    "text": "1 and 4",
+                    "rationale": "Statement 1 is false: the definition is reversed: an outcome is enabled by outputs."
+                }
+            }
+        },
+        "440": {
+            "topic": "External factors (PESTLE)",
+            "scenario": null,
+            "question_text": "Which statements about the external factors that influence the four dimensions are CORRECT?\n1. They form a fifth dimension of product and service management\n2. They are often beyond the organization’s control\n3. ITIL forbids using any model other than PESTLE\n4. PESTLE covers political, economic, social, technological, legal and environmental factors",
+            "explanation": "External factors, described by the PESTLE model, are often beyond the organization’s control and constrain or influence the four dimensions.",
+            "answers": {
+                "A": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: there are only four dimensions; external factors constrain or influence them. Statement 3 is false: other similar models can be adopted."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are correct: this is what characterizes them; this is what PESTLE stands for."
+                },
+                "C": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: there are only four dimensions; external factors constrain or influence them."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: other similar models can be adopted."
+                }
+            }
+        },
+        "441": {
+            "topic": "Sponsor, customer and user roles",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nThe [ ? ] is the role that authorizes the budget for service consumption.",
+            "explanation": "The sponsor authorizes the budget; the customer defines requirements and the user uses the services.",
+            "answers": {
+                "A": {
+                    "text": "customer",
+                    "rationale": "The customer defines requirements and owns outcomes."
+                },
+                "B": {
+                    "text": "sponsor",
+                    "rationale": "This is the definition of the sponsor role."
+                },
+                "C": {
+                    "text": "user",
+                    "rationale": "The user uses the services."
+                },
+                "D": {
+                    "text": "service provider",
+                    "rationale": "The provider delivers and supports services; it does not authorize the consumer’s budget."
+                }
+            }
+        },
+        "442": {
+            "topic": "Service level agreement (SLA)",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nA service level agreement (SLA) is a documented agreement between a service provider and a [ ? ] that identifies both the services required and the expected level of service.",
+            "explanation": "The SLA is agreed between the service provider and the customer, who defines requirements and owns outcomes.",
+            "answers": {
+                "A": {
+                    "text": "user",
+                    "rationale": "The user uses the service but does not make the agreement."
+                },
+                "B": {
+                    "text": "digital product vendor",
+                    "rationale": "The vendor creates and improves products; the SLA addresses the service consumer."
+                },
+                "C": {
+                    "text": "customer",
+                    "rationale": "The SLA is agreed with the customer."
+                },
+                "D": {
+                    "text": "partner",
+                    "rationale": "An SLA is not defined as an agreement between partners."
+                }
+            }
+        },
+        "443": {
+            "topic": "Experience",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nExperience is the sum of functional and [ ? ] interactions with a service and service provider as perceived by a service customer (CX) or user (UX).",
+            "explanation": "Experience combines the functional and emotional interactions perceived by the customer (CX) or user (UX).",
+            "answers": {
+                "A": {
+                    "text": "emotional",
+                    "rationale": "This is the term used in the definition."
+                },
+                "B": {
+                    "text": "contractual",
+                    "rationale": "Contractual commitments relate rather to warranty."
+                },
+                "C": {
+                    "text": "technical",
+                    "rationale": "Technical aspects are already covered by 'functional'."
+                },
+                "D": {
+                    "text": "financial",
+                    "rationale": "Financial aspects relate to costs, not experience."
+                }
+            }
+        },
+        "444": {
+            "topic": "Guiding principles - list",
+            "scenario": null,
+            "question_text": "Which of the following is NOT an ITIL guiding principle?",
+            "explanation": "The seven guiding principles are: focus on value, start where you are, progress iteratively with feedback, collaborate and promote visibility, think and work holistically, keep it simple and practical, optimize and automate. 'Design for experience' is not one of them.",
+            "answers": {
+                "A": {
+                    "text": "Start where you are",
+                    "rationale": "This is an ITIL guiding principle."
+                },
+                "B": {
+                    "text": "Keep it simple and practical",
+                    "rationale": "This is an ITIL guiding principle."
+                },
+                "C": {
+                    "text": "Design for experience",
+                    "rationale": "This is not a guiding principle: experience is a characteristic of value, not a principle."
+                },
+                "D": {
+                    "text": "Optimize and automate",
+                    "rationale": "This is an ITIL guiding principle."
+                }
+            }
+        },
+        "445": {
+            "topic": "Guiding principles - list",
+            "scenario": null,
+            "question_text": "Which statements about the ITIL guiding principles are CORRECT?\n1. 'Progress iteratively with feedback' is an ITIL guiding principle.\n2. 'Manage by exception' is an ITIL guiding principle.\n3. 'Collaborate and promote visibility' is an ITIL guiding principle.\n4. ITIL has eight guiding principles.",
+            "explanation": "'Progress iteratively with feedback' and 'collaborate and promote visibility' are two of the seven ITIL guiding principles.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: this is a PRINCE2 principle, not an ITIL guiding principle."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: this is a PRINCE2 principle, not an ITIL guiding principle. Statement 4 is false: ITIL has seven guiding principles."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: ITIL has seven guiding principles."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
+                }
+            }
+        },
+        "446": {
+            "topic": "Management practices - role in the value system",
+            "scenario": null,
+            "question_text": "What is the role of management practices in the ITIL Value System?",
+            "explanation": "Value chain activities and value streams are supported and enabled by management practices.",
+            "answers": {
+                "A": {
+                    "text": "They support and enable the value chain activities and the value streams.",
+                    "rationale": "This is their role: they provide the capabilities needed to perform the work."
+                },
+                "B": {
+                    "text": "They replace the guiding principles once the organization is mature enough.",
+                    "rationale": "The guiding principles apply in all circumstances; practices do not replace them."
+                },
+                "C": {
+                    "text": "They impose a single, fixed sequence of activities that every value stream in the organization must follow.",
+                    "rationale": "Practices and activities do not form a fixed structure; they can be combined in many ways."
+                },
+                "D": {
+                    "text": "They are the inputs to the value system, namely opportunity and demand.",
+                    "rationale": "The inputs to the value system are opportunity and demand, not practices."
+                }
+            }
+        },
+        "447": {
+            "topic": "Management practices - role in the value system",
+            "scenario": null,
+            "question_text": "Which statements about management practices in the ITIL Value System are CORRECT?\n1. Management practices are used only in the support activity.\n2. Value chain activities and practices can be combined in multiple operating models and value streams.\n3. Management practices form a fixed, rigid structure.\n4. Each management practice includes resources based on the four dimensions.",
+            "explanation": "Practices draw on the four dimensions and combine freely with value chain activities in value streams, which discourages siloed working.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: practices support all value chain activities and value streams."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are both true."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: the value system architecture is flexible; practices do not form a rigid structure."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: practices support all value chain activities and value streams. Statement 3 is false: the value system architecture is flexible; practices do not form a rigid structure."
+                }
+            }
+        },
+        "448": {
+            "topic": "Value stream mapping - definition",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\n[ ? ] is a technique for the visual representation and analysis of value streams.",
+            "explanation": "Value stream mapping is the technique for visually representing and analysing value streams.",
+            "answers": {
+                "A": {
+                    "text": "Value stream management",
+                    "rationale": "Value stream management is an ongoing approach, not a representation technique."
+                },
+                "B": {
+                    "text": "Value stream mapping",
+                    "rationale": "This is the definition of value stream mapping."
+                },
+                "C": {
+                    "text": "Value chain",
+                    "rationale": "The value chain is a set of activities, not a technique."
+                },
+                "D": {
+                    "text": "Complexity thinking",
+                    "rationale": "Complexity thinking is a way of approaching complex systems, not a representation technique."
+                }
+            }
+        },
+        "449": {
+            "topic": "Value stream management - definition",
+            "scenario": null,
+            "question_text": "What is value stream management?",
+            "explanation": "Value stream management is an ongoing focus on how work is done, together with the analysis and improvement of the organization's value streams.",
+            "answers": {
+                "A": {
+                    "text": "A one-off exercise that draws the current value stream once, with no follow-up planned.",
+                    "rationale": "Value stream management is ongoing; a one-off exercise has no sustainable effect."
+                },
+                "B": {
+                    "text": "The set of eight activities of the product and service lifecycle, from discover to support.",
+                    "rationale": "These eight activities form the value chain, not value stream management."
+                },
+                "C": {
+                    "text": "An ongoing focus on how work is done, with analysis and improvement of value streams.",
+                    "rationale": "This is the definition of value stream management."
+                },
+                "D": {
+                    "text": "The system by which an organization is directed and controlled.",
+                    "rationale": "This is the definition of governance."
+                }
+            }
+        },
+        "450": {
+            "topic": "Complexity thinking - definition",
+            "scenario": null,
+            "question_text": "What does complexity thinking refer to?",
+            "explanation": "Complexity thinking recognizes that, in a complex system, outcomes emerge from the interactions between its parts and cannot be fully predicted, so work proceeds through experiments and feedback.",
+            "answers": {
+                "A": {
+                    "text": "An approach accepting that outcomes in a complex system emerge from interactions and cannot be fully predicted.",
+                    "rationale": "This is what complexity thinking means."
+                },
+                "B": {
+                    "text": "A method that breaks every problem into simple, independent tasks whose results can always be predicted in advance.",
+                    "rationale": "This is the opposite: in a complex system, results cannot be fully predicted."
+                },
+                "C": {
+                    "text": "Making a process more detailed so that it covers every possible exception.",
+                    "rationale": "Adding detail does not make a complex system predictable."
+                },
+                "D": {
+                    "text": "A technique for visually representing the steps of a value stream.",
+                    "rationale": "This is value stream mapping."
+                }
+            }
+        },
+        "451": {
+            "topic": "Complexity thinking - definition",
+            "scenario": null,
+            "question_text": "Which statements about complexity thinking are CORRECT?\n1. Detailed planning is enough to predict all outcomes of a complex system.\n2. In a complex situation, cause and effect are often only clear in hindsight.\n3. Complexity thinking means adding controls to every step of the work.\n4. Complexity thinking favours small experiments and feedback loops.",
+            "explanation": "In a complex system, causes are often only visible in hindsight, so work proceeds through small experiments and feedback.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: in a complex system, outcomes cannot be fully predicted."
+                },
+                "B": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: in a complex system, outcomes cannot be fully predicted. Statement 3 is false: it is not about adding controls, but about adapting through feedback."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: it is not about adding controls, but about adapting through feedback."
+                },
+                "D": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are both true."
+                }
+            }
+        },
+        "452": {
+            "topic": "AI in the lifecycle - examples",
+            "scenario": null,
+            "question_text": "Which example shows how AI can assist in the product and service lifecycle?",
+            "explanation": "AI can produce drafts, such as test cases derived from requirements, which people then review; it assists the work without removing human responsibility.",
+            "answers": {
+                "A": {
+                    "text": "An AI decides on its own what a service is worth, instead of the stakeholders.",
+                    "rationale": "Stakeholders determine value, not AI."
+                },
+                "B": {
+                    "text": "An AI removes the need to test a product before it goes live.",
+                    "rationale": "AI can help with testing but does not remove it."
+                },
+                "C": {
+                    "text": "A generative AI drafts test cases from the requirements, which the team reviews.",
+                    "rationale": "This is a realistic use: AI assists, the team stays in control."
+                },
+                "D": {
+                    "text": "An AI makes it unnecessary to gather requirements from customers, since it infers them from data.",
+                    "rationale": "AI can analyse needs, but the customer still defines the requirements."
+                }
+            }
+        },
+        "453": {
+            "topic": "AI in the lifecycle - examples",
+            "scenario": null,
+            "question_text": "Which statements about the use of AI in the product and service lifecycle are CORRECT?\n1. AI can analyse customer feedback to bring needs to light (discover).\n2. AI outputs can be used without any human review.\n3. AI can only be used in the support activity.\n4. Generative AI can produce draft designs or prototypes to be refined.",
+            "explanation": "AI can help from discover (analysing feedback) to design (drafts, prototypes), provided its outputs are reviewed.",
+            "answers": {
+                "A": {
+                    "text": "1 and 4",
+                    "rationale": "Statements 1 and 4 are both true."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: AI outputs need to be reviewed and governed. Statement 3 is false: AI can assist in every lifecycle activity."
+                },
+                "C": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: AI outputs need to be reviewed and governed."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: AI can assist in every lifecycle activity."
+                }
+            }
+        },
+        "454": {
+            "topic": "AI and process automation",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\n[ ? ] AI can plan and carry out multi-step tasks, such as triaging and routing service requests, with limited human intervention.",
+            "explanation": "Agentic AI acts: it plans and carries out multi-step tasks with bounded autonomy, which makes it a lever for process automation.",
+            "answers": {
+                "A": {
+                    "text": "Generative",
+                    "rationale": "Generative AI produces content (text, code, images); it does not act on its own across multiple steps."
+                },
+                "B": {
+                    "text": "Predictive",
+                    "rationale": "Predictive AI makes forecasts from data; it does not carry out tasks."
+                },
+                "C": {
+                    "text": "Descriptive",
+                    "rationale": "Descriptive analysis summarizes what happened; it does not act."
+                },
+                "D": {
+                    "text": "Agentic",
+                    "rationale": "Agentic AI plans and carries out tasks with bounded autonomy."
+                }
+            }
+        },
+        "455": {
+            "topic": "AI and process automation",
+            "scenario": null,
+            "question_text": "Which statements about automating processes with AI are CORRECT?\n1. AI can automatically categorize and route incoming incidents.\n2. Automating with AI removes the need for governance.\n3. AI automation only applies to the operate activity.\n4. A process should be optimized before it is automated with AI.",
+            "explanation": "AI can automate tasks such as triaging incidents, but you optimize first, then automate, under effective governance.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: the 'optimize and automate' principle calls for effective governance when leveraging AI."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: the 'optimize and automate' principle calls for effective governance when leveraging AI. Statement 3 is false: AI can automate tasks across all lifecycle activities."
+                },
+                "C": {
+                    "text": "1 and 4",
+                    "rationale": "Statements 1 and 4 are both true."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: AI can automate tasks across all lifecycle activities."
+                }
+            }
+        },
+        "456": {
+            "topic": "Governance - definition",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nGovernance is the system by which an organization is [ ? ].",
+            "explanation": "Governance is the system by which an organization is directed and controlled.",
+            "answers": {
+                "A": {
+                    "text": "directed and controlled",
+                    "rationale": "This is the definition of governance."
+                },
+                "B": {
+                    "text": "funded and audited",
+                    "rationale": "Funding and auditing are not the definition of governance."
+                },
+                "C": {
+                    "text": "designed and built",
+                    "rationale": "Design and build are value chain activities."
+                },
+                "D": {
+                    "text": "operated and supported",
+                    "rationale": "Operate and support are value chain activities."
+                }
+            }
+        },
+        "457": {
+            "topic": "Product prototype - definition",
+            "scenario": null,
+            "question_text": "What is a product prototype?",
+            "explanation": "A prototype is an early, simplified version of a product used to test an idea and gather feedback before the full product is built.",
+            "answers": {
+                "A": {
+                    "text": "The detailed, agreed description of the requirements, functions and characteristics of a product to be built.",
+                    "rationale": "This is a product specification, not a prototype."
+                },
+                "B": {
+                    "text": "The final version of a product, deployed into the live environment.",
+                    "rationale": "A prototype comes before the final product; it is not deployed live."
+                },
+                "C": {
+                    "text": "A document that sets the level of service agreed with the customer.",
+                    "rationale": "This describes a service level agreement, not a prototype."
+                },
+                "D": {
+                    "text": "An early, simplified version of a product, used to test an idea and gather feedback.",
+                    "rationale": "This is what a prototype is."
+                }
+            }
+        },
+        "458": {
+            "topic": "Operating model - definition",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nAn operating model is a conceptual and/or visual representation of how an organization [ ? ] with its customers and other stakeholders, as well as how the organization runs itself.",
+            "explanation": "An operating model shows how the organization co-creates value with its customers and other stakeholders, and how it runs itself.",
+            "answers": {
+                "A": {
+                    "text": "negotiates contracts",
+                    "rationale": "Negotiating contracts is only one possible aspect, not the subject of the definition."
+                },
+                "B": {
+                    "text": "manages incidents",
+                    "rationale": "Managing incidents is operational work, not what the operating model represents."
+                },
+                "C": {
+                    "text": "co-creates value",
+                    "rationale": "This is the definition of an operating model."
+                },
+                "D": {
+                    "text": "shares data",
+                    "rationale": "Sharing data is not the subject of the definition."
+                }
+            }
+        },
+        "459": {
+            "topic": "Problem, error and known error",
+            "scenario": null,
+            "question_text": "Which statement correctly distinguishes a problem, an error and a known error?",
+            "explanation": "A problem is a cause, or potential cause, of one or more incidents; an error is a flaw or vulnerability that may cause incidents; a known error is a problem that has been analysed but not yet resolved.",
+            "answers": {
+                "A": {
+                    "text": "A problem is an incident that has happened more than three times.",
+                    "rationale": "A problem is a cause of incidents, not a repeated incident; no threshold is defined."
+                },
+                "B": {
+                    "text": "A known error is a problem that has been analysed but not yet resolved.",
+                    "rationale": "This is what distinguishes a known error from a problem."
+                },
+                "C": {
+                    "text": "A known error is an error that has been permanently fixed.",
+                    "rationale": "A known error has not yet been resolved."
+                },
+                "D": {
+                    "text": "An error and an incident mean exactly the same thing.",
+                    "rationale": "An error is a flaw that may cause incidents; it is not the incident itself."
+                }
+            }
+        },
+        "460": {
+            "topic": "Metric and critical success factor",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nA [ ? ] is a necessary precondition for achieving intended results.",
+            "explanation": "A critical success factor (CSF) is a necessary precondition for achieving intended results; metrics are then used to measure whether it is met.",
+            "answers": {
+                "A": {
+                    "text": "key performance indicator",
+                    "rationale": "A KPI is a metric that measures whether a CSF is met, not the precondition itself."
+                },
+                "B": {
+                    "text": "critical success factor",
+                    "rationale": "This is the definition of a CSF."
+                },
+                "C": {
+                    "text": "service level agreement",
+                    "rationale": "An SLA sets agreed service levels, not a precondition."
+                },
+                "D": {
+                    "text": "milestone",
+                    "rationale": "A milestone marks a point of progress, not a precondition."
+                }
+            }
+        },
+        "461": {
+            "topic": "Core and enabling value streams",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nAn [ ? ] value stream enables value for internal customers to support the organization's core value streams.",
+            "explanation": "An enabling value stream serves internal customers to support the core value streams, which enable value for consumers.",
+            "answers": {
+                "A": {
+                    "text": "enabling",
+                    "rationale": "This is the definition of an enabling value stream."
+                },
+                "B": {
+                    "text": "core",
+                    "rationale": "A core value stream enables value for consumers, as intended by the operating model."
+                },
+                "C": {
+                    "text": "external",
+                    "rationale": "ITIL does not define an 'external value stream'; the sentence is about internal customers."
+                },
+                "D": {
+                    "text": "operational",
+                    "rationale": "This is not a type of value stream defined by ITIL."
+                }
+            }
+        },
+        "462": {
+            "topic": "Optimizing workflows for complexity",
+            "scenario": null,
+            "question_text": "How should a workflow be optimized for a complex environment?",
+            "explanation": "In a complex environment, not everything can be predicted: work moves in small increments, with frequent feedback, and adapts to what is observed.",
+            "answers": {
+                "A": {
+                    "text": "By setting a full, detailed plan in advance that does not change until the work is finished.",
+                    "rationale": "A fixed plan cannot adapt to what emerges in a complex system."
+                },
+                "B": {
+                    "text": "By adding control steps to cover every possible case.",
+                    "rationale": "Adding controls makes the flow heavier without making it predictable."
+                },
+                "C": {
+                    "text": "By moving in small increments, with short feedback loops, and adapting.",
+                    "rationale": "This is how a workflow adapts to complexity."
+                },
+                "D": {
+                    "text": "By giving each step to an isolated team, with no exchange with the others.",
+                    "rationale": "Isolated work prevents feedback; collaboration is needed instead."
+                }
+            }
+        },
+        "463": {
+            "topic": "Value stream mapping and management",
+            "scenario": null,
+            "question_text": "Which statement best describes the relationship between value stream mapping and value stream management?",
+            "explanation": "Mapping gives tangible results quickly but has no sustainable effect as a one-off exercise; value stream management continues the effort on an ongoing basis.",
+            "answers": {
+                "A": {
+                    "text": "Value stream management is a one-off exercise, whereas mapping is a permanent effort.",
+                    "rationale": "It is the other way round: management is ongoing, mapping alone is often one-off."
+                },
+                "B": {
+                    "text": "Both terms refer to the same technique for drawing a value stream.",
+                    "rationale": "Mapping is a technique; management is a broader, ongoing approach."
+                },
+                "C": {
+                    "text": "Mapping replaces management once the 'to-be' value stream has been drawn.",
+                    "rationale": "Value streams keep evolving; they must be managed continually after mapping."
+                },
+                "D": {
+                    "text": "Mapping gives quick results; management makes them last through ongoing improvement.",
+                    "rationale": "Value stream management takes over from mapping and makes it sustainable."
+                }
+            }
+        },
+        "464": {
+            "topic": "AI across value chain activities",
+            "scenario": null,
+            "question_text": "Which statements about the use of AI across value chain activities are CORRECT?\n1. Discover: AI can analyse market and usage data to spot needs.\n2. Transition: AI makes testing unnecessary before deployment.\n3. Support: AI can suggest likely causes and knowledge articles for an incident.\n4. AI can be used in only one value chain activity.",
+            "explanation": "AI can be used in every value chain activity, for example to spot needs (discover) or to help with diagnosis (support).",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: AI can help with testing but does not remove it."
+                },
+                "B": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
+                },
+                "C": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: AI can help with testing but does not remove it. Statement 4 is false: AI can be used across all value chain activities."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: AI can be used across all value chain activities."
+                }
+            }
+        },
+        "465": {
+            "topic": "ITIL and DevOps - collaboration",
+            "scenario": null,
+            "question_text": "How can ITIL collaborate with DevOps practices?",
+            "explanation": "ITIL practices can be built into DevOps automated delivery pipelines, keeping changes under control without slowing the flow.",
+            "answers": {
+                "A": {
+                    "text": "By requiring manual approval by a board for every code change, even minor automated ones.",
+                    "rationale": "This slows the fast flow DevOps aims for; ITIL does not require it."
+                },
+                "B": {
+                    "text": "By letting DevOps manage the whole lifecycle alone, without any ITIL practice.",
+                    "rationale": "This is not collaboration; the two approaches complement each other."
+                },
+                "C": {
+                    "text": "By building practices such as change enablement into automated delivery pipelines.",
+                    "rationale": "This is a practical way for ITIL and DevOps to work together."
+                },
+                "D": {
+                    "text": "By strictly separating development and operations teams.",
+                    "rationale": "DevOps aims for shared responsibility between these teams instead."
+                }
+            }
+        },
+        "466": {
+            "topic": "ITIL and DevOps - collaboration",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nDevOps emphasizes fast flow, automation and [ ? ] between development and operations teams.",
+            "explanation": "DevOps relies on fast flow, automation and shared responsibility between development and operations; ITIL can build on this to collaborate.",
+            "answers": {
+                "A": {
+                    "text": "shared responsibility",
+                    "rationale": "Shared responsibility is at the heart of DevOps."
+                },
+                "B": {
+                    "text": "separation of duties",
+                    "rationale": "DevOps seeks to bring teams together, not to separate them."
+                },
+                "C": {
+                    "text": "manual approval",
+                    "rationale": "DevOps favours automation over manual approvals."
+                },
+                "D": {
+                    "text": "outsourcing",
+                    "rationale": "Outsourcing is not a DevOps principle."
+                }
+            }
+        },
+        "467": {
+            "topic": "ITIL and DevOps - complementarity",
+            "scenario": null,
+            "question_text": "Which statements about ITIL and DevOps are CORRECT?\n1. DevOps brings fast flow, automation, continuous integration and delivery.\n2. ITIL and DevOps compete: an organization must choose one or the other.\n3. ITIL brings a focus on value, governance and practices across the whole lifecycle.\n4. DevOps only covers the support activity.",
+            "explanation": "DevOps brings speed and automation; ITIL brings value, governance and lifecycle-wide management. They complement each other.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: ITIL and DevOps are complementary."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: ITIL and DevOps are complementary. Statement 4 is false: DevOps mainly concerns the flow from build through transition and operation."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: DevOps mainly concerns the flow from build through transition and operation."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
+                }
+            }
+        },
+        "468": {
+            "topic": "ITIL and DevOps - complementarity",
+            "scenario": null,
+            "question_text": "How do ITIL and DevOps complement each other in the product and service lifecycle?",
+            "explanation": "DevOps speeds up the flow of change through automation; ITIL covers the management of the product and service across the whole lifecycle, from discover to support.",
+            "answers": {
+                "A": {
+                    "text": "ITIL only applies before a product goes live, and DevOps only afterwards, during operation.",
+                    "rationale": "Both apply to several activities; this before/after split is wrong."
+                },
+                "B": {
+                    "text": "DevOps speeds up the build and transition flow; ITIL manages the whole lifecycle.",
+                    "rationale": "This is how the two approaches complement each other."
+                },
+                "C": {
+                    "text": "DevOps replaces ITIL as soon as an organization automates its deployments.",
+                    "rationale": "Automation does not replace value management and governance."
+                },
+                "D": {
+                    "text": "ITIL provides the automation tools; DevOps provides the governance.",
+                    "rationale": "This is reversed: automation comes mainly from DevOps, governance from ITIL."
+                }
+            }
+        },
+        "469": {
+            "topic": "Importance of project management",
+            "scenario": null,
+            "question_text": "Why is project management important in ITIL?",
+            "explanation": "New products, services and significant changes are often delivered through projects, which have a start and an end and must be planned and controlled.",
+            "answers": {
+                "A": {
+                    "text": "Because new products and changes are often delivered through projects that must be controlled.",
+                    "rationale": "This is why ITIL relies on project management."
+                },
+                "B": {
+                    "text": "Because ITIL requires all day-to-day service operation to be run as a never-ending project.",
+                    "rationale": "A project has a start and an end; day-to-day operation is not a project."
+                },
+                "C": {
+                    "text": "Because project management replaces the value chain in ITIL.",
+                    "rationale": "Project management is a practice that supports the value chain; it does not replace it."
+                },
+                "D": {
+                    "text": "Because every incident must be handled as a separate project.",
+                    "rationale": "Incidents belong to the support activity, not to project management."
+                }
+            }
+        },
+        "470": {
+            "topic": "Importance of project management",
+            "scenario": null,
+            "question_text": "Identify the missing word(s) in the following sentence.\nITIL relies on [ ? ] to deliver changes and new products and services in a controlled way.",
+            "explanation": "Project management makes it possible to deliver changes and new products and services in a controlled way.",
+            "answers": {
+                "A": {
+                    "text": "incident management",
+                    "rationale": "Incident management restores service; it does not deliver new products."
+                },
+                "B": {
+                    "text": "project management",
+                    "rationale": "Project management structures the delivery of changes and new products."
+                },
+                "C": {
+                    "text": "event management",
+                    "rationale": "Monitoring events is not used to deliver new products."
+                },
+                "D": {
+                    "text": "availability management",
+                    "rationale": "Availability concerns service warranty, not the delivery of changes."
+                }
+            }
+        },
+        "471": {
+            "topic": "ITIL and PRINCE2 - complementarity",
+            "scenario": null,
+            "question_text": "Which statements about ITIL and PRINCE2 are CORRECT?\n1. PRINCE2 structures projects with a defined start and end, roles and stages.\n2. PRINCE2 replaces ITIL practices for running services.\n3. ITIL continues to manage the product or service after the project has ended.\n4. ITIL and PRINCE2 are competing methods.",
+            "explanation": "PRINCE2 governs the project that creates or changes a product; ITIL manages that product or service across its whole lifecycle, including after the project.",
+            "answers": {
+                "A": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: PRINCE2 is a project management method; it does not run services."
+                },
+                "C": {
+                    "text": "1 and 4",
+                    "rationale": "Statement 4 is false: ITIL and PRINCE2 are complementary."
+                },
+                "D": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: PRINCE2 is a project management method; it does not run services. Statement 4 is false: ITIL and PRINCE2 are complementary."
+                }
+            }
+        },
+        "472": {
+            "topic": "ITIL and PRINCE2 - complementarity",
+            "scenario": null,
+            "question_text": "How do ITIL and PRINCE2 complement each other in the product and service lifecycle?",
+            "explanation": "PRINCE2 structures the projects that create or change products and services; ITIL guides the management of those products and services across their whole lifecycle.",
+            "answers": {
+                "A": {
+                    "text": "PRINCE2 runs services day to day, while ITIL manages the projects that create the products.",
+                    "rationale": "This is reversed: PRINCE2 is about projects, ITIL about product and service management."
+                },
+                "B": {
+                    "text": "ITIL and PRINCE2 cover exactly the same scope.",
+                    "rationale": "Their scopes differ, which is why they complement each other."
+                },
+                "C": {
+                    "text": "PRINCE2 is useful only if the organization does not use ITIL.",
+                    "rationale": "The two are used together; they are not mutually exclusive."
+                },
+                "D": {
+                    "text": "PRINCE2 structures the projects that create products; ITIL guides their management across the lifecycle.",
+                    "rationale": "This is how the two approaches complement each other."
+                }
+            }
+        },
+        "473": {
+            "topic": "Components of the ITIL Value System",
+            "scenario": null,
+            "question_text": "Which statements about the components of the ITIL Value System are CORRECT?\n1. Governance is a component of the ITIL Value System.\n2. Opportunity is a component of the ITIL Value System.\n3. Continual improvement is a component of the ITIL Value System.\n4. Value is a component of the ITIL Value System.",
+            "explanation": "The components of the ITIL Value System are the guiding principles, governance, the value chain, management practices and continual improvement.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: opportunity is an input to the value system, together with demand."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statement 2 is false: opportunity is an input to the value system, together with demand. Statement 4 is false: value is the outcome of the value system, not a component."
+                },
+                "C": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
+                },
+                "D": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: value is the outcome of the value system, not a component."
+                }
+            }
+        },
+        "474": {
+            "topic": "Continual improvement model - steps",
+            "scenario": null,
+            "question_text": "Which statements about the ITIL Continual Improvement Model are CORRECT?\n1. The model only applies to the continual improvement practice.\n2. The model has seven steps.\n3. The model is applied only once, when a new service is launched.\n4. The model starts from the vision and ends with keeping the momentum going.",
+            "explanation": "The continual improvement model has seven steps, from 'What is the vision?' to 'How do we keep the momentum going?'.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 1 is false: it applies to the whole value system and to products, services, practices and relationships."
+                },
+                "B": {
+                    "text": "2 and 4",
+                    "rationale": "Statements 2 and 4 are both true."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 3 is false: continual improvement is a recurring activity performed at all levels."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statement 1 is false: it applies to the whole value system and to products, services, practices and relationships. Statement 3 is false: continual improvement is a recurring activity performed at all levels."
+                }
+            }
+        },
+        "475": {
+            "topic": "Continuous integration, delivery and deployment",
+            "scenario": null,
+            "question_text": "Which statements about continuous integration, delivery and deployment are CORRECT?\n1. Continuous integration means frequently merging code into a shared repository, with automated build and testing.\n2. Continuous delivery puts every change into production without any human decision.\n3. Continuous deployment automatically releases to production every change that passes the tests.\n4. Continuous integration means delivering a new version to users every week.",
+            "explanation": "Continuous integration frequently merges and tests code; continuous delivery keeps it ready for release; continuous deployment releases it automatically.",
+            "answers": {
+                "A": {
+                    "text": "1 and 2",
+                    "rationale": "Statement 2 is false: this describes continuous deployment; continuous delivery keeps code ready to be released to production."
+                },
+                "B": {
+                    "text": "2 and 3",
+                    "rationale": "Statement 2 is false: this describes continuous deployment; continuous delivery keeps code ready to be released to production."
+                },
+                "C": {
+                    "text": "3 and 4",
+                    "rationale": "Statement 4 is false: continuous integration is about merging and testing code, not a release schedule."
+                },
+                "D": {
+                    "text": "1 and 3",
+                    "rationale": "Statements 1 and 3 are both true."
                 }
             }
         }

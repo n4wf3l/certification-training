@@ -3,7 +3,7 @@
         "certification_slug": "itil-foundation-v5",
         "locale": "en",
         "canonical_from": "fr",
-        "dumped_at": "2026-07-28",
+        "dumped_at": "2026-11-23",
         "source": "certifloop:dump-seeders",
         "block_count": 100
     },
@@ -31,7 +31,7 @@
             "type": "callout",
             "variant": "warn",
             "title": "Exam pitfall",
-            "body": "The **terms and definitions** and **ITIL Value System** categories together represent 70% of the exam. A Version 5 candidate report notes that exact definitions and close distinctions were the most demanding part, and that mock exams could feel easier than the real test. ([Reddit][1])"
+            "body": "The **terms and definitions** and **ITIL Value System** categories together represent 70% of the exam. A Version 5 candidate report notes that exact definitions and close distinctions were the most demanding part, and that mock exams could feel easier than the real test."
         },
         {
             "type": "summary",
@@ -49,7 +49,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category is worth **30%** of the blueprint. It covers digital product and service management, experience, strategy, transformation, service offerings, value co-creation and service relationships. ([Oxford College of Technology][2])"
+            "text": "This category is worth **30%** of the blueprint. It covers digital product and service management, experience, strategy, transformation, service offerings, value co-creation and service relationships."
         },
         {
             "type": "key_terms",
@@ -176,7 +176,7 @@
         },
         {
             "type": "paragraph",
-            "text": "ITIL Version 5 benefits enterprises by providing a common language, benefits managed service providers by clarifying relationships and outcomes, benefits digital product vendors by connecting product and service, and benefits professionals by providing a common model for decision-making and improvement. The official objective is precisely to bring the product and service communities closer together. ([itil.com][3])"
+            "text": "ITIL Version 5 benefits enterprises by providing a common language, benefits managed service providers by clarifying relationships and outcomes, benefits digital product vendors by connecting product and service, and benefits professionals by providing a common model for decision-making and improvement. The official objective is precisely to bring the product and service communities closer together."
         },
         {
             "type": "heading",
@@ -620,7 +620,7 @@
             "type": "callout",
             "variant": "warn",
             "title": "SLA green, experience red",
-            "body": "An SLA can be met while the experience remains poor. ITIL Version 5 therefore reinforces attention on experience, outcomes and value-aligned measures, not only technical indicators. ([PeopleCert Community][4])"
+            "body": "An SLA can be met while the experience remains poor. ITIL Version 5 therefore reinforces attention on experience, outcomes and value-aligned measures, not only technical indicators."
         },
         {
             "type": "summary",
@@ -640,7 +640,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category represents **10%** of the exam. The four dimensions must be considered together; neglecting one of them can degrade value, even if the other three appear under control. ([Oxford College of Technology][2])"
+            "text": "This category represents **10%** of the exam. The four dimensions must be considered together; neglecting one of them can degrade value, even if the other three appear under control."
         },
         {
             "type": "key_terms",
@@ -731,7 +731,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category is worth **10%**. The Version 5 model introduces eight activities common to products and services: discover, design, acquire, build, transition, operate, deliver and support. They do not form a mandatory waterfall; they are combined and repeated depending on the context. ([Oxford College of Technology][2])"
+            "text": "This category is worth **10%**. The Version 5 model introduces eight activities common to products and services: discover, design, acquire, build, transition, operate, deliver and support. They do not form a mandatory waterfall; they are combined and repeated depending on the context."
         },
         {
             "type": "steps",
@@ -850,7 +850,7 @@
         },
         {
             "type": "paragraph",
-            "text": "The **ITIL Value System** represents 40% of the blueprint. It explains how an organisation's components and activities work together to enable value co-creation. Its five components are the guiding principles, governance, the value chain, management practices and continual improvement. ([Oxford College of Technology][2])"
+            "text": "The **ITIL Value System** represents 40% of the blueprint. It explains how an organisation's components and activities work together to enable value co-creation. Its five components are the guiding principles, governance, the value chain, management practices and continual improvement."
         },
         {
             "type": "key_terms",
@@ -1264,7 +1264,7 @@
         },
         {
             "type": "paragraph",
-            "text": "The model is iterative. The steps provide a logic for thinking, but feedback may require revisiting the vision, the baseline, the target or the approach. ITIL Version 5 keeps seven steps while refining their wording to make them easier to apply across sectors. ([PeopleCert Community][5])"
+            "text": "The model is iterative. The steps provide a logic for thinking, but feedback may require revisiting the vision, the baseline, the target or the approach. ITIL Version 5 keeps seven steps while refining their wording to make them easier to apply across sectors."
         },
         {
             "type": "example",
@@ -1297,7 +1297,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category is worth **5%**. It introduces core and enabling value streams, mapping, value stream management and complexity thinking. ([Oxford College of Technology][2])"
+            "text": "This category is worth **5%**. It introduces core and enabling value streams, mapping, value stream management and complexity thinking."
         },
         {
             "type": "key_terms",
@@ -1397,7 +1397,7 @@
         },
         {
             "type": "paragraph",
-            "text": "In an ordered context, stable procedures and repeatable controls work well. In a complex context, the cause-and-effect relationship is not fully predictable: you must test at small scale, observe the signals and adapt the flow. Mapping then serves as much to understand as to standardise. ([PeopleCert Community][6])"
+            "text": "In an ordered context, stable procedures and repeatable controls work well. In a complex context, the cause-and-effect relationship is not fully predictable: you must test at small scale, observe the signals and adapt the flow. Mapping then serves as much to understand as to standardise."
         },
         {
             "type": "summary",
@@ -1416,7 +1416,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category represents **2.5%**. ITIL Version 5 is designed for environments where AI can augment activities, automate processes and participate in value streams, while remaining subject to responsible governance. ([Oxford College of Technology][2])"
+            "text": "This category represents **2.5%**. ITIL Version 5 is designed for environments where AI can augment activities, automate processes and participate in value streams, while remaining subject to responsible governance."
         },
         {
             "type": "key_terms",
@@ -1494,7 +1494,7 @@
         },
         {
             "type": "paragraph",
-            "text": "This category is worth **2.5%**. The syllabus requires understanding the complementarity between ITIL and DevOps, as well as between ITIL and project management, notably PRINCE2. ([Oxford College of Technology][2])"
+            "text": "This category is worth **2.5%**. The syllabus requires understanding the complementarity between ITIL and DevOps, as well as between ITIL and project management, notably PRINCE2."
         },
         {
             "type": "comparison",
@@ -1611,7 +1611,7 @@
         },
         {
             "type": "paragraph",
-            "text": "Reference sources: [official PeopleCert page](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-5-foundation-version-50-4154), [official presentation of the Version 5 changes](https://www.itil.com/Itil-News-and-Announcements/itil-version-5-foundation-whats-new-guide) and the ITIL Foundation Version 5.0 syllabus of February 2026. ([PeopleCert][7])"
+            "text": "Reference sources: [official PeopleCert page](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-5-foundation-version-50-4154), [official presentation of the Version 5 changes](https://www.itil.com/Itil-News-and-Announcements/itil-version-5-foundation-whats-new-guide) and the ITIL Foundation Version 5.0 syllabus of February 2026."
         },
         {
             "type": "summary",

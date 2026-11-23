@@ -10696,7 +10696,7 @@
         "validity_months": 36,
         "validity_note": "Depuis la modification de la politique de renouvellement PeopleCert, ITIL Foundation v5 est valide 3 ans à partir de la date de réussite. Pour la maintenir active, trois options avant expiration : accumuler des points CPD via PeopleCert Plus sur 3 ans, réussir une autre certification ITIL, ou repasser le même examen. Les badges officiels délivrés en 2026 portent d'ailleurs une date d'expiration en 2029, ce qui confirme la durée de 3 ans.",
         "version_retires_at": null,
-        "questions_updated_at": "2026-10-28T21:59:20+00:00",
+        "questions_updated_at": "2026-11-23T19:49:02+00:00",
         "course_blocks": [
             {
                 "type": "heading",
@@ -10721,7 +10721,7 @@
                 "type": "callout",
                 "variant": "warn",
                 "title": "Piège d'examen",
-                "body": "Les catégories **termes et définitions** et **ITIL Value System** représentent ensemble 70 % de l'examen. Un retour candidat Version 5 signale que les définitions exactes et les distinctions proches ont été la partie la plus exigeante, et que les examens blancs pouvaient sembler plus simples que l'épreuve réelle. ([Reddit][1])"
+                "body": "Les catégories **termes et définitions** et **ITIL Value System** représentent ensemble 70 % de l'examen. Un retour candidat Version 5 signale que les définitions exactes et les distinctions proches ont été la partie la plus exigeante, et que les examens blancs pouvaient sembler plus simples que l'épreuve réelle."
             },
             {
                 "type": "summary",
@@ -10739,7 +10739,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie vaut **30 %** du blueprint. Elle couvre la gestion des produits et services numériques, l'expérience, la stratégie, la transformation, les offres de service, la co-création de valeur et les relations de service. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie vaut **30 %** du blueprint. Elle couvre la gestion des produits et services numériques, l'expérience, la stratégie, la transformation, les offres de service, la co-création de valeur et les relations de service."
             },
             {
                 "type": "key_terms",
@@ -10866,7 +10866,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "ITIL Version 5 bénéficie aux entreprises en donnant un langage commun, aux prestataires managés en clarifiant les relations et les résultats, aux éditeurs de produits numériques en reliant produit et service, et aux professionnels en fournissant un modèle commun de décision et d'amélioration. L'objectif officiel est précisément de rapprocher les communautés produit et service. ([itil.com][3])"
+                "text": "ITIL Version 5 bénéficie aux entreprises en donnant un langage commun, aux prestataires managés en clarifiant les relations et les résultats, aux éditeurs de produits numériques en reliant produit et service, et aux professionnels en fournissant un modèle commun de décision et d'amélioration. L'objectif officiel est précisément de rapprocher les communautés produit et service."
             },
             {
                 "type": "heading",
@@ -11310,7 +11310,7 @@
                 "type": "callout",
                 "variant": "warn",
                 "title": "SLA vert, expérience rouge",
-                "body": "Un SLA peut être respecté alors que l'expérience reste mauvaise. ITIL Version 5 renforce donc l'attention portée à l'expérience, aux outcomes et aux mesures alignées sur la valeur, pas seulement aux indicateurs techniques. ([PeopleCert Community][4])"
+                "body": "Un SLA peut être respecté alors que l'expérience reste mauvaise. ITIL Version 5 renforce donc l'attention portée à l'expérience, aux outcomes et aux mesures alignées sur la valeur, pas seulement aux indicateurs techniques."
             },
             {
                 "type": "summary",
@@ -11330,7 +11330,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie représente **10 %** de l'examen. Les quatre dimensions doivent être considérées ensemble; négliger l'une d'elles peut dégrader la valeur, même si les trois autres semblent maîtrisées. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie représente **10 %** de l'examen. Les quatre dimensions doivent être considérées ensemble; négliger l'une d'elles peut dégrader la valeur, même si les trois autres semblent maîtrisées."
             },
             {
                 "type": "key_terms",
@@ -11421,7 +11421,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie pèse **10 %**. Le modèle Version 5 introduit huit activités communes aux produits et services: discover, design, acquire, build, transition, operate, deliver et support. Elles ne forment pas une cascade obligatoire; elles sont combinées et répétées selon le contexte. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie pèse **10 %**. Le modèle Version 5 introduit huit activités communes aux produits et services: discover, design, acquire, build, transition, operate, deliver et support. Elles ne forment pas une cascade obligatoire; elles sont combinées et répétées selon le contexte."
             },
             {
                 "type": "steps",
@@ -11540,7 +11540,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Le **ITIL Value System** représente 40 % du blueprint. Il explique comment les composants et activités d'une organisation fonctionnent ensemble pour permettre la co-création de valeur. Ses cinq composants sont les principes directeurs, la gouvernance, la chaîne de valeur, les pratiques de management et l'amélioration continue. ([Oxford College of Technology][2])"
+                "text": "Le **ITIL Value System** représente 40 % du blueprint. Il explique comment les composants et activités d'une organisation fonctionnent ensemble pour permettre la co-création de valeur. Ses cinq composants sont les principes directeurs, la gouvernance, la chaîne de valeur, les pratiques de management et l'amélioration continue."
             },
             {
                 "type": "key_terms",
@@ -11954,7 +11954,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Le modèle est itératif. Les étapes donnent une logique de réflexion, mais le feedback peut obliger à revisiter la vision, la référence, la cible ou l'approche. ITIL Version 5 conserve sept étapes tout en affinant leur formulation pour faciliter l'application dans différents secteurs. ([PeopleCert Community][5])"
+                "text": "Le modèle est itératif. Les étapes donnent une logique de réflexion, mais le feedback peut obliger à revisiter la vision, la référence, la cible ou l'approche. ITIL Version 5 conserve sept étapes tout en affinant leur formulation pour faciliter l'application dans différents secteurs."
             },
             {
                 "type": "example",
@@ -11987,7 +11987,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie vaut **5 %**. Elle introduit les flux de valeur principaux et habilitants, la cartographie, le management des flux et la pensée de complexité. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie vaut **5 %**. Elle introduit les flux de valeur principaux et habilitants, la cartographie, le management des flux et la pensée de complexité."
             },
             {
                 "type": "key_terms",
@@ -12087,7 +12087,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Dans un contexte ordonné, des procédures stables et des contrôles répétables fonctionnent bien. Dans un contexte complexe, la relation cause-effet n'est pas entièrement prévisible: il faut tester à petite échelle, observer les signaux et adapter le flux. La cartographie sert alors autant à comprendre qu'à standardiser. ([PeopleCert Community][6])"
+                "text": "Dans un contexte ordonné, des procédures stables et des contrôles répétables fonctionnent bien. Dans un contexte complexe, la relation cause-effet n'est pas entièrement prévisible: il faut tester à petite échelle, observer les signaux et adapter le flux. La cartographie sert alors autant à comprendre qu'à standardiser."
             },
             {
                 "type": "summary",
@@ -12106,7 +12106,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie représente **2,5 %**. ITIL Version 5 est conçu pour des environnements où l'IA peut augmenter les activités, automatiser des processus et participer aux flux de valeur, tout en restant soumise à une gouvernance responsable. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie représente **2,5 %**. ITIL Version 5 est conçu pour des environnements où l'IA peut augmenter les activités, automatiser des processus et participer aux flux de valeur, tout en restant soumise à une gouvernance responsable."
             },
             {
                 "type": "key_terms",
@@ -12184,7 +12184,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Cette catégorie vaut **2,5 %**. Le syllabus demande de comprendre la complémentarité entre ITIL et DevOps, ainsi qu'entre ITIL et la gestion de projet, notamment PRINCE2. ([Oxford College of Technology][2])"
+                "text": "Cette catégorie vaut **2,5 %**. Le syllabus demande de comprendre la complémentarité entre ITIL et DevOps, ainsi qu'entre ITIL et la gestion de projet, notamment PRINCE2."
             },
             {
                 "type": "comparison",
@@ -12301,7 +12301,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Sources de référence: [page officielle PeopleCert](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-5-foundation-version-50-4154), [présentation officielle des évolutions Version 5](https://www.itil.com/Itil-News-and-Announcements/itil-version-5-foundation-whats-new-guide) et syllabus ITIL Foundation Version 5.0 de février 2026. ([PeopleCert][7])"
+                "text": "Sources de référence: [page officielle PeopleCert](https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-5-foundation-version-50-4154), [présentation officielle des évolutions Version 5](https://www.itil.com/Itil-News-and-Announcements/itil-version-5-foundation-whats-new-guide) et syllabus ITIL Foundation Version 5.0 de février 2026."
             },
             {
                 "type": "summary",
@@ -12317,13 +12317,12 @@
         "course_updated_at": "2026-07-19T20:55:14+00:00",
         "syllabus_blueprint": {
             "foundations": 30,
-            "guiding-principles": 15,
             "four-dimensions": 10,
             "lifecycle-activities": 10,
-            "itil-value-system": 8,
-            "practices": 15,
-            "continual-improvement": 7,
-            "digital-ai-innovation": 5
+            "itil-value-system": 40,
+            "value-streams": 5,
+            "digital-ai-innovation": 2.5,
+            "other-frameworks": 2.5
         },
         "is_active": true,
         "available_languages": [

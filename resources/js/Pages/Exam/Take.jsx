@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import { useT } from '@/lib/i18n';
+import { domainLabel } from '@/lib/domains';
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -376,7 +377,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         )}
                         <div>
                             <div className="text-xs text-ink-500">
-                                {attempt.practice_domain ? t('exam_take.practice_session', { domain: attempt.practice_domain }) : t('exam_take.exam_in_progress')}
+                                {attempt.practice_domain ? t('exam_take.practice_session', { domain: domainLabel(t, attempt.practice_domain) }) : t('exam_take.exam_in_progress')}
                             </div>
                             <div className="text-sm font-semibold text-ink-900 dark:text-white">
                                 {certification.title}
@@ -446,7 +447,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 {q.scenario}
                             </div>
                         )}
-                        <h2 className="mb-4 text-xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
+                        <h2 className="mb-4 whitespace-pre-line text-xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
                             {q.question_text}
                         </h2>
                         {q.question_type === 'matching' ? (

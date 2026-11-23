@@ -146,7 +146,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                         {card.scenario}
                                     </div>
                                 )}
-                                <p className="text-2xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
+                                <p className="whitespace-pre-line text-2xl font-bold leading-snug text-ink-900 dark:text-white sm:text-3xl">
                                     {card.question_text}
                                 </p>
                             </div>
@@ -166,7 +166,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                                 {card.topic && <span className="badge-muted">{card.topic}</span>}
                             </div>
                             <div className="relative my-6 flex-1">
-                                <p className="mb-4 text-sm text-ink-500">{card.question_text}</p>
+                                <p className="mb-4 whitespace-pre-line text-sm text-ink-500">{card.question_text}</p>
                                 {correctAnswer && (
                                     <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
                                         <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-500">
