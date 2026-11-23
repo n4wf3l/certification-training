@@ -226,6 +226,69 @@ class ExamController extends Controller
         });
     }
 
+    /**
+     * Sprint : 10 questions d'entrainement, correction apres chaque reponse
+     * (si l'admin l'autorise), tirage adaptatif et proportionnel au syllabus.
+     * Ne compte ni pour le certificat CertifLoop ni pour les badges d'examen.
+     */
+    public function sprintStart(Request $request, Certification $certification): RedirectResponse
+    {
+        abort_unless($certification->is_active, 404);
+
+        $available = $certification->available_languages ?: [$certification->default_language ?? 'en'];
+        $requestedLang = $request->input('lang');
+        $locale = (is_string($requestedLang) && in_array($requestedLang, $available, true))
+            ? $requestedLang
+            : ($certification->default_language ?? 'en');
+
+        $availableQuestions = $this->eligibleQuestionsQuery($certification, $locale)->count();
+        abort_if($availableQuestions === 0, 422, __('flash.exam_no_questions_language'));
+
+        $sampleSize = (int) min(Attempt::SPRINT_QUESTIONS, $availableQuestions);
+        $scaledPassing = (int) max(1, ceil($sampleSize * 0.7));
+        $feedbackMode = Setting::get('allow_instant_feedback', false) ? 'instant' : 'deferred';
+
+        return DB::transaction(function () use ($certification, $sampleSize, $scaledPassing, $feedbackMode, $locale) {
+            $selectedIds = $this->selectQuestions($certification, auth()->id(), $sampleSize, $locale);
+
+            $attempt = Attempt::create([
+                'user_id' => auth()->id(),
+                'certification_id' => $certification->id,
+                'total_questions' => $sampleSize,
+                'passing_score' => $scaledPassing,
+                'feedback_mode' => $feedbackMode,
+                'kind' => Attempt::KIND_SPRINT,
+                'started_at' => now(),
+                'locale' => $locale,
+            ]);
+
+            foreach ($selectedIds as $index => $questionId) {
+                AttemptAnswer::create([
+                    'attempt_id' => $attempt->id,
+                    'question_id' => $questionId,
+                    'position' => $index + 1,
+                    'answer_id' => null,
+                    'is_correct' => false,
+                ]);
+            }
+
+            return redirect()->route('exam.take', $attempt);
+        });
+    }
+
+    /**
+     * Duree de la session : celle de l'examen, au prorata des questions pour un
+     * sprint (5 minutes minimum).
+     */
+    private function sessionMinutes(Attempt $attempt, Certification $certification): int
+    {
+        $minutes = (int) $certification->duration_minutes;
+        if ($attempt->isSprint() && $certification->total_questions > 0) {
+            $minutes = (int) max(5, ceil($minutes * $attempt->total_questions / $certification->total_questions));
+        }
+        return $minutes;
+    }
+
     public function take(Attempt $attempt): Response|RedirectResponse
     {
         $this->authorizeAttempt($attempt);
@@ -298,7 +361,7 @@ class ExamController extends Controller
         // + quit budget consomme. Sert au modal de sortie a 3 tiers (basique /
         // renforce si streak > 0 / maximum si 2e quit imminent).
         $certProgress = null;
-        if (!$attempt->practice_domain) {
+        if ($attempt->isMockExam()) {
             $state = app(GamificationService::class)->computeStreakState($attempt->user_id, $certification->id);
             $certProgress = [
                 'perfect_runs' => $state['perfect_runs'],
@@ -313,10 +376,11 @@ class ExamController extends Controller
             'attempt' => [
                 'id' => $attempt->id,
                 'started_at' => $attempt->started_at,
-                'duration_minutes' => $certification->duration_minutes,
+                'duration_minutes' => $this->sessionMinutes($attempt, $certification),
                 'feedback_mode' => $attempt->feedback_mode,
                 'locale' => $locale,
                 'practice_domain' => $attempt->practice_domain,
+                'kind' => $attempt->kind,
             ],
             'certification' => [
                 'id' => $certification->id,
@@ -558,7 +622,7 @@ class ExamController extends Controller
         // consecutifs sur cette cert. On l'envoie uniquement pour les mock exams
         // (pas les practice sessions) puisque la regle exclut les practice.
         $certProgress = null;
-        if (!$attempt->practice_domain) {
+        if ($attempt->isMockExam()) {
             $state = app(GamificationService::class)->computeStreakState($attempt->user_id, $attempt->certification->id);
             $awarded = \App\Models\UserCertificate::where('user_id', $attempt->user_id)
                 ->where('certification_id', $attempt->certification->id)
@@ -588,6 +652,7 @@ class ExamController extends Controller
                 'started_at' => $attempt->started_at,
                 'completed_at' => $attempt->completed_at,
                 'practice_domain' => $attempt->practice_domain,
+                'kind' => $attempt->kind,
                 'locale' => $locale,
             ],
             'certification' => [
@@ -686,7 +751,11 @@ class ExamController extends Controller
         $previousAttempts = Attempt::query()
             ->where('user_id', $attempt->user_id)
             ->where('certification_id', $attempt->certification_id)
-            ->where('id', '<>', $attempt->id)
+            // Meme type de session seulement : un sprint de 10 questions ne se
+            // compare pas a un examen blanc de 40, ni a une session ciblee.
+            ->where('kind', $attempt->kind)
+            ->where('practice_domain', $attempt->practice_domain)
+            ->where('id', '<', $attempt->id)
             ->whereNotNull('completed_at')
             ->orderBy('completed_at')
             ->get();

@@ -3,7 +3,7 @@ import CertProgressCard from '@/Components/CertProgressCard';
 import Icon from '@/Components/Icons';
 import PlatformPromise from '@/Components/PlatformPromise';
 import { useT, useLocale } from '@/lib/i18n';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 function Logo({ certification, size = 'lg' }) {
@@ -186,6 +186,41 @@ function Convocation({ certification }) {
     );
 }
 
+// Sprint : 10 questions avec correction immediate, lance en un clic.
+// Le point d'entree le plus court de l'appli : pas d'ecran de confirmation.
+function SprintCard({ certification }) {
+    const t = useT();
+    const user = usePage().props.auth?.user;
+    const [starting, setStarting] = useState(false);
+    const start = () => {
+        if (starting) return;
+        setStarting(true);
+        router.post(route('exam.sprint', certification.slug), {}, { onFinish: () => setStarting(false) });
+    };
+    return (
+        <div className="card flex flex-col gap-4 border-brand-500/40 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-600 dark:text-brand-300">
+                    <Icon.Bolt className="h-3.5 w-3.5" />
+                    {t('cert_show.sprint_kicker')}
+                </div>
+                <h2 className="mt-1 text-xl font-bold tracking-tight text-ink-900 dark:text-white">{t('cert_show.sprint_title')}</h2>
+                <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">{t('cert_show.sprint_desc')}</p>
+            </div>
+            {user ? (
+                <button type="button" onClick={start} disabled={starting} className="btn-primary shrink-0 justify-center !px-6 !py-3 text-base">
+                    {t('cert_show.sprint_cta')}
+                    <Icon.ArrowRight className="h-4 w-4" />
+                </button>
+            ) : (
+                <Link href={route('login')} className="btn-secondary shrink-0 justify-center">
+                    {t('cert_show.sprint_login')}
+                </Link>
+            )}
+        </div>
+    );
+}
+
 // Texte long coupe a 4 lignes, deplie sur demande.
 function ExpandableText({ text }) {
     const t = useT();
@@ -312,6 +347,8 @@ export default function Show({ certification, mastery, cert_progress }) {
                         </div>
                     )}
                 </div>
+
+                {certification.available_questions > 0 && <SprintCard certification={certification} />}
 
                 {/* Modes */}
                 <div>

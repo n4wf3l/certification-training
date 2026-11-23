@@ -16,6 +16,7 @@ class Attempt extends Model
         'passing_score',
         'feedback_mode',
         'practice_domain',
+        'kind',
         'passed',
         'started_at',
         'completed_at',
@@ -30,6 +31,23 @@ class Attempt extends Model
         'abandoned_at' => 'datetime',
         'passed' => 'boolean',
     ];
+
+    public const KIND_SPRINT = 'sprint';
+    public const SPRINT_QUESTIONS = 10;
+
+    /**
+     * Vrai examen blanc : ni session ciblee par domaine, ni sprint. Seuls ces
+     * essais comptent pour le certificat CertifLoop et les badges d'examen.
+     */
+    public function isMockExam(): bool
+    {
+        return $this->practice_domain === null && $this->kind === null;
+    }
+
+    public function isSprint(): bool
+    {
+        return $this->kind === self::KIND_SPRINT;
+    }
 
     public function isAbandoned(): bool
     {

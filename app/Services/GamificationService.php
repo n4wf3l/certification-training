@@ -38,12 +38,14 @@ class GamificationService
         // XP par bonne reponse
         $xpGained += $attempt->score * self::XP_PER_CORRECT;
 
-        // Bonus reussite
-        if ($attempt->passed) $xpGained += self::XP_PASSING_BONUS;
-
-        // Bonus sans-faute
-        if ($attempt->score === $attempt->total_questions && $attempt->total_questions > 0) {
-            $xpGained += self::XP_PERFECT_BONUS;
+        // Bonus reussite et sans-faute : seulement pour un examen blanc complet.
+        // Sprint et session ciblee rapportent 10 XP par bonne reponse, comme
+        // l'affiche le compteur pendant la session.
+        if ($attempt->isMockExam()) {
+            if ($attempt->passed) $xpGained += self::XP_PASSING_BONUS;
+            if ($attempt->score === $attempt->total_questions && $attempt->total_questions > 0) {
+                $xpGained += self::XP_PERFECT_BONUS;
+            }
         }
 
         // Update XP
@@ -109,6 +111,8 @@ class GamificationService
 
     private function awardExamBadges(User $user, Attempt $attempt): array
     {
+        // Badges d'examen : seulement pour un vrai examen blanc complet.
+        if (!$attempt->isMockExam()) return [];
         $awarded = [];
         // Premier examen valide
         if ($attempt->passed) {
@@ -172,6 +176,7 @@ class GamificationService
             ->where('certification_id', $cert->id)
             ->whereNotNull('completed_at')
             ->whereNull('practice_domain')
+            ->whereNull('kind')
             ->orderByDesc('completed_at')
             ->first();
 
@@ -218,6 +223,7 @@ class GamificationService
         $recent = Attempt::where('user_id', $userId)
             ->where('certification_id', $certificationId)
             ->whereNull('practice_domain')
+            ->whereNull('kind')
             ->where(function ($q) {
                 $q->whereNotNull('completed_at')->orWhereNotNull('abandoned_at');
             })

@@ -2,6 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import { useT } from '@/lib/i18n';
 import { domainLabel } from '@/lib/domains';
+import { haptic, playCombo, playCorrect, playFinish, playWrong, setSoundEnabled, soundEnabled } from '@/lib/feedbackFx';
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -110,7 +111,8 @@ export default function Take({ attempt, certification, questions, cert_progress 
             const rem = Math.max(0, totalSeconds - elapsed);
             setRemaining(rem);
             // 15-min warning (mode free uniquement, matches PeopleCert/ITIL)
-            if (!warn15FiredRef.current && !isLockedNav && rem > 0 && rem <= 15 * 60) {
+            // Pas d'alerte pour une session courte (sprint) : elle dure elle-meme ~15 min.
+            if (!warn15FiredRef.current && !isLockedNav && totalSeconds > 20 * 60 && rem > 0 && rem <= 15 * 60) {
                 warn15FiredRef.current = true;
                 setWarn15Open(true);
             }
@@ -221,6 +223,68 @@ export default function Take({ attempt, certification, questions, cert_progress 
     const answeredCount = questions.filter((qq) => isAnswered(qq, answers[qq.id])).length;
     const progressPct = (answeredCount / totalQuestions) * 100;
 
+    // Entrainement (correction immediate) : verdict de chaque reponse, serie de
+    // bonnes reponses d'affilee et XP gagnes pendant la session. L'examen blanc
+    // classique n'affiche rien de tout ca, comme le vrai examen.
+    const verdictOf = (qq) => {
+        if (!isInstant || !qq || qq.question_type === 'matching') return null;
+        const val = answers[qq.id];
+        if (!isAnswered(qq, val)) return null;
+        const correctIds = qq.answers.filter((a) => a.is_correct === true).map((a) => a.id);
+        if (qq.is_multi_select) {
+            return val.length === correctIds.length && val.every((id) => correctIds.includes(id));
+        }
+        return correctIds.includes(val);
+    };
+    const [log, setLog] = useState([]); // [{ id, ok }] dans l'ordre des reponses
+    const [sound, setSound] = useState(true);
+    useEffect(() => { setSound(soundEnabled()); }, []);
+    const toggleSound = () => {
+        setSound((on) => {
+            setSoundEnabled(!on);
+            return !on;
+        });
+    };
+    const runOf = (entries) => {
+        let c = 0;
+        for (let i = entries.length - 1; i >= 0 && entries[i].ok; i--) c++;
+        return c;
+    };
+    useEffect(() => {
+        if (!isInstant) return;
+        const logged = new Set(log.map((l) => l.id));
+        const fresh = questions
+            .filter((qq) => !logged.has(qq.id))
+            .map((qq) => ({ id: qq.id, ok: verdictOf(qq) }))
+            .filter((x) => x.ok !== null);
+        if (fresh.length === 0) return;
+        const next = [...log, ...fresh];
+        setLog(next);
+        const last = fresh[fresh.length - 1];
+        const run = runOf(next);
+        if (last.ok) {
+            if ([3, 5, 10, 15, 20, 30].includes(run)) playCombo(); else playCorrect();
+            haptic(15);
+        } else {
+            playWrong();
+            haptic([30, 50, 30]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [answers]);
+    const combo = runOf(log);
+    const bestCombo = log.reduce((acc, l) => {
+        const cur = l.ok ? acc.cur + 1 : 0;
+        return { cur, best: Math.max(acc.best, cur) };
+    }, { cur: 0, best: 0 }).best;
+    const sessionXp = log.filter((l) => l.ok).length * 10;
+    const currentVerdict = q ? (log.find((l) => l.id === q.id)?.ok ?? null) : null;
+    const isSprint = attempt.kind === 'sprint';
+
+    // Nouvelle question : on remonte en haut (sur mobile, on finit souvent en bas).
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.scrollY > 0) window.scrollTo({ top: 0 });
+    }, [current]);
+
     // Single-choice pick : single answer_id, with auto-advance if enabled.
     const pick = (questionId, answerId) => {
         if (frozenRef.current) return;
@@ -281,6 +345,10 @@ export default function Take({ attempt, certification, questions, cert_progress 
         if (submittingRef.current) return;
         submittingRef.current = true;
         setSubmitting(true);
+        if (isInstant) {
+            try { window.sessionStorage.setItem(`certifloop.best_combo.${attempt.id}`, String(bestCombo)); } catch { /* ignore */ }
+            playFinish();
+        }
 
         let payloadAnswers = answers;
         if (isLockedNav) {
@@ -353,6 +421,25 @@ export default function Take({ attempt, certification, questions, cert_progress 
         }
         safeSetCurrent((c) => Math.min(totalQuestions - 1, c + 1));
     };
+    const isLast = current >= totalQuestions - 1;
+    const continueQ = () => {
+        if (frozenRef.current) return;
+        if (isLast) submit(false); else nextQ();
+    };
+    const continueRef = useRef(continueQ);
+    continueRef.current = continueQ;
+    useEffect(() => {
+        if (!isInstant) return undefined;
+        const onEnter = (e) => {
+            if (e.key !== 'Enter' || e.target.tagName === 'BUTTON') return;
+            if (currentVerdict === null) return;
+            e.preventDefault();
+            continueRef.current();
+        };
+        window.addEventListener('keydown', onEnter);
+        return () => window.removeEventListener('keydown', onEnter);
+    }, [currentVerdict]);
+    const remainingQuestions = totalQuestions - answeredCount;
     const timeCritical = remaining < 60;
 
     return (
@@ -365,7 +452,11 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     <div className="font-mono text-sm tabular-nums text-ink-900 sm:hidden dark:text-white">
                         <span className="font-bold">{q.position}</span>
                         <span className="text-ink-400">/{totalQuestions}</span>
-                        <span className="ml-3 text-xs text-ink-500">{answeredCount} {t('exam_take.locked_nav_answered_short')}</span>
+                        {isInstant ? (
+                            <SessionStats combo={combo} xp={sessionXp} t={t} />
+                        ) : (
+                            <span className="ml-3 text-xs text-ink-500">{answeredCount} {t('exam_take.locked_nav_answered_short')}</span>
+                        )}
                     </div>
                     <div className="hidden items-center gap-3 sm:flex">
                         {certification.logo_path ? (
@@ -377,7 +468,11 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         )}
                         <div>
                             <div className="text-xs text-ink-500">
-                                {attempt.practice_domain ? t('exam_take.practice_session', { domain: domainLabel(t, attempt.practice_domain) }) : t('exam_take.exam_in_progress')}
+                                {isSprint
+                                    ? t('exam_take.sprint_label', { n: totalQuestions })
+                                    : attempt.practice_domain
+                                        ? t('exam_take.practice_session', { domain: domainLabel(t, attempt.practice_domain) })
+                                        : t('exam_take.exam_in_progress')}
                             </div>
                             <div className="text-sm font-semibold text-ink-900 dark:text-white">
                                 {certification.title}
@@ -392,10 +487,21 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             </div>
                         </div>
                         {isInstant && (
-                            <span className="hidden items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-300 sm:inline-flex">
-                                <Icon.Sparkles className="h-3 w-3" />
-                                {t('exam_take.badge_training')}
+                            <span className="hidden sm:inline-flex">
+                                <SessionStats combo={combo} xp={sessionXp} t={t} />
                             </span>
+                        )}
+                        {isInstant && (
+                            <button
+                                type="button"
+                                onClick={toggleSound}
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-500 transition hover:bg-ink-100 hover:text-ink-900 dark:hover:bg-ink-800 dark:hover:text-white"
+                                aria-label={sound ? t('exam_take.sound_off') : t('exam_take.sound_on')}
+                                aria-pressed={sound}
+                                title={sound ? t('exam_take.sound_off') : t('exam_take.sound_on')}
+                            >
+                                {sound ? <Icon.Volume className="h-4 w-4" /> : <Icon.VolumeOff className="h-4 w-4" />}
+                            </button>
                         )}
                         {answerMode === 'auto' && !isInstant && (
                             <span className="hidden items-center gap-1 rounded-full border border-brand-500/30 bg-brand-500/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-300 sm:inline-flex">
@@ -422,15 +528,15 @@ export default function Take({ attempt, certification, questions, cert_progress 
                         </div>
                     </div>
                 </div>
-                <div className="h-0.5 w-full bg-ink-100 dark:bg-ink-800">
+                <div className={`${isInstant ? 'h-1.5' : 'h-0.5'} w-full bg-ink-100 dark:bg-ink-800`}>
                     <div
-                        className="h-full bg-brand-500 transition-all"
+                        className="h-full bg-brand-500 transition-all duration-500"
                         style={{ width: `${progressPct}%` }}
                     />
                 </div>
             </div>
 
-            <div className="mx-auto max-w-6xl px-4 pb-8 pt-4 sm:px-6 sm:pt-8">
+            <div className={`mx-auto max-w-6xl px-4 pt-4 sm:px-6 sm:pt-8 ${isInstant && currentVerdict !== null ? 'pb-40' : 'pb-8'}`}>
                 <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
                     <div className="sm:card sm:p-10 animate-fade-up" key={q.id}>
                         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -490,9 +596,9 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                 if (revealed) {
                                     if (isCorrect) {
                                         className += 'border-emerald-500 bg-emerald-500/10';
-                                        letterBg = 'bg-emerald-500 text-white shadow-glow';
+                                        letterBg = 'bg-emerald-500 text-white motion-safe:animate-pop';
                                     } else if (isSelectedWrong) {
-                                        className += 'border-rose-500 bg-rose-500/10';
+                                        className += 'border-rose-500 bg-rose-500/10 motion-safe:animate-nudge';
                                         letterBg = 'bg-rose-500 text-white';
                                     } else {
                                         className += 'border-ink-200 bg-white opacity-60 dark:border-ink-800 dark:bg-ink-900/40';
@@ -616,6 +722,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                     {questions.map((qq, idx) => {
                                         const answered = !!answers[qq.id];
                                         const isCurrent = idx === current;
+                                        const v = isInstant ? log.find((l) => l.id === qq.id)?.ok : undefined;
                                         return (
                                             <button
                                                 key={qq.id}
@@ -624,6 +731,8 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                                 className={`aspect-square rounded-lg text-xs font-mono font-semibold transition ${
                                                     isCurrent
                                                         ? 'bg-brand-500 text-white shadow-glow ring-2 ring-brand-500/50'
+                                                        : v === false
+                                                        ? 'bg-rose-500/15 text-rose-600 hover:bg-rose-500/25 dark:text-rose-300'
                                                         : answered
                                                         ? 'bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/25 dark:text-emerald-300'
                                                         : 'bg-ink-100 text-ink-500 hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700'
@@ -653,6 +762,22 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     </div>
                 </div>
             </div>
+
+            {/* Portail vers body : l'animation d'entree du <main> (transform) ferait
+                sinon de « fixed » une position relative au main. */}
+            {isInstant && currentVerdict !== null && typeof document !== 'undefined' && createPortal(
+                <FeedbackBar
+                    ok={currentVerdict}
+                    combo={combo}
+                    letters={q.answers.filter((a) => a.is_correct === true).map((a) => a.letter).join(', ')}
+                    remaining={remainingQuestions}
+                    isLast={isLast}
+                    submitting={submitting}
+                    onContinue={continueQ}
+                    t={t}
+                />,
+                document.body,
+            )}
 
             {pendingLeave && typeof document !== 'undefined' && createPortal(
                 <div
@@ -816,6 +941,81 @@ export default function Take({ attempt, certification, questions, cert_progress 
  * left item that already has a pair to clear it. Two-column layout keeps it
  * simple and reliable across mobile/desktop (no drag lib required).
  */
+// Serie en cours et XP de la session (mode entrainement).
+function SessionStats({ combo, xp, t }) {
+    return (
+        <span className="ml-3 inline-flex items-center gap-2 font-mono text-xs">
+            {combo >= 2 && (
+                <span
+                    key={`c${combo}`}
+                    className="inline-flex items-center gap-1 rounded-full bg-orange-500/15 px-2 py-0.5 font-bold text-orange-600 motion-safe:animate-pop dark:text-orange-300"
+                    title={t('exam_take.combo_title', { n: combo })}
+                >
+                    <Icon.Flame className="h-3.5 w-3.5" />
+                    {combo}
+                </span>
+            )}
+            {xp > 0 && (
+                <span key={`x${xp}`} className="font-semibold text-brand-600 motion-safe:animate-pop dark:text-brand-300">
+                    +{xp} XP
+                </span>
+            )}
+        </span>
+    );
+}
+
+// Barre de correction en bas d'ecran (mode entrainement) : verdict, serie,
+// et un seul bouton pour enchainer, sans avoir a defiler.
+function FeedbackBar({ ok, combo, letters, remaining, isLast, submitting, onContinue, t }) {
+    const milestone = ok && [3, 5, 10, 15, 20, 30].includes(combo);
+    let detail;
+    if (!ok) detail = t('exam_take.fb_answer_is', { letters });
+    else if (milestone) detail = t('exam_take.fb_milestone', { n: combo });
+    else if (combo >= 2) detail = t('exam_take.fb_combo', { n: combo });
+    else detail = t('exam_take.fb_xp');
+    const left = !isLast && remaining > 0 && remaining <= 3 ? t('exam_take.fb_left', { n: remaining }) : null;
+
+    return (
+        <div
+            className={`fixed inset-x-0 bottom-0 z-40 border-t-2 motion-safe:animate-slide-up ${
+                ok
+                    ? 'border-emerald-500 bg-emerald-50 dark:bg-[#0b2219]'
+                    : 'border-rose-500 bg-rose-50 dark:bg-[#2a0f16]'
+            }`}
+            role="status"
+            aria-live="polite"
+        >
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 pt-4 sm:px-6" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+                <div className="flex min-w-0 items-center gap-3">
+                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white motion-safe:animate-pop ${ok ? 'bg-emerald-500' : 'bg-rose-500'}`}>
+                        {ok ? <Icon.Check className="h-6 w-6" /> : <Icon.Close className="h-6 w-6" />}
+                    </span>
+                    <div className="min-w-0">
+                        <div className={`text-lg font-bold leading-tight ${ok ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}`}>
+                            {ok ? t('exam_take.fb_correct') : t('exam_take.fb_wrong')}
+                        </div>
+                        <div className="line-clamp-2 text-sm text-ink-700 dark:text-ink-200">
+                            {milestone && <Icon.Flame className="mr-1 inline h-4 w-4 align-[-3px] text-orange-500" />}
+                            {detail}
+                            {left && <span className="text-ink-500"> · {left}</span>}
+                        </div>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    onClick={onContinue}
+                    disabled={submitting}
+                    autoFocus
+                    className={`btn shrink-0 !px-6 !py-3 text-base text-white ${ok ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'}`}
+                >
+                    {isLast ? t('exam_take.finish') : t('exam_take.fb_continue')}
+                    <Icon.ArrowRight className="h-4 w-4" />
+                </button>
+            </div>
+        </div>
+    );
+}
+
 function MatchingBoard({ question, answer, onSet, onClear, isInstant, t }) {
     const lefts = question.matching?.lefts ?? [];
     const rights = question.matching?.rights ?? [];

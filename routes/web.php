@@ -67,6 +67,9 @@ Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
         Route::post('/certifications/{certification:slug}/practice/{domain}', [ExamController::class, 'practiceStart'])
             ->middleware('throttle:exam-start')
             ->name('exam.practice');
+        Route::post('/certifications/{certification:slug}/sprint', [ExamController::class, 'sprintStart'])
+            ->middleware('throttle:exam-start')
+            ->name('exam.sprint');
         Route::get('/exam/{attempt}', [ExamController::class, 'take'])->name('exam.take');
         Route::post('/exam/{attempt}/submit', [ExamController::class, 'submit'])->name('exam.submit');
         Route::post('/exam/{attempt}/abandon', [ExamController::class, 'abandon'])->name('exam.abandon');

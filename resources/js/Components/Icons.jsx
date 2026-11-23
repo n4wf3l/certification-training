@@ -53,5 +53,9 @@ export const Mail = wrap(<><rect x="3" y="5" width="18" height="14" rx="2" /><pa
 export const Github = wrap(<path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />);
 export const Globe = wrap(<><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></>);
 
-const Icon = { Check, Close, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, Equal, Refresh, Book, Cards, Timer, Trophy, Target, Sparkles, Bolt, Hand, Shuffle, ChevronDown, Menu, Logo, User, LogOut, Chart, Sun, Moon, Shield, Heart, Mail, Github, Globe };
+export const Flame = wrap(<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" />);
+export const Volume = wrap(<><path d="M11 5 6 9H3v6h3l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></>);
+export const VolumeOff = wrap(<><path d="M11 5 6 9H3v6h3l5 4V5z" /><path d="M22 9l-6 6M16 9l6 6" /></>);
+
+const Icon = { Check, Close, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, Equal, Refresh, Book, Cards, Timer, Trophy, Target, Sparkles, Bolt, Hand, Shuffle, ChevronDown, Menu, Logo, User, LogOut, Chart, Sun, Moon, Shield, Heart, Mail, Github, Globe, Flame, Volume, VolumeOff };
 export default Icon;

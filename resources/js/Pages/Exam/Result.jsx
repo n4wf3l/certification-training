@@ -6,7 +6,7 @@ import BookmarkToggle from '@/Components/BookmarkToggle';
 import { saveExamToCache } from '@/lib/offlineCache';
 import { useT } from '@/lib/i18n';
 import { domainLabel } from '@/lib/domains';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -370,6 +370,19 @@ export default function Result({ attempt, certification, details, mastery, compa
     const shownDetails = showAll ? details : wrong;
     const [currentIdx, setCurrentIdx] = useState(0);
     const currentDetail = shownDetails[currentIdx] ?? null;
+    const isSprint = attempt.kind === 'sprint';
+    const [bestCombo, setBestCombo] = useState(0);
+    useEffect(() => {
+        try {
+            setBestCombo(Number(window.sessionStorage.getItem(`certifloop.best_combo.${attempt.id}`)) || 0);
+        } catch { /* ignore */ }
+    }, [attempt.id]);
+    const [startingSprint, setStartingSprint] = useState(false);
+    const startSprint = () => {
+        if (startingSprint) return;
+        setStartingSprint(true);
+        router.post(route('exam.sprint', certification.slug), {}, { onFinish: () => setStartingSprint(false) });
+    };
 
     useEffect(() => {
         if (details?.length > 0 && certification) {
@@ -407,10 +420,16 @@ export default function Result({ attempt, certification, details, mastery, compa
                     <div className="relative grid gap-8 sm:grid-cols-[auto_1fr] sm:items-center">
                         <ProgressRing percentage={attempt.percentage} passed={passed} />
                         <div>
-                            <div className={`badge ${passed ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300' : 'border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-300'}`}>
-                                {passed ? <Icon.Check className="h-3.5 w-3.5" /> : <Icon.Close className="h-3.5 w-3.5" />}
-                                {passed ? t('exam_result.badge_cert_validated') : t('exam_result.badge_below_threshold')}
+                            <div className={`badge ${isSprint ? 'border-brand-500/20 bg-brand-500/10 text-brand-600 dark:text-brand-300' : passed ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300' : 'border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-300'}`}>
+                                {isSprint ? <Icon.Bolt className="h-3.5 w-3.5" /> : passed ? <Icon.Check className="h-3.5 w-3.5" /> : <Icon.Close className="h-3.5 w-3.5" />}
+                                {isSprint ? t('exam_result.sprint_done') : passed ? t('exam_result.badge_cert_validated') : t('exam_result.badge_below_threshold')}
                             </div>
+                            {bestCombo >= 2 && (
+                                <div className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-600 dark:text-orange-300">
+                                    <Icon.Flame className="h-4 w-4" />
+                                    {t('exam_result.best_combo', { n: bestCombo })}
+                                </div>
+                            )}
                             <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-ink-900 dark:text-white">
                                 {certification.title}
                             </h1>
@@ -421,7 +440,13 @@ export default function Result({ attempt, certification, details, mastery, compa
                                 <ResultStat label={t('exam_result.stat_time')} value={formatDuration(attempt.duration_seconds)} />
                             </div>
                             <div className="mt-6 flex flex-wrap gap-3">
-                                <button type="button" onClick={() => setConfirmRestart(true)} className="btn-primary">
+                                {isSprint && (
+                                    <button type="button" onClick={startSprint} disabled={startingSprint} className="btn-primary !px-6">
+                                        {t('exam_result.sprint_again')}
+                                        <Icon.Bolt className="h-4 w-4" />
+                                    </button>
+                                )}
+                                <button type="button" onClick={() => setConfirmRestart(true)} className={isSprint ? 'btn-secondary' : 'btn-primary'}>
                                     {t('exam_result.cta_restart')}
                                     <Icon.Refresh className="h-4 w-4" />
                                 </button>
