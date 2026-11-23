@@ -91,6 +91,9 @@ class QuestionTranslationsSeeder extends Seeder
                         'question_text' => $data['question_text'] ?? null,
                         'explanation' => $data['explanation'] ?? null,
                     ];
+                    if (! empty($data['matching_pairs'])) {
+                        $qTranslations[$locale]['matching_pairs'] = $data['matching_pairs'];
+                    }
                     $question->translations = $qTranslations;
                     $question->save();
                     $totalQuestions++;

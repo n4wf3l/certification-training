@@ -101,7 +101,7 @@ Full breakdown of every screen, badge and interaction in **[FEATURES.md](FEATURE
 
 ## Screenshots
 
-> Screenshots and a live demo will be added shortly. In the meantime, `php artisan migrate:fresh --seed` boots the app with 4 certifications, 170 questions and 2 demo accounts.
+> Screenshots and a live demo will be added shortly. In the meantime, `php artisan migrate:fresh --seed` boots the app with 4 certifications, 794 questions (ITIL 426, CCNA 368), their courses in French and English, and 2 demo accounts.
 
 ## Quick start
 

@@ -28,6 +28,14 @@ class CertificationSeeder extends Seeder
         // Assure que le disque public existe (via `php artisan storage:link` normalement)
         Storage::disk('public')->makeDirectory('logos');
 
+        // En production, une banque deja en place n'est pas remplacee : supprimer
+        // les questions effacerait aussi, en cascade, l'historique des utilisateurs
+        // (reponses d'examen, statistiques, favoris). Pour forcer le remplacement :
+        // SEED_REPLACE_QUESTIONS=1 php artisan db:seed --force
+        $protectExisting = app()->environment('production')
+            && ! filter_var(env('SEED_REPLACE_QUESTIONS', false), FILTER_VALIDATE_BOOL);
+        $kept = [];
+
         foreach ($certs as $data) {
             // Restaure le logo si un fichier source correspondant existe dans data/logos
             $logoPath = $data['logo_path'] ?? null;
@@ -74,6 +82,11 @@ class CertificationSeeder extends Seeder
                 continue;
             }
 
+            if ($protectExisting && $cert->questions()->exists()) {
+                $kept[] = $data['slug'];
+                continue;
+            }
+
             // Purge puis réinsère - évite d'accumuler des doublons quand on re-seed
             $cert->questions()->delete();
             foreach ($snapshot as $qData) {
@@ -100,6 +113,11 @@ class CertificationSeeder extends Seeder
                     ]);
                 }
             }
+        }
+
+        if ($kept) {
+            $this->command?->warn('Questions existantes conservées (production) : ' . implode(', ', $kept)
+                . '. Pour les remplacer : SEED_REPLACE_QUESTIONS=1 php artisan db:seed --force');
         }
 
         $this->command?->info(sprintf(

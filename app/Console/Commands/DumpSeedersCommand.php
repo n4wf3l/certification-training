@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\Setting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Regenerates seed data files from the current DB state so that
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\File;
  *  - database/seeders/data/translations/certifications-{locale}.json
  *  - database/seeders/data/translations/{slug}-{locale}.json  (questions+answers)
  *  - database/seeders/data/translations/courses/{slug}-{locale}.json  (course blocks)
+ *  - database/seeders/data/logos/*  (logos des certifications et de la marque)
  *
  * Idempotent : consolidates any previously-split ITIL files
  * (itil-foundation-v5-en-2.json etc.) into a single canonical file per slug/locale.
@@ -51,6 +53,7 @@ class DumpSeedersCommand extends Command
         $this->dumpCertificationTranslations();
         $this->dumpQuestionTranslations();
         $this->dumpCourseTranslations();
+        $this->dumpLogos();
 
         $this->info($this->dryRun ? "Dry run OK - no files modified." : "Seed files rewritten from DB state.");
         return self::SUCCESS;
@@ -211,7 +214,8 @@ class DumpSeedersCommand extends Command
                     $answerBucket = [];
                     foreach ($q->answers as $a) {
                         $at = $a->translations[$locale] ?? [];
-                        if (empty($at['answer_text']) && empty($at['rationale'])) continue;
+                        // Comparaison stricte : une reponse « 0 » est un vrai texte (empty() l'ignorait).
+                        if ((string) ($at['answer_text'] ?? '') === '' && (string) ($at['rationale'] ?? '') === '') continue;
                         $answerBucket[$a->letter] = [
                             'text' => $at['answer_text'] ?? null,
                             'rationale' => $at['rationale'] ?? null,
@@ -226,6 +230,10 @@ class DumpSeedersCommand extends Command
                         'explanation' => $qt['explanation'] ?? null,
                         'answers' => (object) $answerBucket,
                     ];
+                    // Paires traduites des questions d'association (CCNA).
+                    if (! empty($qt['matching_pairs'])) {
+                        $qBucket[(string) $q->position]['matching_pairs'] = $qt['matching_pairs'];
+                    }
                 }
 
                 if (empty($qBucket)) continue;
@@ -273,6 +281,37 @@ class DumpSeedersCommand extends Command
                 $file = $this->coursesDir . "/{$cert->slug}-{$locale}.json";
                 $this->writeJson($file, $payload, count($blocks) . " course blocks translated to {$locale} for {$cert->slug}");
             }
+        }
+    }
+
+    /**
+     * Copie les logos references (certifications + marque) depuis le disque
+     * public vers data/logos, ou CertificationSeeder et SettingSeeder les
+     * restaurent. Sans ca, un logo envoye depuis l'admin manque au deploiement.
+     */
+    private function dumpLogos(): void
+    {
+        $paths = Certification::whereNotNull('logo_path')->where('logo_path', '<>', '')->pluck('logo_path')->all();
+        $brand = Setting::get('brand_logo_path');
+        if (is_string($brand) && $brand !== '') $paths[] = $brand;
+
+        $copied = 0;
+        $missing = [];
+        foreach (array_unique($paths) as $path) {
+            if (! Storage::disk('public')->exists($path)) {
+                $missing[] = $path;
+                continue;
+            }
+            $target = $this->dataDir . '/logos/' . basename($path);
+            if (! $this->dryRun) {
+                File::ensureDirectoryExists(dirname($target));
+                File::put($target, Storage::disk('public')->get($path));
+            }
+            $copied++;
+        }
+        $this->line("  <fg=green>✓</> logos : {$copied} copiés");
+        foreach ($missing as $path) {
+            $this->warn("  logo introuvable sur le disque public : {$path}");
         }
     }
 

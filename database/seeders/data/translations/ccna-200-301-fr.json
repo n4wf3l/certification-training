@@ -3,7 +3,7 @@
         "certification_slug": "ccna-200-301",
         "locale": "fr",
         "canonical_from": "en",
-        "dumped_at": "2026-11-17",
+        "dumped_at": "2026-11-23",
         "source": "certifloop:dump-seeders",
         "coverage": {
             "questions_translated": 368,
@@ -2401,6 +2401,10 @@
                     "text": "false",
                     "rationale": "false est une valeur booléenne."
                 },
+                "C": {
+                    "text": "0",
+                    "rationale": "0 est une valeur numérique."
+                },
                 "D": {
                     "text": "Une chaîne vide",
                     "rationale": "Une chaîne vide reste une valeur de type chaîne."
@@ -3612,56 +3616,212 @@
             "scenario": null,
             "question_text": "Associez chaque protocole à sa couche du modèle OSI.",
             "explanation": "HTTP est un protocole applicatif (L7). TCP fournit un transport fiable (L4). IP assure le routage inter-réseaux (L3). Ethernet définit le format de trame et l'adressage MAC (L2).",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "HTTP",
+                    "right": "Couche 7 (Application)"
+                },
+                {
+                    "left": "TCP",
+                    "right": "Couche 4 (Transport)"
+                },
+                {
+                    "left": "IP",
+                    "right": "Couche 3 (Réseau)"
+                },
+                {
+                    "left": "Ethernet",
+                    "right": "Couche 2 (Liaison de données)"
+                }
+            ]
         },
         "152": {
             "topic": "Ports bien connus",
             "scenario": null,
             "question_text": "Associez chaque numéro de port TCP à son service standard.",
             "explanation": "Les ports 0-1023 sont les \"well-known ports\" assignés par l'IANA. SSH=22 (chiffré), Telnet=23 (non chiffré), DNS=53, HTTP=80, HTTPS=443.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "22",
+                    "right": "SSH"
+                },
+                {
+                    "left": "23",
+                    "right": "Telnet"
+                },
+                {
+                    "left": "53",
+                    "right": "DNS"
+                },
+                {
+                    "left": "80",
+                    "right": "HTTP"
+                },
+                {
+                    "left": "443",
+                    "right": "HTTPS"
+                }
+            ]
         },
         "153": {
             "topic": "Distance administrative",
             "scenario": null,
             "question_text": "Associez chaque source de route à sa distance administrative Cisco par défaut.",
             "explanation": "La distance administrative (AD) exprime la préférence entre sources de route. Valeurs Cisco par défaut : connectée=0, statique=1, eBGP=20, EIGRP interne=90, OSPF=110, RIP=120, iBGP=200.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "Route directement connectée",
+                    "right": "0"
+                },
+                {
+                    "left": "Route statique",
+                    "right": "1"
+                },
+                {
+                    "left": "eBGP",
+                    "right": "20"
+                },
+                {
+                    "left": "OSPF",
+                    "right": "110"
+                },
+                {
+                    "left": "RIP",
+                    "right": "120"
+                }
+            ]
         },
         "154": {
             "topic": "Adressage IPv6",
             "scenario": null,
             "question_text": "Associez chaque type d'adresse IPv6 à son préfixe.",
             "explanation": "RFC 4291 : global unicast=2000::/3, link-local=FE80::/10, unique local=FC00::/7, multicast=FF00::/8, loopback=::1/128.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "Global unicast",
+                    "right": "2000::/3"
+                },
+                {
+                    "left": "Link-local",
+                    "right": "FE80::/10"
+                },
+                {
+                    "left": "Unique local",
+                    "right": "FC00::/7"
+                },
+                {
+                    "left": "Multicast",
+                    "right": "FF00::/8"
+                },
+                {
+                    "left": "Loopback",
+                    "right": "::1/128"
+                }
+            ]
         },
         "155": {
             "topic": "NAT",
             "scenario": null,
             "question_text": "Associez chaque type de NAT à son fonctionnement.",
             "explanation": "Static NAT : correspondance fixe 1:1 (souvent pour serveurs internes exposés). Dynamic NAT : mappage depuis un pool d'adresses publiques. PAT (NAT overload) : plusieurs adresses privées partagent UNE adresse publique en distinguant les sessions par les ports source.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "Static NAT",
+                    "right": "Correspondance fixe 1 pour 1"
+                },
+                {
+                    "left": "Dynamic NAT",
+                    "right": "Mappage depuis un pool d'adresses publiques"
+                },
+                {
+                    "left": "PAT (NAT overload)",
+                    "right": "Plusieurs adresses privées partagent UNE publique via les ports"
+                }
+            ]
         },
         "156": {
             "topic": "Normes 802.11",
             "scenario": null,
             "question_text": "Associez chaque norme Wi-Fi à sa (ses) bande(s) de fréquence.",
             "explanation": "802.11a : 5 GHz uniquement. 802.11b : 2.4 GHz uniquement. 802.11n (Wi-Fi 4) : dual-band 2.4 et 5 GHz. 802.11ac (Wi-Fi 5) : 5 GHz uniquement. 802.11ax (Wi-Fi 6) : dual-band 2.4 et 5 GHz (Wi-Fi 6E ajoute la bande 6 GHz).",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "802.11a",
+                    "right": "5 GHz uniquement"
+                },
+                {
+                    "left": "802.11b",
+                    "right": "2.4 GHz uniquement"
+                },
+                {
+                    "left": "802.11n (Wi-Fi 4)",
+                    "right": "2.4 GHz et 5 GHz"
+                },
+                {
+                    "left": "802.11ac (Wi-Fi 5)",
+                    "right": "5 GHz uniquement"
+                },
+                {
+                    "left": "802.11ax (Wi-Fi 6)",
+                    "right": "2.4 GHz et 5 GHz"
+                }
+            ]
         },
         "157": {
             "topic": "Spanning Tree",
             "scenario": null,
             "question_text": "Associez chaque état de port STP (802.1D) à son comportement.",
             "explanation": "Séquence STP classique : Blocking → Listening → Learning → Forwarding (Disabled = admin down). Le port n'apprend les MAC et ne fait forwarding que dans les états finaux correspondants.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "Blocking",
+                    "right": "Aucun forwarding, écoute les BPDU"
+                },
+                {
+                    "left": "Listening",
+                    "right": "Prépare le forwarding, aucun apprentissage MAC"
+                },
+                {
+                    "left": "Learning",
+                    "right": "Apprend les MAC, aucun forwarding"
+                },
+                {
+                    "left": "Forwarding",
+                    "right": "Fonctionnement normal"
+                }
+            ]
         },
         "158": {
             "topic": "Câblage Ethernet",
             "scenario": null,
             "question_text": "Associez chaque type de câble à son usage typique.",
             "explanation": "Straight-through relie deux équipements de type différent (PC-switch). Crossover relie deux équipements de même type (switch-switch), utile avant auto-MDIX. Rollover (câble console bleu Cisco) sert à accéder au CLI via le port console. Fibre monomode : longues distances.",
-            "answers": {}
+            "answers": {},
+            "matching_pairs": [
+                {
+                    "left": "Straight-through",
+                    "right": "PC vers switch"
+                },
+                {
+                    "left": "Crossover",
+                    "right": "Switch vers switch (avant auto-MDIX)"
+                },
+                {
+                    "left": "Rollover (console)",
+                    "right": "PC vers port console d'un équipement Cisco"
+                },
+                {
+                    "left": "Fibre monomode",
+                    "right": "Longues distances (au-delà de 2 km)"
+                }
+            ]
         },
         "159": {
             "topic": "Rôle du routeur",

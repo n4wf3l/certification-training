@@ -3789,7 +3789,7 @@
                 {
                     "letter": "C",
                     "answer_text": "0",
-                    "rationale": "0 est une valeur numérique.",
+                    "rationale": "0 is a numeric value.",
                     "is_correct": false
                 },
                 {

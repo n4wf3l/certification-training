@@ -39,6 +39,14 @@ php artisan storage:link
 php artisan config:cache && php artisan view:cache
 ```
 
+`db:seed` charge tout le contenu depuis `database/seeders/data` : certifications, questions (ITIL 426, CCNA 368), traductions FR/EN, cours, réglages et logos. Rien n'est à ressaisir dans l'admin.
+
+**Mettre à jour le contenu plus tard.** En local, après des changements de questions ou de cours, lancer `php artisan certifloop:dump-seeders` puis commiter `database/seeders/data`. Sur le serveur, `db:seed` met à jour les certifications et les cours, mais **ne remplace pas une banque de questions déjà en place** : la remplacer effacerait aussi l'historique des utilisateurs (réponses, statistiques, favoris). Pour la remplacer quand même, en connaissance de cause :
+
+```bash
+SEED_REPLACE_QUESTIONS=1 php artisan db:seed --force
+```
+
 Ne pas lancer `php artisan route:cache`. Les routes sont enregistrées sous le préfixe de langue de chaque requête (racine en français, `/en/…` en anglais) : un cache figerait un seul préfixe et les pages `/en` répondraient 404.
 
 ## 4. Worker, scheduler et nginx
