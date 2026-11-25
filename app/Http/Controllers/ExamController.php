@@ -443,9 +443,12 @@ class ExamController extends Controller
         //    pick exactly the correct set (all-or-nothing)
         //  - { leftKey: rightKey, ... } : matching (drag-and-drop) — count
         //    correct pairs
+        // Aucune reponse est un cas legitime (Terminer tout de suite, ou chrono
+        // ecoule sans reponse) : la session se termine avec un score de 0.
         $data = $request->validate([
-            'answers' => 'required|array',
+            'answers' => 'nullable|array',
         ]);
+        $data['answers'] = $data['answers'] ?? [];
 
         DB::transaction(function () use ($attempt, $data) {
             $score = 0;

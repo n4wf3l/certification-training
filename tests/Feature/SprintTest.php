@@ -58,6 +58,26 @@ class SprintTest extends TestCase
                 ->where('cert_progress', null));
     }
 
+    public function test_finishing_without_any_answer_completes_with_zero(): void
+    {
+        Setting::set('allow_instant_feedback', '1');
+        $this->certWithQuestions();
+        $user = User::factory()->create();
+        $this->actingAs($user)->post('/certifications/itil-foundation-v5/sprint');
+        $attempt = Attempt::firstOrFail();
+
+        // Terminer tout de suite (ou chrono ecoule) : aucune reponse envoyee.
+        $this->actingAs($user)->post("/exam/{$attempt->id}/submit", ['answers' => []])
+            ->assertRedirect(route('exam.result', $attempt));
+        $this->actingAs($user)->post("/exam/{$attempt->id}/submit", [])
+            ->assertRedirect(route('exam.result', $attempt));
+
+        $attempt->refresh();
+        $this->assertNotNull($attempt->completed_at);
+        $this->assertSame(0, $attempt->score);
+        $this->assertFalse($attempt->passed);
+    }
+
     public function test_a_perfect_sprint_does_not_count_as_a_mock_exam(): void
     {
         $cert = $this->certWithQuestions(10);

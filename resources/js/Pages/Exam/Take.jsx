@@ -6,6 +6,7 @@ import { haptic, playCombo, playCorrect, playFinish, playWrong, setSoundEnabled,
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { pushToast } from '@/Components/Toaster';
 
 function formatTime(seconds) {
     if (seconds < 0) seconds = 0;
@@ -22,6 +23,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
     const [answerMode, setAnswerMode] = useState('manual');
     const [pendingLeave, setPendingLeave] = useState(null);
     const [justPicked, setJustPicked] = useState(null);
+    const [confirmFinish, setConfirmFinish] = useState(false);
     const submittingRef = useRef(false);
     const allowLeaveRef = useRef(false);
 
@@ -365,8 +367,24 @@ export default function Take({ attempt, certification, questions, cert_progress 
         router.post(
             route('exam.submit', attempt.id),
             { answers: payloadAnswers },
-            { onFinish: () => setSubmitting(false) }
+            {
+                // Echec (reseau, session expiree...) : message, et le bouton
+                // redevient utilisable au lieu de rester bloque.
+                onError: () => pushToast({ variant: 'error', message: t('exam_take.submit_failed') }),
+                onFinish: () => {
+                    submittingRef.current = false;
+                    setSubmitting(false);
+                },
+            }
         );
+    };
+
+    // Bouton Terminer : avec des questions sans reponse, on confirme d'abord
+    // (comme au vrai examen) ; le chrono, lui, soumet directement.
+    const requestFinish = () => {
+        if (frozenRef.current || submittingRef.current) return;
+        if (totalQuestions - answeredCount > 0) setConfirmFinish(true);
+        else submit(false);
     };
 
     const confirmLeave = async () => {
@@ -424,7 +442,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
     const isLast = current >= totalQuestions - 1;
     const continueQ = () => {
         if (frozenRef.current) return;
-        if (isLast) submit(false); else nextQ();
+        if (isLast) requestFinish(); else nextQ();
     };
     const continueRef = useRef(continueQ);
     continueRef.current = continueQ;
@@ -683,7 +701,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                                     <Icon.ArrowRight className="h-4 w-4" />
                                 </button>
                             ) : (
-                                <button onClick={() => submit(false)} disabled={submitting || frozen} className="btn-primary bg-emerald-500">
+                                <button onClick={requestFinish} disabled={submitting || frozen} className="btn-primary bg-emerald-500">
                                     {submitting ? t('exam_take.submitting') : t('exam_take.finish_exam')}
                                     <Icon.Check className="h-4 w-4" />
                                 </button>
@@ -746,7 +764,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                             </div>
                         )}
                         <button
-                            onClick={() => submit(false)}
+                            onClick={requestFinish}
                             disabled={submitting || frozen}
                             className="btn-primary w-full bg-emerald-500 !py-3"
                         >
@@ -776,6 +794,34 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     onContinue={continueQ}
                     t={t}
                 />,
+                document.body,
+            )}
+
+            {confirmFinish && typeof document !== 'undefined' && createPortal(
+                <div
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
+                    onClick={() => setConfirmFinish(false)}
+                >
+                    <div className="card w-full max-w-md animate-scale-in p-4 sm:p-6" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+                        <h3 className="text-lg font-bold text-ink-900 dark:text-white">{t('exam_take.finish_confirm_title')}</h3>
+                        <p className="mt-2 text-sm text-ink-600 dark:text-ink-300">
+                            {t('exam_take.finish_confirm_body', { n: totalQuestions - answeredCount })}
+                        </p>
+                        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                            <button type="button" className="btn-secondary justify-center" onClick={() => setConfirmFinish(false)}>
+                                {t('exam_take.finish_confirm_back')}
+                            </button>
+                            <button
+                                type="button"
+                                className="btn-primary justify-center bg-emerald-500"
+                                disabled={submitting}
+                                onClick={() => { setConfirmFinish(false); submit(false); }}
+                            >
+                                {t('exam_take.finish_confirm_yes')}
+                            </button>
+                        </div>
+                    </div>
+                </div>,
                 document.body,
             )}
 
