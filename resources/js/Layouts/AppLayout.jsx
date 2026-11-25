@@ -377,12 +377,14 @@ export default function AppLayout({ header, children, full = false, ambient = tr
                                         </Link>
                                     </li>
                                 )}
-                                <li>
-                                    <a href="#how-it-works" className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
-                                        <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
-                                        {t('footer.link_how_it_works')}
-                                    </a>
-                                </li>
+                                {!user && (
+                                    <li>
+                                        <a href={`${route('home')}#how-it-works`} className="group inline-flex items-center gap-1.5 text-ink-600 transition hover:text-ink-900 dark:text-ink-300 dark:hover:text-white">
+                                            <span className="h-1 w-1 rounded-full bg-ink-400 transition group-hover:w-3 group-hover:bg-brand-500" />
+                                            {t('footer.link_how_it_works')}
+                                        </a>
+                                    </li>
+                                )}
                                 {isAdmin && (
                                     <li>
                                         <Link href={route('admin.dashboard')} className="group inline-flex items-center gap-1.5 text-brand-600 transition hover:text-brand-500 dark:text-brand-300">

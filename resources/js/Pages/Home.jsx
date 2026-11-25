@@ -272,96 +272,98 @@ export default function Home({ certifications, teaser_questions = null }) {
                 </div>
             </section>
 
-            {/* METHOD */}
-            <section id="how-it-works" className="border-b border-ink-200 py-12 sm:py-20 dark:border-ink-800">
-                <SectionLabel>{t('home.method_kicker')}</SectionLabel>
-                <h2 className="mt-6 max-w-2xl text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
-                    {t('home.method_title')}
-                </h2>
+            {/* METHOD : utile a un visiteur, plus a quelqu'un de connecte. */}
+            {!user && (
+                <section id="how-it-works" className="border-b border-ink-200 py-12 sm:py-20 dark:border-ink-800">
+                    <SectionLabel>{t('home.method_kicker')}</SectionLabel>
+                    <h2 className="mt-6 max-w-2xl text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
+                        {t('home.method_title')}
+                    </h2>
 
-                <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-3">
-                    <div>
-                        <div className="font-mono text-xs font-medium text-ink-400">01</div>
-                        <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
-                        <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            {t('home.step1_title')}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            {t('home.step1_body')}
-                        </p>
-                        <StepDemo
-                            name="step1"
-                            label={t('home.step1_video')}
-                        />
-                    </div>
-                    <div>
-                        <div className="font-mono text-xs font-medium text-ink-400">02</div>
-                        <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
-                        <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            {t('home.step2_title')}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            {t('home.step2_body')}
-                        </p>
-                        <StepDemo
-                            name="step2"
-                            label={t('home.step2_video')}
-                        />
-                    </div>
-                    <div>
-                        <div className="font-mono text-xs font-medium text-ink-400">03</div>
-                        <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
-                        <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
-                            {t('home.step3_title')}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                            {t('home.step3_body')}
-                        </p>
-                        <StepDemo
-                            name="step3"
-                            label={t('home.step3_video')}
-                        />
-                    </div>
-                </div>
-
-                {/* Certificate mechanic callout : explains the 3-perfect-runs rule
-                    and positions the CertifLoop certificate as proof of readiness
-                    rather than a participation trophy. */}
-                <div className="mt-10 sm:mt-16 rounded-3xl border border-brand-500/30 bg-brand-500/10 p-8 sm:p-10">
-                    <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+                    <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-3">
                         <div>
-                            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
-                                <Icon.Shield className="h-3.5 w-3.5" />
-                                {t('home_cert_callout.kicker')}
-                            </div>
-                            <h3 className="mt-4 text-2xl font-bold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
-                                {t('home_cert_callout.title')}
+                            <div className="font-mono text-xs font-medium text-ink-400">01</div>
+                            <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
+                            <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
+                                {t('home.step1_title')}
                             </h3>
-                            <p className="mt-4 text-sm leading-relaxed text-ink-700 dark:text-ink-300 sm:text-base">
-                                {t('home_cert_callout.body_1')}
+                            <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+                                {t('home.step1_body')}
                             </p>
-                            <p className="mt-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400 sm:text-base">
-                                {t('home_cert_callout.body_2')}
-                            </p>
+                            <StepDemo
+                                name="step1"
+                                label={t('home.step1_video')}
+                            />
                         </div>
-                        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                            {['1', '2', '3'].map((n) => (
-                                <div
-                                    key={n}
-                                    className="rounded-2xl border border-brand-500/20 bg-white/60 p-4 text-center backdrop-blur-sm dark:border-ink-800 dark:bg-ink-900/40"
-                                >
-                                    <div className="bg-brand-500 bg-clip-text font-mono text-4xl font-bold text-transparent">
-                                        {t(`home_cert_callout.stat_${n}_value`)}
-                                    </div>
-                                    <div className="mt-2 text-[10px] font-medium uppercase leading-tight tracking-wider text-ink-500 dark:text-ink-400">
-                                        {t(`home_cert_callout.stat_${n}_label`)}
-                                    </div>
-                                </div>
-                            ))}
+                        <div>
+                            <div className="font-mono text-xs font-medium text-ink-400">02</div>
+                            <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
+                            <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
+                                {t('home.step2_title')}
+                            </h3>
+                            <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+                                {t('home.step2_body')}
+                            </p>
+                            <StepDemo
+                                name="step2"
+                                label={t('home.step2_video')}
+                            />
+                        </div>
+                        <div>
+                            <div className="font-mono text-xs font-medium text-ink-400">03</div>
+                            <div className="mt-3 h-px w-8 bg-ink-900 dark:bg-white" />
+                            <h3 className="mt-5 text-lg font-semibold text-ink-900 dark:text-white">
+                                {t('home.step3_title')}
+                            </h3>
+                            <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+                                {t('home.step3_body')}
+                            </p>
+                            <StepDemo
+                                name="step3"
+                                label={t('home.step3_video')}
+                            />
                         </div>
                     </div>
-                </div>
-            </section>
+
+                    {/* Certificate mechanic callout : explains the 3-perfect-runs rule
+                        and positions the CertifLoop certificate as proof of readiness
+                        rather than a participation trophy. */}
+                    <div className="mt-10 sm:mt-16 rounded-3xl border border-brand-500/30 bg-brand-500/10 p-8 sm:p-10">
+                        <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+                            <div>
+                                <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
+                                    <Icon.Shield className="h-3.5 w-3.5" />
+                                    {t('home_cert_callout.kicker')}
+                                </div>
+                                <h3 className="mt-4 text-2xl font-bold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
+                                    {t('home_cert_callout.title')}
+                                </h3>
+                                <p className="mt-4 text-sm leading-relaxed text-ink-700 dark:text-ink-300 sm:text-base">
+                                    {t('home_cert_callout.body_1')}
+                                </p>
+                                <p className="mt-3 text-sm leading-relaxed text-ink-600 dark:text-ink-400 sm:text-base">
+                                    {t('home_cert_callout.body_2')}
+                                </p>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                                {['1', '2', '3'].map((n) => (
+                                    <div
+                                        key={n}
+                                        className="rounded-2xl border border-brand-500/20 bg-white/60 p-4 text-center backdrop-blur-sm dark:border-ink-800 dark:bg-ink-900/40"
+                                    >
+                                        <div className="bg-brand-500 bg-clip-text font-mono text-4xl font-bold text-transparent">
+                                            {t(`home_cert_callout.stat_${n}_value`)}
+                                        </div>
+                                        <div className="mt-2 text-[10px] font-medium uppercase leading-tight tracking-wider text-ink-500 dark:text-ink-400">
+                                            {t(`home_cert_callout.stat_${n}_label`)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* CERTIFICATIONS */}
             <section id="certifications" className="py-12 sm:py-20">

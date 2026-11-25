@@ -42,7 +42,10 @@ export default function StepDemo({ name, label }) {
         return () => observer.disconnect();
     }, [reduced, mobile]);
 
-    const base = `/media/how-it-works/${name}${mobile ? '-m' : ''}`;
+    // Telephone : pas de video (trop haute, illisible, donnees mobiles) ; le texte de l'etape suffit.
+    if (mobile) return null;
+
+    const base = `/media/how-it-works/${name}`;
 
     return (
         <div className={`mt-5 overflow-hidden rounded-xl border border-ink-200 bg-ink-950 shadow-sm dark:border-ink-800 ${mobile ? 'mx-auto max-w-[220px]' : ''}`}>
