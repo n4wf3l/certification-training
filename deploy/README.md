@@ -53,7 +53,7 @@ Ne pas lancer `php artisan route:cache`. Les routes sont enregistrées sous le p
 
 ```bash
 sudo bash deploy/install.sh --domain certifloop.example --app-dir /var/www/certifloop
-sudo certbot --nginx -d certifloop.example
+sudo certbot --nginx -d certifloop.example -d www.certifloop.example
 ```
 
 Le script installe :
@@ -89,6 +89,32 @@ sudo -u www-data php artisan accounts:purge-inactive --dry-run
 ```
 
 Puis ouvrir `/legal` et vérifier que l'éditeur et le contact s'affichent.
+
+## 7. Déploiement automatique (push sur main = mise en production)
+
+À chaque push sur `main`, GitHub Actions (`.github/workflows/deploy.yml`) lance les tests, puis, seulement s'ils passent, se connecte au serveur et lance `certifloop-deploy` : récupération de `main`, dépendances, `npm run build`, migrations, caches, redémarrage du worker. Le site passe en maintenance une à deux minutes pendant la reconstruction. La banque de questions en place n'est jamais remplacée.
+
+Mise en place, une seule fois, sur le serveur (en root) :
+
+```bash
+install -m 700 /var/www/certifloop/deploy/update.sh /usr/local/sbin/certifloop-deploy
+ssh-keygen -t ed25519 -N "" -C "github-deploy-certifloop" -f /root/.ssh/certifloop_deploy
+echo "command=\"/usr/local/sbin/certifloop-deploy\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat /root/.ssh/certifloop_deploy.pub)" >> /root/.ssh/authorized_keys
+```
+
+La clé ne peut lancer **que** ce script : même volée, elle ne donne pas de terminal sur le serveur. Le script est copié hors du dépôt, donc un push ne peut pas changer ce qu'elle exécute ; après une modification de `deploy/update.sh`, refaire la commande `install`.
+
+Puis, dans GitHub → le dépôt → Settings → Secrets and variables → Actions → New repository secret :
+
+| Secret | Valeur |
+|---|---|
+| `DEPLOY_HOST` | l'IP du serveur |
+| `DEPLOY_SSH_KEY` | le contenu de `cat /root/.ssh/certifloop_deploy` (clé privée, lignes BEGIN/END comprises) |
+| `DEPLOY_KNOWN_HOSTS` | la sortie de `ssh-keyscan -t ed25519 <IP du serveur>` |
+
+Ensuite, supprimer la clé privée du serveur : `rm /root/.ssh/certifloop_deploy` (la clé publique reste dans `authorized_keys`).
+
+Mise à jour manuelle, au besoin : `certifloop-deploy`. Suivi : onglet **Actions** du dépôt.
 
 ## Derrière un proxy (Cloudflare…)
 

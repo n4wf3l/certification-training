@@ -1,0 +1,78 @@
+# A chaque push sur main : tests, puis mise en production sur le VPS.
+# Un push qui casse les tests n'est jamais deploye.
+#
+# Secrets du depot (Settings > Secrets and variables > Actions) :
+#   DEPLOY_HOST         IP ou nom du serveur
+#   DEPLOY_SSH_KEY      cle privee dediee, limitee cote serveur a certifloop-deploy
+#   DEPLOY_KNOWN_HOSTS  sortie de `ssh-keyscan -t ed25519 <host>` (empreinte du serveur)
+# Mise en place : deploy/README.md, section « Déploiement automatique ».
+name: Tests et déploiement
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un seul deploiement a la fois, dans l'ordre des pushs.
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, curl, zip, bcmath, intl, gd, sqlite3, pdo_sqlite
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Dépendances
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+          npm ci --no-audit --no-fund
+
+      - name: Fichiers du site (requis par les pages testées)
+        run: npm run build
+
+      - name: Tests PHP
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test
+
+      - name: Tests JS
+        run: npm run test:js
+
+  deploy:
+    needs: tests
+    runs-on: ubuntu-24.04
+    environment: production
+    steps:
+      - name: Mise en production
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$DEPLOY_HOST" ] || [ -z "$DEPLOY_SSH_KEY" ] || [ -z "$DEPLOY_KNOWN_HOSTS" ]; then
+            echo "::warning::Secrets de deploiement absents : deploiement ignore (voir deploy/README.md, section 7)."
+            exit 0
+          fi
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # La cle ne peut lancer que certifloop-deploy (forced command cote serveur).
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes "root@$DEPLOY_HOST"
