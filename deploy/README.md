@@ -1,6 +1,6 @@
 # Déploiement de CertifLoop
 
-Serveur Linux (Ubuntu / Debian) avec nginx, PHP 8.2+ (FPM) et MySQL ou PostgreSQL. Les commandes sont lancées depuis le dossier de l'application, par exemple `/var/www/certifloop`.
+Serveur Linux (Ubuntu / Debian) avec nginx et PHP 8.2+ (FPM). La base est un fichier SQLite (celle avec laquelle l'application est testée) : rien à installer, sauvegarde par simple copie. Les commandes sont lancées depuis le dossier de l'application, par exemple `/var/www/certifloop`.
 
 ## 1. Code et dépendances
 
@@ -24,7 +24,7 @@ Remplir au minimum :
 | Variable | Pourquoi |
 |---|---|
 | `APP_URL` | adresse publique en `https://` |
-| `DB_*` | base de données |
+| `DB_DATABASE` | chemin absolu du fichier SQLite ; garder `DB_JOURNAL_MODE=wal` et `DB_BUSY_TIMEOUT=5000` |
 | `MAIL_*`, `MAIL_FROM_ADDRESS` | réinitialisation du mot de passe, prévenance avant suppression. `MAIL_FROM_ADDRESS` sert aussi de contact sur `/legal`. |
 | `PUBLISHER_NAME`, `PUBLISHER_ADDRESS`, `PUBLISHER_COMPANY_ID` | identité de l'éditeur sur `/legal`, obligatoire en Belgique et dans l'UE. Le numéro d'entreprise (BCE) seulement s'il existe. |
 
