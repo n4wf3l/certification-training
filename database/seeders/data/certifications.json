@@ -4,15 +4,15 @@
         "slug": "ccna-200-301",
         "logo_path": "logos/NCuRoldHqobcg51eJmOqGz4oGUi5ECmgRnBdbV9F.png",
         "description": "Cisco Certified Network Associate - routing, switching, security, automation.",
-        "long_description": "The CCNA (Cisco Certified Network Associate) is THE gateway to networking careers. The 200-301 exam covers the fundamentals: routing (static, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, security (ACL, port-security, basic VPN), wireless infrastructure, IP services (NAT, DHCP, QoS), and automation (Python, REST, JSON, Ansible). It's the most recognised Cisco certification in the world and the prerequisite to CCNP and then CCIE.",
+        "long_description": "The CCNA (Cisco Certified Network Associate) is the gateway to networking careers. The 200-301 exam covers the fundamentals: routing (static, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, security (ACL, port security, basic VPN), wireless infrastructure, IP services (NAT, DHCP, QoS), and automation and programmability (REST APIs, JSON, Ansible/Terraform, AI and machine learning concepts). It's one of the most recognized IT certifications and a common first step towards CCNP and CCIE, which have no formal prerequisites.",
         "importance": "The CCNA is explicitly required in most 'Network Engineer', 'NOC Analyst', or 'Systems and Networks Engineer' job postings, both in the US and internationally. It validates a technical foundation recruiters take seriously and unlocks the junior-to-mid salary brackets.",
         "target_roles": [
             "Junior Network Engineer",
-            "Network Support N1/N2",
+            "Network Support (Tier 1/2)",
             "Infrastructure Administrator",
             "Network Technician",
             "NOC Analyst",
-            "Versatile SysAdmin"
+            "Generalist SysAdmin"
         ],
         "duration_minutes": 120,
         "passing_score": 82,
@@ -21,7 +21,7 @@
         "max_questions": null,
         "navigation_mode": "sequential_locked",
         "validity_months": 36,
-        "validity_note": "Valid for 3 years. The official exam uses a scaled score of about 825/1000 (≈ 82.5%) - Cisco keeps the exact threshold confidential. Renewal: retake the exam, pass a higher-level Cisco exam (CCNP, CCIE), or accumulate 30 CE credits. No grace period.",
+        "validity_note": "Valid for 3 years. Cisco does not publish the passing score; the exam uses a scaled score, and the commonly quoted figure of about 825/1000 is unofficial. Renewal: retake the exam, pass a higher-level Cisco exam (CCNP, CCIE), or earn 30 CE credits. No grace period.",
         "version_retires_at": null,
         "questions_updated_at": "2026-11-17T18:11:08+00:00",
         "course_blocks": [
@@ -262,8 +262,8 @@
             },
             {
                 "type": "mermaid",
-                "code": "graph LR\n  A[Read a domain] --> B[Lab it in Packet Tracer]\n  B --> C[Review questions for that domain]\n  C --> D[Analyse mistakes]\n  D --> A\n  C --> E[Full mock exam]\n  E --> D\n  F[Daily subnetting drill] --> C",
-                "caption": "The study loop: read, lab, practice, analyse, repeat."
+                "code": "graph LR\n  A[Read a domain] --> B[Lab it in Packet Tracer]\n  B --> C[Review questions for that domain]\n  C --> D[Analyze mistakes]\n  D --> A\n  C --> E[Full mock exam]\n  E --> D\n  F[Daily subnetting drill] --> C",
+                "caption": "The study loop: read, lab, practice, analyze, repeat."
             },
             {
                 "type": "callout",
@@ -382,7 +382,7 @@
                 "items": [
                     "200-301 CCNA: 120 minutes; question count and passing score not published by Cisco (about 100 to 120 questions and around 825/1000 are commonly reported, not official).",
                     "Six domains in v1.1; domains 1.0 to 3.0 make up 65% of the exam.",
-                    "Study loop: read a domain, lab it, review it by domain, analyse mistakes, then full mock exams.",
+                    "Study loop: read a domain, lab it, review it by domain, analyze mistakes, then full mock exams.",
                     "Subnetting every day, and real CLI practice in Packet Tracer for the labs.",
                     "About 1 minute per question; do not get stuck, answers are commonly reported to be final."
                 ]
@@ -394,7 +394,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "This domain builds the foundation for everything else on the CCNA: what each network device does, how networks are laid out, which cables and interfaces connect them, how TCP and UDP carry data, how IPv4 and IPv6 addresses are structured, how wireless and virtualization fit in, and how a switch forwards frames. Questions mix theory (pick the right definition or default value) with hands-on tasks: calculating a subnet under time pressure, reading `show interfaces` counters, recognising an IPv6 address type or completing an interface configuration. Subnetting (1.6) and IPv6 (1.8, 1.9) deserve the most practice, because they come back in routing, ACL and NAT questions in the other domains."
+                "text": "This domain builds the foundation for everything else on the CCNA: what each network device does, how networks are laid out, which cables and interfaces connect them, how TCP and UDP carry data, how IPv4 and IPv6 addresses are structured, how wireless and virtualization fit in, and how a switch forwards frames. Questions mix theory (pick the right definition or default value) with hands-on tasks: calculating a subnet under time pressure, reading `show interfaces` counters, recognizing an IPv6 address type or completing an interface configuration. Subnetting (1.6) and IPv6 (1.8, 1.9) deserve the most practice, because they come back in routing, ACL and NAT questions in the other domains."
             },
             {
                 "type": "heading",
@@ -426,7 +426,7 @@
                     },
                     {
                         "term": "IPS / NGIPS",
-                        "definition": "Intrusion Prevention System placed inline: it compares traffic with attack signatures and behaviours and drops malicious packets in real time. An IDS only receives a copy of the traffic and alerts, it cannot block by itself. A next-generation IPS adds context (hosts, applications, reputation)."
+                        "definition": "Intrusion Prevention System placed inline: it compares traffic with attack signatures and behaviors and drops malicious packets in real time. An IDS only receives a copy of the traffic and alerts, it cannot block by itself. A next-generation IPS adds context (hosts, applications, reputation)."
                     },
                     {
                         "term": "Access point (AP)",
@@ -434,7 +434,7 @@
                     },
                     {
                         "term": "Controller",
-                        "definition": "Centralises management and policy. A Wireless LAN Controller (WLC) manages many lightweight APs (configuration, RF, roaming, security). An SDN controller such as Cisco Catalyst Center (formerly DNA Center) manages switches and routers through APIs."
+                        "definition": "Centralizes management and policy. A Wireless LAN Controller (WLC) manages many lightweight APs (configuration, RF, roaming, security). An SDN controller such as Cisco Catalyst Center (formerly DNA Center) manages switches and routers through APIs."
                     },
                     {
                         "term": "Endpoint",
@@ -516,7 +516,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "A topology architecture is a repeatable design pattern. The goal is always the same: give users enough bandwidth, remove single points of failure and keep the network easy to grow. The exam expects you to recognise each pattern from a description or a diagram and to know which layer does what."
+                "text": "A topology architecture is a repeatable design pattern. The goal is always the same: give users enough bandwidth, remove single points of failure and keep the network easy to grow. The exam expects you to recognize each pattern from a description or a diagram and to know which layer does what."
             },
             {
                 "type": "heading",
@@ -589,7 +589,7 @@
                     },
                     {
                         "term": "On-premises",
-                        "definition": "The organisation owns and runs the servers and network in its own building or data center: full control, but it pays upfront (CapEx) and handles power, cooling and upgrades."
+                        "definition": "The organization owns and runs the servers and network in its own building or data center: full control, but it pays upfront (CapEx) and handles power, cooling and upgrades."
                     },
                     {
                         "term": "Cloud",
@@ -800,7 +800,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Here the port runs at **Half-duplex, 100Mb/s** and counts many **collisions** and **late collisions**. On a point-to-point switched link that is abnormal: it is the half-duplex side of a duplex mismatch. On the neighbour, which runs full duplex, you would typically see input errors, CRC errors and runts instead."
+                "text": "Here the port runs at **Half-duplex, 100Mb/s** and counts many **collisions** and **late collisions**. On a point-to-point switched link that is abnormal: it is the half-duplex side of a duplex mismatch. On the neighbor, which runs full duplex, you would typically see input errors, CRC errors and runts instead."
             },
             {
                 "type": "key_terms",
@@ -1293,7 +1293,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "The IPv4 address space ran out years ago. RFC 1918 reserves three ranges that any organisation may use internally without asking anyone. These private addresses are not routed on the public internet: ISPs drop them. To reach the internet, hosts with private addresses go through NAT (usually PAT) on the edge router or firewall, which replaces the private source address with a public one."
+                "text": "The IPv4 address space ran out years ago. RFC 1918 reserves three ranges that any organization may use internally without asking anyone. These private addresses are not routed on the public internet: ISPs drop them. To reach the internet, hosts with private addresses go through NAT (usually PAT) on the edge router or firewall, which replaces the private source address with a public one."
             },
             {
                 "type": "comparison",
@@ -1522,7 +1522,7 @@
                         "label": "Unique local (ULA)",
                         "values": [
                             "FC00::/7, in practice FD00::/8",
-                            "Routed inside the organisation, not on the internet",
+                            "Routed inside the organization, not on the internet",
                             "RFC 1918 private address"
                         ]
                     },
@@ -1746,7 +1746,7 @@
                         ]
                     },
                     {
-                        "label": "ARP / neighbour cache",
+                        "label": "ARP / neighbor cache",
                         "values": [
                             "`arp -a`",
                             "`arp -a`",
@@ -1802,7 +1802,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "Wi-Fi (IEEE 802.11) carries frames over radio waves instead of cables. The medium is shared and half duplex: only one device can transmit on a channel at a time, so stations use **CSMA/CA** (collision avoidance), because a radio cannot listen for collisions while it transmits. Understanding channels, RF behaviour, network names and encryption explains most wireless problems."
+                "text": "Wi-Fi (IEEE 802.11) carries frames over radio waves instead of cables. The medium is shared and half duplex: only one device can transmit on a channel at a time, so stations use **CSMA/CA** (collision avoidance), because a radio cannot listen for collisions while it transmits. Understanding channels, RF behavior, network names and encryption explains most wireless problems."
             },
             {
                 "type": "heading",
@@ -1825,7 +1825,7 @@
                         "definition": "Signal-to-noise ratio: the gap in dB between the received signal and the background noise. A higher SNR allows higher data rates."
                     },
                     {
-                        "term": "RF behaviours",
+                        "term": "RF behaviors",
                         "definition": "Absorption (walls, water, people weaken the signal), reflection (metal surfaces bounce it), refraction (it bends through materials of different density), diffraction (it bends around obstacles), scattering (rough surfaces spread it), plus free-space path loss with distance."
                     }
                 ]
@@ -1963,7 +1963,7 @@
                     {
                         "label": "WPA3",
                         "values": [
-                            "AES-CCMP (128-bit) as baseline, AES-GCMP-256 in 192-bit Enterprise mode (Cisco courses summarise this as GCMP); SAE instead of PSK; PMF required",
+                            "AES-CCMP (128-bit) as baseline, AES-GCMP-256 in 192-bit Enterprise mode (Cisco courses summarize this as GCMP); SAE instead of PSK; PMF required",
                             "Current recommendation"
                         ]
                     }
@@ -6464,7 +6464,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "`service password-encryption` turns every clear-text password in the configuration (line passwords, `enable password`, `username ... password`) into **type 7**. Type 7 only stops someone reading over your shoulder: it is a reversible encoding that free tools decode instantly. It does not touch secrets, which are already hashed, and `no service password-encryption` does not decrypt passwords that were already encoded. `security passwords min-length` rejects new passwords shorter than the value (0 to 16). `login block-for` blocks all logins for a period after too many failures, a simple defence against password guessing."
+                "text": "`service password-encryption` turns every clear-text password in the configuration (line passwords, `enable password`, `username ... password`) into **type 7**. Type 7 only stops someone reading over your shoulder: it is a reversible encoding that free tools decode instantly. It does not touch secrets, which are already hashed, and `no service password-encryption` does not decrypt passwords that were already encoded. `security passwords min-length` rejects new passwords shorter than the value (0 to 16). `login block-for` blocks all logins for a period after too many failures, a simple defense against password guessing."
             },
             {
                 "type": "code",
@@ -9459,7 +9459,7 @@
                 "type": "list",
                 "style": "bulleted",
                 "items": [
-                    "Take two or three full timed mock exams and analyse every mistake; spend the remaining time on your two weakest domains with per-domain review.",
+                    "Take two or three full timed mock exams and analyze every mistake; spend the remaining time on your two weakest domains with per-domain review.",
                     "Keep the daily subnetting drill and redo one mixed lab (VLANs, trunk, OSPF, NAT, ACL) from a blank configuration.",
                     "Reread every **Key points** summary and the tables above.",
                     "Check the logistics: exam confirmation, ID requirements, test center address or, for online delivery, the system test, webcam, quiet room and clear desk."
@@ -9551,7 +9551,7 @@
         "slug": "comptia-a-plus",
         "logo_path": "logos/ouxKtaiVpgaB58CSQU9HtfzJPsq39yjI4DgWxAS1.png",
         "description": "Certification vendor-neutral de référence pour débuter dans le support IT.",
-        "long_description": "La CompTIA A+ valide l'ensemble des fondamentaux du support IT : matériel PC, systèmes d'exploitation (Windows, macOS, Linux, iOS, Android), réseaux, cybersécurité de base, résolution d'incidents et procédures opérationnelles. C'est la seule certification vendor-neutral (non liée à un constructeur) universellement acceptée pour un premier poste dans le support.",
+        "long_description": "La CompTIA A+ valide les compétences de base du support IT : matériel PC, systèmes d'exploitation (Windows, macOS, Linux, iOS, Android), réseaux, cybersécurité de base, dépannage et procédures opérationnelles. C'est la certification indépendante des constructeurs la plus reconnue pour un premier poste dans le support.",
         "importance": "Souvent exigée pour un premier job helpdesk chez les grands comptes (Dell, HP, IBM, ainsi que dans la fonction publique US et de plus en plus en Europe). Elle rassure les recruteurs sur ta capacité à intervenir sur un parc hétérogène dès ton arrivée.",
         "target_roles": [
             "Technicien Helpdesk",
@@ -9567,7 +9567,7 @@
         "max_questions": null,
         "navigation_mode": "free",
         "validity_months": 36,
-        "validity_note": "CompTIA A+ = deux examens obligatoires (Core 1 : 220-1101, seuil 675/900 = 75 % · Core 2 : 220-1102, seuil 700/900 = 77,7 %). Chaque core dure 90 min pour 90 questions. Valeurs indiquées ici pour Core 2. Valide 3 ans, renouvelable via 20 CEUs (Continuing Education Units) ou une certif CompTIA supérieure. Grâce de 30 jours après expiration pour uploader tes CEUs.",
+        "validity_note": "La CompTIA A+ demande deux examens (Core 1 : 220-1201, seuil 675 sur une échelle de 100 à 900 · Core 2 : 220-1202, seuil 700 sur la même échelle). Chaque examen dure 90 minutes, avec 90 questions au maximum. Valide 3 ans, renouvelable avec 20 CEUs (Continuing Education Units) ou une certification CompTIA de niveau supérieur.",
         "version_retires_at": null,
         "questions_updated_at": "2026-07-19T19:35:00+00:00",
         "course_blocks": null,
@@ -9585,7 +9585,7 @@
         "logo_path": null,
         "description": "Fondamentaux AWS : services, tarification, sécurité et modèle cloud.",
         "long_description": "L'AWS Cloud Practitioner (CLF-C02) est le point d'entrée officiel dans l'écosystème AWS. L'examen valide ta compréhension globale du cloud AWS : services principaux (EC2, S3, RDS, Lambda, VPC), modèles de tarification, modèle de responsabilité partagée, IAM, régions et zones de disponibilité, bonnes pratiques d'architecture Well-Architected. Elle ne demande pas de background technique lourd, mais une réelle compréhension du cloud.",
-        "importance": "Certification à haute valeur commerciale : elle prouve que tu comprends AWS sans être forcément développeur. Fortement recommandée pour les chefs de projet, product managers, avant-vente et consultants qui interagissent avec des équipes cloud. C'est aussi le prérequis idéal avant Solutions Architect Associate.",
+        "importance": "Certification à forte valeur métier : elle prouve que tu comprends AWS sans être forcément développeur. Fortement recommandée pour les chefs de projet, product managers, avant-vente et consultants qui travaillent avec des équipes cloud. C'est aussi une première étape idéale avant Solutions Architect - Associate (ce n'est pas un prérequis obligatoire).",
         "target_roles": [
             "Chef de projet Cloud",
             "Product Manager Tech",
@@ -10671,11 +10671,11 @@
         "default_language": "fr"
     },
     {
-        "title": "ITIL Foundation v5",
+        "title": "ITIL Foundation (Version 5)",
         "slug": "itil-foundation-v5",
         "logo_path": "logos/Te5KCbriCQWccBBGeWjxNjIXxz82RHCtWv6au1x5.svg",
-        "description": "Le référentiel mondial de la gestion des services IT.",
-        "long_description": "ITIL est le framework le plus adopté au monde pour structurer la gestion des services IT. La certification Foundation valide ta compréhension du système de valeur ITIL, des sept principes directeurs, des quatre dimensions, du modèle d'amélioration continue et des principales pratiques (gestion des incidents, des problèmes, des changements, des demandes, des niveaux de service). C'est le socle indispensable avant de viser ITIL Practitioner, Managing Professional ou Strategic Leader.",
+        "description": "Le référentiel mondial de la gestion des produits et services numériques.",
+        "long_description": "ITIL est le framework le plus adopté au monde pour la gestion des produits et services numériques. La certification Foundation valide ta compréhension du système de valeur ITIL, des sept principes directeurs, des quatre dimensions de la gestion des produits et services, du cycle de vie des produits et services, du modèle d'amélioration continue ITIL, des flux de valeur et de la place de l'IA dans ITIL. C'est le socle indispensable avant les qualifications ITIL (Version 5) de niveau supérieur.",
         "importance": "Prérequis explicite ou implicite dans la majorité des offres d'encadrement ITSM en France, en Belgique et au Canada. On la retrouve dans les fiches de poste 'Service Manager', 'Change Manager', 'Problem Manager', 'Chef de projet SI' ou 'Product Owner IT'. Elle apparaît comme un critère de sélection dans les grilles RH des grands comptes (banques, telco, secteur public).",
         "target_roles": [
             "IT Service Manager",

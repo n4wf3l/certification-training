@@ -10,6 +10,7 @@ class AiExplanation extends Model
     protected $fillable = [
         'question_id',
         'wrong_answer_id',
+        'locale',
         'explanation',
         'model',
         'tokens_used',

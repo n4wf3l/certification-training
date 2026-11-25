@@ -97,8 +97,9 @@ class StatsController extends Controller
                 $catalog = UserBadge::CATALOG[$b->badge_key] ?? ['label' => $b->badge_key, 'description' => '', 'icon' => 'sparkles'];
                 return [
                     'key' => $b->badge_key,
-                    'label' => $catalog['label'],
-                    'description' => $catalog['description'],
+                    // Libelles traduits (lang/{fr,en}/badges.php), repli sur le catalogue.
+                    'label' => trans()->has("badges.{$b->badge_key}.label") ? __("badges.{$b->badge_key}.label") : $catalog['label'],
+                    'description' => trans()->has("badges.{$b->badge_key}.description") ? __("badges.{$b->badge_key}.description") : $catalog['description'],
                     'icon' => $catalog['icon'],
                     'certification' => $b->certification ? [
                         'title' => $b->certification->title,

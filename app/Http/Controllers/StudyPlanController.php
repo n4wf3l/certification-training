@@ -72,7 +72,7 @@ class StudyPlanController extends Controller
             ->where('certification_id', $data['certification_id'])
             ->exists();
         if ($existing) {
-            return back()->withErrors(['certification_id' => "Tu as deja un plan pour cette certification. Supprime l'ancien avant d'en creer un nouveau."]);
+            return back()->withErrors(['certification_id' => __('flash.study_plan_exists')]);
         }
 
         $plan = StudyPlan::create([
@@ -154,7 +154,7 @@ class StudyPlanController extends Controller
 
         $now = now()->format('Ymd\THis\Z');
         $examDate = $studyPlan->exam_date->format('Ymd');
-        $certTitle = str_replace(',', '\,', $studyPlan->certification->title);
+        $certTitle = str_replace(',', '\,', $studyPlan->certification->localized(app()->getLocale(), 'title') ?? $studyPlan->certification->title);
         $dailyTarget = $studyPlan->daily_target;
 
         // UID stables pour permettre le refresh des events sans doublons
@@ -176,12 +176,12 @@ class StudyPlanController extends Controller
             "UID:{$uidExam}",
             "DTSTAMP:{$now}",
             "DTSTART;VALUE=DATE:{$examDate}",
-            "SUMMARY:Examen {$certTitle}",
-            "DESCRIPTION:Jour J de ton examen {$certTitle}. Bonne chance !",
+            'SUMMARY:' . __('calendar.exam_summary', ['cert' => $certTitle]),
+            'DESCRIPTION:' . __('calendar.exam_description', ['cert' => $certTitle]),
             'BEGIN:VALARM',
             'TRIGGER:-P1D',
             'ACTION:DISPLAY',
-            "DESCRIPTION:Examen {$certTitle} demain",
+            'DESCRIPTION:' . __('calendar.exam_alarm', ['cert' => $certTitle]),
             'END:VALARM',
             'END:VEVENT',
 
@@ -191,8 +191,8 @@ class StudyPlanController extends Controller
             "DTSTAMP:{$now}",
             'DTSTART:' . now()->format('Ymd\T193000\Z'),
             'DTEND:' . now()->format('Ymd\T200000\Z'),
-            "SUMMARY:Revision {$certTitle} ({$dailyTarget} questions)",
-            "DESCRIPTION:Objectif du jour : {$dailyTarget} questions sur CertifLoop pour maintenir ton rythme.",
+            'SUMMARY:' . __('calendar.daily_summary', ['cert' => $certTitle, 'n' => $dailyTarget]),
+            'DESCRIPTION:' . __('calendar.daily_description', ['n' => $dailyTarget]),
             "RRULE:FREQ=DAILY;UNTIL={$rruleUntil}",
             'END:VEVENT',
 

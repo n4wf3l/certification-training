@@ -675,6 +675,7 @@ export default function Result({ attempt, certification, details, mastery, compa
                                                 <ExplainMeButton
                                                     questionId={currentDetail.question_id}
                                                     wrongAnswerId={currentDetail.chosen?.id ?? null}
+                                                    locale={attempt.locale}
                                                 />
                                             </div>
                                         )}

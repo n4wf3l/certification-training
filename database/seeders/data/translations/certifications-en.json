@@ -2,16 +2,16 @@
     "meta": {
         "locale": "en",
         "canonical_from": "fr",
-        "dumped_at": "2026-07-28",
+        "dumped_at": "2026-11-24",
         "source": "certifloop:dump-seeders"
     },
     "certifications": {
         "comptia-a-plus": {
             "title": "CompTIA A+",
-            "description": "The reference vendor-neutral certification for starting a career in IT support.",
-            "long_description": "CompTIA A+ validates the full set of IT support fundamentals: PC hardware, operating systems (Windows, macOS, Linux, iOS, Android), networking, basic cybersecurity, incident resolution, and operational procedures. It's the only vendor-neutral certification (not tied to a specific manufacturer) universally accepted for a first support role.",
-            "importance": "Often required for a first helpdesk job at major companies (Dell, HP, IBM, as well as in the US public sector and increasingly in Europe). It reassures recruiters about your ability to work on a heterogeneous fleet from day one.",
-            "validity_note": "CompTIA A+ = two mandatory exams (Core 1: 220-1101, threshold 675/900 = 75% · Core 2: 220-1102, threshold 700/900 = 77.7%). Each core lasts 90 min for 90 questions. Values shown here are for Core 2. Valid for 3 years, renewable via 20 CEUs (Continuing Education Units) or a higher CompTIA cert. 30-day grace period after expiration to upload your CEUs.",
+            "description": "The benchmark vendor-neutral certification for starting a career in IT support.",
+            "long_description": "CompTIA A+ validates the core IT support skills: PC hardware, operating systems (Windows, macOS, Linux, iOS, Android), networking, basic cybersecurity, troubleshooting, and operational procedures. It is the most widely recognized vendor-neutral certification (not tied to a specific manufacturer) for a first support role.",
+            "importance": "Often required for a first helpdesk job at large companies (Dell, HP, IBM), in the US public sector and increasingly in Europe. It reassures recruiters that you can work on a wide range of devices and systems from day one.",
+            "validity_note": "CompTIA A+ requires two exams (Core 1: 220-1201, passing score 675 on a 100-900 scale; Core 2: 220-1202, passing score 700 on a 100-900 scale). Each exam lasts 90 minutes with a maximum of 90 questions. Valid for 3 years, renewable with 20 CEUs (Continuing Education Units) or a higher-level CompTIA certification.",
             "target_roles": [
                 "Helpdesk Technician",
                 "IT Support Tier 1",
@@ -23,24 +23,24 @@
         "aws-cloud-practitioner": {
             "title": "AWS Cloud Practitioner",
             "description": "AWS fundamentals: services, pricing, security, and the cloud model.",
-            "long_description": "The AWS Cloud Practitioner (CLF-C02) is the official entry point into the AWS ecosystem. The exam validates your overall understanding of the AWS cloud: core services (EC2, S3, RDS, Lambda, VPC), pricing models, the shared responsibility model, IAM, regions and availability zones, Well-Architected best practices. It does not require deep technical background, but a real understanding of the cloud.",
-            "importance": "High commercial value certification: it proves you understand AWS without necessarily being a developer. Strongly recommended for project managers, product managers, pre-sales, and consultants who interact with cloud teams. It's also the ideal prerequisite before Solutions Architect Associate.",
-            "validity_note": "Valid for 3 years. The official exam uses a scaled score of 700/1000 (≈ 70%), shown here as raw equivalent over 65 questions (of which 15 are unscored by AWS). Renewal by retaking the exam, via an AWS Associate/Pro/Specialty cert, or via AWS Cloud Quest (available within 6 months before expiration).",
+            "long_description": "The AWS Certified Cloud Practitioner (CLF-C02) is the official entry point into the AWS ecosystem. The exam validates your overall understanding of the AWS Cloud: core services (EC2, S3, RDS, Lambda, VPC), pricing models, the shared responsibility model, IAM, Regions and Availability Zones, and Well-Architected best practices. It does not require a deep technical background, but it does require a real understanding of the cloud.",
+            "importance": "A certification with high business value: it proves you understand AWS without necessarily being a developer. Strongly recommended for project managers, product managers, pre-sales staff, and consultants who work with cloud teams. It's also an ideal first step before Solutions Architect - Associate (it is not a formal prerequisite).",
+            "validity_note": "Valid for 3 years. The official exam uses a scaled score with a pass mark of 700/1000, shown here as an approximate raw equivalent over 65 questions (15 of which are unscored by AWS). Renew by retaking the exam, by earning an AWS Associate, Professional or Specialty certification, or through AWS Cloud Quest: Recertify Cloud Practitioner (available in the 6 months before expiration).",
             "target_roles": [
-                "Project Manager",
+                "Cloud Project Manager",
                 "Product Manager",
                 "Pre-Sales Consultant",
                 "IT Consultant",
-                "Business Analyst",
-                "Non-technical Cloud Stakeholder"
+                "Developer moving into cloud",
+                "Engineering apprentice"
             ]
         },
         "itil-foundation-v5": {
-            "title": "ITIL Foundation v5",
-            "description": "The worldwide reference framework for IT service management.",
-            "long_description": "ITIL is the most widely adopted framework in the world for structuring IT service management. The Foundation certification validates your understanding of the ITIL Service Value System, the seven guiding principles, the four dimensions, the continual improvement model, and the main practices (incident, problem, change, service request, service level management). It's the essential foundation before targeting ITIL Practitioner, Managing Professional, or Strategic Leader.",
-            "importance": "Explicit or implicit prerequisite in most ITSM management job postings in the US, UK, and Canada. Found in 'Service Manager', 'Change Manager', 'Problem Manager', 'IT Project Manager', or 'IT Product Owner' job descriptions. It appears as a selection criterion in HR grids at major companies (banking, telco, public sector).",
-            "validity_note": "Since PeopleCert updated its renewal policy, ITIL Foundation v5 is valid for 3 years from the pass date. To keep it active, three options before expiration: accumulate CPD points via PeopleCert Plus over 3 years, pass another ITIL certification, or retake the same exam. Official badges issued in 2026 carry an expiration date in 2029, confirming the 3-year duration.",
+            "title": "ITIL Foundation (Version 5)",
+            "description": "The worldwide reference framework for digital product and service management.",
+            "long_description": "ITIL is the most widely adopted framework in the world for digital product and service management. The Foundation certification validates your understanding of the ITIL Value System, the seven guiding principles, the Four Dimensions of Product and Service Management, the ITIL Product and Service Lifecycle, the ITIL Continual Improvement Model, value streams, and ITIL and AI. It's the essential foundation before moving on to the higher-level ITIL (Version 5) qualifications.",
+            "importance": "An explicit or implicit prerequisite in most ITSM management job postings in France, Belgium and Canada. It is found in 'Service Manager', 'Change Manager', 'Problem Manager', 'IT Project Manager' and 'IT Product Owner' job descriptions, and is used as a screening criterion by large organizations (banking, telecom, public sector).",
+            "validity_note": "Under PeopleCert's updated renewal policy, ITIL Foundation (Version 5) is valid for 3 years from the date you pass. To keep it active before it expires, you can collect CPD points through PeopleCert Plus over the 3 years, pass another ITIL certification, or retake the same exam. Official badges issued in 2026 show an expiration date in 2029, consistent with the 3-year validity.",
             "target_roles": [
                 "IT Service Manager",
                 "Service Desk Manager",

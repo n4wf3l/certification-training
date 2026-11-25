@@ -51,5 +51,12 @@ return [
     'exam_no_questions_language' => "Aucune question disponible dans cette langue pour l'instant.",
     'exam_no_questions_domain_language' => 'Aucune question disponible dans ce domaine pour cette langue.',
     'ai_api_unreachable' => "Impossible de contacter l'API OpenAI. Réessaie plus tard.",
+    'ai_not_configured' => "Fonction inactive : l'admin doit d'abord enregistrer une clé OpenAI dans les réglages.",
+    'ai_disabled' => "Fonction désactivée par l'admin.",
+    'ai_daily_limit' => 'Limite quotidienne atteinte (:limit explications par jour). Réessaie dans :hours h.',
+    'ai_api_error' => "Erreur de l'API OpenAI (HTTP :status). Vérifie la clé dans les réglages admin.",
+    'ai_empty' => "L'API a renvoyé une explication vide.",
+    'admin_only' => 'Accès réservé aux administrateurs.',
+    'study_plan_exists' => "Tu as déjà un plan pour cette certification. Supprime l'ancien avant d'en créer un nouveau.",
     'register_rejected' => "L'inscription n'a pas pu aboutir. Recharge la page et réessaie.",
 ];

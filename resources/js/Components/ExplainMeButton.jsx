@@ -4,7 +4,7 @@ import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useState } from 'react';
 
-export default function ExplainMeButton({ questionId, wrongAnswerId = null }) {
+export default function ExplainMeButton({ questionId, wrongAnswerId = null, locale = null }) {
     const t = useT();
     const { features } = usePage().props;
     const aiEnabled = !!features?.ai_explain;
@@ -32,7 +32,7 @@ export default function ExplainMeButton({ questionId, wrongAnswerId = null }) {
         try {
             const res = await axios.post(
                 route('questions.explain', questionId),
-                { wrong_answer_id: wrongAnswerId }
+                { wrong_answer_id: wrongAnswerId, locale }
             );
             setExplanation(res.data.explanation);
             setCached(!!res.data.cached);

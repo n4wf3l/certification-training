@@ -33,7 +33,7 @@ class UserBadge extends Model
         'xp_10000' => ['label' => 'Expert', 'description' => '10 000 XP cumules', 'icon' => 'trophy'],
         'first_pass' => ['label' => 'Premier examen valide', 'description' => 'Ton premier examen blanc reussi', 'icon' => 'check'],
         'perfect_exam' => ['label' => 'Sans-faute', 'description' => 'Un examen blanc a 100%', 'icon' => 'trophy'],
-        'master_cert' => ['label' => 'Maitre de la certif', 'description' => '90% de maitrise sur le pool', 'icon' => 'shield'],
+        'master_cert' => ['label' => 'Maitre de la certif', 'description' => '3 examens blancs complets a 100 % d affilee', 'icon' => 'shield'],
     ];
 
     public function user(): BelongsTo

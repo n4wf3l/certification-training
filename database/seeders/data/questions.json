@@ -14536,7 +14536,7 @@
             "learning_objective": "2.1.3",
             "scenario": null,
             "question_text": "Pourquoi les quatre dimensions doivent-elles être considérées ensemble ?",
-            "explanation": "ITIL insiste : les quatre dimensions doivent être équilibrées et considérées ensemble. Négliger une dimension (par ex. former les gens sur une nouvelle techno) crée un déséquilibre qui dégrade tout le service.",
+            "explanation": "ITIL insiste : les quatre dimensions doivent être équilibrées et considérées ensemble. Négliger une dimension (par ex. ne pas former les gens à une nouvelle technologie) crée un déséquilibre qui dégrade tout le service.",
             "question_type": "multiple_choice",
             "matching_pairs": null,
             "answers": [
@@ -24732,7 +24732,7 @@
                 },
                 {
                     "letter": "B",
-                    "answer_text": "Elle concerne les équipes informatiques du fournisseur",
+                    "answer_text": "Elle concerne uniquement les équipes informatiques du fournisseur",
                     "rationale": "La collaboration ne se limite pas aux équipes informatiques internes.",
                     "is_correct": false
                 },

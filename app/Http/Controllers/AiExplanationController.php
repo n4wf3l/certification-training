@@ -21,14 +21,17 @@ class AiExplanationController extends Controller
     {
         $data = $request->validate([
             'wrong_answer_id' => 'nullable|integer|exists:answers,id',
+            // Langue dans laquelle l'utilisateur a vu la question (celle de l'examen).
+            'locale' => ['nullable', 'string', 'regex:/^[a-z]{2}$/'],
         ]);
         $wrongAnswerId = $data['wrong_answer_id'] ?? null;
+        $locale = $data['locale'] ?? app()->getLocale();
 
         // Verifier que la cle OpenAI est configuree
         $apiKey = Setting::get('openai_api_key');
         if (empty($apiKey)) {
             return response()->json([
-                'error' => "La feature n'est pas activee : l'admin doit configurer une cle OpenAI dans les parametres.",
+                'error' => __('flash.ai_not_configured'),
             ], 503);
         }
 
@@ -36,7 +39,7 @@ class AiExplanationController extends Controller
         $dailyLimit = (int) Setting::get('openai_daily_limit_per_user', 10);
         if ($dailyLimit === 0) {
             return response()->json([
-                'error' => "La feature est desactivee par l'admin.",
+                'error' => __('flash.ai_disabled'),
             ], 503);
         }
 
@@ -46,13 +49,14 @@ class AiExplanationController extends Controller
             $seconds = RateLimiter::availableIn($key);
             $hours = ceil($seconds / 3600);
             return response()->json([
-                'error' => "Limite quotidienne atteinte ({$dailyLimit} explications/jour). Reessaie dans {$hours}h.",
+                'error' => __('flash.ai_daily_limit', ['limit' => $dailyLimit, 'hours' => $hours]),
             ], 429);
         }
 
         // Cache : si on a deja genere pour cette (question, wrong_answer), on renvoie le cache
         $cached = AiExplanation::where('question_id', $question->id)
             ->where('wrong_answer_id', $wrongAnswerId)
+            ->where('locale', $locale)
             ->first();
         if ($cached) {
             return response()->json([
@@ -67,7 +71,7 @@ class AiExplanationController extends Controller
         $correctAnswer = $question->answers->firstWhere('is_correct', true);
 
         // Construire le prompt
-        $prompt = $this->buildPrompt($question, $wrongAnswer, $correctAnswer);
+        $prompt = $this->buildPrompt($question, $wrongAnswer, $correctAnswer, $locale);
 
         // Appel OpenAI
         try {
@@ -76,7 +80,7 @@ class AiExplanationController extends Controller
                 ->post('https://api.openai.com/v1/chat/completions', [
                     'model' => self::MODEL,
                     'messages' => [
-                        ['role' => 'system', 'content' => "Tu es un tuteur personnel specialise dans les certifications IT. Tu expliques avec bienveillance pourquoi une reponse est fausse, en te mettant a la place de l'utilisateur pour comprendre son raisonnement, puis en corrigeant."],
+                        ['role' => 'system', 'content' => 'You are a personal tutor for IT certifications. You kindly explain why an answer is wrong: first understand the learner\'s reasoning, then correct it.'],
                         ['role' => 'user', 'content' => $prompt],
                     ],
                     'temperature' => 0.6,
@@ -92,7 +96,7 @@ class AiExplanationController extends Controller
         if (! $response->successful()) {
             Log::warning('OpenAI API error', ['status' => $response->status(), 'body' => $response->body()]);
             return response()->json([
-                'error' => "Erreur cote API OpenAI (HTTP {$response->status()}). Verifie ta cle admin.",
+                'error' => __('flash.ai_api_error', ['status' => $response->status()]),
             ], 502);
         }
 
@@ -101,13 +105,14 @@ class AiExplanationController extends Controller
         $tokensUsed = $body['usage']['total_tokens'] ?? null;
 
         if (empty($explanation)) {
-            return response()->json(['error' => "L'API a retourne une explication vide."], 502);
+            return response()->json(['error' => __('flash.ai_empty')], 502);
         }
 
         // Cache en base
         AiExplanation::create([
             'question_id' => $question->id,
             'wrong_answer_id' => $wrongAnswerId,
+            'locale' => $locale,
             'explanation' => $explanation,
             'model' => self::MODEL,
             'tokens_used' => $tokensUsed,
@@ -122,41 +127,49 @@ class AiExplanationController extends Controller
         ]);
     }
 
-    private function buildPrompt(Question $question, ?Answer $wrong, ?Answer $correct): string
+    /**
+     * Prompt en anglais, contenu dans la langue vue par l'utilisateur, reponse
+     * demandee dans cette meme langue. Les options sont citees par leur texte :
+     * les lettres sont melangees a chaque examen, l'IA ne doit pas s'y referer.
+     */
+    private function buildPrompt(Question $question, ?Answer $wrong, ?Answer $correct, string $locale): string
     {
+        $canonical = $question->certification?->default_language ?? 'en';
+        $text = fn ($model, string $field) => $model->localized($locale, $field, $canonical);
+        $language = ['fr' => 'French', 'en' => 'English', 'de' => 'German', 'es' => 'Spanish', 'it' => 'Italian', 'pt' => 'Portuguese', 'pl' => 'Polish', 'ja' => 'Japanese', 'zh' => 'Chinese'][$locale] ?? 'English';
+
         $lines = [];
         if ($question->certification) {
-            $lines[] = "Contexte : certification {$question->certification->title}.";
+            $lines[] = "Context: {$question->certification->title} certification.";
         }
-        if ($question->topic) {
-            $lines[] = "Thème : {$question->topic}.";
+        if ($topic = $text($question, 'topic')) {
+            $lines[] = "Topic: {$topic}.";
         }
-        if ($question->scenario) {
-            $lines[] = "Scénario : {$question->scenario}";
+        if ($scenario = $text($question, 'scenario')) {
+            $lines[] = "Scenario: {$scenario}";
         }
-        $lines[] = "Question : {$question->question_text}";
+        $lines[] = 'Question: ' . $text($question, 'question_text');
         $lines[] = '';
-        $lines[] = 'Options :';
+        $lines[] = 'Options:';
         foreach ($question->answers as $a) {
-            $mark = $a->is_correct ? '[BONNE]' : '';
-            $lines[] = "  {$a->letter}. {$a->answer_text} {$mark}";
+            $lines[] = '- ' . $text($a, 'answer_text') . ($a->is_correct ? ' [CORRECT]' : '');
         }
         $lines[] = '';
         if ($wrong && ! $wrong->is_correct) {
-            $lines[] = "L'utilisateur a choisi la reponse {$wrong->letter} : « {$wrong->answer_text} ». Cette reponse est FAUSSE.";
+            $lines[] = 'The learner chose: "' . $text($wrong, 'answer_text') . '". This answer is WRONG.';
             if ($correct) {
-                $lines[] = "La bonne reponse etait la {$correct->letter} : « {$correct->answer_text} ».";
+                $lines[] = 'The correct answer was: "' . $text($correct, 'answer_text') . '".';
             }
             $lines[] = '';
-            $lines[] = "Explique pedagogiquement en 3 a 5 phrases :";
-            $lines[] = "1. Pourquoi l'utilisateur a probablement ete tente par {$wrong->letter} (le piege).";
-            $lines[] = "2. Pourquoi cette reponse est fausse (le concept qu'il a mal saisi).";
-            $lines[] = "3. Pourquoi la {$correct?->letter} est la bonne (le concept correct).";
+            $lines[] = 'In 3 to 5 sentences, explain:';
+            $lines[] = '1. why the learner was probably tempted by their choice (the trap);';
+            $lines[] = '2. why it is wrong (the concept they misunderstood);';
+            $lines[] = '3. why the correct answer is right (the correct concept).';
         } else {
-            $lines[] = "Explique la bonne reponse en 3 a 4 phrases : pourquoi elle est correcte, quel concept elle teste, et le piege classique a eviter.";
+            $lines[] = 'In 3 to 4 sentences, explain the correct answer: why it is right, which concept it tests, and the classic trap to avoid.';
         }
         $lines[] = '';
-        $lines[] = 'Reponse en francais, ton pedagogique et clair. Pas de titres, pas de listes numerotees, juste un paragraphe fluide.';
+        $lines[] = "Write the answer in {$language}, in a clear teaching tone. Refer to options by their wording, never by a letter. No headings, no numbered list: one flowing paragraph.";
 
         return implode("\n", $lines);
     }

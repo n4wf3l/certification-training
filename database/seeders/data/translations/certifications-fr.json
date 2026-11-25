@@ -2,16 +2,16 @@
     "meta": {
         "locale": "fr",
         "canonical_from": "fr",
-        "dumped_at": "2026-07-28",
+        "dumped_at": "2026-11-24",
         "source": "certifloop:dump-seeders"
     },
     "certifications": {
         "ccna-200-301": {
             "title": "CCNA 200-301",
             "description": "Cisco Certified Network Associate - routing, switching, sécurité, automatisation.",
-            "long_description": "La CCNA (Cisco Certified Network Associate) est LA porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routing (statique, OSPF), switching (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port-security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS) et automatisation (Python, REST, JSON, Ansible). C'est la certification Cisco la plus reconnue au monde et le prérequis vers CCNP puis CCIE.",
+            "long_description": "La CCNA (Cisco Certified Network Associate) est la porte d'entrée aux métiers du réseau. L'examen 200-301 couvre les fondamentaux : routage (statique, OSPF), commutation (VLAN, STP, EtherChannel), IPv4/IPv6, sécurité (ACL, port security, VPN de base), infrastructure sans fil, services IP (NAT, DHCP, QoS), automatisation et programmabilité (API REST, JSON, Ansible/Terraform, notions d'IA et de machine learning). C'est l'une des certifications IT les plus reconnues et une première étape courante vers CCNP et CCIE, qui n'ont pas de prérequis formel.",
             "importance": "La CCNA est explicitement demandée dans la majorité des offres 'Network Engineer', 'NOC Analyst' ou 'Ingénieur systèmes et réseaux' en France comme à l'international. Elle valide un socle technique que les recruteurs prennent au sérieux et débloque les grilles de salaire junior→confirmé.",
-            "validity_note": "Valide 3 ans. L'examen officiel utilise un score scaled 825/1000 environ (≈ 82,5 %) - Cisco garde le seuil exact confidentiel. Renouvellement : repasser l'examen, réussir un exam Cisco de niveau supérieur (CCNP, CCIE), ou cumuler 30 CE credits. Aucune période de grâce.",
+            "validity_note": "Valide 3 ans. Cisco ne publie pas le seuil de réussite : l'examen utilise un score sur une échelle, et le chiffre souvent cité d'environ 825/1000 n'est pas officiel. Renouvellement : repasser l'examen, réussir un examen Cisco de niveau supérieur (CCNP, CCIE) ou cumuler 30 CE credits. Aucune période de grâce.",
             "target_roles": [
                 "Network Engineer Junior",
                 "Support Réseau N1/N2",

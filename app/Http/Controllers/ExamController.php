@@ -96,17 +96,37 @@ class ExamController extends Controller
             ->whereRaw("json_extract(translations, ?) IS NOT NULL", ["\$.\"{$locale}\".question_text"]);
     }
 
+    /**
+     * Langue des questions d'une session :
+     *  1. celle choisie explicitement (parmi les langues de la certification) ;
+     *  2. sinon la langue du site, si la banque existe dans cette langue
+     *     (ITIL en anglais sur /en, par exemple) ;
+     *  3. sinon la langue canonique de la certification.
+     */
+    private function examLocale(Request $request, Certification $certification): string
+    {
+        $canonical = $certification->default_language ?? 'en';
+        $available = $certification->available_languages ?: [$canonical];
+
+        $requested = $request->input('lang');
+        if (is_string($requested) && in_array($requested, $available, true)) {
+            return $requested;
+        }
+
+        $site = app()->getLocale();
+        if ($site !== $canonical && in_array($site, $available, true)
+            && $this->eligibleQuestionsQuery($certification, $site)->exists()) {
+            return $site;
+        }
+
+        return $canonical;
+    }
+
     public function start(Request $request, Certification $certification): RedirectResponse
     {
         abort_unless($certification->is_active, 404);
 
-        // Locale de l'exam : validee contre les langues assignees a la certif.
-        // Fallback = default_language de la certif (langue des colonnes directes).
-        $available = $certification->available_languages ?: [$certification->default_language ?? 'en'];
-        $requestedLang = $request->input('lang');
-        $locale = (is_string($requestedLang) && in_array($requestedLang, $available, true))
-            ? $requestedLang
-            : ($certification->default_language ?? 'en');
+        $locale = $this->examLocale($request, $certification);
 
         // Le pool depend de la langue : en langue non canonique, seules les questions
         // avec traduction complete sont eligibles.
@@ -157,12 +177,7 @@ class ExamController extends Controller
     {
         abort_unless($certification->is_active, 404);
 
-        // Locale du practice : validee comme pour un exam complet.
-        $available = $certification->available_languages ?: [$certification->default_language ?? 'en'];
-        $requestedLang = $request->input('lang');
-        $locale = (is_string($requestedLang) && in_array($requestedLang, $available, true))
-            ? $requestedLang
-            : ($certification->default_language ?? 'en');
+        $locale = $this->examLocale($request, $certification);
 
         // Sanity check : le domaine existe-t-il dans le blueprint OU sur au moins 1 question (dans cette langue) ?
         $blueprint = $certification->syllabus_blueprint ?? [];
@@ -235,11 +250,7 @@ class ExamController extends Controller
     {
         abort_unless($certification->is_active, 404);
 
-        $available = $certification->available_languages ?: [$certification->default_language ?? 'en'];
-        $requestedLang = $request->input('lang');
-        $locale = (is_string($requestedLang) && in_array($requestedLang, $available, true))
-            ? $requestedLang
-            : ($certification->default_language ?? 'en');
+        $locale = $this->examLocale($request, $certification);
 
         $availableQuestions = $this->eligibleQuestionsQuery($certification, $locale)->count();
         abort_if($availableQuestions === 0, 422, __('flash.exam_no_questions_language'));

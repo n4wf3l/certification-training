@@ -1,7 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import Icon from '@/Components/Icons';
 import { LANGUAGE_CATALOG } from '@/lib/languages';
-import { useT } from '@/lib/i18n';
+import { useLocale, useT } from '@/lib/i18n';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -145,7 +145,12 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
     const availableLangs = certification.available_languages?.length
         ? certification.available_languages
         : [certification.default_language || 'en'];
-    const [examLang, setExamLang] = useState(certification.default_language || availableLangs[0]);
+    // Langue proposee par defaut : celle du site si la banque existe dans cette
+    // langue (ITIL en anglais sur /en), sinon la langue canonique de la certif.
+    const siteLocale = useLocale();
+    const siteLangReady = availableLangs.includes(siteLocale)
+        && (certification.language_pools?.[siteLocale]?.available ?? 0) > 0;
+    const [examLang, setExamLang] = useState(siteLangReady ? siteLocale : (certification.default_language || availableLangs[0]));
     const languageMeta = useMemo(() => {
         const map = new Map();
         LANGUAGE_CATALOG.forEach((l) => map.set(l.code, l));
