@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * La langue d'une page vient de son adresse : racine = francais, /en/... = anglais
+ * La langue d'une page vient de son adresse : racine = anglais, /fr/... = francais
  * (App\Support\LocaleUrl). C'est ce qui permet a Google d'indexer les deux langues.
  *
- * Confort : un visiteur qui a explicitement choisi l'anglais (cookie du
+ * Confort : un visiteur qui a explicitement choisi le francais (cookie du
  * LocaleSwitcher ou preference de son compte) et qui arrive sur une adresse
- * francaise est redirige vers la version /en. Les robots, sans cookie, voient
+ * anglaise (racine) est redirige vers la version /fr. Les robots, sans cookie, voient
  * chaque adresse dans sa propre langue. L'ancien ?lang=xx redirige vers la bonne adresse.
  *
  * Hors pages (POST /locale, robots.txt, sitemap.xml) : la langue de la session.
@@ -35,18 +35,24 @@ class SetLocale
             return $next($request);
         }
 
+        // Ancienne adresse /en/... : la route redirige (301) vers la racine.
+        if (in_array($request->segment(1), LocaleUrl::LEGACY, true)) {
+            return $next($request);
+        }
+
         $fromUrl = LocaleUrl::fromRequest($request) ?? LocaleUrl::DEFAULT;
 
         if ($request->isMethod('GET')) {
-            // Ancien format de lien partage : ?lang=en -> /en/...
+            // Ancien format de lien partage : ?lang=fr -> /fr/...
             $fromQuery = $request->query('lang');
             if (is_string($fromQuery) && $this->isSupported($fromQuery)) {
                 return $this->redirectTo($request, strtolower($fromQuery));
             }
 
-            // Preference explicite pour l'anglais, sur une adresse francaise.
-            if ($fromUrl === LocaleUrl::DEFAULT && $this->storedPreference($request) === 'en') {
-                return $this->redirectTo($request, 'en');
+            // Preference explicite pour une autre langue que celle de la racine.
+            $preference = $this->storedPreference($request);
+            if ($fromUrl === LocaleUrl::DEFAULT && $preference !== null && $preference !== LocaleUrl::DEFAULT) {
+                return $this->redirectTo($request, $preference);
             }
         }
 

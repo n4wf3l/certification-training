@@ -69,15 +69,15 @@ class ContentLanguageTest extends TestCase
         $this->frenchCert(withEnglish: true);
         $user = User::factory()->create();
 
-        $this->routesFor('/en/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/en/certifications/itil-foundation-v5/sprint')->assertRedirect();
+        $this->routesFor('/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/certifications/itil-foundation-v5/sprint')->assertRedirect();
         $this->assertSame('en', Attempt::latest('id')->first()->locale);
 
-        // Sur le site francais : questions en francais.
-        $this->routesFor('/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/certifications/itil-foundation-v5/sprint')->assertRedirect();
+        // Sur le site francais (/fr) : questions en francais.
+        $this->routesFor('/fr/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/fr/certifications/itil-foundation-v5/sprint')->assertRedirect();
         $this->assertSame('fr', Attempt::latest('id')->first()->locale);
 
         // Un choix explicite l'emporte sur la langue du site.
-        $this->routesFor('/en/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/en/certifications/itil-foundation-v5/sprint', ['lang' => 'fr'])->assertRedirect();
+        $this->routesFor('/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/certifications/itil-foundation-v5/sprint', ['lang' => 'fr'])->assertRedirect();
         $this->assertSame('fr', Attempt::latest('id')->first()->locale);
     }
 
@@ -86,7 +86,7 @@ class ContentLanguageTest extends TestCase
         $this->frenchCert(withEnglish: false);
         $user = User::factory()->create();
 
-        $this->routesFor('/en/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/en/certifications/itil-foundation-v5/sprint')->assertRedirect();
+        $this->routesFor('/certifications/itil-foundation-v5/sprint')->actingAs($user)->post('/certifications/itil-foundation-v5/sprint')->assertRedirect();
         $this->assertSame('fr', Attempt::latest('id')->first()->locale);
     }
 
@@ -102,7 +102,7 @@ class ContentLanguageTest extends TestCase
         ])]);
         $user = User::factory()->create();
 
-        $this->routesFor("/en/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/en/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'en'])
+        $this->routesFor("/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'en'])
             ->assertOk()->assertJson(['cached' => false]);
         Http::assertSent(function ($request) {
             $prompt = $request['messages'][1]['content'];
@@ -112,14 +112,14 @@ class ContentLanguageTest extends TestCase
         });
 
         // Meme question en francais : nouvel appel, pas l'explication anglaise du cache.
-        $this->routesFor("/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'fr'])
+        $this->routesFor("/fr/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/fr/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'fr'])
             ->assertOk()->assertJson(['cached' => false]);
         Http::assertSent(fn ($request) => str_contains($request['messages'][1]['content'], 'Write the answer in French'));
 
         $this->assertEqualsCanonicalizing(['en', 'fr'], AiExplanation::pluck('locale')->all());
 
         // Deuxieme demande en anglais : servie depuis le cache.
-        $this->routesFor("/en/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/en/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'en'])
+        $this->routesFor("/questions/{$question->id}/explain-me-better")->actingAs($user)->postJson("/questions/{$question->id}/explain-me-better", ['wrong_answer_id' => $wrong->id, 'locale' => 'en'])
             ->assertOk()->assertJson(['cached' => true]);
     }
 }

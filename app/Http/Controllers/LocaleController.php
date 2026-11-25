@@ -10,7 +10,7 @@ use Inertia\Inertia;
 /**
  * Endpoint POST /locale utilise par le LocaleSwitcher : memorise le choix
  * (cookie + preference du compte) puis renvoie vers la meme page dans la
- * nouvelle langue (racine = francais, /en/... = anglais).
+ * nouvelle langue (racine = anglais, /fr/... = francais).
  */
 class LocaleController extends Controller
 {

@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 /**
  * robots.txt et sitemap.xml generes a partir de APP_URL et des certifications
  * en ligne. Chaque page est listee dans les deux langues avec ses alternatives
- * hreflang (racine = francais, /en/... = anglais).
+ * hreflang (racine = anglais, /fr/... = francais).
  */
 class SeoController extends Controller
 {

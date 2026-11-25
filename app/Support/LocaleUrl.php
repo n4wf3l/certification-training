@@ -5,8 +5,8 @@ namespace App\Support;
 use Illuminate\Http\Request;
 
 /**
- * Une adresse par langue : le francais a la racine (/legal), l'anglais sous
- * /en (/en/legal). La langue d'une page vient de son adresse, ce qui permet a
+ * Une adresse par langue : l'anglais a la racine (/legal), le francais sous
+ * /fr (/fr/legal). La langue d'une page vient de son adresse, ce qui permet a
  * Google d'indexer les deux versions (canonique + hreflang + sitemap).
  *
  * Les routes web sont enregistrees sous le prefixe de la requete courante
@@ -15,10 +15,16 @@ use Illuminate\Http\Request;
  */
 class LocaleUrl
 {
-    public const DEFAULT = 'fr';
+    public const DEFAULT = 'en';
 
     /** Langues servies sous un prefixe d'URL (la langue par defaut est a la racine). */
-    public const PREFIXED = ['en'];
+    public const PREFIXED = ['fr'];
+
+    /**
+     * Anciens prefixes (le francais etait a la racine et l'anglais sous /en
+     * jusqu'en novembre 2026) : redirection permanente vers la racine.
+     */
+    public const LEGACY = ['en'];
 
     /** Langue portee par le premier segment de l'adresse, ou null si aucun. */
     public static function fromRequest(Request $request): ?string
@@ -28,7 +34,7 @@ class LocaleUrl
         return in_array($first, self::PREFIXED, true) ? $first : null;
     }
 
-    /** Prefixe de route pour la requete courante ('' ou 'en'). */
+    /** Prefixe de route pour la requete courante ('' ou 'fr'). */
     public static function prefix(): string
     {
         // Commandes artisan : pas de requete HTTP, donc routes sans prefixe.
@@ -66,7 +72,7 @@ class LocaleUrl
         return url(rtrim("/$locale$basePath", '/'));
     }
 
-    /** ['fr' => url, 'en' => url] pour la page courante. */
+    /** ['en' => url, 'fr' => url] pour la page courante. */
     public static function alternates(Request $request): array
     {
         $base = self::basePath($request);

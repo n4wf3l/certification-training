@@ -23,7 +23,17 @@ Route::post('/locale', [\App\Http\Controllers\LocaleController::class, 'update']
 Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
 
-// Une adresse par langue : francais a la racine, anglais sous /en (App\Support\LocaleUrl).
+// Anciennes adresses anglaises (/en/...) : l'anglais est desormais a la racine.
+// Redirection permanente (301) pour les liens partages et l'index de Google.
+foreach (\App\Support\LocaleUrl::LEGACY as $legacy) {
+    Route::get($legacy.'/{path?}', function (\Illuminate\Http\Request $request, ?string $path = null) {
+        $query = $request->getQueryString();
+
+        return redirect('/'.ltrim((string) $path, '/').($query ? '?'.$query : ''), 301);
+    })->where('path', '.*');
+}
+
+// Une adresse par langue : anglais a la racine, francais sous /fr (App\Support\LocaleUrl).
 Route::prefix(\App\Support\LocaleUrl::prefix())->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 

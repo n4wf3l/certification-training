@@ -16,14 +16,14 @@ export default defineConfig({
             manifest: {
                 name: 'CertifLoop',
                 short_name: 'CertifLoop',
-                description: "Entrainement adaptatif aux certifications IT. Streaks, correction IA, examens blancs, revision offline.",
+                description: 'Adaptive practice for IT certifications: mock exams, detailed explanations, offline review.',
                 theme_color: '#12ccb0',
                 background_color: '#ffffff',
                 display: 'standalone',
                 orientation: 'portrait',
                 scope: '/',
                 start_url: '/',
-                lang: 'fr',
+                lang: 'en',
                 categories: ['education', 'productivity'],
                 // PNG d'abord : plusieurs navigateurs n'installent pas une PWA avec seulement du SVG.
                 icons: [
