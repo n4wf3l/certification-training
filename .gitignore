@@ -22,3 +22,7 @@ yarn-error.log
 /.vscode
 /.zed
 /.claude
+
+# Tests de parcours (Playwright)
+/test-results
+/playwright-report

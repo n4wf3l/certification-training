@@ -55,6 +55,24 @@ jobs:
       - name: Tests JS
         run: npm run test:js
 
+      # Parcours complets dans un vrai navigateur : iPhone (WebKit, moteur de
+      # Safari) et ordinateur (Chromium). Bloque le deploiement s'ils cassent.
+      - name: Navigateurs des tests de parcours
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Tests de parcours (iPhone et ordinateur)
+        run: npm run test:e2e
+
+      - name: Rapport des parcours en échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parcours-en-echec
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
   deploy:
     needs: tests
     runs-on: ubuntu-24.04
