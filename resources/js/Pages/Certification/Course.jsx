@@ -68,7 +68,7 @@ export default function Course({ certification }) {
                         <Icon.ArrowLeft className="h-3.5 w-3.5" />
                         {certification.title}
                     </Link>
-                    <div className="border-y border-ink-200 py-24 text-center dark:border-ink-800">
+                    <div className="border-y border-ink-200 py-14 sm:py-24 text-center dark:border-ink-800">
                         <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500">
                             {t('course.empty_kicker')}
                         </div>
@@ -94,7 +94,7 @@ export default function Course({ certification }) {
         <AppLayout ambient={false} full>
             <Head title={t('course.page_title', { title: certification.title })} />
 
-            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:py-10 sm:px-6 lg:px-8">
                 <Link
                     href={route('certifications.show', certification.slug)}
                     className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 dark:hover:text-white"
@@ -135,7 +135,7 @@ export default function Course({ certification }) {
                 </div>
 
                 {/* min-w-0 : sans lui, un bloc de code ou un tableau large elargit toute la grille sur mobile. */}
-                <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12">
+                <div className="mt-12 grid grid-cols-1 gap-6 sm:gap-10 lg:grid-cols-12">
                     {toc.length > 0 && (
                         <aside className="min-w-0 lg:col-span-3">
                             {/* Mobile : sommaire replie, pour arriver tout de suite au cours. */}

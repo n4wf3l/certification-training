@@ -8,7 +8,7 @@ export default function Offline() {
     return (
         <AppLayout ambient={false}>
             <Head title={t('offline.page_title')} />
-            <div className="mx-auto max-w-2xl py-16 text-center">
+            <div className="mx-auto max-w-2xl py-10 sm:py-16 text-center">
                 <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500">
                     <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M1 1l22 22" />

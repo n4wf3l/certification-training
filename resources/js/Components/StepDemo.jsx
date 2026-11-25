@@ -45,7 +45,7 @@ export default function StepDemo({ name, label }) {
     const base = `/media/how-it-works/${name}${mobile ? '-m' : ''}`;
 
     return (
-        <div className={`mt-5 overflow-hidden rounded-xl border border-ink-200 bg-ink-950 shadow-sm dark:border-ink-800 ${mobile ? 'mx-auto max-w-[280px]' : ''}`}>
+        <div className={`mt-5 overflow-hidden rounded-xl border border-ink-200 bg-ink-950 shadow-sm dark:border-ink-800 ${mobile ? 'mx-auto max-w-[220px]' : ''}`}>
             <video
                 key={base}
                 ref={ref}

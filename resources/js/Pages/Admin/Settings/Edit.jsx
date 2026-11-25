@@ -68,7 +68,7 @@ export default function Edit({ settings }) {
 
                 <form onSubmit={submit} className="space-y-6">
                     {/* Brand */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="mb-5">
                             <h2 className="text-base font-semibold text-ink-900 dark:text-white">{t('admin.settings.section_brand')}</h2>
                             <p className="mt-0.5 text-xs text-ink-500">{t('admin.settings.section_brand_desc')}</p>
@@ -154,7 +154,7 @@ export default function Edit({ settings }) {
                     </section>
 
                     {/* Exam behaviour */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="mb-5">
                             <h2 className="text-base font-semibold text-ink-900 dark:text-white">{t('admin.settings.section_exam')}</h2>
                             <p className="mt-0.5 text-xs text-ink-500">{t('admin.settings.section_exam_desc')}</p>
@@ -179,7 +179,7 @@ export default function Edit({ settings }) {
                     </section>
 
                     {/* AI - Explique-moi mieux */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="mb-5">
                             <h2 className="text-base font-semibold text-ink-900 dark:text-white">{t('admin.settings.section_ai')}</h2>
                             <p className="mt-0.5 text-xs text-ink-500">

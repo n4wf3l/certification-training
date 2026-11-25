@@ -456,7 +456,7 @@ export default function Index({ certifications, selected_certification_id, quest
                     onClick={() => setConfirmDelete(null)}
                 >
                     <div
-                        className="card w-full max-w-md animate-scale-in p-6"
+                        className="card w-full max-w-md animate-scale-in p-4 sm:p-6"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 flex items-center gap-3">
@@ -499,7 +499,7 @@ export default function Index({ certifications, selected_certification_id, quest
 function EmptyState({ hasQuery, selectedCert, selectedCertId }) {
     const t = useT();
     return (
-        <div className="px-6 py-16 text-center">
+        <div className="px-6 py-10 sm:py-16 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-100 text-ink-400 dark:bg-ink-800">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
                     <circle cx="11" cy="11" r="7" />

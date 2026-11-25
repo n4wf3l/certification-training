@@ -785,7 +785,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     onClick={cancelLeave}
                 >
                     <div
-                        className="card w-full max-w-md animate-scale-in p-6"
+                        className="card w-full max-w-md animate-scale-in p-4 sm:p-6"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 flex items-center gap-3">
@@ -889,7 +889,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
                     className="fixed inset-0 z-[110] flex items-center justify-center bg-ink-950/70 p-4 backdrop-blur-sm animate-fade-in"
                     onClick={() => setWarn15Open(false)}
                 >
-                    <div className="card w-full max-w-md animate-scale-in p-6" onClick={(e) => e.stopPropagation()}>
+                    <div className="card w-full max-w-md animate-scale-in p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>
                         <div className="mb-4 flex items-center gap-3">
                             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-amber-500/15 text-amber-500">
                                 <Icon.Bolt className="h-5 w-5" />
@@ -916,7 +916,7 @@ export default function Take({ attempt, certification, questions, cert_progress 
             {/* Overlay "temps ecoule" - gele l'UI pendant le POST auto-submit */}
             {frozen && typeof document !== 'undefined' && createPortal(
                 <div className="fixed inset-0 z-[120] flex items-center justify-center bg-ink-950/80 p-4 backdrop-blur-sm animate-fade-in">
-                    <div className="card w-full max-w-md p-6 text-center">
+                    <div className="card w-full max-w-md p-4 sm:p-6 text-center">
                         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-rose-500/15 text-rose-500">
                             <Icon.Close className="h-6 w-6" />
                         </div>

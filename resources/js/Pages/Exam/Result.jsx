@@ -78,7 +78,7 @@ function ComparisonCard({ comparison, currentDuration }) {
     const t = useT();
     if (!comparison.previous) {
         return (
-            <div className="card p-6">
+            <div className="card p-4 sm:p-6">
                 <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-white shadow-glow">
                         <Icon.Sparkles className="h-5 w-5" />
@@ -103,7 +103,7 @@ function ComparisonCard({ comparison, currentDuration }) {
     const worse = dScore < 0;
 
     return (
-        <div className="card p-6">
+        <div className="card p-4 sm:p-6">
             <div className="mb-5 flex items-center justify-between">
                 <div>
                     <div className="flex items-center gap-2">
@@ -206,7 +206,7 @@ function DomainBreakdownCard({ breakdown, certificationSlug }) {
     const t = useT();
     const weakest = breakdown.filter((d) => d.pct < 70);
     return (
-        <div className="card p-6">
+        <div className="card p-4 sm:p-6">
             <div className="mb-4">
                 <h3 className="font-semibold text-ink-900 dark:text-white">{t('exam_result.domain_title')}</h3>
                 <p className="mt-0.5 text-xs text-ink-500">
@@ -301,7 +301,7 @@ function CertProgressBanner({ progress }) {
 
     if (progress.just_awarded && progress.awarded_token) {
         return (
-            <div className="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-emerald-500/5 p-6 shadow-glow-lg">
+            <div className="relative overflow-hidden rounded-2xl border-2 border-emerald-500 bg-emerald-500/5 p-4 sm:p-6 shadow-glow-lg">
                 <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
                     <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-glow">
                         <Icon.Shield className="h-7 w-7" />
@@ -415,7 +415,7 @@ export default function Result({ attempt, certification, details, mastery, compa
         <AppLayout>
             <Head title={t('exam_result.page_title', { title: certification.title })} />
             <div className="mx-auto max-w-4xl space-y-6">
-                <div className={`card relative overflow-hidden p-8`}>
+                <div className={`card relative overflow-hidden p-5 sm:p-8`}>
                     <div className={`absolute inset-0 opacity-20 ${passed ? 'bg-emerald-500' : 'bg-rose-500'}`} style={{ maskImage: 'radial-gradient(closest-side at top, black, transparent)' }} />
                     <div className="relative grid gap-8 sm:grid-cols-[auto_1fr] sm:items-center">
                         <ProgressRing percentage={attempt.percentage} passed={passed} />
@@ -476,7 +476,7 @@ export default function Result({ attempt, certification, details, mastery, compa
                 )}
 
                 {mastery && mastery.total > 0 && (
-                    <div className="card p-6">
+                    <div className="card p-4 sm:p-6">
                         <div className="mb-3 flex items-center justify-between">
                             <div>
                                 <h3 className="font-semibold text-ink-900 dark:text-white">{t('exam_result.mastery_title')}</h3>
@@ -502,7 +502,7 @@ export default function Result({ attempt, certification, details, mastery, compa
                     </div>
                 )}
 
-                <div className="card p-6">
+                <div className="card p-4 sm:p-6">
                     <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <h2 className="text-xl font-bold text-ink-900 dark:text-white">
@@ -759,7 +759,7 @@ export default function Result({ attempt, certification, details, mastery, compa
                     onClick={() => setConfirmRestart(false)}
                 >
                     <div
-                        className="w-full max-w-lg animate-scale-in rounded-2xl border border-ink-200 bg-white p-6 shadow-2xl dark:border-ink-800 dark:bg-ink-900"
+                        className="w-full max-w-lg animate-scale-in rounded-2xl border border-ink-200 bg-white p-4 sm:p-6 shadow-2xl dark:border-ink-800 dark:bg-ink-900"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 flex items-center gap-3">

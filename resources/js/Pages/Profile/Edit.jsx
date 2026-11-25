@@ -44,7 +44,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     </div>
                 </div>
 
-                <section className="card p-6">
+                <section className="card p-4 sm:p-6">
                     <div className="mb-4 flex items-center gap-2">
                         <Icon.User className="h-4 w-4 text-ink-500" />
                         <h2 className="text-base font-semibold text-ink-900 dark:text-white">
@@ -58,7 +58,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     />
                 </section>
 
-                <section className="card p-6">
+                <section className="card p-4 sm:p-6">
                     <div className="mb-4 flex items-center gap-2">
                         <Icon.Shield className="h-4 w-4 text-ink-500" />
                         <h2 className="text-base font-semibold text-ink-900 dark:text-white">
@@ -68,7 +68,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     <UpdatePasswordForm className="max-w-xl" />
                 </section>
 
-                <section className="card p-6">
+                <section className="card p-4 sm:p-6">
                     <div className="mb-2 flex items-center gap-2">
                         <Icon.ArrowDown className="h-4 w-4 text-ink-500" />
                         <h2 className="text-base font-semibold text-ink-900 dark:text-white">
@@ -88,7 +88,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     </a>
                 </section>
 
-                <section className="card border-rose-500/20 p-6">
+                <section className="card border-rose-500/20 p-4 sm:p-6">
                     <div className="mb-4 flex items-center gap-2">
                         <Icon.Close className="h-4 w-4 text-rose-500" />
                         <h2 className="text-base font-semibold text-rose-600 dark:text-rose-300">

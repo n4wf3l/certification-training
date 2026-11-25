@@ -224,7 +224,7 @@ export default function Index({ reports, counts, filter }) {
 
                 {/* Liste */}
                 {reports.length === 0 ? (
-                    <div className="rounded-2xl border border-ink-200 bg-white p-12 text-center dark:border-ink-800 dark:bg-ink-900/40">
+                    <div className="rounded-2xl border border-ink-200 bg-white p-6 sm:p-12 text-center dark:border-ink-800 dark:bg-ink-900/40">
                         <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-500">
                             <Icon.Check className="h-6 w-6" />
                         </div>

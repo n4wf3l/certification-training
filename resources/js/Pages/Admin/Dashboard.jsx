@@ -18,7 +18,7 @@ export default function Dashboard({ stats }) {
     return (
         <AppLayout>
             <Head title={t('admin.dashboard.head_title')} />
-            <div className="mx-auto max-w-7xl space-y-10">
+            <div className="mx-auto max-w-7xl space-y-6 sm:space-y-10">
                 {/* Header */}
                 <div>
                     <div className="badge-brand">

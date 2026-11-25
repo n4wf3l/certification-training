@@ -46,7 +46,7 @@ export default function Show({ plan, progress }) {
                     <span className="text-ink-700 dark:text-ink-300">{plan.certification.title}</span>
                 </div>
 
-                <div className="card p-6">
+                <div className="card p-4 sm:p-6">
                     <div className="flex flex-wrap items-start gap-4">
                         <CertLogo certification={plan.certification} size="lg" />
                         <div className="min-w-0 flex-1">
@@ -76,7 +76,7 @@ export default function Show({ plan, progress }) {
                     </div>
                 </div>
 
-                <div className="card p-6">
+                <div className="card p-4 sm:p-6">
                     <h2 className="mb-4 text-lg font-bold text-ink-900 dark:text-white">{t('study_plan.today_title')}</h2>
                     <div className="mb-2 flex items-baseline justify-between">
                         <span className="text-sm text-ink-500">
@@ -118,7 +118,7 @@ export default function Show({ plan, progress }) {
                 </div>
 
                 {plan.weekday_focus && Object.values(plan.weekday_focus).some(Boolean) && (
-                    <div className="card p-6">
+                    <div className="card p-4 sm:p-6">
                         <h2 className="mb-4 text-lg font-bold text-ink-900 dark:text-white">{t('study_plan.weekday_focus_title')}</h2>
                         <div className="grid gap-2 sm:grid-cols-2">
                             {DAY_KEYS.map((key) => {
@@ -138,7 +138,7 @@ export default function Show({ plan, progress }) {
                     </div>
                 )}
 
-                <div className="card p-6">
+                <div className="card p-4 sm:p-6">
                     <h2 className="mb-4 text-lg font-bold text-ink-900 dark:text-white">{t('study_plan.calendar_title')}</h2>
                     <div className="space-y-3 text-sm">
                         <div className="flex flex-wrap items-center justify-between gap-2">

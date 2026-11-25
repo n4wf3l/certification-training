@@ -13,6 +13,21 @@ export default {
 
     theme: {
         extend: {
+            // Typographie fluide : chaque taille grandit lineairement avec la
+            // largeur d'ecran entre un plancher (telephone 360 px) et la valeur
+            // Tailwind d'origine (atteinte vers 1024 px, 1280 px pour les titres
+            // d'affiche). Desktop inchange, mobile proportionne. xs/sm/base ne
+            // bougent pas : le texte courant reste a 16 px (pas de zoom iOS).
+            fontSize: {
+                lg: ['clamp(1rem, 0.9325rem + 0.301vw, 1.125rem)', { lineHeight: '1.6' }],
+                xl: ['clamp(1.0625rem, 0.961rem + 0.452vw, 1.25rem)', { lineHeight: '1.5' }],
+                '2xl': ['clamp(1.25rem, 1.1145rem + 0.602vw, 1.5rem)', { lineHeight: '1.35' }],
+                '3xl': ['clamp(1.4375rem, 1.2rem + 1.054vw, 1.875rem)', { lineHeight: '1.25' }],
+                '4xl': ['clamp(1.625rem, 1.286rem + 1.506vw, 2.25rem)', { lineHeight: '1.15' }],
+                '5xl': ['clamp(1.875rem, 1.435rem + 1.957vw, 3rem)', { lineHeight: '1.1' }],
+                '6xl': ['clamp(2rem, 1.315rem + 3.043vw, 3.75rem)', { lineHeight: '1.05' }],
+                '7xl': ['clamp(2.125rem, 1.196rem + 4.13vw, 4.5rem)', { lineHeight: '1' }],
+            },
             fontFamily: {
                 sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
                 mono: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.mono],

@@ -35,7 +35,7 @@ export default function Index({ bookmarks = [] }) {
                 </div>
 
                 {bookmarks.length === 0 ? (
-                    <div className="card p-8 text-center">
+                    <div className="card p-5 sm:p-8 text-center">
                         <Icon.Sparkles className="mx-auto mb-3 h-8 w-8 text-ink-400" />
                         <h2 className="text-lg font-semibold text-ink-900 dark:text-white">
                             {t('bookmarks.empty_title')}

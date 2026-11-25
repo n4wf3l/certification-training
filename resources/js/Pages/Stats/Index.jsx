@@ -137,7 +137,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                 </div>
 
                 {certificates.length > 0 && (
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="mb-4">
                             <h2 className="text-xl font-bold text-ink-900 dark:text-white">{t('stats.certificates_title')}</h2>
                             <p className="mt-0.5 text-sm text-ink-500">
@@ -186,7 +186,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                 )}
 
                 {gam && (
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                             <div>
                                 <h2 className="text-xl font-bold text-ink-900 dark:text-white">{t('stats.gamification_title')}</h2>
@@ -273,7 +273,45 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                     <div className="border-b border-ink-200/60 px-5 py-4 dark:border-ink-800/60">
                         <h2 className="font-semibold text-ink-900 dark:text-white">{t('stats.attempts_title')}</h2>
                     </div>
-                    <div className="overflow-x-auto">
+                    {/* Telephone : une ligne compacte et cliquable par tentative. */}
+                    <ul className="divide-y divide-ink-100 dark:divide-ink-800/60 sm:hidden">
+                        {attempts.map((a) => (
+                            <li key={a.id}>
+                                <Link href={route('exam.result', a.id)} className="flex items-center gap-3 px-4 py-3 active:bg-ink-50 dark:active:bg-ink-900/30">
+                                    {a.certification.logo_path ? (
+                                        <img src={`/storage/${a.certification.logo_path}`} alt="" className="h-8 w-8 shrink-0 rounded-md object-contain dark:bg-white dark:p-0.5" />
+                                    ) : (
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-[10px] font-bold text-white">
+                                            {a.certification.title.slice(0, 2).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <div className="min-w-0 flex-1">
+                                        <div className="truncate text-sm font-medium text-ink-900 dark:text-white">{a.certification.title}</div>
+                                        <div className="text-xs text-ink-500">
+                                            {formatDate(a.completed_at, locale)} · <span className="font-mono">{a.score}/{a.total_questions}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex shrink-0 flex-col items-end gap-1">
+                                        <span className="font-mono text-sm font-bold text-ink-900 dark:text-white">{a.percentage}%</span>
+                                        {a.passed ? (
+                                            <span className="badge-success">{t('stats.status_passed')}</span>
+                                        ) : (
+                                            <span className="badge-danger">{t('stats.status_failed')}</span>
+                                        )}
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                        {attempts.length === 0 && (
+                            <li className="px-4 py-8 text-center text-sm text-ink-500">
+                                {t('stats.empty_no_attempts')}{' '}
+                                <Link href={route('home')} className="text-brand-500 hover:underline">
+                                    {t('stats.empty_pick_exam')}
+                                </Link>.
+                            </li>
+                        )}
+                    </ul>
+                    <div className="hidden overflow-x-auto sm:block">
                         <table className="min-w-full text-sm">
                             <thead className="bg-ink-50 text-left text-xs uppercase tracking-wider text-ink-500 dark:bg-ink-900/40">
                                 <tr>
@@ -327,7 +365,7 @@ export default function Index({ attempts, summary, evolutions = [], evolution_mi
                                 ))}
                                 {attempts.length === 0 && (
                                     <tr>
-                                        <td colSpan={7} className="px-5 py-12 text-center text-ink-500">
+                                        <td colSpan={7} className="px-5 py-8 sm:py-12 text-center text-ink-500">
                                             {t('stats.empty_no_attempts')}{' '}
                                             <Link href={route('home')} className="text-brand-500 hover:underline">
                                                 {t('stats.empty_pick_exam')}

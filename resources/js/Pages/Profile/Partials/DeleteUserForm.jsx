@@ -49,7 +49,7 @@ export default function DeleteUserForm({ className = '' }) {
                     <form
                         onSubmit={deleteUser}
                         onClick={(e) => e.stopPropagation()}
-                        className="card w-full max-w-md animate-scale-in p-6"
+                        className="card w-full max-w-md animate-scale-in p-4 sm:p-6"
                     >
                         <div className="mb-4">
                             <h3 className="text-lg font-bold text-ink-900 dark:text-white">

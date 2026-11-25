@@ -12,7 +12,7 @@ function Logo({ certification, size = 'lg' }) {
             <img
                 src={`/storage/${certification.logo_path}`}
                 alt={certification.title}
-                className={`${size === 'lg' ? 'h-24 w-24' : 'h-14 w-14'} rounded-lg object-contain dark:bg-white dark:p-1.5`}
+                className={`${size === 'lg' ? 'h-16 w-16 sm:h-24 sm:w-24' : 'h-14 w-14'} rounded-lg object-contain dark:bg-white dark:p-1.5`}
             />
         );
     }
@@ -25,7 +25,7 @@ function Logo({ certification, size = 'lg' }) {
         .join('')
         .toUpperCase();
     return (
-        <div className={`${size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-14 w-14 text-lg'} flex items-center justify-center rounded-2xl bg-brand-500 font-bold text-white shadow-glow`}>
+        <div className={`${size === 'lg' ? 'h-16 w-16 text-xl sm:h-24 sm:w-24 sm:text-2xl' : 'h-14 w-14 text-lg'} flex items-center justify-center rounded-2xl bg-brand-500 font-bold text-white shadow-glow`}>
             {initials}
         </div>
     );
@@ -43,7 +43,7 @@ function ModeCard({ href, disabled, IconComp, title, description, meta, accent, 
     return (
         <Wrapper
             {...wrapperProps}
-            className={`card group relative flex flex-col overflow-hidden p-6 transition-all ${
+            className={`card group relative flex flex-col overflow-hidden p-4 sm:p-6 transition-all ${
                 disabled
                     ? 'cursor-not-allowed opacity-70'
                     : 'card-lift hover:border-brand-500/40'
@@ -198,7 +198,7 @@ function SprintCard({ certification }) {
         router.post(route('exam.sprint', certification.slug), {}, { onFinish: () => setStarting(false) });
     };
     return (
-        <div className="card flex flex-col gap-4 border-brand-500/40 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="card flex flex-col gap-4 border-brand-500/40 p-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-600 dark:text-brand-300">
                     <Icon.Bolt className="h-3.5 w-3.5" />
@@ -280,7 +280,7 @@ export default function Show({ certification, mastery, cert_progress }) {
             <div className="mx-auto max-w-5xl space-y-8">
                 {/* Header */}
                 <div className="card relative overflow-hidden">
-                    <div className="relative flex flex-col items-start gap-6 p-8 sm:flex-row sm:items-center">
+                    <div className="relative flex flex-col items-start gap-6 p-5 sm:p-8 sm:flex-row sm:items-center">
                         <Logo certification={certification} />
                         <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-2">
@@ -334,7 +334,7 @@ export default function Show({ certification, mastery, cert_progress }) {
                         </div>
                     </div>
                     {mastery && mastery.total > 0 && (
-                        <div className="relative border-t border-ink-200/60 p-6 dark:border-ink-800/60">
+                        <div className="relative border-t border-ink-200/60 p-4 sm:p-6 dark:border-ink-800/60">
                             <div className="mb-3 flex items-center justify-between">
                                 <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">
                                     {t('cert_show.progress_label')}
@@ -483,7 +483,7 @@ export default function Show({ certification, mastery, cert_progress }) {
                 {(certification.long_description || certification.importance || (certification.target_roles && certification.target_roles.length > 0)) && (
                     <div className="grid gap-5 lg:grid-cols-3">
                         {certification.long_description && (
-                            <div className="card p-6 lg:col-span-2">
+                            <div className="card p-4 sm:p-6 lg:col-span-2">
                                 <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
                                     <Icon.Book className="h-4 w-4" />
                                     {t('cert_show.about_title')}
@@ -503,16 +503,17 @@ export default function Show({ certification, mastery, cert_progress }) {
                             </div>
                         )}
                         {certification.target_roles && certification.target_roles.length > 0 && (
-                            <div className="card p-6">
+                            <div className="card p-4 sm:p-6">
                                 <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
                                     <Icon.Trophy className="h-4 w-4" />
                                     {t('cert_show.roles_title')}
                                 </h3>
-                                <ul className="space-y-2">
+                                {/* Telephone : etiquettes qui se suivent ; grand ecran : liste. */}
+                                <ul className="flex flex-wrap gap-2 lg:block lg:space-y-2">
                                     {certification.target_roles.map((role) => (
                                         <li
                                             key={role}
-                                            className="flex items-start gap-2 rounded-lg border border-ink-200/60 bg-white/50 p-2.5 text-sm text-ink-700 dark:border-ink-800/60 dark:bg-ink-900/40 dark:text-ink-200"
+                                            className="flex items-start gap-2 rounded-lg border border-ink-200/60 bg-white/50 px-2.5 py-1.5 text-sm lg:p-2.5 text-ink-700 dark:border-ink-800/60 dark:bg-ink-900/40 dark:text-ink-200"
                                         >
                                             <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
                                             {role}

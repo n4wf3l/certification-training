@@ -327,7 +327,7 @@ export default function AppLayout({ header, children, full = false, ambient = tr
 
             <main
                 key={page.url}
-                className={`flex-1 animate-fade-up ${full ? '' : 'mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8'}`}
+                className={`flex-1 animate-fade-up ${full ? '' : 'mx-auto w-full max-w-7xl px-4 py-6 sm:py-10 sm:px-6 lg:px-8'}`}
             >
                 {children}
             </main>
@@ -337,15 +337,15 @@ export default function AppLayout({ header, children, full = false, ambient = tr
             <PwaInstallPrompt />
 
             {/* FOOTER */}
-            <footer className={`relative mt-24 overflow-hidden border-t ${immersive ? 'hidden md:block' : ''} border-ink-200/60 dark:border-ink-800/60`}>
+            <footer className={`relative mt-14 sm:mt-24 overflow-hidden border-t ${immersive ? 'hidden md:block' : ''} border-ink-200/60 dark:border-ink-800/60`}>
                 {/* Ambient orbs */}
                 <div className="pointer-events-none absolute inset-0 -z-10">
                 </div>
                 {/* Gradient shine at top */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-ink-200 dark:bg-ink-800" />
 
-                <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-                    <div className="grid gap-10 md:grid-cols-12">
+                <div className="mx-auto max-w-7xl px-4 py-10 sm:py-14 sm:px-6 lg:px-8">
+                    <div className="grid gap-6 sm:gap-10 md:grid-cols-12">
                         {/* Brand block */}
                         <div className="md:col-span-5">
                             <BrandMark size="lg" settings={settings} />

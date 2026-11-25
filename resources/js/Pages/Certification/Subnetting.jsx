@@ -155,7 +155,7 @@ export default function Subnetting({ certification }) {
 
                 {/* Exercice */}
                 {q && (
-                    <div className="card mt-6 p-6" aria-live="polite">
+                    <div className="card mt-6 p-4 sm:p-6" aria-live="polite">
                         <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500">
                             {t(`subnetting.type_${q.type}`)}
                         </div>

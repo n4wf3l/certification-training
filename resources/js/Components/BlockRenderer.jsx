@@ -310,7 +310,7 @@ function Mermaid({ code = '', caption = '' }) {
                         dangerouslySetInnerHTML={{ __html: svg }}
                     />
                 ) : (
-                    <div className="py-8 font-mono text-xs text-ink-400">
+                    <div className="py-6 sm:py-8 font-mono text-xs text-ink-400">
                         {t('block_renderer.mermaid_loading')}
                     </div>
                 )}
@@ -326,7 +326,7 @@ function Mermaid({ code = '', caption = '' }) {
 
 function Summary({ title = 'À retenir', items = [] }) {
     return (
-        <div className="mt-8 rounded-2xl border border-ink-900 bg-ink-900 p-6 text-white dark:border-white dark:bg-white dark:text-ink-900">
+        <div className="mt-8 rounded-2xl border border-ink-900 bg-ink-900 p-4 sm:p-6 text-white dark:border-white dark:bg-white dark:text-ink-900">
             <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] opacity-70">
                 <Icon.Target className="h-3.5 w-3.5" />
                 {title}

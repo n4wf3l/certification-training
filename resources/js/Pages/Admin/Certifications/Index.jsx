@@ -83,7 +83,7 @@ export default function Index({ certifications }) {
 
                 {/* Grid */}
                 {filtered.length === 0 ? (
-                    <div className="card p-12 text-center">
+                    <div className="card p-6 sm:p-12 text-center">
                         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-100 text-ink-400 dark:bg-ink-800">
                             <Icon.Book className="h-6 w-6" />
                         </div>
@@ -117,7 +117,7 @@ export default function Index({ certifications }) {
                     onClick={() => setConfirmDelete(null)}
                 >
                     <div
-                        className="card w-full max-w-md animate-scale-in p-6"
+                        className="card w-full max-w-md animate-scale-in p-4 sm:p-6"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 flex items-center gap-3">

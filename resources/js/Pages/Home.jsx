@@ -185,14 +185,14 @@ export default function Home({ certifications, teaser_questions = null }) {
 
             {/* HERO */}
             <section className="border-b border-ink-200 pb-16 pt-6 dark:border-ink-800 sm:pt-10">
-                <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
+                <div className="grid gap-8 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
                     <div>
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <SectionLabel>{t('home.hero_kicker')}</SectionLabel>
                             <ExamClock label={t('home.hero_clock_label')} />
                         </div>
 
-                        <h1 className="mt-8 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white sm:text-[68px]">
+                        <h1 className="mt-8 text-[clamp(2rem,1.119rem+3.913vw,4.25rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-ink-900 dark:text-white">
                             {t('home.hero_title_1')}<br />
                             <span className="text-ink-400 dark:text-ink-500">{t('home.hero_title_2')}</span> {t('home.hero_title_3')}
                         </h1>
@@ -273,7 +273,7 @@ export default function Home({ certifications, teaser_questions = null }) {
             </section>
 
             {/* METHOD */}
-            <section id="how-it-works" className="border-b border-ink-200 py-20 dark:border-ink-800">
+            <section id="how-it-works" className="border-b border-ink-200 py-12 sm:py-20 dark:border-ink-800">
                 <SectionLabel>{t('home.method_kicker')}</SectionLabel>
                 <h2 className="mt-6 max-w-2xl text-2xl font-semibold tracking-tight text-ink-900 dark:text-white sm:text-3xl">
                     {t('home.method_title')}
@@ -327,7 +327,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                 {/* Certificate mechanic callout : explains the 3-perfect-runs rule
                     and positions the CertifLoop certificate as proof of readiness
                     rather than a participation trophy. */}
-                <div className="mt-16 rounded-3xl border border-brand-500/30 bg-brand-500/10 p-8 sm:p-10">
+                <div className="mt-10 sm:mt-16 rounded-3xl border border-brand-500/30 bg-brand-500/10 p-8 sm:p-10">
                     <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
                         <div>
                             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
@@ -364,7 +364,7 @@ export default function Home({ certifications, teaser_questions = null }) {
             </section>
 
             {/* CERTIFICATIONS */}
-            <section id="certifications" className="py-20">
+            <section id="certifications" className="py-12 sm:py-20">
                 <div className="flex flex-wrap items-end justify-between gap-4">
                     <div>
                         <SectionLabel>{t('home.list_kicker')}</SectionLabel>
@@ -381,7 +381,7 @@ export default function Home({ certifications, teaser_questions = null }) {
                 </div>
 
                 {certifications.length === 0 ? (
-                    <div className="mt-10 border-y border-ink-200 py-16 text-center font-mono text-sm text-ink-500 dark:border-ink-800">
+                    <div className="mt-10 border-y border-ink-200 py-10 sm:py-16 text-center font-mono text-sm text-ink-500 dark:border-ink-800">
                         {t('home.list_empty')}
                     </div>
                 ) : (

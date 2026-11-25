@@ -29,7 +29,7 @@ export default function PlatformPromise({ compact = false }) {
 
     return (
         <section className="card relative overflow-hidden">
-            <div className="relative border-b border-ink-200/60 p-6 dark:border-ink-800/60">
+            <div className="relative border-b border-ink-200/60 p-4 sm:p-6 dark:border-ink-800/60">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <div className="badge-brand">
@@ -45,7 +45,7 @@ export default function PlatformPromise({ compact = false }) {
                     </div>
                 </div>
             </div>
-            <div className="relative grid gap-4 p-6 sm:grid-cols-2">
+            <div className="relative grid gap-4 p-4 sm:p-6 sm:grid-cols-2">
                 {promises.map((p) => (
                     <div
                         key={p.title}

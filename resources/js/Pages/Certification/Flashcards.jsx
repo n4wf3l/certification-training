@@ -67,7 +67,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
             <AppLayout>
                 <Head title={t('flashcards.page_title', { title: certification.title })} />
                 <div className="mx-auto max-w-2xl text-center">
-                    <div className="card p-10">
+                    <div className="card p-6 sm:p-10">
                         <p className="text-ink-500">{t('flashcards.empty')}</p>
                         <Link href={route('certifications.show', certification.slug)} className="btn-secondary mt-4">
                             {t('flashcards.back')}
@@ -131,7 +131,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                         }}
                     >
                         <div
-                            className="card absolute inset-0 flex flex-col justify-between p-8"
+                            className="card absolute inset-0 flex flex-col justify-between p-5 sm:p-8"
                             style={{ backfaceVisibility: 'hidden' }}
                         >
                             <div className="flex items-center justify-between">
@@ -157,7 +157,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                         </div>
 
                         <div
-                            className="card absolute inset-0 flex flex-col justify-between overflow-hidden p-8"
+                            className="card absolute inset-0 flex flex-col justify-between overflow-hidden p-5 sm:p-8"
                             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                         >
                             <div className="pointer-events-none absolute inset-0 bg-emerald-500/5" />
@@ -238,7 +238,7 @@ export default function Flashcards({ certification, cards: initialCards }) {
                 </div>
 
                 {Object.keys(marks).length === total && (
-                    <div className="card p-6 text-center">
+                    <div className="card p-4 sm:p-6 text-center">
                         <h3 className="text-xl font-bold text-ink-900 dark:text-white">{t('flashcards.session_done_title')}</h3>
                         <p className="mt-2 text-ink-500">
                             {t('flashcards.session_done_body', { known, review: toReview })}

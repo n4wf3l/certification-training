@@ -60,7 +60,7 @@ export default function Show({ certificate, brand_name, public_url, linkedin_sha
                     </div>
                 </div>
 
-                <div className="rounded-3xl border-4 border-brand-500 bg-white p-10 shadow-xl dark:bg-ink-900">
+                <div className="rounded-3xl border-4 border-brand-500 bg-white p-6 sm:p-10 shadow-xl dark:bg-ink-900">
                     <div className="text-center">
                         <div className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.3em] text-brand-600 dark:text-brand-300">
                             {brand_name}

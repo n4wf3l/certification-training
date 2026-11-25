@@ -226,7 +226,7 @@ export default function Form({ question, certifications, default_certification_i
                     )}
 
                     {/* Meta */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.questions_form.section_meta')}
                             description={t('admin.questions_form.section_meta_desc')}
@@ -268,7 +268,7 @@ export default function Form({ question, certifications, default_certification_i
                     </section>
 
                     {/* Question */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.questions_form.section_question')}
                             description={t('admin.questions_form.section_question_desc')}
@@ -309,7 +309,7 @@ export default function Form({ question, certifications, default_certification_i
                     </section>
 
                     {/* Answers */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                             <SectionHeader
                                 title={t('admin.questions_form.section_answers')}

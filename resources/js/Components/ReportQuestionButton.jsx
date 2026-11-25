@@ -60,7 +60,7 @@ export default function ReportQuestionButton({ questionId, attemptId = null, cho
                     onClick={() => setOpen(false)}
                 >
                     <div
-                        className="w-full max-w-lg animate-scale-in rounded-2xl border border-ink-200 bg-white p-6 shadow-2xl dark:border-ink-800 dark:bg-ink-900"
+                        className="w-full max-w-lg animate-scale-in rounded-2xl border border-ink-200 bg-white p-4 sm:p-6 shadow-2xl dark:border-ink-800 dark:bg-ink-900"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="mb-4 flex items-center gap-3">

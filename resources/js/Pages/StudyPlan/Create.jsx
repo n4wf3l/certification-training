@@ -64,12 +64,12 @@ export default function Create({ certifications, existing_plan_cert_ids = [] }) 
                 </div>
 
                 {availableCerts.length === 0 ? (
-                    <div className="card p-8 text-center">
+                    <div className="card p-5 sm:p-8 text-center">
                         <p className="text-ink-500">{t('study_plan.create_no_certs')}</p>
                         <Link href={route('study-plans.index')} className="btn-secondary mt-4 !inline-flex">{t('study_plan.create_back')}</Link>
                     </div>
                 ) : (
-                    <form onSubmit={submit} className="card space-y-6 p-6">
+                    <form onSubmit={submit} className="card space-y-6 p-4 sm:p-6">
                         <div>
                             <label className="field-label">{t('study_plan.field_certification')}</label>
                             <Select

@@ -554,7 +554,7 @@ export default function CourseImport({ certifications, default_certification_id 
         <AppLayout ambient={false}>
             <Head title={t('admin.certs_course_import.head_title')} />
 
-            <div className="mx-auto max-w-6xl space-y-10">
+            <div className="mx-auto max-w-6xl space-y-6 sm:space-y-10">
                 {/* Header */}
                 <div>
                     <div className="mb-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500">

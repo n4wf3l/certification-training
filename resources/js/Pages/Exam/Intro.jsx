@@ -251,7 +251,7 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                                 <div className="shrink-0 lg:pt-1">
                                     <button
                                         onClick={openModal}
-                                        className="btn-primary w-full !px-8 !py-4 text-base lg:w-auto"
+                                        className="btn-primary w-full !px-5 sm:px-8 !py-4 text-base lg:w-auto"
                                     >
                                         {t('exam_intro.start_cta')}
                                         <Icon.ArrowRight className="h-5 w-5" />
@@ -264,7 +264,7 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
                         </div>
                     </div>
 
-                    <div className="border-t border-ink-200/60 p-6 dark:border-ink-800/60">
+                    <div className="border-t border-ink-200/60 p-4 sm:p-6 dark:border-ink-800/60">
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                             <Stat label={t('exam_intro.stat_duration')} value={`${certification.duration_minutes} min`} />
                             <Stat
@@ -284,7 +284,7 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
 
                 {/* Empty pool warning */}
                 {user && currentPool.available === 0 && (
-                    <div className="card p-6">
+                    <div className="card p-4 sm:p-6">
                         <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-amber-700 dark:text-amber-300">
                             {t('exam_intro.empty_pool')}
                         </div>
@@ -293,7 +293,7 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
 
                 {/* Mastery card - visible seulement si l'user a deja des donnees d'entrainement */}
                 {mastery && mastery.total > 0 && (
-                    <div className="card p-6">
+                    <div className="card p-4 sm:p-6">
                         <div className="mb-3 flex items-center justify-between">
                             <div>
                                 <h3 className="font-semibold text-ink-900 dark:text-white">{t('exam_intro.mastery_title')}</h3>
@@ -322,14 +322,14 @@ export default function Intro({ certification, mastery, allow_instant_feedback =
 
                 {/* GUEST CTA - inchange (le user connecte passe par le modal a partir du header) */}
                 {!user && (
-                    <div className="card p-6 text-center">
+                    <div className="card p-4 sm:p-6 text-center">
                         <div className="space-y-4">
                             <p className="text-ink-700 dark:text-ink-300">
                                 {t('exam_intro.guest_prompt')}
                             </p>
                             <Link
                                 href={`${route('register')}?redirect_to=${encodeURIComponent(`/certifications/${certification.slug}/examen`)}`}
-                                className="btn-primary !px-8 !py-4 text-base"
+                                className="btn-primary !px-5 sm:px-8 !py-4 text-base"
                             >
                                 {t('exam_intro.guest_register_cta')}
                                 <Icon.ArrowRight className="h-5 w-5" />

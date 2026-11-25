@@ -125,7 +125,7 @@ export default function Index({ users = [], filters = {}, totals = {} }) {
 
                 {/* List */}
                 {users.length === 0 ? (
-                    <div className="card p-8 text-center text-sm text-ink-500">
+                    <div className="card p-5 sm:p-8 text-center text-sm text-ink-500">
                         {t('admin.users.empty')}
                     </div>
                 ) : (
@@ -220,7 +220,7 @@ export default function Index({ users = [], filters = {}, totals = {} }) {
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
-                        className="card w-full max-w-md p-6"
+                        className="card w-full max-w-md p-4 sm:p-6"
                     >
                         <h3 className="text-lg font-bold text-ink-900 dark:text-white">
                             {t('admin.users.confirm_delete_title')}

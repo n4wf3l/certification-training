@@ -210,7 +210,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     )}
 
                     {/* Identity */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_identity')}
                             description={t('admin.certs_form.section_identity_desc')}
@@ -247,7 +247,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     </section>
 
                     {/* Rich content */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_content')}
                             description={t('admin.certs_form.section_content_desc')}
@@ -282,7 +282,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     </section>
 
                     {/* Available languages */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_languages')}
                             description={t('admin.certs_form.section_languages_desc')}
@@ -340,7 +340,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     </section>
 
                     {/* Exam config */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_exam')}
                             description={t('admin.certs_form.section_exam_desc')}
@@ -431,7 +431,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     </section>
 
                     {/* Freshness + validity */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_freshness')}
                             description={t('admin.certs_form.section_freshness_desc')}
@@ -482,7 +482,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
 
                     {/* Course status */}
                     {editing && (
-                        <section className="card p-6">
+                        <section className="card p-4 sm:p-6">
                             <SectionHeader
                                 title={t('admin.certs_form.section_course')}
                                 description={t('admin.certs_form.section_course_desc')}
@@ -558,7 +558,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
 
                     {/* Blueprint syllabus */}
                     {editing && (
-                        <section className="card p-6">
+                        <section className="card p-4 sm:p-6">
                             <SectionHeader
                                 title={t('admin.certs_form.section_blueprint')}
                                 description={t('admin.certs_form.section_blueprint_desc')}
@@ -650,7 +650,7 @@ export default function Form({ certification, question_counts_by_domain = {} }) 
                     )}
 
                     {/* Visuals + visibility */}
-                    <section className="card p-6">
+                    <section className="card p-4 sm:p-6">
                         <SectionHeader
                             title={t('admin.certs_form.section_logo')}
                             description={t('admin.certs_form.section_logo_desc')}
